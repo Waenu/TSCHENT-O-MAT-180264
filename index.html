@@ -951,7 +951,7 @@
       <div class="rows" id="meldenKasten"></div>
     </details>
     </div>
-    <button type="button" class="bigbtn main" id="btnReserv" aria-controls="rechner"><span class="bi" aria-hidden="true"><svg class="an-cal" width="34" height="34" viewBox="0 0 38 38" aria-hidden="true"><rect x="4" y="7" width="30" height="27" rx="4" fill="#fff" stroke="#C62828" stroke-width="2"/><rect x="4" y="7" width="30" height="9" rx="4" fill="#C62828"/><g class="an-unter"><text x="19" y="29" text-anchor="middle" font-size="14" font-weight="700" fill="#16302B" font-family="system-ui,sans-serif">2</text></g><g class="an-blatt"><rect x="5" y="17" width="28" height="16" fill="#fff"/><text x="19" y="29" text-anchor="middle" font-size="14" font-weight="700" fill="#16302B" font-family="system-ui,sans-serif">1</text></g></svg></span>Ich reserviere jetzt</button>
+    <button type="button" class="bigbtn main" id="btnReserv" aria-controls="rechner"><span class="bi" aria-hidden="true"><svg class="an-cal" width="34" height="34" viewBox="0 0 38 38" aria-hidden="true"><rect x="4" y="7" width="30" height="27" rx="4" fill="#fff" stroke="#C62828" stroke-width="2"/><rect x="4" y="7" width="30" height="9" rx="4" fill="#C62828"/><g class="an-unter"><text x="19" y="29" text-anchor="middle" font-size="14" font-weight="700" fill="#16302B" font-family="system-ui,sans-serif">2</text></g><g class="an-blatt"><rect x="5" y="17" width="28" height="16" fill="#fff"/><text x="19" y="29" text-anchor="middle" font-size="14" font-weight="700" fill="#16302B" font-family="system-ui,sans-serif">1</text></g></svg></span>Reif für die Berge</button>
     <button type="button" class="bigbtn" id="btnAnreise" hidden><span class="bi" aria-hidden="true"><svg class="ik" viewBox="0 0 40 40" focusable="false"><g class="ik-koffer"><path d="M15 12 V8 a2 2 0 0 1 2 -2 h6 a2 2 0 0 1 2 2 V12" fill="none" stroke="#3B7DC4" stroke-width="2.4" stroke-linecap="round"/><rect x="8" y="12" width="24" height="21" rx="4" fill="#3B7DC4"/><path d="M14 16 V29 M26 16 V29" stroke="#fff" stroke-width="1.6" opacity=".55" stroke-linecap="round"/><circle class="ik-rad" cx="14" cy="36" r="2.6" fill="#8A9490"/><circle class="ik-rad" cx="26" cy="36" r="2.6" fill="#8A9490"/></g></svg></span><span class="bt">Anreise-Wäsche<small id="btnAnreiseSub"></small></span></button>
     <button type="button" class="bigbtn" id="btnCheck" hidden><span class="bi" aria-hidden="true"><svg class="ik" viewBox="0 0 40 40" focusable="false"><circle class="ik-kreis" cx="20" cy="20" r="15" fill="#2E9E5B"/><path class="ik-haken" d="M12.5 20.5 L18 26 L28 14.5" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="bt">Reinigungs-Checkliste<small id="btnCheckSub"></small></span></button>
     <div id="aufStatus" hidden></div>
@@ -1046,7 +1046,7 @@
    Nach jeder Änderung die Versionsnummer erhöhen und das Datum anpassen.
    ============================================================ */
 // Standardwerte (Reserve). Die gültigen Werte stehen in der Datei einstellungen.json.
-let VERSION = "2.85.4.0";
+let VERSION = "2.85.5.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -3951,7 +3951,7 @@ function uebrigVorhanden() {   // kommt «Übrige Zeit» in den nächsten 13 Mon
 function jahrKlasse(k, heute) {   // Rahmen = Farbe der Zeit; frei = gefüllt, belegt = grau gefüllt, vergangen = ohne Füllung
   const vorbei = k < heute;
   const z = !vorbei && (GAP.has(k) || SICHT.has(k)) ? "gap" : zoneVon(k);   // Lücke und «durch die Vorlaufzeit» sind beide gelb
-  const belegt = !vorbei && (BELEGT.has(k) || GAPSPERR.has(k) || nachtGebucht(k) || kurzMap().has(k));
+  const belegt = !vorbei && !istSperre(k) && (BELEGT.has(k) || GAPSPERR.has(k) || nachtGebucht(k) || kurzMap().has(k));
   return "z-" + z + (vorbei ? " st-p" : belegt ? " st-b" : "");
 }
 function jahrZeigen() {
@@ -4433,14 +4433,14 @@ document.querySelectorAll("details.sub > summary").forEach((sm) => {   // Symbol
   const m = t.nodeValue.match(/^\s*(\p{Extended_Pictographic}[\p{Extended_Pictographic}\uFE0F\u200D]*)\s*/u); if (!m) return;
   const sp = document.createElement("span"); sp.className = "si"; sp.textContent = m[1]; t.nodeValue = t.nodeValue.slice(m[0].length); sm.insertBefore(sp, t);
 });
-(function () {   // «Ich reserviere jetzt» unten festnageln, solange das Glossar offen ist
-  const g = document.getElementById("b-begriffe"), orig = document.getElementById("btnReserv");
-  if (!g || !orig) return;
+(function () {   // Reservieren-Knopf unten festnageln, solange Benutzung, Glossar oder Wünsche offen sind
+  const gl = ["b-begriffe", "b-benutzung", "b-melden"].map((id) => document.getElementById(id)).filter(Boolean), orig = document.getElementById("btnReserv");
+  if (!gl.length || !orig) return;
   const fix = orig.cloneNode(true); fix.id = "btnReservFix"; fix.classList.add("reserv-fix"); fix.removeAttribute("aria-controls");
   fix.addEventListener("click", () => orig.click());
   document.body.appendChild(fix);
-  const upd = () => document.body.classList.toggle("glossar-offen", !!(g.open && g.offsetParent !== null && !document.body.classList.contains("rechner-an")));
-  g.addEventListener("toggle", upd); document.addEventListener("click", () => setTimeout(upd, 60)); upd();
+  const upd = () => document.body.classList.toggle("glossar-offen", !!(gl.some((g) => g.open && g.offsetParent !== null) && !document.body.classList.contains("rechner-an")));
+  gl.forEach((g) => g.addEventListener("toggle", upd)); document.addEventListener("click", () => setTimeout(upd, 60)); upd();
 })();
 aufentLaden();
 try { new ResizeObserver(() => zeichneBalken()).observe(document.getElementById("calGrid")); } catch (e) {}

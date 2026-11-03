@@ -2,7 +2,7 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
-      "v": "2.83.0.3 bis 2.85.4.0",
+      "v": "2.83.0.3 bis 2.85.5.0",
       "datum": "2026-11-03",
       "titel": "Änderungen vom 03.11.2026",
       "arten": [
@@ -17,7 +17,8 @@
         "Neue Balken: grau und eckig (ein Drittel in den Anreisetag, ein Drittel in den Abreisetag), Linie schwarz im Hellmodus und weiss im Dunkelmodus, Bezeichnungen BnB, Ext. und Fam. bleiben. Termine mit Vorbehalt: gesicherter Teil voll, noch nicht gesicherter Teil grau transparent und gestrichelt auf neutralem Boden, runder Übergang. Neues Reinigungskästchen am Abreisetag (feuerrot, gleich hoch wie der Balken): gefüllt = die Eltern reinigen, Rahmen mit offener Mitte = die Kinder reinigen. Der Schweif der Staffel ist gestrichelt mit kleinen Dreiecken (neue Staffel möglich). Konflikt: roter Rand und ⚠ vor dem Namen. «Kurzfristig frei» hat keinen dicken Rahmen mehr, die Tage sind gelb wie eine Lücke.",
         "Balken höher (24 px) und näher am Datum. Glossar: rote Reinigungskästchen zwischen den Balken, Tippe-Händchen, keine Besen mehr in den Balken. Tageskästchen mit 4 px Rundung. Neue Namen: «Buchungskalender», «Freunde» statt «Gäste» (für Mitreisende), «Lücke durch die Vorlaufzeit» statt «Kurzfristig frei». Jahresübersicht: Lücken in Gelb, «Kurzfristig frei» entfällt.",
         "Name im Balken hat Vorrang vor der Beschriftung «Fam.»: Bei kurzen Terminen steht zuerst der Name, die Beschriftung nur bei genug Platz. Grösste Schrift etwas kleiner. Glossar-Titel brechen um und haben mehr Abstand zwischen Symbol und Text. Jahresübersicht: belegte Tage flach grau ohne Rahmen.",
-        "Solange das Glossar offen ist, bleibt «Ich reserviere jetzt» unten am Bildschirm fixiert. Der Glossar-Eintrag heisst nur noch «Buchungskalender»."
+        "Solange das Glossar offen ist, bleibt «Ich reserviere jetzt» unten am Bildschirm fixiert. Der Glossar-Eintrag heisst nur noch «Buchungskalender».",
+        "Der Knopf zum Reservieren heisst «Reif für die Berge» und bleibt auch bei offener Benutzung und offenen Wünschen unten fixiert. Jahresübersicht: Die Weihnachtssperre bleibt rot und wird nicht grau als belegt gezeigt."
       ]
     },
     {
