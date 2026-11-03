@@ -817,41 +817,47 @@
   :root { --bk-grau: #5F6F6C; --bk-ol: #000000; --bk-boden: #FFFFFF; --bk-rk: #FF2D12; }
   :root[data-theme="dark"] { --bk-ol: #FFFFFF; --bk-boden: #16272A; }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bk-ol: #FFFFFF; --bk-boden: #16272A; } }
-  .bk { height: 18px; line-height: 14px; border-radius: 0; font-size: calc(0.66rem / var(--fs)); font-weight: 600; padding: 0 3px; gap: 3px; border: 2px solid var(--bk-ol); }
+  .bk { height: 24px; line-height: 20px; border-radius: 0; font-size: calc(0.72rem / var(--fs)); font-weight: 600; padding: 0 3px; gap: 3px; border: 2px solid var(--bk-ol); }
   .bk.fl, .bk.fr { border-radius: 0; }
   .bk.gruen, .bk.air { background: var(--bk-grau); color: #FFFFFF; box-shadow: none; }
   .bk.gelb { background: linear-gradient(rgba(95,111,108,.32), rgba(95,111,108,.32)), var(--bk-boden); color: var(--fg); box-shadow: none; border-style: dashed; }
   .bk.konf { box-shadow: 0 0 0 2.5px #C0392B; }
-  .bk.gruen.mit { -webkit-mask: radial-gradient(circle 11.5px at 100% 50%, transparent 11px, #000 11.5px); mask: radial-gradient(circle 11.5px at 100% 50%, transparent 11px, #000 11.5px); }
-  .bk.gruen.mit::after { content: ""; position: absolute; right: -13.5px; top: 50%; width: 27px; height: 27px; margin-top: -13.5px; box-sizing: border-box; border: 2px solid var(--bk-ol); border-radius: 50%; pointer-events: none; }
-  .bk.gelb.ein { border-radius: 9px 0 0 9px; padding-left: 12px; }
+  .bk.gruen.mit { -webkit-mask: radial-gradient(circle 15px at 100% 50%, transparent 14.5px, #000 15px); mask: radial-gradient(circle 15px at 100% 50%, transparent 14.5px, #000 15px); }
+  .bk.gruen.mit { padding-right: 20px; }
+  .bk.gruen.mit::after { content: ""; position: absolute; right: -17px; top: 50%; width: 34px; height: 34px; margin-top: -17px; box-sizing: border-box; border: 2px solid var(--bk-ol); border-radius: 50%; pointer-events: none; }
+  .bk.gelb.ein { border-radius: 12px 0 0 12px; padding-left: 16px; }
   .bk.blass, .bk.blass.gruen, .bk.blass.air, .bk.blass.gelb { background: rgba(95,111,108,.38); border: 0; color: var(--fg); box-shadow: none; }
   .bk.wunsch { border: 0; }
   .bk.sw { border: 0; background: var(--bk-boden); padding: 0; }
   .bk.sw, .bk-leg .k-sw { background-color: var(--bk-boden); }
   .ant rect { stroke: var(--bk-ol); stroke-width: 3; stroke-dasharray: 5 4; }
-  .bk.sw .tri, .bk-leg .k-sw .tri { position: absolute; top: 50%; width: 0; height: 0; border-style: solid; border-width: 4px 0 4px 7px; border-color: transparent transparent transparent #8A9B97; transform: translate(-50%, -50%); }
+  .bk.sw .tri, .bk-leg .k-sw .tri { position: absolute; top: 50%; width: 0; height: 0; border-style: solid; border-width: 5px 0 5px 9px; border-color: transparent transparent transparent #8A9B97; transform: translate(-50%, -50%); }
   .bk.rk { padding: 0; gap: 0; overflow: hidden; }
   .bk.rk.e { background: var(--bk-rk); border: 0; }
   .bk.rk.k { background: var(--bk-boden); border: 3px solid var(--bk-rk); }
-  .bk .zk { height: 14px; min-width: 0; padding: 0 3px; border-radius: 2px; line-height: 14px; font-size: calc(0.6rem / var(--fs)); }
-  .bk .zk.zl { font-size: calc(0.54rem / var(--fs)); }
-  .bk-leg i { height: 18px; border-radius: 0; }
+  .bk .zk { height: 18px; min-width: 0; padding: 0 4px; border-radius: 3px; line-height: 18px; font-size: calc(0.66rem / var(--fs)); }
+  .bk .zk.zl { font-size: calc(0.6rem / var(--fs)); }
+  .bk-leg i { height: 24px; border-radius: 0; }
   .bk-leg .k-gruen, .bk-leg .k-air { background: var(--bk-grau); box-shadow: none; border: 2px solid var(--bk-ol); color: #FFFFFF; }
   .bk-leg .k-gelb { background: linear-gradient(rgba(95,111,108,.32), rgba(95,111,108,.32)), var(--bk-boden); box-shadow: none; border: 2px dashed var(--bk-ol); }
   .bk-leg .k-konf { box-shadow: 0 0 0 2.5px #C0392B; }
   .bk-leg .k-sw { border: 0; }
-  .bk-leg .k-rk { width: 18px; height: 18px; border-radius: 0; box-sizing: border-box; }
+  .bk-leg .k-rk { width: 24px; height: 24px; border-radius: 0; box-sizing: border-box; }
   .bk-leg .k-rk.e { background: var(--bk-rk); }
   .bk-leg .k-rk.k { background: var(--bk-boden); border: 3px solid var(--bk-rk); }
-  .exb { height: 18px; border-radius: 0; }
+  .exb { height: 22px; border-radius: 0; }
   .exb.selbst, .exb.eltern, .exb.gruen { background: var(--bk-grau); color: #FFFFFF; border: 2px solid var(--bk-ol); box-shadow: none; }
-  .exb.gruen.mit { -webkit-mask: radial-gradient(circle 11.5px at 100% 50%, transparent 11px, #000 11.5px); mask: radial-gradient(circle 11.5px at 100% 50%, transparent 11px, #000 11.5px); }
+  .exb.gruen.mit { -webkit-mask: radial-gradient(circle 14px at 100% 50%, transparent 13.5px, #000 14px); mask: radial-gradient(circle 14px at 100% 50%, transparent 13.5px, #000 14px); }
   .exb.gelb { background: linear-gradient(rgba(95,111,108,.32), rgba(95,111,108,.32)), var(--bk-boden); color: var(--fg); border: 2px dashed var(--bk-ol); box-shadow: none; }
-  .exb.gelb.ein { border-radius: 9px 0 0 9px; margin-left: -10px; padding-left: 14px; }
+  .exb.gelb.ein { border-radius: 11px 0 0 11px; margin-left: -12px; padding-left: 16px; }
   .exb.konf { box-shadow: 0 0 0 2.5px #C0392B; }
   .exb.stf { background: var(--bk-boden); border: 2px dashed var(--bk-ol); color: var(--fg); }
-  .exb .zk { height: 14px; min-width: 0; font-size: .65rem; }
+  .exb .zk { height: 16px; min-width: 0; font-size: .65rem; }
+  .exrow .exb.rkx { flex: none; width: 14px; min-width: 14px; padding: 0; border: 0; }
+  .exrow .exb.rkx.e { background: var(--bk-rk); }
+  .exrow .exb.rkx.k { background: var(--bk-boden); border: 3px solid var(--bk-rk); }
+  .exb .hand { margin-left: auto; font-size: .85rem; line-height: 1; }
+  .cal-d { border-radius: 4px; }
   /* «Kurzfristig frei»: kein dicker Rahmen mehr, sondern wie eine Lücke gelb */
   .cal-d.sicht:not(.in):not(.sel) { background-color: var(--sperr-bg); border-color: var(--sperr-line); border-width: 2px; box-shadow: none; padding-top: 0; font-weight: inherit; }
   .sw-sicht { border-color: var(--sperr-line); background: var(--sperr-bg); box-shadow: none; }
@@ -897,7 +903,7 @@
       <summary>📚 Glossar</summary>
       <div class="rows">
         <details class="sub" id="b-wunschtermin"><summary>📅 Wunschtermin</summary><div class="bc" id="bc-wunschtermin"></div></details>
-        <details class="sub" id="b-kalender"><summary>🗓️ Erklärung Kalender</summary><div class="bc"><p id="calHint"></p><p>Die Farben stehen als Legende direkt unter dem Kalender. Ist die Hilfe <span class="zei hilfe">?</span> an, erklärt sich jeder angetippte Tag.</p><div id="bildKalender"></div></div></details>
+        <details class="sub" id="b-kalender"><summary>🗓️ Erklärung Buchungskalender</summary><div class="bc"><p id="calHint"></p><p>Die Farben stehen als Legende direkt unter dem Kalender. Ist die Hilfe <span class="zei hilfe">?</span> an, erklärt sich jeder angetippte Tag.</p><div id="bildKalender"></div></div></details>
         <details class="sub" id="b-auswahl"><summary>🔽 Auswahlfelder</summary><div class="bc" id="auswahlTxt">
           <p>Felder und Fragen zeigen, wo ihr steht:</p>
           <div class="exfields">
@@ -919,7 +925,7 @@
         <details class="sub" id="b-hochsaison" hidden><summary>🏔️ Hochsaison</summary><div class="bc" id="bc-hochsaison"></div></details>
         <details class="sub" id="b-prov"><summary>🔓 Termin mit Vorbehalt</summary><div class="bc" id="bc-prov"></div></details>
         <details class="sub" id="b-luecke"><summary>🧩 Lücken</summary><div class="bc" id="bc-luecke"></div></details>
-        <details class="sub" id="b-sicht"><summary>🔔 Kurzfristig frei</summary><div class="bc" id="bc-sicht"></div></details>
+        <details class="sub" id="b-sicht"><summary>🔔 Lücke durch die Vorlaufzeit</summary><div class="bc" id="bc-sicht"></div></details>
         <details class="sub" id="b-ruhe"><summary>🧹 Selber reinigen</summary><div class="bc" id="bc-ruhe"></div></details>
         <details class="sub" id="b-endrein"><summary>🪣 Endreinigung</summary><div class="bc" id="bc-endrein"></div></details>
         <details class="sub" id="b-zahlung"><summary>💰 Zahlung</summary><div class="bc" id="bc-zahlung"></div></details>
@@ -1029,7 +1035,7 @@
    Nach jeder Änderung die Versionsnummer erhöhen und das Datum anpassen.
    ============================================================ */
 // Standardwerte (Reserve). Die gültigen Werte stehen in der Datei einstellungen.json.
-let VERSION = "2.85.2.0";
+let VERSION = "2.85.3.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1063,27 +1069,27 @@ const P = {
   minNaechte: 2,
   maxNaechte: 14,
   maxPersonen: 6,       // Betten (Personen mit normalem Bett, ohne Kinder ohne eigenes Bett)
-  gastZimmer: 45,       // Gast im selben Zimmer wie Sohn/Tochter
+  gastZimmer: 45,       // Freund im selben Zimmer wie Sohn/Tochter
   sparMaxPers: 4,       // bis zu dieser Zahl Personen insgesamt (Familie inkl. Kleinkinder + Gäste) kann Zimmer 1 unberührt bleiben
   sparEin: 15,          // Ermässigung pro Nacht für die Familie, wenn Zimmer 1 (mit rotem Bad) unberührt bleibt
   famAnteil: 25,        // Familie, wenn Sohn/Tochter das Zimmer mit einem Gast teilt
   reinigungSelbst: 0,   // Reinigung, wenn die Familie selbst reinigt (frische Waesche mitbringen, Betten selbst beziehen)
   lueckeMaxPersonen: 2,  // ganze Lücke: höchstens so viele Personen mit Bett (Kleinkinder im Kinderbettchen zusätzlich)
   lueckeMaxKleinkinder: 1,  // ganze Lücke: höchstens so viele Kleinkinder im Kinderbettchen
-  festMinGaeste: 0,     // In den festMonaten (Februar): mindestens so viele Gäste nötig (0 = keine Vorgabe)
+  festMinGaeste: 0,     // In den festMonaten (Februar): mindestens so viele Freunde nötig (0 = keine Vorgabe)
   mindestpreisAbNaechte: 0, // Die Entlastung der Familie (Mindestpreis) gilt erst ab dieser Zahl Nächte (0 = immer)
   festBodenWoche: 0,    // In den festMonaten (Februar): Mindest-Gesamtpreis pro 7 Nächte inkl. Reinigung (CHF, 0 = aus). Ersetzt dort mindestpreisWoche. Fehlt etwas bis zum Boden, wird der Rest gleichmässig auf alle Personen verteilt; liegt der Preis darüber, entfällt der Anteil der Familie soweit möglich
   hochMinNaechte: 0,   // Hochsaison: Mindestnächte für einen Termin mit Vorbehalt (0 = keine Vorgabe)
   verbMin: 7,          // Verbindliche Buchung in der Hochsaison: mindestens so viele Nächte, davon alle in der Hochsaison
   verbMax: 14,         // Verbindliche Buchung: höchstens so viele Nächte
   hochNachtMin: 0,     // Hochsaison (ausserhalb der festMonate): Mindestpreis pro Nacht ohne Reinigung (CHF, 0 = aus). Boden = Nächte x dieser Betrag + Reinigung; sonst gleiche Rechnung wie im Februar. Gilt nur, wenn alle Nächte in der Hochsaison liegen
-  mindestpreisWoche: 0, // Boden pro 7 Nächte (CHF, 0 = aus), nur mit Gästen: Übersteigt der Gesamtpreis den Boden (anteilig nach Nächten), entfällt der Anteil der Familie, aber der Gesamtpreis sinkt nie unter den Boden
+  mindestpreisWoche: 0, // Boden pro 7 Nächte (CHF, 0 = aus), nur mit Freunden: Übersteigt der Gesamtpreis den Boden (anteilig nach Nächten), entfällt der Anteil der Familie, aber der Gesamtpreis sinkt nie unter den Boden
   lueckeRabatt: 50,     // Prozent Ermässigung auf die Übernachtungen, wenn der Aufenthalt in einer Lücke zwischen zwei Airbnb-Buchungen liegt (Reinigung bleibt gleich)
   sichtMinNaechte: 2    // «Kurzfristig frei» (Zeit, die Airbnb nicht mehr verkaufen kann): Mindestnächte für einen Aufenthalt darin
 };
 const MFG = "Meine Familie und Geschwister";
 const ART_V = "Verbindlich buchen (fest, in Airbnb gesperrt)", ART_P = "Mit Vorbehalt (nicht in Airbnb gesperrt)";
-const ART_S = "Staffel: ihr reinigt selbst, ohne Gäste", ART_N = "Normal: die Eltern reinigen, Gäste möglich";
+const ART_S = "Staffel: ihr reinigt selbst, ohne Freunde", ART_N = "Normal: die Eltern reinigen, Freunde möglich";
 // Buchungsarten pro Datum (höchstens zwei): Hochsaison = verbindlich oder mit Vorbehalt, Staffel-Zeit = Staffel oder normal; sonst gibt es nur eine Art, also keine Auswahl
 const artOpts = () => S.verbOK === true ? [ART_V, ART_P] : (S.selbstOK === true ? (S.staffelEnde ? [ART_S] : [ART_S, ART_N]) : []);
 const WERL = ["Nur ich", "Ich und Partner", "Ich und 1 Kind", "Ich und 2 Kinder",
@@ -1093,8 +1099,8 @@ const LWERL = ["Nur ich", "Ich und 1 Familienmitglied", "Ich und Kleinkind", "Ic
 const W_BR = "Ich bringe sie persönlich zu den Eltern", W_SE = "Ich sende sie per Post", W_OPTS = [W_BR, W_SE];
 const REINIG = [
   "Nach Personen: ab 2½ Jahren zählt jede Person gleich",
-  "Nach Parteien: Familie und jeder Gast zahlen gleich viel",
-  "Gäste zahlen die ganze Reinigung",
+  "Nach Parteien: Familie und jeder Freund zahlen gleich viel",
+  "Freunde zahlen die ganze Reinigung",
   "Familie zahlt die ganze Reinigung"
 ];
 const nz = (v) => (typeof v === "number" && isFinite(v)) ? v : 0;
@@ -1155,7 +1161,7 @@ function derive(s) {
   let FA = RE;
   if (GE > 0) {
     if (ri === 0) FA = RE * FP / (FP + GE);
-    else if (ri === 1) FA = RE / (1 + GE);   // Parteien: die Familie zählt als eine, jeder Gast als eine weitere Partei
+    else if (ri === 1) FA = RE / (1 + GE);   // Parteien: die Familie zählt als eine, jeder Freund als eine weitere Partei
     else if (ri === 2) FA = 0;
     else if (ri === 3) FA = RE;
     else FA = RE * FP / (FP + GE);
@@ -1172,12 +1178,12 @@ function check(s, d) {
   if (d.kkMax > 0 && !d.kkFix && typeof s.kk !== "number") return "Bitte wählen: Kleinkinder im Kinderbettchen oder bei den eigenen Eltern";
   if (d.FP > P.maxPersonen) return "Maximal " + P.maxPersonen + " Personen mit Bett. Bitte Personenzahl oder Kinder im Bettchen prüfen.";
   if (d.LG && d.FP > P.lueckeMaxPersonen) return "Ganze Lücke: höchstens " + P.lueckeMaxPersonen + " Erwachsene in den Betten (zusätzlich höchstens " + P.lueckeMaxKleinkinder + " Kleinkind im Kinderbettchen). Bitte «Wer von der Familie kommt» anpassen.";
-  if (typeof s.gaeste !== "number") return "Bitte wählen: Gäste";
+  if (typeof s.gaeste !== "number") return "Bitte wählen: Freunde";
   if (s.festMin === true && P.festMinGaeste > 0 && d.GE < P.festMinGaeste) return "Im " + festTxt() + " mindestens " + P.festMinGaeste + " Gäste (höchstens " + P.maxPersonen + " Personen mit Bett)";
-  if (s.gaeste > d.frei && d.frei === 0) return "Kein Platz mehr für Gäste. Bitte Gäste neu wählen.";
-  if (s.gaeste > d.frei) return "Nur noch " + d.frei + " Gast frei. Bitte Gäste neu wählen.";
+  if (s.gaeste > d.frei && d.frei === 0) return "Kein Platz mehr für Freunde. Bitte Freunde neu wählen.";
+  if (s.gaeste > d.frei) return "Nur noch " + d.frei + " Freund frei. Bitte Freunde neu wählen.";
   if (d.SM && s.selbst === "Ja" && ARR && istStaffelStart(ARR) && W_OPTS.indexOf(s.waesche) < 0) return "Bitte wählen: Wie kommt die benutzte Wäsche zurück";
-  if (d.GE > 0 && !d.lock && !d.voll && !isYN(s.zimmer)) return "Bitte wählen: Gast im selben Zimmer";
+  if (d.GE > 0 && !d.lock && !d.voll && !isYN(s.zimmer)) return "Bitte wählen: Freund im selben Zimmer";
   if (!d.sparLock && !isYN(s.spar)) return "Bitte wählen: Bleibt Zimmer 1 unberührt";
   if (d.GE > 0 && REINIG.indexOf(s.reinig) < 0) return "Bitte wählen: Aufteilung der Reinigung";
   if (d.nights < minFuer(ARR, DEP)) return "Mindestens " + minFuer(ARR, DEP) + " Nächte" + (minFuer(ARR, DEP) > P.minNaechte ? " (in diesem Zeitraum)" : "");
@@ -1238,7 +1244,7 @@ let notice = "";
 
 const range = (a, b) => { const r = []; for (let i = a; i <= b; i++) r.push(i); return r; };
 const chf = (n) => "CHF " + Math.round(n).toLocaleString("de-CH").replace(/[’']/g, "’") + ".–";
-const gastWort = (n) => n === 1 ? "Gast" : "Gäste";
+const gastWort = (n) => n === 1 ? "Freund" : "Freunde";
 
 // Ersparnis für die Familie, wenn Zimmer 1 unberührt bleibt (echte Rechnung: Unterschied zwischen «Ja» und «Nein»); nur wenn Zimmer 1 in Gebrauch ist
 function sparBetrag(d) {
@@ -1251,18 +1257,18 @@ const FIELDS = [
   { id: "art", label: "📝 Wie möchtest du buchen?", type: "str",
     hint: () => {
       if (S.verbOK === true) {
-        const v = "{{Verbindlich}}: Der Termin gehört euch fest, die Eltern sperren ihn in Airbnb. Ihr zahlt pauschal " + chf(P.hochNachtMin) + " pro Nacht plus Endreinigung für das ganze Chalet. Darum sind keine Gäste möglich.", p = "{{Mit Vorbehalt}}: Gäste sind möglich. Der Termin ist in Airbnb nicht gesperrt, ein Airbnb-Gast hat Vorrang.";
-        return "Dieser Termin liegt in der Hochsaison. " + (S.art === ART_V ? v + " {{Mit Vorbehalt}} wäre nicht gesperrt und mit Gästen möglich." : S.art === ART_P ? p + " {{Verbindlich}} wäre fest und gesperrt, aber ohne Gäste." : "Du hast zwei Möglichkeiten. " + v + " " + p);
+        const v = "{{Verbindlich}}: Der Termin gehört euch fest, die Eltern sperren ihn in Airbnb. Ihr zahlt pauschal " + chf(P.hochNachtMin) + " pro Nacht plus Endreinigung für das ganze Chalet. Darum sind keine Freunde möglich.", p = "{{Mit Vorbehalt}}: Freunde sind möglich. Der Termin ist in Airbnb nicht gesperrt, ein Airbnb-Gast hat Vorrang.";
+        return "Dieser Termin liegt in der Hochsaison. " + (S.art === ART_V ? v + " {{Mit Vorbehalt}} wäre nicht gesperrt und mit Freunden möglich." : S.art === ART_P ? p + " {{Verbindlich}} wäre fest und gesperrt, aber ohne Freunde." : "Du hast zwei Möglichkeiten. " + v + " " + p);
       }
-      if (S.staffelEnde && S.selbstOK === true) return "Eure Staffel ist schon gewählt und lässt sich nicht ändern: Ihr setzt die laufende Staffel fort, und direkt danach reist ein Airbnb-Gast an. Darum endet die Staffel mit eurem Termin. Ihr kommt ohne Gäste, die Eltern reinigen für den Airbnb-Gast, und die Endreinigung (" + chf(P.reinigung) + ") wird unter den Reisegruppen der Staffel aufgeteilt.";
-      const st = "{{Staffel}}: Ihr bringt frische Bettwäsche, Handtücher und Küchentücher mit und reinigt selbst, die Reinigung kostet dann " + chf(P.reinigungSelbst) + ". Das geht nur ohne Gäste. Beginnt ihr die Staffel, bringt ihr keine Wäsche mit: Das Chalet ist gereinigt und bezogen. Regeln siehe «🧹 Selbstreinigung» im Kalender.", no = "{{Normal}}: Die Eltern reinigen (" + chf(P.reinigung) + "), Gäste sind möglich.";
+      if (S.staffelEnde && S.selbstOK === true) return "Eure Staffel ist schon gewählt und lässt sich nicht ändern: Ihr setzt die laufende Staffel fort, und direkt danach reist ein Airbnb-Gast an. Darum endet die Staffel mit eurem Termin. Ihr kommt ohne Freunde, die Eltern reinigen für den Airbnb-Gast, und die Endreinigung (" + chf(P.reinigung) + ") wird unter den Reisegruppen der Staffel aufgeteilt.";
+      const st = "{{Staffel}}: Ihr bringt frische Bettwäsche, Handtücher und Küchentücher mit und reinigt selbst, die Reinigung kostet dann " + chf(P.reinigungSelbst) + ". Das geht nur ohne Freunde. Beginnt ihr die Staffel, bringt ihr keine Wäsche mit: Das Chalet ist gereinigt und bezogen. Regeln siehe «🧹 Selbstreinigung» im Kalender.", no = "{{Normal}}: Die Eltern reinigen (" + chf(P.reinigung) + "), Freunde sind möglich.";
       const vgl = " Bei der {{Staffel}} zahlt ihr jetzt " + chf(P.reinigungSelbst) + " und später euren Anteil an der Endreinigung (" + chf(P.reinigung) + " geteilt durch alle Reisegruppen: zu zweit je " + chf(P.reinigung / 2) + ", zu dritt je " + chf(P.reinigung / 3) + ").";
-      return "Dieser Termin liegt in der Staffel-Zeit und ist fest (in Airbnb gesperrt). " + (S.art === ART_S ? st + " Mit Gästen wäre nur {{Normal}} möglich." + vgl : S.art === ART_N ? no + " Ohne Gäste ginge auch die {{Staffel}}." + vgl : st + " " + no + vgl);
+      return "Dieser Termin liegt in der Staffel-Zeit und ist fest (in Airbnb gesperrt). " + (S.art === ART_S ? st + " Mit Freunden wäre nur {{Normal}} möglich." + vgl : S.art === ART_N ? no + " Ohne Freunde ginge auch die {{Staffel}}." + vgl : st + " " + no + vgl);
     },
     visible: () => artOpts().length > 0, opts: () => artOpts() },
   { id: "wer", label: "👨‍👩‍👧‍👦 Wer von der Familie kommt?", type: "str",
     hint: () => S.luecke
-      ? "«Ich» ist Sohn oder Tochter. Familienmitglied ist Partner, Bruder oder Schwester, keine Freunde und keine Gäste. Das Kleinkind ist ein Enkelkind bis etwa 2½ Jahren. Es schläft im Kinderbettchen in Zimmer 3 oder bei den Erwachsenen in Zimmer 2. In den Betten schlafen höchstens 2 Erwachsene. Zimmer 1 und das rote Bad bleiben unberührt."
+      ? "«Ich» ist Sohn oder Tochter. Familienmitglied ist Partner, Bruder oder Schwester, keine Freunde. Das Kleinkind ist ein Enkelkind bis etwa 2½ Jahren. Es schläft im Kinderbettchen in Zimmer 3 oder bei den Erwachsenen in Zimmer 2. In den Betten schlafen höchstens 2 Erwachsene. Zimmer 1 und das rote Bad bleiben unberührt."
       : "«Ich» ist Sohn oder Tochter, «Kind» ist ein Enkelkind. Hier zählen alle, die mitkommen, auch Kleinkinder. Kleinkinder im Kinderbettchen oder bei den eigenen Eltern gibst du danach an.",
     opts: () => S.luecke ? LWERL : WERL },
   { id: "fam", label: "👨‍👩‍👧‍👦 Wie viele Personen aus der Familie kommen?", type: "num",
@@ -1271,13 +1277,13 @@ const FIELDS = [
   { id: "kk", label: "👶 Wie viele davon brauchen {{kein}} normales Bett und schlafen in einem Kinderbettchen oder bei den eigenen Eltern?", type: "num",
     hint: () => "Kinder bis etwa 2½ Jahren. Sie belegen kein Bett und zählen bei der Reinigung nicht mit.",
     visible: (d) => d.kkMax > 0 && !d.kkFix, opts: (d) => range(d.kkMin, d.kkMax) },
-  { id: "gaeste", label: "🧑‍🤝‍🧑 Gäste (ausserhalb der Familie)", type: "num",
-    hint: (d) => (d.frei === 0 ? "Es ist kein Platz mehr frei." : (d.frei === 1 ? "Es ist noch 1 Platz frei." : "Noch " + d.frei + " Plätze frei.") + " Maximal " + P.maxPersonen + " Personen mit Bett.") + (S.festMin ? " Im " + festTxt() + " sind mindestens " + P.festMinGaeste + " Gäste nötig" + (d.frei < P.festMinGaeste ? ", mit dieser Familiengrösse ist das nicht möglich." : ", damit sich die Woche für alle lohnt (Gesamtpreis mindestens " + chf(P.mindestpreisWoche) + " pro 7 Nächte).") : ""),
+  { id: "gaeste", label: "🧑‍🤝‍🧑 Freunde (ausserhalb der Familie)", type: "num",
+    hint: (d) => (d.frei === 0 ? "Es ist kein Platz mehr frei." : (d.frei === 1 ? "Es ist noch 1 Platz frei." : "Noch " + d.frei + " Plätze frei.") + " Maximal " + P.maxPersonen + " Personen mit Bett.") + (S.festMin ? " Im " + festTxt() + " sind mindestens " + P.festMinGaeste + " Freunde nötig" + (d.frei < P.festMinGaeste ? ", mit dieser Familiengrösse ist das nicht möglich." : ", damit sich die Woche für alle lohnt (Gesamtpreis mindestens " + chf(P.mindestpreisWoche) + " pro 7 Nächte).") : ""),
     visible: (d) => d.frei > 0, opts: (d) => (S.festMin && d.frei >= P.festMinGaeste) ? range(P.festMinGaeste, d.frei) : range(0, d.frei) },
-  { id: "zimmer", label: "💤 Schläft ein Gast im selben Zimmer wie ich?", type: "str",
+  { id: "zimmer", label: "💤 Schläft ein Freund im selben Zimmer wie ich?", type: "str",
     hint: (d) => (S.wer === "Nur ich" && d.base + d.GE <= P.sparMaxPers)
-      ? "Ein Gast im selben Zimmer zahlt " + chf(P.gastZimmer) + " statt " + chf(P.gast) + " pro Nacht, du dann nur " + chf(P.famAnteil) + " statt " + chf(P.famPausch) + ". Ihr teilt dann Zimmer 2 und das blaue Bad, Zimmer 1 und das rote Bad bleiben unberührt. Es sind ein Zimmer und ein Doppelbett weniger zu beziehen und zu reinigen."
-      : "Ein Gast im selben Zimmer zahlt " + chf(P.gastZimmer) + " statt " + chf(P.gast) + " pro Nacht. Es sind ein Zimmer und ein Doppelbett weniger zu beziehen und zu reinigen.",
+      ? "Ein Freund im selben Zimmer zahlt " + chf(P.gastZimmer) + " statt " + chf(P.gast) + " pro Nacht, du dann nur " + chf(P.famAnteil) + " statt " + chf(P.famPausch) + ". Ihr teilt dann Zimmer 2 und das blaue Bad, Zimmer 1 und das rote Bad bleiben unberührt. Es sind ein Zimmer und ein Doppelbett weniger zu beziehen und zu reinigen."
+      : "Ein Freund im selben Zimmer zahlt " + chf(P.gastZimmer) + " statt " + chf(P.gast) + " pro Nacht. Es sind ein Zimmer und ein Doppelbett weniger zu beziehen und zu reinigen.",
     visible: (d) => d.GE > 0 && !d.lock && !d.voll, opts: () => ["Ja", "Nein"] },
   { id: "spar", label: "🔑 Bleibt Zimmer 1 (Schlafzimmer mit rotem Bad) unberührt?", type: "str",
     hint: (d) => d.sparGrund === "so" ? "Ihr teilt Zimmer 2 und das blaue Bad, Zimmer 1 und das rote Bad bleiben unberührt. Der Sonderpreis von " + chf(P.famAnteil) + " pro Nacht gilt dafür." : d.sparGrund === "pers" ? "Nicht möglich: Bei mehr als " + P.sparMaxPers + " Personen insgesamt (auch Kleinkinder) wird Zimmer 1 gebraucht." : (S.spar === "Nein" ? "{{Nein}}: das ganze Chalet steht zur Verfügung. Mit {{Ja}} zahlt die Familie " + chf(P.sparEin) + " weniger pro Nacht (nur Zimmer 2, Zimmer 3 und das blaue Bad)." : "{{Ja}}: nur Zimmer 2, Zimmer 3 und das blaue Bad werden benutzt. Die Familie zahlt " + chf(P.sparEin) + " weniger pro Nacht (" + chf(P.famPausch - P.sparEin) + " statt " + chf(P.famPausch) + ")." + (S.spar === "Ja" ? "" : " {{Nein}}: das ganze Chalet steht zur Verfügung.")),
@@ -1289,7 +1295,7 @@ const FIELDS = [
     hint: () => "Ihr beginnt die Staffel: Ihr findet das Chalet gereinigt und bezogen und bringt keine Wäsche mit. Dafür besorgt ihr, dass die benutzte Wäsche zurückkommt. Beim Abreisen zieht ihr die Betten ab (die Moltons bleiben) und nehmt die Wäsche mit. Spätestens " + WAESCHE_TAGE + " Tage nach eurer Rückreise bringt oder sendet ihr sie den Eltern. Das Porto zahlt, wer sendet. Mit der Wahl bestätigt ihr diese Bedingung.",
     visible: (d) => d.SM && S.selbst === "Ja" && !!ARR && istStaffelStart(ARR), opts: () => W_OPTS },
   { id: "reinig", label: "🍰 Wie werden die Reinigungskosten (" + chf(P.reinigung) + ") aufgeteilt?", type: "str",
-    hint: () => "Das entscheidet ihr selbst. Das Total ändert sich nicht, nur wer wie viel zahlt. Die Familie gilt immer als ein Block. Bei «Nach Personen» zählen Kinder ab 2½ Jahren wie Erwachsene, Kinder unter 2½ Jahren zählen nicht. Bei «Nach Parteien» ist die Familie eine Partei und jeder Gast eine weitere: bei 3 Gästen zahlt die Familie ¼, bei 4 Gästen ⅕. Das ist nur fair, wenn alle Parteien gleich gross sind. Sonst teilt nach Personen.",
+    hint: () => "Das entscheidet ihr selbst. Das Total ändert sich nicht, nur wer wie viel zahlt. Die Familie gilt immer als ein Block. Bei «Nach Personen» zählen Kinder ab 2½ Jahren wie Erwachsene, Kinder unter 2½ Jahren zählen nicht. Bei «Nach Parteien» ist die Familie eine Partei und jeder Freund eine weitere: bei 3 Freunden zahlt die Familie ¼, bei 4 Freunden ⅕. Das ist nur fair, wenn alle Parteien gleich gross sind. Sonst teilt nach Personen.",
     visible: (d) => d.GE > 0, opts: () => REINIG }
 ];
 
@@ -1303,12 +1309,12 @@ function normalize() {
   if (typeof S.wer === "string" && S.wer && (S.luecke ? LWERL : WERL).indexOf(S.wer) < 0) { S.wer = ""; notice = S.luecke ? "Bei der ganzen Lücke sind höchstens 2 Erwachsene und 1 Kleinkind möglich. Bitte neu wählen." : "Die Auswahl «Wer von der Familie kommt» passt nicht mehr zum gewählten Datum. Bitte neu wählen."; }
   let d = derive(S);
   if (typeof S.gaeste === "number" && S.gaeste > d.frei) {
-    if (d.LG) { S.gaeste = 0; notice = "Bei der ganzen Lücke sind keine Gäste möglich. Die Gäste wurden automatisch auf 0 gesetzt."; }
-    else if (d.frei === 0) { S.gaeste = 0; notice = "Kein Platz mehr für Gäste. Die Gäste wurden automatisch auf 0 gesetzt."; }
-    else { S.gaeste = null; notice = "Es ist nur noch Platz für " + d.frei + " " + gastWort(d.frei) + ". Bitte die Gäste neu wählen."; }
+    if (d.LG) { S.gaeste = 0; notice = "Bei der ganzen Lücke sind keine Freunde möglich. Die Freunde wurden automatisch auf 0 gesetzt."; }
+    else if (d.frei === 0) { S.gaeste = 0; notice = "Kein Platz mehr für Freunde. Die Freunde wurden automatisch auf 0 gesetzt."; }
+    else { S.gaeste = null; notice = "Es ist nur noch Platz für " + d.frei + " " + gastWort(d.frei) + ". Bitte die Freunde neu wählen."; }
     d = derive(S);
   }
-  if (S.festMin && typeof S.gaeste === "number" && S.gaeste < P.festMinGaeste && d.frei >= P.festMinGaeste) { S.gaeste = null; notice = "Im " + festTxt() + " sind mindestens " + P.festMinGaeste + " Gäste nötig. Bitte die Gäste neu wählen."; d = derive(S); }
+  if (S.festMin && typeof S.gaeste === "number" && S.gaeste < P.festMinGaeste && d.frei >= P.festMinGaeste) { S.gaeste = null; notice = "Im " + festTxt() + " sind mindestens " + P.festMinGaeste + " Freunde nötig. Bitte die Freunde neu wählen."; d = derive(S); }
   if (d.frei === 0 && d.FP <= P.maxPersonen && typeof S.wer === "string" && S.wer && (S.wer !== MFG || typeof S.fam === "number")) { S.gaeste = 0; d = derive(S); }
   if (d.GE === 0) { S.zimmer = ""; S.reinig = ""; }
   if (d.voll) S.zimmer = "";
@@ -1596,7 +1602,7 @@ const HW = "<b>ℹ️ Hinweis:</b> ", WA = "<b>⚠️ Warnung:</b> ";
 const fld = (c) => '<i class="sw sw-' + c + ' sw-k" aria-hidden="true"></i>';
 function symBtn(id, emoji) { return '<button type="button" class="sym" data-info="' + id + '" aria-label="Zur Erklärung springen">' + emoji + '</button>'; }
 function lueckenRegeln() {
-  return "<ul><li>Höchstens " + P.lueckeMaxPersonen + " Erwachsene in den Betten (Partner, Bruder oder Schwester), zusätzlich höchstens " + P.lueckeMaxKleinkinder + " Kleinkind im Kinderbettchen.</li><li>Keine externen Gäste. Es kommt nur die Familie: Partner, Bruder oder Schwester.</li><li>Nur Zimmer 2 mit dem blauen Bad. Das Kleinkind schläft bei den Erwachsenen in Zimmer 2 oder im Kinderbettchen in Zimmer 3. Zimmer 1 und das rote Bad bleiben unberührt.</li><li>Frische Bettwäsche, Handtücher und Küchentücher mitbringen und selbst beziehen. Bettdecken und Kissen nie ohne frischen Duvet- und Kissenbezug benutzen. Alles nehmt ihr wieder mit. Nur die Moltons bleiben nach dem Benutzen auf der Matratze. Das Kleinkind-Bettchen braucht nichts, dort ist die Wäsche immer vorhanden.</li><li>Wie bei der Selbstreinigung steht in der Anfrage der Hinweis zur eigenen Wäsche. Nach der Bestätigung durch die Eltern erscheint oben der Knopf «Anreise-Wäsche» mit der Liste, gerechnet für die Erwachsenen in den Betten.</li><li>Die Eltern reinigen für " + chf(P.reinigung) + ".</li></ul>";
+  return "<ul><li>Höchstens " + P.lueckeMaxPersonen + " Erwachsene in den Betten (Partner, Bruder oder Schwester), zusätzlich höchstens " + P.lueckeMaxKleinkinder + " Kleinkind im Kinderbettchen.</li><li>Keine Freunde. Es kommt nur die Familie: Partner, Bruder oder Schwester.</li><li>Nur Zimmer 2 mit dem blauen Bad. Das Kleinkind schläft bei den Erwachsenen in Zimmer 2 oder im Kinderbettchen in Zimmer 3. Zimmer 1 und das rote Bad bleiben unberührt.</li><li>Frische Bettwäsche, Handtücher und Küchentücher mitbringen und selbst beziehen. Bettdecken und Kissen nie ohne frischen Duvet- und Kissenbezug benutzen. Alles nehmt ihr wieder mit. Nur die Moltons bleiben nach dem Benutzen auf der Matratze. Das Kleinkind-Bettchen braucht nichts, dort ist die Wäsche immer vorhanden.</li><li>Wie bei der Selbstreinigung steht in der Anfrage der Hinweis zur eigenen Wäsche. Nach der Bestätigung durch die Eltern erscheint oben der Knopf «Anreise-Wäsche» mit der Liste, gerechnet für die Erwachsenen in den Betten.</li><li>Die Eltern reinigen für " + chf(P.reinigung) + ".</li></ul>";
 }
 function bildAuswahl() {
   let h = '<div class="exlist" role="img" aria-label="Beispiel einer geöffneten Auswahlliste">';
@@ -1614,12 +1620,12 @@ function bildLuecke() {
   return h + '<p class="exbild-cap">Beispiel: Der erste Airbnb-Gast reist am ' + wd[(start + vor) % 7] + ' ' + an + '. ab, der nächste kommt am ' + wd[(start + vor + n) % 7] + ' ' + ab + '. Dazwischen liegen ' + n + ' freie Nächte, das ist die Lücke. Ihr bucht sie ganz: Anreise ' + wd[(start + vor) % 7] + ' ' + an + '., Abreise ' + wd[(start + vor + n) % 7] + ' ' + ab + '. (' + n + ' Nächte, ' + P.lueckeRabatt + ' Prozent günstiger).</p></div>';
 }
 function bildStaffel() {
-  const bar = (k, t, f) => '<div class="exb ' + k + '" style="flex:' + f + '">' + (k === "selbst" ? zkB("🧹") : k === "eltern" ? zkB("🪣") : "") + t + '</div>';
+  const bar = (k, t, f) => '<div class="exb ' + k + '" style="flex:' + f + '">' + t + '</div>', rk = (t) => '<div class="exb rkx ' + t + '" aria-hidden="true"></div>';
   let h = '<div class="exbild" role="img" aria-label="Beispiel einer Familienstaffel">';
-  h += '<p class="extl">So läuft die Staffel</p><div class="exrow">' + bar("selbst", "Jerome", 3) + bar("selbst", "Deborah", 3) + bar("selbst", "Manuel", 3) + bar("occ", "Airbnb", 3) + '</div>';
-  h += '<p class="exbild-cap">Alle reinigen selbst. Erst wenn der Airbnb-Gast kommt, fällt die Endreinigung an. Manuel bezahlt die Rechnung und holt die Anteile von Jerome und Deborah zurück.</p>';
-  h += '<p class="extl" style="margin-top:12px">So endet sie früher</p><div class="exrow">' + bar("selbst", "Jerome", 3) + bar("eltern", "Deborah", 4) + bar("selbst", "Manuel", 3) + '</div>';
-  h += '<p class="exbild-cap">Deborah will nicht selber reinigen, die Eltern reinigen (🪣). Damit endet die Staffel für Jerome, seine Endreinigung ist jetzt fällig. Manuel beginnt danach eine neue Staffel und trägt seine Endreinigung allein.</p></div>';
+  h += '<p class="extl">So läuft die Staffel</p><div class="exrow">' + bar("selbst", "Jerome", 3) + rk("k") + bar("selbst", "Deborah", 3) + rk("k") + bar("selbst", "Manuel", 3) + rk("e") + bar("occ", "Airbnb", 3) + '</div>';
+  h += '<p class="exbild-cap">Alle reinigen selbst (Kästchen mit Rahmen). Erst wenn der Airbnb-Gast kommt, fällt die Endreinigung an (gefülltes Kästchen: die Eltern reinigen). Manuel bezahlt die Rechnung und holt die Anteile von Jerome und Deborah zurück.</p>';
+  h += '<p class="extl" style="margin-top:12px">So endet sie früher</p><div class="exrow">' + bar("selbst", "Jerome", 3) + rk("k") + bar("eltern", "Deborah", 4) + rk("e") + bar("selbst", "Manuel", 3) + rk("k") + '</div>';
+  h += '<p class="exbild-cap">Deborah will nicht selber reinigen, die Eltern reinigen (gefülltes Kästchen). Damit endet die Staffel für Jerome, seine Endreinigung ist jetzt fällig. Manuel beginnt danach eine neue Staffel und trägt seine Endreinigung allein.</p></div>';
   return h;
 }
 function festUndVorbehaltTxt() {   // aus den Einstellungen: welche Zeiten fest sind und welche mit Vorbehalt (als Liste)
@@ -1652,8 +1658,8 @@ function bildKalender() {
   let h = '<div class="exbild" role="img" aria-label="Beispiel der Balken im Kalender"><div class="exgrid" style="grid-template-columns:repeat(7,minmax(0,1fr))">';
   wd.forEach((w) => { h += '<div class="cal-wd">' + w + '</div>'; });
   for (let i = 1; i <= 7; i++) h += '<div class="cal-d ' + (i >= 6 ? "occ" : "") + '" style="cursor:default;display:flex;align-items:center;justify-content:center">' + i + '</div>';
-  h += '<div class="exb selbst" style="grid-column:1/span 2">' + zkB("🧹") + 'Jerome</div><div class="exb stf" style="grid-column:3/span 2">' + RUN + RUN + ' offen</div><div class="exb occ" style="grid-column:6/span 2">Airbnb</div>';
-  h += '</div><p class="exbild-cap">Voll grau: gesichert (🧹 ihr reinigt selbst, 🪣 die Eltern reinigen). Im Kalender zeigt zusätzlich ein rotes Kästchen am Abreisetag, wer reinigt (gefüllt: die Eltern, Rahmen: ihr selbst). Grau gestrichelt: nicht gesichert (Termin mit Vorbehalt), wird voll, sobald gesichert. Gestrichelt mit ▶: Staffel-Zeit, eine neue Staffel kann anschliessen. Gestreift: Airbnb-Gast. Die Balken erscheinen im Kalender erst, nachdem die Eltern einen Aufenthalt bestätigt haben.</p></div>';
+  h += '<div class="exrow" style="grid-column:1/-1;grid-row:3"><div class="exb selbst" style="flex:2">Jerome<span class="hand" aria-hidden="true">👆</span></div><div class="exb rkx k" aria-hidden="true"></div><div class="exb stf" style="flex:2">▶ ▶ ▶ offen</div><div class="exb occ" style="flex:2">Airbnb</div></div>';
+  h += '</div><p class="exbild-cap">Voll grau: gesichert. Das rote Kästchen zwischen den Balken zeigt, wer reinigt (gefüllt: die Eltern, Rahmen: ihr selbst). 👆 Tippe auf einen Termin, dann siehst du die Einzelheiten. Grau gestrichelt: nicht gesichert (Termin mit Vorbehalt), wird voll, sobald gesichert. Gestrichelt mit ▶: Staffel-Zeit, eine neue Staffel kann anschliessen. Gestreift: Airbnb-Gast. Die Balken erscheinen im Kalender erst, nachdem die Eltern einen Aufenthalt bestätigt haben.</p></div>';
   return h;
 }
 function bildRuhe() {
@@ -1668,15 +1674,15 @@ function begriffeFuellen() {
   const ruhe = RUHE.length ? ruheTxt() : "";
   const set = (id, html) => { const e = document.getElementById(id); if (e) e.innerHTML = html; };
   set("bc-trinkgeld", "<p>Es war ein Anliegen von Mami, dass die Kinder günstiger nach Adelboden gehen können. Dafür macht sie viel Arbeit: Fahrt, Reinigung und Wäsche, siehe «Endreinigung» " + symBtn("b-endrein", "🪣") + ".</p><p>Auch Papi packt selbstverständlich mit an: Er reinigt, repariert und hält das Chalet in Schuss.</p><p>Wer möchte, gibt Mami deshalb ein Trinkgeld. Das ist freiwillig, aber ein schönes Zeichen der Wertschätzung. Gebt, was euch passt: Es freut sie, und ihr dürft grosszügig sein 😉</p><p>Wenn ihr unter «Trinkgeld für Mami» einen Betrag eintragt, wird er zum Preis dazugerechnet und extra ausgewiesen.</p>");
-  set("bc-zahlung", "<p>Die Familie überweist den ganzen Betrag, auch wenn Gäste dabei sind. Spätestens " + ZAHL_TAGE + " Tage nach dem letzten Ferientag, ohne Aufforderung.</p><p>" + esc(BANK) + "</p><p>Bitte mit Name und Datum der Ferien überweisen.</p><p>Ist die Zahlung nach Ablauf der Frist nicht verbucht, erscheint auf deinem Handy eine rote Meldung. Sie lässt sich nicht wegklicken und verschwindet erst, wenn Papi die Zahlung verbucht hat. Ab " + ERINNERUNG_AB + " Tagen nach der Abreise schickt dir Papi zusätzlich eine WhatsApp als Erinnerung. Bei Aufenthalten, die nichts kosten, gibt es keine Meldung.</p><p>Wie die Reinigung unter euch und den Gästen aufgeteilt wird, entscheidet ihr selbst. Das Total bleibt gleich, nur wer wie viel zahlt ändert sich.</p><div class=\"exbild\">" + bildAuswahl() + "</div>");
+  set("bc-zahlung", "<p>Die Familie überweist den ganzen Betrag, auch wenn Freunde dabei sind. Spätestens " + ZAHL_TAGE + " Tage nach dem letzten Ferientag, ohne Aufforderung.</p><p>" + esc(BANK) + "</p><p>Bitte mit Name und Datum der Ferien überweisen.</p><p>Ist die Zahlung nach Ablauf der Frist nicht verbucht, erscheint auf deinem Handy eine rote Meldung. Sie lässt sich nicht wegklicken und verschwindet erst, wenn Papi die Zahlung verbucht hat. Ab " + ERINNERUNG_AB + " Tagen nach der Abreise schickt dir Papi zusätzlich eine WhatsApp als Erinnerung. Bei Aufenthalten, die nichts kosten, gibt es keine Meldung.</p><p>Wie die Reinigung unter euch und den Freunden aufgeteilt wird, entscheidet ihr selbst. Das Total bleibt gleich, nur wer wie viel zahlt ändert sich.</p><div class=\"exbild\">" + bildAuswahl() + "</div>");
   (function () {
     let h = "<p>Die Möglichkeiten, wie dein Aufenthalt günstiger wird. Die Einzelheiten stehen jeweils beim Symbol.</p><ul>";
-    h += "<li><b>Gäste mitnehmen:</b> Jeder Gast zahlt seinen Satz, dein Anteil sinkt mit jedem Gast. " + symBtn("b-rechnen", "🧮") + "</li>";
+    h += "<li><b>Freunde mitnehmen:</b> Jeder Freund zahlt seinen Satz, dein Anteil sinkt mit jedem Freund. " + symBtn("b-rechnen", "🧮") + "</li>";
     h += "<li><b>Zimmer 1 unberührt:</b> " + chf(P.sparEin) + " weniger pro Nacht, wenn Zimmer 1 und das rote Bad unberührt bleiben (bis " + P.sparMaxPers + " Personen insgesamt).</li>";
     if (P.lueckeRabatt > 0) h += "<li><b>Lücken füllen:</b> " + P.lueckeRabatt + " Prozent auf die Übernachtungen, wenn du eine ganze Lücke buchst. " + symBtn("b-luecke", "🧩") + "</li>";
     h += "<li><b>Selber reinigen</b> in den Staffel-Zeiten: Ihr zahlt beim Aufenthalt keine Reinigung (" + chf(P.reinigungSelbst) + "). Die Endreinigung fällt erst an, wenn der nächste Airbnb-Gast kommt, und wird in der Staffel geteilt. " + symBtn("b-ruhe", "🧹") + "</li>";
     h += "<li><b>Familienstaffel nutzen:</b> Je mehr Reisegruppen nacheinander kommen, desto weniger zahlt jede für die Endreinigung. " + symBtn("b-staffel", "🔗") + "</li>";
-    h += "<li><b>Reinigungskosten teilen:</b> Mit Gästen entscheidet ihr, wie die Reinigungskosten aufgeteilt werden. " + symBtn("b-zahlung", "💰") + "</li>";
+    h += "<li><b>Reinigungskosten teilen:</b> Mit Freunden entscheidet ihr, wie die Reinigungskosten aufgeteilt werden. " + symBtn("b-zahlung", "💰") + "</li>";
     if (P.hochNachtMin > 0) h += "<li><b>Hochsaison:</b> verbindlich zum festen Preis pro Nacht, mit Vorbehalt zum normalen Familienpreis. " + symBtn("b-hochsaison", "🏔️") + "</li>";
     if (FEST_MONATE.length) h += "<li><b>" + esc(festTxt()) + ":</b> eigene Regeln mit Mindestpreis, mit Kollegen sinkt dein Anteil. " + symBtn("b-februar", "⛷️") + "</li>";
     h += "</ul>";
@@ -1696,13 +1702,13 @@ function begriffeFuellen() {
     h += "<li><b>Auch wir Eltern verzichten.</b> Im " + esc(mon) + " verzichten wir Eltern auf eigene Ferien im Chalet, damit Einnahmen hereinkommen.</li>";
     if (P.festBodenWoche > 0) {
       h += "<li><b>Mindestpreis " + chf(P.festBodenWoche) + " pro 7 Nächte</b> (bei mehr Nächten anteilig), inklusive Endreinigung. Das ist der Preis für Stammgäste. Im " + esc(mon) + " ist das Chalet nicht zum tiefen Familienpreis zu haben, über Airbnb kostet es definitiv mehr.</li>";
-      h += "<li><b>Allein oder mit Kollegen:</b> Allein zahlst du den Mindestpreis. Mit Kollegen zahlt jeder Gast seinen Satz (" + chf(P.gast) + " pro Nacht, " + chf(P.gastZimmer) + " im Zimmer eines Familienmitglieds, dazu den Anteil an der Reinigung " + symBtn("b-endrein", "🪣") + "). Gratis geht ein Gast nie. Reicht das Total dann noch nicht bis zum Mindestpreis, wird der Rest gleichmässig auf alle Personen verteilt, dich eingeschlossen. Mit jedem Gast wird es für dich günstiger.";
+      h += "<li><b>Allein oder mit Kollegen:</b> Allein zahlst du den Mindestpreis. Mit Kollegen zahlt jeder Freund seinen Satz (" + chf(P.gast) + " pro Nacht, " + chf(P.gastZimmer) + " im Zimmer eines Familienmitglieds, dazu den Anteil an der Reinigung " + symBtn("b-endrein", "🪣") + "). Gratis geht ein Freund nie. Reicht das Total dann noch nicht bis zum Mindestpreis, wird der Rest gleichmässig auf alle Personen verteilt, dich eingeschlossen. Mit jedem Freund wird es für dich günstiger.";
       const ex = [];
-      for (let g = 0; g <= Math.max(0, P.maxPersonen - 1); g++) { const r = bsp(g); if (r.ok) ex.push("<li>" + (g === 0 ? "Allein" : g + (g === 1 ? " Gast" : " Gäste")) + ": Total " + chf(r.TOT) + ", du zahlst " + (Math.round(r.FZ) === 0 ? "nichts" : chf(r.FZ)) + "</li>"); }
+      for (let g = 0; g <= Math.max(0, P.maxPersonen - 1); g++) { const r = bsp(g); if (r.ok) ex.push("<li>" + (g === 0 ? "Allein" : g + (g === 1 ? " Freund" : " Freunde")) + ": Total " + chf(r.TOT) + ", du zahlst " + (Math.round(r.FZ) === 0 ? "nichts" : chf(r.FZ)) + "</li>"); }
       if (ex.length) h += " Beispiel für 7 Nächte, wenn du allein von der Familie kommst (Reinigung nach Personen geteilt):<ul>" + ex.join("") + "</ul>";
       const ex2 = [];
-      for (let g = 0; g <= 2; g++) { const r = calc({ wer: "Ich, Partner und 2 Kinder", kk: 0, gaeste: g, zimmer: "Nein", spar: "Nein", selbst: "Nein", reinig: REINIG[0], nights: 7, festBoden: true }); if (r.ok) ex2.push("<li>" + (g === 0 ? "Ohne Gäste" : g + (g === 1 ? " Gast" : " Gäste")) + ": Total " + chf(r.TOT) + ", Familie zahlt " + chf(r.FZ) + (g > 0 ? ", jeder Gast " + chf((r.HZ + r.WZ) / g) : "") + "</li>"); }
-      if (ex2.length) h += " Beispiel für 7 Nächte mit Partner und 2 Kindern (4 Personen, es bleiben 2 Betten für Gäste):<ul>" + ex2.join("") + "</ul>";
+      for (let g = 0; g <= 2; g++) { const r = calc({ wer: "Ich, Partner und 2 Kinder", kk: 0, gaeste: g, zimmer: "Nein", spar: "Nein", selbst: "Nein", reinig: REINIG[0], nights: 7, festBoden: true }); if (r.ok) ex2.push("<li>" + (g === 0 ? "Ohne Freunde" : g + (g === 1 ? " Freund" : " Freunde")) + ": Total " + chf(r.TOT) + ", Familie zahlt " + chf(r.FZ) + (g > 0 ? ", jeder Freund " + chf((r.HZ + r.WZ) / g) : "") + "</li>"); }
+      if (ex2.length) h += " Beispiel für 7 Nächte mit Partner und 2 Kindern (4 Personen, es bleiben 2 Betten für Freunde):<ul>" + ex2.join("") + "</ul>";
       h += "</li>";
     }
     h += "</ul>";
@@ -1721,17 +1727,17 @@ function begriffeFuellen() {
       "<li><b>Preis verbindlich:</b> Eine Nacht kostet " + chf(P.hochNachtMin) + ", dazu kommt die Endreinigung (" + chf(P.reinigung) + "). Für 7 Nächte sind das " + chf(w7) + ". Ferien im Hotel sind teurer, und im Chalet habt ihr die ganze Wohnung für euch.</li>" +
       "<li><b>Preis mit Vorbehalt:</b> der normale Familienpreis wie in den anderen Monaten (" + chf(P.famPausch) + " pro Nacht für die Familie, dazu Endreinigung). Dafür trägt ihr das Risiko: Kommt ein Airbnb-Gast, müsst ihr weichen.</li>" +
       "<li><b>Auch wir Eltern verzichten:</b> In der Hochsaison verzichten wir Eltern auf eigene Ferien im Chalet, damit Einnahmen hereinkommen.</li>" +
-      "<li><b>Mit Gästen:</b> Nur mit Vorbehalt möglich. Gerechnet wird wie in den anderen Monaten. " + symBtn("b-rechnen", "🧮") + "</li>" +
-      "<li><b>Verbindlich buchen:</b> " + P.verbMin + " bis " + P.verbMax + " Nächte, ohne Gäste, alle Zimmer, mit Endreinigung durch die Eltern. Der Termin ist fest, die Eltern sperren die Zeit in Airbnb, im Kalender ist der Balken voll. Ragt er in einen Monat ohne Hochsaison, gelten dort die normalen Preise. Mindestens " + P.verbMin + " Nächte müssen in der Hochsaison liegen. Der Grund ist die Stückelung: Kurze Stücke am Rand der Hochsaison würden den Kalender zerstückeln.</li>" +
-      "<li><b>Mit Vorbehalt:</b> ab " + P.hochMinNaechte + " Nächten, auch mit Gästen. Der Termin wird nicht in Airbnb gesperrt, ein Airbnb-Gast hat Vorrang. " + symBtn("b-prov", "🔓") + "</li></ul>" +
+      "<li><b>Mit Freunden:</b> Nur mit Vorbehalt möglich. Gerechnet wird wie in den anderen Monaten. " + symBtn("b-rechnen", "🧮") + "</li>" +
+      "<li><b>Verbindlich buchen:</b> " + P.verbMin + " bis " + P.verbMax + " Nächte, ohne Freunde, alle Zimmer, mit Endreinigung durch die Eltern. Der Termin ist fest, die Eltern sperren die Zeit in Airbnb, im Kalender ist der Balken voll. Ragt er in einen Monat ohne Hochsaison, gelten dort die normalen Preise. Mindestens " + P.verbMin + " Nächte müssen in der Hochsaison liegen. Der Grund ist die Stückelung: Kurze Stücke am Rand der Hochsaison würden den Kalender zerstückeln.</li>" +
+      "<li><b>Mit Vorbehalt:</b> ab " + P.hochMinNaechte + " Nächten, auch mit Freunden. Der Termin wird nicht in Airbnb gesperrt, ein Airbnb-Gast hat Vorrang. " + symBtn("b-prov", "🔓") + "</li></ul>" +
       "<p>Wie die Preise entstehen, steht unter «Wie wird gerechnet». " + symBtn("b-rechnen", "🧮") + "</p>");
   })();
   set("bc-prov", festUndVorbehaltTxt() + "<p><b>Mit Vorbehalt</b> heisst: Meldet sich ein Airbnb-Gast für dieselben Tage, hat er Vorrang und euer Aufenthalt muss weichen.</p><p>Habt ihr noch nicht begonnen, fällt nichts an. Seid ihr schon im Chalet, zahlt ihr die normalen Kosten für die Tage, die ihr dort wart. Plant deshalb eine Alternative ein, besonders in der Hochsaison.</p><p>In der Hochsaison (" + HOCH_MONATE.filter((m) => FEST_MONATE.indexOf(m) < 0).map((m) => MONATE[m - 1]).join(", ").replace(/, ([^,]*)$/, " und $1") + ") braucht ein Termin mit Vorbehalt mindestens " + P.hochMinNaechte + " Nächte (wie bei Airbnb). Wer dort Buchungssicherheit will, bucht <b>verbindlich</b> 🔒: Dann sperren die Eltern die Zeit in Airbnb. " + symBtn("b-hochsaison", "🏔️") + "</p><p><b>Praktisch gesichert 🔒:</b> Ein Airbnb-Gast kann jederzeit buchen, aber erst nach der Vorlaufzeit von " + VORLAUF + " Tagen einchecken (so ist es in Airbnb eingestellt). Nächte, die früher als " + VORLAUF + " Tage ab heute liegen, kann deshalb kein neuer Gast mehr belegen: Der Balken wird dort <b>voll</b> (gesichert 🔒) statt gestrichelt (🔓) und der volle Teil wächst jeden Tag. Endet euer Aufenthalt innerhalb der nächsten " + VORLAUF + " Tage, ist der ganze Balken voll. Je länger der Aufenthalt und je weiter voraus, desto später wird er gesichert.</p>" + bildVorbehalt() + "<p>In den Staffel-Zeiten, in der Nebensaison" + (FEST_MONATE.length ? " und im " + festTxt() : "") + " sind Termine <b>fest</b>. Balken von Terminen mit Vorbehalt sind im noch nicht gesicherten Teil gestrichelt, ein roter Rand zeigt einen Konflikt mit einem Airbnb-Gast.</p>");
   set("bc-wunschtermin", "<p>Den Wunschtermin wählt ihr im Kalender. Wie das geht, steht unter «Erklärung Kalender». Die Farben stehen als Legende unter dem Kalender. " + symBtn("b-kalender", "🗓️") + "</p>");
-  set("bc-sicht", "<p><b>Kurzfristig frei 🔔</b> Airbnb kann diese Nächte nicht mehr verkaufen: Ein Airbnb-Gast braucht " + VORLAUF + " Tage Vorlauf, er bleibt mindestens " + AIRBNB_MIN + " Nächte, und sonntags gibt es keinen Check-in. Darum steht diese Zeit euch offen: zum normalen Familienpreis, <b>ohne Vorbehalt</b>, auch in der Hochsaison. Mindestens " + Math.max(P.minNaechte, P.sichtMinNaechte) + " Nächte" + (P.hochMinNaechte > Math.max(P.minNaechte, P.sichtMinNaechte) ? ", in der Hochsaison mindestens " + P.hochMinNaechte : "") + ".</p><p>Im Kalender sind diese Tage <b>gelb</b>, wie eine Lücke. Das Gelb wandert täglich: Mit jedem Tag kann Airbnb weniger verkaufen, darum kommen Nächte dazu, und die vergangenen fallen weg.</p><p>Das gilt auch bei nur 2 oder 3 Nächten, solange Airbnb dahinter noch verkaufen kann. Bleiben bis zur nächsten Belegung höchstens " + LUECKE_MAX + " Nächte übrig (Airbnb kann gar nichts mehr verkaufen), ist es eine <b>Lücke</b> " + symBtn("b-luecke", "🧩") + " mit denselben Regeln, aber ohne Rabatt.</p>");
-  set("bc-luecke", "<p><b>Ein Angebot für kurze Lücken 🧩</b> Lücken bis " + LUECKE_MAX + " Nächte kann Airbnb nicht vermieten (Mindestaufenthalt dort " + (LUECKE_MAX + 1) + " Nächte). Wer die ganze Lücke bucht, vom ersten bis zum letzten freien Tag, zahlt für die Übernachtungen " + P.lueckeRabatt + " Prozent weniger. Du kannst auch nur einen Teil der Lücke buchen (mindestens so viele Nächte wie sonst), dann gilt der normale Preis ohne Rabatt. Den Rabatt gibt es nur für die ganze Lücke.</p><p><b>Lücke am Sonntag:</b> Airbnb hat sonntags keinen Check-in. Endet ein Gast am Samstag (Abreise am Sonntag), kann Airbnb den Sonntag nicht vergeben. Ihr könnt dann schon am Sonntag anreisen. Die Lücke hat für euch eine Nacht mehr, zum Beispiel 4 statt 3 Nächte, und der Rabatt gilt auf alle Nächte.</p><p><b>Später entstandene Lücke:</b> Auch Zeit, die erst durch den Vorlauf und den Mindestaufenthalt von Airbnb übrig bleibt, wird zur Lücke, sobald höchstens " + LUECKE_MAX + " Nächte bleiben (siehe «Kurzfristig frei» " + symBtn("b-sicht", "🔔") + "). Dafür gibt es keinen Rabatt, es gelten aber dieselben Regeln.</p>" + bildLuecke() + "<p>Es gilt:</p>" + lueckenRegeln());
+  set("bc-sicht", "<p><b>Lücke durch die Vorlaufzeit 🔔</b> Airbnb kann diese Nächte nicht mehr verkaufen: Ein Airbnb-Gast braucht " + VORLAUF + " Tage Vorlauf, er bleibt mindestens " + AIRBNB_MIN + " Nächte, und sonntags gibt es keinen Check-in. Darum steht diese Zeit euch offen: zum normalen Familienpreis, <b>ohne Vorbehalt</b>, auch in der Hochsaison. Mindestens " + Math.max(P.minNaechte, P.sichtMinNaechte) + " Nächte" + (P.hochMinNaechte > Math.max(P.minNaechte, P.sichtMinNaechte) ? ", in der Hochsaison mindestens " + P.hochMinNaechte : "") + ".</p><p>Im Kalender sind diese Tage <b>gelb</b>, wie eine Lücke. Das Gelb wandert täglich: Mit jedem Tag kann Airbnb weniger verkaufen, darum kommen Nächte dazu, und die vergangenen fallen weg.</p><p>Das gilt auch bei nur 2 oder 3 Nächten, solange Airbnb dahinter noch verkaufen kann. Bleiben bis zur nächsten Belegung höchstens " + LUECKE_MAX + " Nächte übrig (Airbnb kann gar nichts mehr verkaufen), ist es eine <b>Lücke</b> " + symBtn("b-luecke", "🧩") + " mit denselben Regeln, aber ohne Rabatt.</p>");
+  set("bc-luecke", "<p><b>Ein Angebot für kurze Lücken 🧩</b> Lücken bis " + LUECKE_MAX + " Nächte kann Airbnb nicht vermieten (Mindestaufenthalt dort " + (LUECKE_MAX + 1) + " Nächte). Wer die ganze Lücke bucht, vom ersten bis zum letzten freien Tag, zahlt für die Übernachtungen " + P.lueckeRabatt + " Prozent weniger. Du kannst auch nur einen Teil der Lücke buchen (mindestens so viele Nächte wie sonst), dann gilt der normale Preis ohne Rabatt. Den Rabatt gibt es nur für die ganze Lücke.</p><p><b>Lücke am Sonntag:</b> Airbnb hat sonntags keinen Check-in. Endet ein Gast am Samstag (Abreise am Sonntag), kann Airbnb den Sonntag nicht vergeben. Ihr könnt dann schon am Sonntag anreisen. Die Lücke hat für euch eine Nacht mehr, zum Beispiel 4 statt 3 Nächte, und der Rabatt gilt auf alle Nächte.</p><p><b>Später entstandene Lücke:</b> Auch Zeit, die erst durch den Vorlauf und den Mindestaufenthalt von Airbnb übrig bleibt, wird zur Lücke, sobald höchstens " + LUECKE_MAX + " Nächte bleiben (siehe «Lücke durch die Vorlaufzeit» " + symBtn("b-sicht", "🔔") + "). Dafür gibt es keinen Rabatt, es gelten aber dieselben Regeln.</p>" + bildLuecke() + "<p>Es gilt:</p>" + lueckenRegeln());
   set("bc-ruhe", RUHE.length ? bildRuhe() + "<ul><li>Möglich " + ruhe + ".</li>" +
-    "<li>Für euch Kinder mit Partnern und Kindern. Ohne Gäste wählt ihr beim Buchen «Staffel» und reinigt selbst. Mit Gästen wählt ihr «Normal», dann reinigen die Eltern. Das graue Feld «Wie möchtest du buchen?» wird erst frei, wenn Anreise und Abreise gewählt sind, denn ob eine Staffel geht, hängt vom Abreisetag ab.</li>" +
+    "<li>Für euch Kinder mit Partnern und Kindern. Ohne Freunde wählt ihr beim Buchen «Staffel» und reinigt selbst. Mit Freunden wählt ihr «Normal», dann reinigen die Eltern. Das graue Feld «Wie möchtest du buchen?» wird erst frei, wenn Anreise und Abreise gewählt sind, denn ob eine Staffel geht, hängt vom Abreisetag ab.</li>" +
     "<li><b>Nicht jeder Termin geht als Staffel.</b> Eine Staffel beginnen kann nur, wer nach seiner Abreise noch eine weitere Familie anschliessen lassen kann: Bis zum nächsten Airbnb-Gast müssen mindestens " + P.minNaechte + " freie Nächte bleiben. Sonst trägt er die ganze Endreinigung allein, weil niemand seinen Anteil zahlt, und muss zusätzlich selbst putzen. Dann gilt der normale Termin, die Eltern reinigen. Wer eine laufende Staffel fortsetzt, kann immer mitmachen: Er zahlt die Endreinigung den Eltern und holt die Anteile der Familien davor zurück. Ob es geht, meldet euch der Rechner nach der Wahl des Datums («Keine Staffel möglich»).</li>" +
     "<li>Frische Bettwäsche, Handtücher und Küchentücher mitbringen und selbst beziehen. Bettdecken und Kissen nie ohne frischen Duvet- und Kissenbezug benutzen. Alles nehmt ihr wieder mit. Nur die Moltons bleiben nach dem Benutzen auf der Matratze. Die Liste mit den Mengen für eure Personenzahl findet ihr nach der Bestätigung im Knopf «🧳 Anreise-Wäsche» auf der Startseite, zum Abhaken.</li>" +
     "<li><b>Wer die Staffel beginnt:</b> Die Eltern haben das Chalet gereinigt und die Betten bezogen. Ihr bringt keine Wäsche mit und benutzt, was bereitliegt. Beim Abreisen zieht ihr die Betten ab (die Moltons bleiben), damit die nächste Familie ihre eigene Wäsche aufziehen kann. Die benutzte Wäsche nehmt ihr mit. Dafür sorgt ihr, dass sie zurückkommt: Ihr bringt sie den Eltern oder sendet sie per Post, spätestens " + WAESCHE_TAGE + " Tage nach eurer Rückreise. Das Porto zahlt, wer sendet. Beim Buchen wählt ihr, ob ihr bringt oder sendet. Dafür bezieht ihr eine fertige Wohnung und spart die eigene Wäsche. Die Endreinigung zahlen alle Familien der Staffel gleich viel, auch ihr.</li>" +
@@ -1750,9 +1756,9 @@ function begriffeFuellen() {
     "<li>Nutzt die Familienstaffel, um die Reinigungskosten möglichst zu drücken: Je mehr Reisegruppen nacheinander kommen, desto weniger zahlt jede Reisegruppe.</li>" +
     "<li>Sind Geschwister gleichzeitig dort, regeln sie die Kosten untereinander.</li></ul>");
   set("bc-rechnen", "<p><b>Woher kommen die Preise?</b> Die Preise für Airbnb-Gäste berechnet das Programm PriceLabs. Es vergleicht unsere Wohnung mit gleichwertigen Wohnungen und berücksichtigt dazu über 100 weitere Faktoren. Diese Preise werden mehrmals täglich von PriceLabs in Airbnb geschrieben, und sie haben Erfolg: Sogar Nächte Anfang Dezember sind vermietet. Für euch gilt ein Familienpreis. Er richtet sich nach diesen Marktpreisen, liegt in der Hochsaison bewusst darunter und ist nicht aus der Luft gegriffen. Auch wir Eltern verzichten in der Hochsaison und im Februar auf eigene Ferien im Chalet, damit Einnahmen hereinkommen.</p><p>Die Eltern legen die Preise fest. Eine Tabelle für alles gibt es nicht, darum hier die Grundidee:</p><ul>" +
-    "<li><b>Übernachtungen:</b> Die Familie zahlt pauschal " + chf(P.famPausch) + " pro Nacht, jeder Gast " + chf(P.gast) + " (" + chf(P.gastZimmer) + " im Zimmer eines Familienmitglieds, das Familienmitglied zahlt dann nur noch " + chf(P.famAnteil) + " pro Nacht). Mit Gästen wird die Familie entlastet.</li>" +
+    "<li><b>Übernachtungen:</b> Die Familie zahlt pauschal " + chf(P.famPausch) + " pro Nacht, jeder Freund " + chf(P.gast) + " (" + chf(P.gastZimmer) + " im Zimmer eines Familienmitglieds, das Familienmitglied zahlt dann nur noch " + chf(P.famAnteil) + " pro Nacht). Mit Freunden wird die Familie entlastet.</li>" +
     "<li><b>Endreinigung:</b> dazu kommen " + chf(P.reinigung) + ", aufgeteilt nach eurer Auswahl. " + symBtn("b-endrein", "🪣") + "</li>" +
-    (P.mindestpreisWoche > 0 ? "<li><b>Mindestpreis:</b> Mit Gästen ab " + P.mindestpreisAbNaechte + " Nächten entfällt der Anteil der Familie, soweit das Total nicht unter " + chf(P.mindestpreisWoche) + " pro 7 Nächte sinkt (bei anderen Längen anteilig). Der Gesamtpreis sinkt nie unter diesen Mindestpreis, mit Gästen sinkt nur dein Anteil." + (P.hochNachtMin > 0 ? " In der Hochsaison gilt stattdessen " + chf(P.hochNachtMin) + " pro Nacht plus Endreinigung. " + symBtn("b-hochsaison", "🏔️") : "") + (P.festBodenWoche > 0 && FEST_MONATE.length ? " Im " + esc(festTxt()) + " gilt der dortige Mindestpreis. " + symBtn("b-februar", "⛷️") : "") + "</li>" : "") +
+    (P.mindestpreisWoche > 0 ? "<li><b>Mindestpreis:</b> Mit Freunden ab " + P.mindestpreisAbNaechte + " Nächten entfällt der Anteil der Familie, soweit das Total nicht unter " + chf(P.mindestpreisWoche) + " pro 7 Nächte sinkt (bei anderen Längen anteilig). Der Gesamtpreis sinkt nie unter diesen Mindestpreis, mit Freunden sinkt nur dein Anteil." + (P.hochNachtMin > 0 ? " In der Hochsaison gilt stattdessen " + chf(P.hochNachtMin) + " pro Nacht plus Endreinigung. " + symBtn("b-hochsaison", "🏔️") : "") + (P.festBodenWoche > 0 && FEST_MONATE.length ? " Im " + esc(festTxt()) + " gilt der dortige Mindestpreis. " + symBtn("b-februar", "⛷️") : "") + "</li>" : "") +
     "<li><b>Rabatte:</b> Zimmer 1 unberührt und Lücken stehen unter «So sparst du Geld». " + symBtn("b-sparen", "💸") + "</li></ul>" +
     "<p>Die genaue Rechnung für deinen Termin klappst du unter dem Preis mit «Buchungsübersicht» auf. Dort steht auch, wer wie viel zahlt.</p>");
   set("bc-geld", GELD_TEXT);
@@ -1892,8 +1898,8 @@ function staffelWarnung(d) {
   if (!alle.length) return "";
   const andere = alle.filter((n) => n !== ABSENDER), eigene = alle.indexOf(ABSENDER) >= 0;
   const liste = (l) => (l.length === 1 ? l[0] : l.slice(0, -1).join(", ") + " und " + l[l.length - 1]);
-  const kosten = " und wird nicht mehr mit späteren Gästen geteilt.";
-  const grund = d.SM ? "Mit «Normal» unterbrichst du" : (d.LG ? "Mit der ganzen Lücke (keine Selbstreinigung) unterbrichst du" : "Mit Gästen ist keine Selbstreinigung möglich, du unterbrichst damit");
+  const kosten = " und wird nicht mehr mit späteren Reisegruppen geteilt.";
+  const grund = d.SM ? "Mit «Normal» unterbrichst du" : (d.LG ? "Mit der ganzen Lücke (keine Selbstreinigung) unterbrichst du" : "Mit Freunden ist keine Selbstreinigung möglich, du unterbrichst damit");
   const folger = staffelFolger(ARR);
   const danach = folger.length ? " Danach trägt " + liste(folger) + " die Endreinigung allein, ohne Teilung mit den früheren Gruppen." : "";
   if (!andere.length) return grund + " deine eigene laufende Familienstaffel. Für deinen früheren Aufenthalt fällt dadurch die Endreinigung jetzt an" + kosten + " Deine neue Reinigung kostet zusätzlich wie üblich " + chf(P.reinigung) + "." + danach;
@@ -2124,7 +2130,7 @@ function zeichneBalken(gr) {
         d.style.background = "linear-gradient(to right, " + stops.join(", ") + ")";
         g.appendChild(d); return;
       }
-      const top = (c0.offsetTop + c0.offsetHeight - 24) + "px";   // Balken 18 px hoch, 6 px über dem Rand der Tageszelle
+      const top = (c0.offsetTop + c0.offsetHeight - 28) + "px";   // Balken 24 px hoch, 4 px über dem Rand der Tageszelle
       // Termin läuft über den Monatsrand: dort gerade enden und blass in die leeren Felder weiterführen (der Name steht im blassen Teil)
       const fortL = von < ks[0] && arr[0] === tage[0] && klasse !== "sw", fortR = bis > ks[ks.length - 1] && arr[arr.length - 1] === tage[tage.length - 1] && klasse !== "sw";
       // Länge des blassen Teils: so viele leere Felder, wie der Termin noch in den Nachbarmonat reicht (Ende jeweils mitten im Tag), höchstens bis zum Rand
@@ -2172,7 +2178,7 @@ function zeichneBalken(gr) {
       }
       if (sf && sfPx >= breite - 6) { mk("gruen", links, breite, binh(breite, mitLab)); return; }          // ganz gesichert
       if (sf && sfPx >= 18) {                                                                        // ein Termin: gruen mit nach innen gerundetem Ende, gelb muendet darin
-        const R = 9;
+        const R = 12;
         const labErst = mitLab && sfPx >= 72;
         mk("gruen mit", links, sfPx, binh(sfPx, labErst));
         mk("gelb ein", links + sfPx - R, breite - sfPx + R, labErst || sfPx >= 72 ? "" : binh(breite - sfPx, mitLab));
@@ -2264,7 +2270,7 @@ function renderKalender() {
   {
     const el = document.getElementById("calHoch");
     const hochOn = HOCH.length > 0 || HOCH_MONATE.length > 0;
-    let h = '<p class="leg-h">Monate und Zeiten</p>';
+    let h = '<p class="leg-h">Buchungskalender</p>';
     const hm = HOCH_MONATE.filter((m) => FEST_MONATE.indexOf(m) < 0);
     if (hochOn) h += '<p><i class="sw sw-hoch"></i><b>Hochsaison</b>' + (hm.length ? " (" + hochTxt() + ")" : "") + "</p>";
     h += '<p><i class="sw sw-rosa"></i><b>Nebensaison</b> (' + nebenTxt() + ')</p>';
@@ -2275,7 +2281,6 @@ function renderKalender() {
     if (uebrigVorhanden()) h += '<p><i class="sw sw-normal"></i><b>Übrige Zeiten:</b> nur mit Endreinigung ' + symBtn("b-endrein", "🪣") + '</p>';
     h += '<p class="leg-h">Lücken-Hinweis</p>';
     if (P.lueckeRabatt > 0) h += '<p><i class="sw sw-gap"></i><b>Lücke</b> (' + P.lueckeRabatt + ' % Rabatt) ' + symBtn('b-luecke', '🧩') + '</p>';
-    if (SICHT_AN) h += '<p><i class="sw sw-sicht"></i><b>Kurzfristig frei</b> (gelb, Airbnb kann es nicht mehr verkaufen) ' + symBtn('b-sicht', '🔔') + '</p>';
     h += '<p><i class="sw sw-occ"></i>nicht verfügbar</p>';
     if (kurzMap().size) h += '<p><i class="sw sw-kurz"></i><b>Buchung unmöglich:</b> zwischen den Belegungen bleiben weniger als ' + P.minNaechte + ' Nächte</p>';
     el.innerHTML = h;
@@ -2295,7 +2300,7 @@ function renderKalender() {
   for (let d = 1, nt = new Date(Date.UTC(calY, calM + 1, 0)).getUTCDate(); d <= nt; d++) if (istRuhe(dkey(calY, calM, d))) { monatRuhe = true; break; }
   const ruheZeigen = false;   // Erklaerung steht jetzt in der Kalender-Hilfe (Knopf ?)
   ruheEl.hidden = !ruheZeigen;
-  ruheEl.innerHTML = ruheZeigen ? HW + 'In dieser Zeit (' + ruheTxt() + ') ist die Familienstaffel möglich ' + symBtn("b-staffel", "🔗") + '. Ohne Gäste reinigt ihr, wenn erwünscht, selbst ' + symBtn("b-ruhe", "🧹") + '. Mit Gästen reinigen die Eltern.' : "";
+  ruheEl.innerHTML = ruheZeigen ? HW + 'In dieser Zeit (' + ruheTxt() + ') ist die Familienstaffel möglich ' + symBtn("b-staffel", "🔗") + '. Ohne Freunde reinigt ihr, wenn erwünscht, selbst ' + symBtn("b-ruhe", "🧹") + '. Mit Freunden reinigen die Eltern.' : "";
   const nEl = document.getElementById("calNormal");
   const nZeigen = false;   // Erklaerung «Normale Zeit» steht jetzt in der Kalender-Hilfe (Knopf ?)
   nEl.hidden = true;
@@ -2309,10 +2314,10 @@ function renderKalender() {
   const warn = document.getElementById("calWarn");
   const msgs = [];
   if (ARR && DEP) {
-    if (SICHT.size && inSicht(ARR, DEP)) msgs.push(HW + "🔔 <b>Kurzfristig frei:</b> Airbnb kann diese Nächte nicht mehr verkaufen. Normaler Familienpreis, ohne Vorbehalt. " + symBtn("b-sicht", "🔔"));
-    if (!festStay(ARR, DEP)) for (let k = ARR; k < DEP; k = addDays(k, 1)) if (istHoch(k) && !sichtNacht(k)) { if (P.hochNachtMin > 0 && !verbMoeglich(ARR, DEP)) { msgs.push('<div class="note h rot-warn"><b>⚠️ Nur mit Vorbehalt möglich:</b> Dieser Termin liegt in der Hochsaison' + fld("hoch") + '. Verbindlich buchen geht nur mit ' + P.verbMin + ' bis ' + P.verbMax + ' Nächten, alle in der Hochsaison (ohne Gäste, ' + chf(P.hochNachtMin) + ' pro Nacht plus Endreinigung).</div>'); break; } msgs.push(HW + "🧑‍🏫 Dieser Termin liegt in der Hochsaison" + fld("hoch") + ", die Nächte sind bei Airbnb-Gästen gefragt. " + (P.hochNachtMin > 0 ? (verbMoeglich(ARR, DEP) ? "Du kannst verbindlich buchen (ohne Gäste, " + chf(P.hochNachtMin) + " pro Nacht plus Endreinigung) oder mit Vorbehalt (ein Airbnb-Gast hat Vorrang)." : "Verbindlich buchen geht mit " + P.verbMin + " bis " + P.verbMax + " Nächten, alle in der Hochsaison (ohne Gäste, " + chf(P.hochNachtMin) + " pro Nacht plus Endreinigung). Sonst ist eine Anfrage mit Vorbehalt möglich: ein Airbnb-Gast hat Vorrang.") : "Eine Anfrage ist trotzdem möglich.")); break; }
-    if (festStay(ARR, DEP)) msgs.push(HW + fld("fest") + "<b>Skisaison (" + esc(festTxt()) + "):</b> Termin ist fest und wird in Airbnb gesperrt, ihr habt damit Buchungssicherheit." + (minFuer(ARR, DEP) > P.minNaechte ? " Mindestens " + minFuer(ARR, DEP) + " Nächte." : "") + (P.festMinGaeste > 0 ? " Mindestens " + P.festMinGaeste + " Gäste." : "") + " " + symBtn("b-februar", "⛷️") + (P.festBodenWoche > 0 ? " <b>Preis:</b> Mindestens " + chf(P.festBodenWoche) + " pro 7 Nächte inklusive Endreinigung. Mit Kollegen sinkt dein Anteil." : P.mindestpreisWoche > 0 ? " <b>Mit Gästen sparst du:</b> Ab " + P.mindestpreisAbNaechte + " Nächten sinkt der Gesamtpreis nie unter " + chf(P.mindestpreisWoche) + " pro 7 Nächte, dein eigener Anteil entfällt, soweit es der Preis zulässt. " + symBtn("b-sparen", "💸") : ""));
-    if (ruheStay() && !S.luecke && S.selbstOK !== true) msgs.push(HW + "<b>Keine Staffel möglich:</b> Nach eurer Abreise bleiben bis zum nächsten Airbnb-Gast weniger als " + P.minNaechte + " freie Nächte, es kann keine weitere Familie anschliessen. Ihr würdet die ganze Endreinigung allein tragen und zusätzlich selbst putzen. Darum gilt hier der normale Termin: die Eltern reinigen, Gäste sind möglich.");
+    if (SICHT.size && inSicht(ARR, DEP)) msgs.push(HW + "🔔 <b>Lücke durch die Vorlaufzeit:</b> Airbnb kann diese Nächte nicht mehr verkaufen. Normaler Familienpreis, ohne Vorbehalt. " + symBtn("b-sicht", "🔔"));
+    if (!festStay(ARR, DEP)) for (let k = ARR; k < DEP; k = addDays(k, 1)) if (istHoch(k) && !sichtNacht(k)) { if (P.hochNachtMin > 0 && !verbMoeglich(ARR, DEP)) { msgs.push('<div class="note h rot-warn"><b>⚠️ Nur mit Vorbehalt möglich:</b> Dieser Termin liegt in der Hochsaison' + fld("hoch") + '. Verbindlich buchen geht nur mit ' + P.verbMin + ' bis ' + P.verbMax + ' Nächten, alle in der Hochsaison (ohne Freunde, ' + chf(P.hochNachtMin) + ' pro Nacht plus Endreinigung).</div>'); break; } msgs.push(HW + "🧑‍🏫 Dieser Termin liegt in der Hochsaison" + fld("hoch") + ", die Nächte sind bei Airbnb-Gästen gefragt. " + (P.hochNachtMin > 0 ? (verbMoeglich(ARR, DEP) ? "Du kannst verbindlich buchen (ohne Freunde, " + chf(P.hochNachtMin) + " pro Nacht plus Endreinigung) oder mit Vorbehalt (ein Airbnb-Gast hat Vorrang)." : "Verbindlich buchen geht mit " + P.verbMin + " bis " + P.verbMax + " Nächten, alle in der Hochsaison (ohne Freunde, " + chf(P.hochNachtMin) + " pro Nacht plus Endreinigung). Sonst ist eine Anfrage mit Vorbehalt möglich: ein Airbnb-Gast hat Vorrang.") : "Eine Anfrage ist trotzdem möglich.")); break; }
+    if (festStay(ARR, DEP)) msgs.push(HW + fld("fest") + "<b>Skisaison (" + esc(festTxt()) + "):</b> Termin ist fest und wird in Airbnb gesperrt, ihr habt damit Buchungssicherheit." + (minFuer(ARR, DEP) > P.minNaechte ? " Mindestens " + minFuer(ARR, DEP) + " Nächte." : "") + (P.festMinGaeste > 0 ? " Mindestens " + P.festMinGaeste + " Gäste." : "") + " " + symBtn("b-februar", "⛷️") + (P.festBodenWoche > 0 ? " <b>Preis:</b> Mindestens " + chf(P.festBodenWoche) + " pro 7 Nächte inklusive Endreinigung. Mit Kollegen sinkt dein Anteil." : P.mindestpreisWoche > 0 ? " <b>Mit Freunden sparst du:</b> Ab " + P.mindestpreisAbNaechte + " Nächten sinkt der Gesamtpreis nie unter " + chf(P.mindestpreisWoche) + " pro 7 Nächte, dein eigener Anteil entfällt, soweit es der Preis zulässt. " + symBtn("b-sparen", "💸") : ""));
+    if (ruheStay() && !S.luecke && S.selbstOK !== true) msgs.push(HW + "<b>Keine Staffel möglich:</b> Nach eurer Abreise bleiben bis zum nächsten Airbnb-Gast weniger als " + P.minNaechte + " freie Nächte, es kann keine weitere Familie anschliessen. Ihr würdet die ganze Endreinigung allein tragen und zusätzlich selbst putzen. Darum gilt hier der normale Termin: die Eltern reinigen, Freunde sind möglich.");
     if (ruheStay() && !S.luecke && S.selbstOK === true && staffelUnterbruch(ARR).length === 0) {
       const sv = schweifStop({ arr: ARR, dep: DEP }).stopper;
       if (sv && sv.sb) { const weg = starterVerlieren(ARR, DEP); msgs.push(HW + "<b>Staffel vor einer bestehenden:</b> Direkt nach eurem Aufenthalt folgt schon die Staffel von " + esc(sv.name) + " (ab " + esc(fmtTag(sv.arr)) + "). Wählt ihr «Staffel», beginnt ihr die Kette: " + esc(sv.name) + " schliesst an und teilt die Endreinigung mit euch." + (weg.length ? " " + esc(weg.join(" und ")) + " war bisher der Beginn und bringt dann eigene Wäsche mit." : "") + " Ihr bezieht dafür das gereinigte Chalet ohne eigene Wäsche."); }
@@ -2532,7 +2537,7 @@ function htmlText(h) { return String(h).replace(/<\/p>/g, "\n").replace(/<br\s*\
 function schnappBer(who, det, notes, mitAufteilung) {
   const L = [], rows = (h) => { const re = /<tr><td>(.*?)<\/td><td>(.*?)<\/td><\/tr>/g; let m; while ((m = re.exec(h))) L.push(htmlText(m[1]) + "\t" + htmlText(m[2])); };
   rows(det);
-  if (mitAufteilung && who) { L.push("#Aufteilung unter den Gästen"); rows(who); }
+  if (mitAufteilung && who) { L.push("#Aufteilung unter den Freunden"); rows(who); }
   htmlText(notes).split("\n").map((t) => t.trim()).filter(Boolean).forEach((t) => L.push(t));
   return L;
 }
@@ -2558,10 +2563,10 @@ function anfrageText(r) {
   z.push("Abreise: " + fmtTagV(DEP) + " (" + x.nights + " Nächte)");
   z.push("");
   z.push("Familie: " + S.wer + (S.wer === MFG ? " (" + S.fam + " Personen)" : "") + (x.KK > 0 ? ", davon " + x.KK + " im Kinderbettchen oder bei den eigenen Eltern" : ""));
-  z.push("Gäste: " + x.GE);
-  if (x.GE > 0 && !x.lock) z.push("Gast im selben Zimmer: " + x.ZE);
+  z.push("Freunde: " + x.GE);
+  if (x.GE > 0 && !x.lock) z.push("Freund im selben Zimmer: " + x.ZE);
   if (!x.VERB) z.push("Zimmer 1 unberührt: " + (S.spar === "Ja" ? "Ja" : "Nein"));
-  if (x.LG) { z.push("Ganze Lücke: nur Zimmer 2 mit blauem Bad" + (x.KK > 0 ? ", das Kleinkind im Kinderbettchen in Zimmer 3 oder bei den Erwachsenen in Zimmer 2" : "") + ", ohne Gäste, eigene Bettwäsche, Handtücher und Küchentücher, Reinigung durch die Eltern " + chf(P.reinigung)); }
+  if (x.LG) { z.push("Ganze Lücke: nur Zimmer 2 mit blauem Bad" + (x.KK > 0 ? ", das Kleinkind im Kinderbettchen in Zimmer 3 oder bei den Erwachsenen in Zimmer 2" : "") + ", ohne Freunde, eigene Bettwäsche, Handtücher und Küchentücher, Reinigung durch die Eltern " + chf(P.reinigung)); }
   if (x.GE > 0) z.push("Reinigung: " + S.reinig);
   if (x.SB) z.push("Selbstreinigung: Ja");
   z.push("");
@@ -2660,9 +2665,9 @@ function einladungText() {
   const z = ["Hallo " + EMPF, "", allein ? "Wir laden dich ein:" : "Wir laden euch ein:", "", "Anreise: " + fmtTagV(ARR), "Abreise: " + fmtTagV(DEP) + " (" + S.nights + " Nächte)", ""];
   z.push("Eingeladen: " + wer + (x.KK > 0 ? ", davon " + x.KK + " im Kinderbettchen oder bei den eigenen Eltern" : ""));
   if (x.GE > 0) {
-    z.push("Gäste: " + x.GE);
-    if (!x.lock) z.push("Gast im selben Zimmer: " + x.ZE);
-  } else z.push("Keine weiteren Gäste");
+    z.push("Freunde: " + x.GE);
+    if (!x.lock) z.push("Freund im selben Zimmer: " + x.ZE);
+  } else z.push("Keine weiteren Freunde");
   z.push("Zimmer 1 unberührt: " + (S.spar === "Ja" ? "Ja" : "Nein"));
   z.push("");
   if (x.SM) {
@@ -2673,7 +2678,7 @@ function einladungText() {
       : "Ihr braucht keine eigene Bettwäsche und keine Frotteewäsche mitzubringen. Beides ist im Chalet vorhanden.");
     z.push("");
   }
-  if (x.GE > 0) z.push((allein ? "Du und " + (x.GE === 1 ? "dein Gast" : "deine Gäste") : "Ihr und " + (x.GE === 1 ? "euer Gast" : "eure Gäste")) + " seid eingeladen. Wir tragen alle Kosten: Übernachtungen und Endreinigung.");
+  if (x.GE > 0) z.push((allein ? "Du und " + (x.GE === 1 ? "dein Freund" : "deine Freunde") : "Ihr und " + (x.GE === 1 ? "euer Freund" : "eure Freunde")) + " seid eingeladen. Wir tragen alle Kosten: Übernachtungen und Endreinigung.");
   else z.push((allein ? "Du bist unser Gast." : "Ihr seid unsere Gäste.") + " Wir tragen alle Kosten: Übernachtungen und Endreinigung.");
   z.push("");
   z.push("Gruss");
@@ -2749,7 +2754,7 @@ function render() {
     sel.classList.toggle("missing", !chosen && !sperr);
     sel.classList.toggle("locked", sperr);
     const hEl = document.getElementById("h-" + f.id);
-    if (f.id === "selbst") { hEl.textContent = ""; const r = document.createElement("span"); r.className = "rot"; r.textContent = "Selbst reinigen geht nur ohne Gäste (für euch Kinder mit Partnern und Kindern). Mit Gästen reinigen immer die Eltern."; hEl.appendChild(r); hEl.appendChild(document.createTextNode(" " + f.hint(d))); }
+    if (f.id === "selbst") { hEl.textContent = ""; const r = document.createElement("span"); r.className = "rot"; r.textContent = "Selbst reinigen geht nur ohne Freunde (für euch Kinder mit Partnern und Kindern). Mit Freunden reinigen immer die Eltern."; hEl.appendChild(r); hEl.appendChild(document.createTextNode(" " + f.hint(d))); }
     else if (vorab) hEl.textContent = "Wähle zuerst Anreise und Abreise im Kalender. Dann siehst du, was möglich ist.";
     else hEl.innerHTML = esc(f.hint(d)).replace(/\{\{(.+?)\}\}/g, '<span class="hl">$1</span>');   // {{Wort}} im Hinweis = hervorgehoben
     if (f.id === (d.SM ? "art" : (d.frei > 0 ? "gaeste" : "wer"))) { const w = staffelWarnung(d); if (w) { const sp = document.createElement("span"); sp.className = "note h gelb-warn"; sp.style.display = "block"; sp.style.marginTop = "8px"; sp.innerHTML = WA + esc(w); hEl.appendChild(sp); } }
@@ -2791,17 +2796,17 @@ function render() {
   }
   let who = "";
   who += '<tr><td>' + (S.wer === "Nur ich" ? "Du zahlst" : "Familie zahlt") + '</td><td>' + chf(r.FZ) + '</td></tr>';
-  if (x.GE >= 1) who += '<tr><td>Gast 1 (Hauptgast) zahlt</td><td>' + chf(r.HZ) + '</td></tr>';
-  for (let g = 2; g <= x.GE; g++) who += '<tr><td>Gast ' + g + ' zahlt</td><td>' + chf(r.WZ / (x.GE - 1)) + '</td></tr>';
+  if (x.GE >= 1) who += '<tr><td>Freund 1 zahlt</td><td>' + chf(r.HZ) + '</td></tr>';
+  for (let g = 2; g <= x.GE; g++) who += '<tr><td>Freund ' + g + ' zahlt</td><td>' + chf(r.WZ / (x.GE - 1)) + '</td></tr>';
   let det = "";
   const row = (a, b) => '<tr><td>' + a + '</td><td>' + b + '</td></tr>';
   if (!r.VERB) det += row(S.wer === "Nur ich" ? "Du pro Nacht" : "Familie pro Nacht", chf(x.FN));
-  if (x.GE >= 1) det += row("Gast 1 (Hauptgast) pro Nacht", chf(x.HN));
-  for (let g = 2; g <= x.GE; g++) det += row('Gast ' + g + ' pro Nacht', chf(x.GN));
+  if (x.GE >= 1) det += row("Freund 1 pro Nacht", chf(x.HN));
+  for (let g = 2; g <= x.GE; g++) det += row('Freund ' + g + ' pro Nacht', chf(x.GN));
   det += row("Übernachtung (" + x.nights + " Nächte)", chf(r.VERB ? r.TOT - x.RE : x.UE));
   det += row("Reinigung", chf(x.RE));
   if (x.GE >= 1) det += row(S.wer === "Nur ich" ? "Reinigung: dein Anteil" : "Reinigung: Anteil Familie", chf(x.FA));
-  if (x.GE >= 1) det += row("Reinigung: Anteil pro Gast", chf(x.GS));
+  if (x.GE >= 1) det += row("Reinigung: Anteil pro Freund", chf(x.GS));
   if (r.AUF) det += row("Aufschlag bis zum Mindestpreis " + (r.HOCH ? "in der Hochsaison" : "im " + esc(festTxt())), "+" + chf(r.AUF));
   if (r.GRATIS) det += row("Gesamtpreis vorher: " + chf(r.TOT0) + ". Entlastung Familie", "−" + chf(r.D));
   if (tip > 0) det += row("Trinkgeld für Mami (freiwillig)", chf(tip));
@@ -2809,8 +2814,8 @@ function render() {
   if (x.sp) notes += '<p class="note">Zimmer 1 und rotes Bad bleiben unberührt: ' + chf(P.sparEin) + ' weniger pro Nacht, ' + (S.wer === "Nur ich" ? "du zahlst" : "die Familie zahlt") + ' ' + chf(x.FN0) + ' statt ' + chf(P.famPausch) + '.</p>';
   if (x.LR > 0) notes += '<p class="note">Lückenpreis: Alle Nachtpreise sind ' + x.LR + ' Prozent günstiger, auf ganze Franken gerundet.</p>';
   if (r.VERB) notes += '<p class="note"><b>Verbindliche Buchung:</b> ' + r.HN_ + (r.HN_ === 1 ? ' Nacht' : ' Nächte') + ' in der Hochsaison zu ' + chf(P.hochNachtMin) + (x.nights - r.HN_ > 0 ? ', ' + (x.nights - r.HN_) + (x.nights - r.HN_ === 1 ? ' Nacht' : ' Nächte') + ' zum normalen Familienpreis von ' + chf(x.FN) : '') + ', dazu die Endreinigung ' + chf(x.RE) + '. Der Termin ist fest und wird in Airbnb gesperrt.</p>';
-  if (r.GRATIS) notes += '<p class="note"><b>Mindestpreis:</b> ' + (r.FZ === 0 ? (S.wer === "Nur ich" ? "Du zahlst deinen" : "Die Familie zahlt ihren") + ' eigenen Anteil (' + chf(r.FZ0) + ') nicht. ' : (S.wer === "Nur ich" ? "Du zahlst" : "Die Familie zahlt") + ' noch ' + chf(r.FZ) + ' statt ' + chf(r.FZ0) + '. ') + 'Der Gesamtpreis sinkt nie unter ' + chf(r.BODEN) + ' (' + (r.HOCH ? chf(P.hochNachtMin) + ' pro Nacht plus Endreinigung' : chf(r.FEST ? P.festBodenWoche : P.mindestpreisWoche) + ' pro 7 Nächte') + '). Die Gäste zahlen ihre Anteile wie berechnet.</p>';
-  if (r.AUF) notes += '<p class="note"><b>Mindestpreis ' + (r.HOCH ? "in der Hochsaison" : "im " + esc(festTxt())) + ':</b> Das Total beträgt mindestens ' + chf(r.BODEN) + ' (' + (r.HOCH ? chf(P.hochNachtMin) + ' pro Nacht plus Endreinigung' : chf(P.festBodenWoche) + ' pro 7 Nächte, inklusive Endreinigung') + '). ' + (x.GE >= 1 ? 'Der fehlende Betrag von ' + chf(r.AUF) + ' wird gleichmässig auf alle Personen verteilt, dich und die Gäste. Mit mehr Gästen sinkt dein Anteil.' : 'Du zahlst den Mindestpreis. Mit Gästen sinkt dein Anteil.') + '</p>';
+  if (r.GRATIS) notes += '<p class="note"><b>Mindestpreis:</b> ' + (r.FZ === 0 ? (S.wer === "Nur ich" ? "Du zahlst deinen" : "Die Familie zahlt ihren") + ' eigenen Anteil (' + chf(r.FZ0) + ') nicht. ' : (S.wer === "Nur ich" ? "Du zahlst" : "Die Familie zahlt") + ' noch ' + chf(r.FZ) + ' statt ' + chf(r.FZ0) + '. ') + 'Der Gesamtpreis sinkt nie unter ' + chf(r.BODEN) + ' (' + (r.HOCH ? chf(P.hochNachtMin) + ' pro Nacht plus Endreinigung' : chf(r.FEST ? P.festBodenWoche : P.mindestpreisWoche) + ' pro 7 Nächte') + '). Die Freunde zahlen ihre Anteile wie berechnet.</p>';
+  if (r.AUF) notes += '<p class="note"><b>Mindestpreis ' + (r.HOCH ? "in der Hochsaison" : "im " + esc(festTxt())) + ':</b> Das Total beträgt mindestens ' + chf(r.BODEN) + ' (' + (r.HOCH ? chf(P.hochNachtMin) + ' pro Nacht plus Endreinigung' : chf(P.festBodenWoche) + ' pro 7 Nächte, inklusive Endreinigung') + '). ' + (x.GE >= 1 ? 'Der fehlende Betrag von ' + chf(r.AUF) + ' wird gleichmässig auf alle Personen verteilt, dich und die Freunde. Mit mehr Freunden sinkt dein Anteil.' : 'Du zahlst den Mindestpreis. Mit Freunden sinkt dein Anteil.') + '</p>';
   if (x.GE >= 1) notes += '<p class="note">Reinigung aufgeteilt: ' + S.reinig + '.</p>';
   const zahlung = '<div class="pay"><strong>Die Familie überweist den ganzen Betrag: ' + chf(r.TOT + tip) + '</strong>' +
       (tip > 0 ? '<span>davon Trinkgeld für Mami: ' + chf(tip) + ' (freiwillig)</span>' : '') +
@@ -2818,7 +2823,7 @@ function render() {
       '<span class="iban">IBAN: ' + esc(IBAN) + '</span>' +
       '<button type="button" id="copyIban">📋 IBAN kopieren</button></div>';
   const aufteilung = x.GE >= 1 ? '<h3 class="split-h">💸 Aufteilung unter euch</h3>' +
-    '<p class="hint">Das Geld bei den Gästen einsammeln ist eure Sache. Die Tabelle zeigt, wie viel jeder schuldet.</p>' +
+    '<p class="hint">Das Geld bei den Freunden einsammeln ist eure Sache. Die Tabelle zeigt, wie viel jeder schuldet.</p>' +
     '<table><tbody>' + who + '</tbody></table>' : '';
   SNAP_BER = schnappBer(who, det, notes, x.GE >= 1);
   res.innerHTML =
@@ -3934,9 +3939,9 @@ function uebrigVorhanden() {   // kommt «Übrige Zeit» in den nächsten 13 Mon
 }
 function jahrKlasse(k, heute) {   // Rahmen = Farbe der Zeit; frei = gefüllt, belegt = grau gefüllt, vergangen = ohne Füllung
   const vorbei = k < heute;
-  const z = !vorbei && GAP.has(k) ? "gap" : zoneVon(k);
+  const z = !vorbei && (GAP.has(k) || SICHT.has(k)) ? "gap" : zoneVon(k);   // Lücke und «durch die Vorlaufzeit» sind beide gelb
   const belegt = !vorbei && (BELEGT.has(k) || GAPSPERR.has(k) || nachtGebucht(k) || kurzMap().has(k));
-  return "z-" + z + (vorbei ? " st-p" : belegt ? " st-b" : SICHT.has(k) ? " st-s" : "");
+  return "z-" + z + (vorbei ? " st-p" : belegt ? " st-b" : "");
 }
 function jahrZeigen() {
   const heute = heuteKey(), n0 = heuteDate();
@@ -3959,8 +3964,7 @@ function jahrZeigen() {
   if (SPITZ.length) l += lz("spitz", "Spitzenzeit");
   if (uebrigVorhanden()) l += lz("n", "Übrige Zeit");
   let r = "";
-  if (P.lueckeRabatt > 0) r += lz("gap", "Lücke");
-  if (SICHT_AN) r += '<span><i class="z-n st-s"></i>Kurzfristig frei</span>';
+  if (P.lueckeRabatt > 0 || SICHT_AN) r += lz("gap", "Lücke");
   r += lz("fest", "frei") + '<span><i class="z-fest st-b"></i>belegt</span><span><i class="z-n st-p"></i>vergangen, nicht buchbar</span>';
   h += '</div><div class="jahr-leg" id="jahrLeg"><div>' + l + "</div><div>" + r + "</div></div>";
   document.getElementById("ovJahrIn").innerHTML = h;
@@ -4265,7 +4269,7 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
     if (c === "xmas") return fld("xmas") + "<b>Weihnachtssperre:</b> Vom " + fmtMD(SPERRE[0]) + " bis " + fmtMD(SPERRE[1]) + " ist das Chalet über Weihnachten zu, nur für Papi und Mami. Abreise ist bis am " + fmtMD(SPERRE[0]) + " möglich (letzte Reinigung durch die Eltern), Anreise ab dem " + (parseInt(SPERRE[1].slice(3), 10) + 1) + ". " + MONATE[parseInt(SPERRE[1].slice(0, 2), 10) - 1] + ".";
     if (c === "fest") return fld("fest") + "<b>Skisaison:</b> Aufenthalte sind <b>fest</b> und in Airbnb gesperrt, ihr habt volle Buchungssicherheit." + (MIN_MONATE[monatVon(k)] ? " Mindestens " + MIN_MONATE[monatVon(k)] + " Nächte." : "") + " " + symBtn("b-februar", "⛷️");
     if (c === "hoch") return fld("hoch") + "<b>Hochsaison:</b> Airbnb-Zeit, die Nächte sind bei Gästen gefragt. " + symBtn("b-hochsaison", "🏔️");
-    if (c === "ruhe") return fld("ruhe") + "<b>Staffel-Zeit:</b> Du hast die Wahl:<br><span class=\"hl\">Staffel</span>: Nur ohne Gäste, ihr reinigt selbst " + symBtn("b-ruhe", "🧹") + ".<br><span class=\"hl\">Normal</span>: Die Eltern reinigen, das geht auch mit Gästen.";
+    if (c === "ruhe") return fld("ruhe") + "<b>Staffel-Zeit:</b> Du hast die Wahl:<br><span class=\"hl\">Staffel</span>: Nur ohne Freunde, ihr reinigt selbst " + symBtn("b-ruhe", "🧹") + ".<br><span class=\"hl\">Normal</span>: Die Eltern reinigen, das geht auch mit Freunden.";
     if (c === "rosa") return fld("rosa") + "<b>Nebensaison:</b> Aufenthalte sind <b>fest</b> und in Airbnb gesperrt. Es gelten die normalen Familienpreise.";
     return "<b>Übrige Zeit:</b> Normale Familienpreise, nur mit Endreinigung. " + symBtn("b-endrein", "🪣");
   }
@@ -4356,10 +4360,10 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
       if (GAPSPERR.has(k)) vz.push("Gesperrt: Lücke zwischen zwei Gästen, hier nicht buchbar.");
       else if (GAPDYNN.has(k)) vz.push("<b>Lücke, ohne Rabatt:</b> Airbnb kann diese Nächte nicht mehr verkaufen (Vorlauf, Mindestaufenthalt, sonntags kein Check-in). Ihr bucht sie zum normalen Familienpreis und ohne Vorbehalt. Es gelten die Lückenregeln. " + symBtn("b-luecke", "🧩") + symBtn("b-sicht", "🔔"));
       else if (GAP.has(k) && P.lueckeRabatt > 0) vz.push("Lücke zwischen zwei Gästen: Wer die ganze Lücke bucht, erhält " + P.lueckeRabatt + " % Rabatt auf die Übernachtungen. Ein Teil davon geht auch, dann zum normalen Preis. " + symBtn("b-luecke", "🧩"));
-      if (SICHT.has(k)) vz.push("<b>Kurzfristig frei:</b> Airbnb kann diese Nächte nicht mehr verkaufen (Vorlauf, Mindestaufenthalt, sonntags kein Check-in). Ihr bucht sie zum normalen Familienpreis und <b>ohne Vorbehalt</b>, mindestens " + sichtMinFuer(k) + " Nächte. " + symBtn("b-sicht", "🔔"));
+      if (SICHT.has(k)) vz.push("<b>Lücke durch die Vorlaufzeit:</b> Airbnb kann diese Nächte nicht mehr verkaufen (Vorlauf, Mindestaufenthalt, sonntags kein Check-in). Ihr bucht sie zum normalen Familienpreis und <b>ohne Vorbehalt</b>, mindestens " + sichtMinFuer(k) + " Nächte. " + symBtn("b-sicht", "🔔"));
       if (spitzVon(k)) mon.push(fld("spitz") + "Spitzenzeit: hohe Preise, kein Familienpreis. Eine Anfrage ist trotzdem möglich.");
-      else if (istHoch(k) && !sichtNacht(k)) { if (!festStay(k, addDays(k, 1))) mon.push(fld("hoch") + "Hochsaison: Airbnb-Zeit, die Nächte sind bei Gästen gefragt." + (P.hochNachtMin > 0 && !(ARR && DEP && k >= ARR && k <= DEP) ? " Du kannst trotzdem buchen, du hast die Wahl:<br><span class=\"hl\">Verbindlich</span>: Nur ab " + P.verbMin + " Nächten (bis " + P.verbMax + ", ohne Gäste, " + chf(P.hochNachtMin) + " pro Nacht plus Endreinigung). Der Termin ist fest und in Airbnb gesperrt.<br><span class=\"hl\">Mit Vorbehalt</span>: " + (P.hochMinNaechte > 0 ? "Ab " + P.hochMinNaechte + " Nächten" : "Bei jeder Dauer") + ", Gäste möglich. Ein Airbnb-Gast hat Vorrang." : (ARR && DEP && k >= ARR && k <= DEP ? " " + symBtn("b-hochsaison", "🏔️") : " Eine Anfrage ist trotzdem möglich."))); }
-      else if (istRuhe(k) && !GAP.has(k) && !stay.length) mon.push(fld("ruhe") + "<b>Staffel-Zeit:</b> Du hast die Wahl:<br><span class=\"hl\">Staffel</span>: Nur ohne Gäste, ihr reinigt selbst " + symBtn("b-ruhe", "🧹") + (istStaffelStart(ARR || k) ? ". Ihr beginnt eine Staffel: Das Chalet ist gereinigt und bezogen, ihr bringt keine eigene Wäsche mit, besorgt aber die Rückgabe der benutzten Wäsche" : " und bringt eigene Wäsche mit") + ". Die Reinigung kostet dann " + chf(P.reinigungSelbst) + ". Damit beginnst oder führst du die Familienstaffel weiter " + symBtn("b-staffel", "🔗") + ".<br><span class=\"hl\">Normal</span>: Die Eltern reinigen, das geht auch mit Gästen." + (ARR && DEP && istStaffelStart(ARR) && schweifStop({ arr: ARR, dep: DEP }).stopper && schweifStop({ arr: ARR, dep: DEP }).stopper.sb ? " Direkt danach folgt die Staffel von " + esc(schweifStop({ arr: ARR, dep: DEP }).stopper.name) + ": Mit «Staffel» beginnt ihr die Kette, mit «Normal» ändert sich für " + esc(schweifStop({ arr: ARR, dep: DEP }).stopper.name) + " nichts." : ""));
+      else if (istHoch(k) && !sichtNacht(k)) { if (!festStay(k, addDays(k, 1))) mon.push(fld("hoch") + "Hochsaison: Airbnb-Zeit, die Nächte sind bei Gästen gefragt." + (P.hochNachtMin > 0 && !(ARR && DEP && k >= ARR && k <= DEP) ? " Du kannst trotzdem buchen, du hast die Wahl:<br><span class=\"hl\">Verbindlich</span>: Nur ab " + P.verbMin + " Nächten (bis " + P.verbMax + ", ohne Freunde, " + chf(P.hochNachtMin) + " pro Nacht plus Endreinigung). Der Termin ist fest und in Airbnb gesperrt.<br><span class=\"hl\">Mit Vorbehalt</span>: " + (P.hochMinNaechte > 0 ? "Ab " + P.hochMinNaechte + " Nächten" : "Bei jeder Dauer") + ", Freunde möglich. Ein Airbnb-Gast hat Vorrang." : (ARR && DEP && k >= ARR && k <= DEP ? " " + symBtn("b-hochsaison", "🏔️") : " Eine Anfrage ist trotzdem möglich."))); }
+      else if (istRuhe(k) && !GAP.has(k) && !stay.length) mon.push(fld("ruhe") + "<b>Staffel-Zeit:</b> Du hast die Wahl:<br><span class=\"hl\">Staffel</span>: Nur ohne Freunde, ihr reinigt selbst " + symBtn("b-ruhe", "🧹") + (istStaffelStart(ARR || k) ? ". Ihr beginnt eine Staffel: Das Chalet ist gereinigt und bezogen, ihr bringt keine eigene Wäsche mit, besorgt aber die Rückgabe der benutzten Wäsche" : " und bringt eigene Wäsche mit") + ". Die Reinigung kostet dann " + chf(P.reinigungSelbst) + ". Damit beginnst oder führst du die Familienstaffel weiter " + symBtn("b-staffel", "🔗") + ".<br><span class=\"hl\">Normal</span>: Die Eltern reinigen, das geht auch mit Freunden." + (ARR && DEP && istStaffelStart(ARR) && schweifStop({ arr: ARR, dep: DEP }).stopper && schweifStop({ arr: ARR, dep: DEP }).stopper.sb ? " Direkt danach folgt die Staffel von " + esc(schweifStop({ arr: ARR, dep: DEP }).stopper.name) + ": Mit «Staffel» beginnt ihr die Kette, mit «Normal» ändert sich für " + esc(schweifStop({ arr: ARR, dep: DEP }).stopper.name) + " nichts." : ""));
       else if (!stay.length) mon.push("Nur mit Endreinigung: Normale Familienpreise, Endreinigung nach den Regeln " + symBtn("b-endrein", "🪣") + ". " + (GAP.has(k) ? "In der Lücke reinigen immer die Eltern, selbst reinigen geht hier nicht." : "Selbst reinigen geht hier nicht, nur in der Staffel-Zeit" + fld("ruhe") + ".") + "");
       if (festStay(k, addDays(k, 1))) mon.push(fld("fest") + "<b>Skisaison:</b> Hier ist ein Aufenthalt <b>fest</b> und wird in Airbnb gesperrt, ihr habt volle Buchungssicherheit." + (MIN_MONATE[monatVon(k)] ? " Mindestens " + MIN_MONATE[monatVon(k)] + " Nächte." : "") + (P.festMinGaeste > 0 ? " Mindestens " + P.festMinGaeste + " Gäste." : "") + " " + symBtn("b-februar", "⛷️"));
       else if (ARR && DEP && k >= ARR && k <= DEP && istHoch(k)) { /* Möglichkeiten und Warnung stehen im Hinweis unter dem Kalender */ }

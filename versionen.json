@@ -2,7 +2,7 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
-      "v": "2.83.0.3 bis 2.85.2.0",
+      "v": "2.83.0.3 bis 2.85.3.0",
       "datum": "2026-11-03",
       "titel": "Änderungen vom 03.11.2026",
       "arten": [
@@ -14,7 +14,8 @@
         "Neue Saison-Einteilung: Hochsaison = Januar, Juni bis August, die erste volle Märzwoche und ab dem 25. Dezember. Skisaison = Februar. Nebensaison = Mai, September und Oktober bis zum Ende der zweiten vollen Woche. Tiefsaison (Staffel-Zeit) = März nach der ersten Woche bis April, Oktober nach der zweiten Woche, November und Dezember bis zum 20. Dezember. Wochen laufen von Montag bis Sonntag, Tage vor dem ersten Montag zählen zur Woche danach. Der Dezember ist nach festen Tagen eingeteilt: Tiefsaison bis 20.12., Hochsaison ab 25.12.",
         "Neue Weihnachtssperre (rot): jedes Jahr vom 21. bis 24. Dezember ist das Chalet für die Kinder geschlossen. Abreise ist bis zum 21.12. möglich, Anreise ab dem 25.12. Die Tage sind im Kalender rot und nicht wählbar; schraffiert werden sie, sobald auch Airbnb sie sperrt. Nur für Papi: Warnung in der Verwaltung (und ein ⚠️ am Verwaltungs-Knopf), wenn die Sperre in Airbnb noch nicht gesetzt ist.",
         "Neue Tagesfarben: Hochsaison orange, Nebensaison grün, Skisaison blau, Tiefsaison (Staffel-Zeit) violett, Weihnachtssperre rot, Lücke gelb. Der Hellmodus hat kräftigere Farben, der Dunkelmodus dunkle Flächen mit hellen Rahmen. Beim ersten Öffnen ohne gespeicherte Wahl startet die App im Dunkelmodus; mit dem Knopf ☀️/🌙 wählst du selbst und das Handy merkt es sich.",
-        "Neue Balken: grau und eckig (ein Drittel in den Anreisetag, ein Drittel in den Abreisetag), Linie schwarz im Hellmodus und weiss im Dunkelmodus, Bezeichnungen BnB, Ext. und Fam. bleiben. Termine mit Vorbehalt: gesicherter Teil voll, noch nicht gesicherter Teil grau transparent und gestrichelt auf neutralem Boden, runder Übergang. Neues Reinigungskästchen am Abreisetag (feuerrot, gleich hoch wie der Balken): gefüllt = die Eltern reinigen, Rahmen mit offener Mitte = die Kinder reinigen. Der Schweif der Staffel ist gestrichelt mit kleinen Dreiecken (neue Staffel möglich). Konflikt: roter Rand und ⚠ vor dem Namen. «Kurzfristig frei» hat keinen dicken Rahmen mehr, die Tage sind gelb wie eine Lücke."
+        "Neue Balken: grau und eckig (ein Drittel in den Anreisetag, ein Drittel in den Abreisetag), Linie schwarz im Hellmodus und weiss im Dunkelmodus, Bezeichnungen BnB, Ext. und Fam. bleiben. Termine mit Vorbehalt: gesicherter Teil voll, noch nicht gesicherter Teil grau transparent und gestrichelt auf neutralem Boden, runder Übergang. Neues Reinigungskästchen am Abreisetag (feuerrot, gleich hoch wie der Balken): gefüllt = die Eltern reinigen, Rahmen mit offener Mitte = die Kinder reinigen. Der Schweif der Staffel ist gestrichelt mit kleinen Dreiecken (neue Staffel möglich). Konflikt: roter Rand und ⚠ vor dem Namen. «Kurzfristig frei» hat keinen dicken Rahmen mehr, die Tage sind gelb wie eine Lücke.",
+        "Balken höher (24 px) und näher am Datum. Glossar: rote Reinigungskästchen zwischen den Balken, Tippe-Händchen, keine Besen mehr in den Balken. Tageskästchen mit 4 px Rundung. Neue Namen: «Buchungskalender», «Freunde» statt «Gäste» (für Mitreisende), «Lücke durch die Vorlaufzeit» statt «Kurzfristig frei». Jahresübersicht: Lücken in Gelb, «Kurzfristig frei» entfällt."
       ]
     },
     {
