@@ -1052,7 +1052,7 @@
    Nach jeder Änderung die Versionsnummer erhöhen und das Datum anpassen.
    ============================================================ */
 // Standardwerte (Reserve). Die gültigen Werte stehen in der Datei einstellungen.json.
-let VERSION = "2.88.1.0";
+let VERSION = "2.88.2.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1428,7 +1428,8 @@ function sperreNaechte() { const y0 = new Date().getFullYear(), r = []; for (let
 const XMAS_WARN_TAGE = 365;   // Warnung für Papi, wenn die nächste Weihnachtssperre in Airbnb noch nicht gesperrt ist und höchstens so viele Tage entfernt liegt
 function xmasOffen() {   // Nächte der Weihnachtssperre, die Airbnb noch nicht als belegt meldet (nur wenn die Belegung geladen ist)
   if (!BELEGT_AIR || !BELEGT_OK) return [];
-  const h = heuteKey(), bis = addDays(h, XMAS_WARN_TAGE);
+  const h = heuteKey(), n0 = new Date(), echt = dkey(n0.getFullYear(), n0.getMonth(), n0.getDate());   // die Airbnb-Daten reichen vom echten Heute ein Jahr voraus: bei einem Testtag nicht darüber hinaus warnen
+  let bis = addDays(h, XMAS_WARN_TAGE); const grenze = addDays(echt, XMAS_WARN_TAGE); if (bis > grenze) bis = grenze;
   return sperreNaechte().filter((k) => k >= h && k <= bis && !BELEGT_AIR.has(k));
 }
 const dezTiefBis = (y) => addDays(y + "-" + SPERRE[0], -1);   // letzter Tag der Tiefsaison im Dezember
