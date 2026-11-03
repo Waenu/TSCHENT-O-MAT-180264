@@ -917,6 +917,7 @@
       <div class="rows">
         <details class="sub" id="b-wunschtermin"><summary>📅 Wunschtermin</summary><div class="bc" id="bc-wunschtermin"></div></details>
         <details class="sub" id="b-kalender"><summary>🗓️ Buchungskalender</summary><div class="bc"><p id="calHint"></p><p>Die Farben stehen als Legende direkt unter dem Kalender. Ist die Hilfe <span class="zei hilfe">?</span> an, erklärt sich jeder angetippte Tag.</p><div id="bildKalender"></div></div></details>
+        <details class="sub" id="b-reinigung"><summary>🧹 Reinigungskästchen</summary><div class="bc"><p>Das rote Kästchen zwischen zwei Balken sitzt am Abreisetag und zeigt, wer nach dem Aufenthalt reinigt:</p><p><i class="k-rk e" style="display:inline-block;width:20px;height:20px;vertical-align:middle;background:var(--bk-rk)"></i> <b>Eltern reinigen</b> 🪣 (gefülltes Kästchen): Das ist der Normalfall. Es gilt für Airbnb-Gäste, Gäste mit Vertrag, normale Aufenthalte der Familie und für das Ende einer Staffel.</p><p><i class="k-rk k" style="display:inline-block;width:20px;height:20px;vertical-align:middle;box-sizing:border-box;border:3px solid var(--bk-rk)"></i> <b>Kinder reinigen</b> 🧹 (Rahmen): Ihr reinigt selbst, weil die Familienstaffel weitergeht und danach noch eine Reisegruppe anschliesst. Mehr dazu unter «Staffel». <button type="button" class="sym" data-info="b-staffel" aria-label="Zur Erklärung springen">🔗</button></p><p>Bei «Blockiert» gibt es kein Kästchen. Tippst du auf einen Termin, steht in der Box ebenfalls, ob die Eltern oder die Kinder reinigen.</p></div></details>
         <details class="sub" id="b-auswahl"><summary>🔽 Auswahlfelder</summary><div class="bc" id="auswahlTxt">
           <p>Felder und Fragen zeigen, wo ihr steht:</p>
           <div class="exfields">
@@ -976,7 +977,7 @@
     <details class="leg-det" id="calLegDet"><summary>🎨 Legende</summary>
     <div class="cal-leg" id="calHoch"></div>
     <p class="hint bk-leg-h">Diese Balken erscheinen im Kalender erst, nachdem die Eltern einen Aufenthalt bestätigt haben. <span id="calTipp">Tippe einen belegten Tag oder Balken an, dann siehst du die Details.</span> Die Farbe zeigt die Buchungssicherheit:</p>
-    <div class="bk-leg"><span id="legGruen"><i class="k-gruen"><b class="zk zl">Fam.</b></i>Familie, gesichert: in Airbnb gesperrt</span><span id="legProv"><i class="k-gelb"><b class="zk zl">Fam.</b></i>Familie, mit Vorbehalt: gestrichelt, nicht gesichert, wird voll, sobald gesichert. Ein Airbnb-Gast hat Vorrang</span><span id="legAir"><i class="k-air"><b class="zk zl">BnB</b></i>Airbnb-Gast</span><span id="legExt"><i class="k-air"><b class="zk zl">Ext.</b></i>Gast mit Vertrag</span><span id="legBlock"><i class="k-air"><b class="zk" data-z="🚫"></b></i>blockiert, z. B. weil niemand reinigen kann</span><span id="legKonf"><i class="k-gelb k-konf"></i>Konflikt: ein Airbnb-Gast hat sich auf diese Tage eingetragen</span><span id="legStaffel"><i class="k-sw" data-run="1"></i>Staffel-Zeit: neue Staffel möglich, eine weitere Reisegruppe kann anschliessen</span><span id="legRk"><i class="k-rk e"></i><i class="k-rk k"></i>Reinigung am Abreisetag: gefüllt = die Eltern reinigen, Rahmen = ihr reinigt selbst</span></div>
+    <div class="bk-leg"><span id="legGruen"><i class="k-gruen"><b class="zk zl">Fam.</b></i>Familie, gesichert: in Airbnb gesperrt</span><span id="legProv"><i class="k-gelb"><b class="zk zl">Fam.</b></i>Familie, mit Vorbehalt: gestrichelt, nicht gesichert, wird voll, sobald gesichert. Ein Airbnb-Gast hat Vorrang</span><span id="legAir"><i class="k-air"><b class="zk zl">BnB</b></i>Airbnb-Gast</span><span id="legExt"><i class="k-air"><b class="zk zl">Ext.</b></i>Gast mit Vertrag</span><span id="legBlock"><i class="k-air"><b class="zk" data-z="🚫"></b></i>blockiert, z. B. weil niemand reinigen kann</span><span id="legKonf"><i class="k-gelb k-konf"></i>Konflikt: ein Airbnb-Gast hat sich auf diese Tage eingetragen</span><span id="legStaffel"><i class="k-sw" data-run="1"></i>Staffel-Zeit: neue Staffel möglich, eine weitere Reisegruppe kann anschliessen</span><span id="legRk"><i class="k-rk e"></i><i class="k-rk k"></i>Reinigung am Abreisetag: gefüllt = Eltern reinigen, Rahmen = Kinder reinigen</span></div>
     </details>
     <p class="note h" id="calSpitz" hidden></p>
     <p class="note h" id="calRuhe" hidden></p>
@@ -1048,7 +1049,7 @@
    Nach jeder Änderung die Versionsnummer erhöhen und das Datum anpassen.
    ============================================================ */
 // Standardwerte (Reserve). Die gültigen Werte stehen in der Datei einstellungen.json.
-let VERSION = "2.85.6.0";
+let VERSION = "2.86.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1672,7 +1673,7 @@ function bildKalender() {
   wd.forEach((w) => { h += '<div class="cal-wd">' + w + '</div>'; });
   for (let i = 1; i <= 7; i++) h += '<div class="cal-d ' + (i >= 6 ? "occ" : "") + '" style="cursor:default;display:flex;align-items:center;justify-content:center">' + i + '</div>';
   h += '<div class="exrow" style="grid-column:1/-1;grid-row:3"><div class="exb selbst" style="flex:2">Jerome<span class="hand" aria-hidden="true">👆</span></div><div class="exb rkx k" aria-hidden="true"></div><div class="exb stf" style="flex:2">▶ ▶ ▶ offen</div><div class="exb occ" style="flex:2">Airbnb</div></div>';
-  h += '</div><p class="exbild-cap">Voll grau: gesichert. Das rote Kästchen zwischen den Balken zeigt, wer reinigt (gefüllt: die Eltern, Rahmen: ihr selbst). 👆 Tippe auf einen Termin, dann siehst du die Einzelheiten. Grau gestrichelt: nicht gesichert (Termin mit Vorbehalt), wird voll, sobald gesichert. Gestrichelt mit ▶: Staffel-Zeit, eine neue Staffel kann anschliessen. Gestreift: Airbnb-Gast. Die Balken erscheinen im Kalender erst, nachdem die Eltern einen Aufenthalt bestätigt haben.</p></div>';
+  h += '</div><p class="exbild-cap">Voll grau: gesichert. Das rote Kästchen zwischen den Balken zeigt, wer reinigt (gefüllt: Eltern reinigen, Rahmen: Kinder reinigen). 👆 Tippe auf einen Termin, dann siehst du die Einzelheiten. Grau gestrichelt: nicht gesichert (Termin mit Vorbehalt), wird voll, sobald gesichert. Gestrichelt mit ▶: Staffel-Zeit, eine neue Staffel kann anschliessen. Gestreift: Airbnb-Gast. Die Balken erscheinen im Kalender erst, nachdem die Eltern einen Aufenthalt bestätigt haben.</p></div>';
   return h;
 }
 function bildRuhe() {
@@ -2159,7 +2160,7 @@ function zeichneBalken(gr) {
       const blass = (l, w, farbe) => { if (w < 6) return; const d = document.createElement("div"); d.className = "bk blass " + farbe; d.style.left = l + "px"; d.style.width = w + "px"; d.style.top = top; d.innerHTML = imBlass && w >= 40 ? '<span class="bkn">' + esc(text) + "</span>" : ""; g.appendChild(d); };
       if (rk && arr[arr.length - 1] === bis) {   // Reinigungskästchen: mittleres Drittel des Abreisetags, gleich hoch wie der Balken
         const rb = document.createElement("div"); rb.className = "bk rk " + rk; rb.style.left = (c1.offsetLeft + c1.offsetWidth / 3) + "px"; rb.style.width = (c1.offsetWidth / 3) + "px"; rb.style.top = top;
-        rb.setAttribute("aria-label", rk === "e" ? "Die Eltern reinigen" : "Ihr reinigt selbst"); g.appendChild(rb);
+        rb.setAttribute("aria-label", rk === "e" ? "Eltern reinigen" : "Kinder reinigen"); g.appendChild(rb);
       }
       const dreiecke = () => {   // diskret: pro Balken höchstens 3 Pfeile (1 Tag: 1, bis 4 Tage: 2, danach 3), gleichmässig verteilt
         const pos = arr.map((k) => { const c = zell.get(k), a = Math.max(c.offsetLeft, links), b = Math.min(c.offsetLeft + c.offsetWidth, rechts); return b - a >= 12 ? (a + b) / 2 - links : null; }).filter((x) => x !== null);
@@ -4357,10 +4358,14 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
       if (!p.length) return null;   // am Abreisetag gibt es sonst nichts zu sagen
       return "<b>Abreise: " + esc(fmtTag(k)) + "</b><p>" + monKurz(k) + "</p>" + p.map((t) => "<p>" + t + "</p>").join("");
     }
+    const rkTxt = (r) => r === "k" ? "<b>Kinder reinigen</b> 🧹" : r === "e" ? "<b>Eltern reinigen</b> 🪣" : "";
+    const gast = gaesteBalken();
+    const gehende = BUCH.filter((b) => b.dep === k).map((b) => ({ name: b.name, typ: "fam", rk: rkVon(b), b: b })).concat(gast.filter((x) => x.end === k).map((x) => ({ name: x.name, typ: x.typ, rk: x.typ === "block" ? "" : "e" })));   // wer am Tag abreist, mit Reinigung
+    const kommende = BUCH.filter((b) => b.arr === k).map((b) => ({ name: b.name, typ: "fam", arr: b.arr, dep: b.dep })).concat(gast.filter((x) => x.arr === k).map((x) => ({ name: x.name, typ: x.typ, arr: x.arr, dep: x.end })));
     const z = [], zs = [], zh = [], mon = [];
     const vz = [];   // Lücke / «Kurzfristig frei»: steht ganz oben unter dem Datum, damit es nicht unter dem Bildschirmrand verschwindet   // mon: Erklärung der Monatsfarbe, steht zuoberst
     const stay = BUCH.filter((b) => b.arr <= k && k < b.dep), abr = BUCH.filter((b) => b.dep === k), zb = stay.length ? zh : z;
-    stay.forEach((b) => z.push((b.sb ? "Reinigung: ihr reinigt selbst 🧹" : "Reinigung durch die Eltern 🪣") + (b.prov ? ", Termin mit Vorbehalt" : "") + "."));
+    stay.forEach((b) => z.push("Am Abreisetag: " + rkTxt(rkVon(b)) + (b.prov ? ". Termin mit Vorbehalt" : "") + "."));
     stay.filter((b) => !b.prov).forEach(() => zs.push("🔒 <b>Gesichert:</b> Dieser Aufenthalt ist in Airbnb gesperrt."));
     stay.filter((b) => b.prov).forEach((b) => {
       if (provKonflikt(b)) { zs.push("⚠️ <b>Konflikt:</b> Ein Airbnb-Gast hat sich auf diese Tage eingetragen. Der Aufenthalt muss weichen. " + symBtn("b-prov", "🔓")); return; }
@@ -4369,8 +4374,9 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
       else zs.push("🔓 <b>Diese Nacht ist noch nicht gesichert.</b> Ein Airbnb-Gast kann sie noch buchen und hat dann Vorrang. Gesichert wird sie am " + esc(fmtTag(addDays(k, 1 - VORLAUF))) + ". " + symBtn("b-prov", "🔓"));
       if (!provSicherDep(b.dep)) zs.push(RISIKO);
     });
+    if (!stay.length && BELEGT_AIR && BELEGT_AIR.has(k) && gastEintragFuer(k) && gastEintragFuer(k).typ !== "block") z.push("Am Abreisetag: " + rkTxt("e") + ".");
     if (!stay.length && BELEGT.has(k)) z.push(!BELEGT.has(addDays(k, -1)) && !BUCH.some((b) => b.arr <= addDays(k, -1) && addDays(k, -1) < b.dep) ? "Von Airbnb belegt: als Anreise nicht buchbar. Als Abreisetag möglich: Der Airbnb-Gast kommt erst nachmittags, ihr müsst die Wohnung aber bis " + ZEIT_AB + " verlassen haben." : "Von Airbnb belegt, nicht buchbar.");
-    abr.forEach((b) => { z.push("Abreisetag von <b>" + esc(b.name) + "</b>."); if (TOKEN && !ABSENDER && abreiseGesperrt(b)) z.push('<b style="color:#E5534B">⚠️ ' + esc(abreiseWarnTxt(b)) + "</b>"); });
+    gehende.forEach((g) => { z.push("Abreisetag von " + typMarke(g.typ) + (g.name ? " <b>" + esc(g.name) + "</b>" : "") + "." + (g.rk ? " " + rkTxt(g.rk) + "." : "")); if (g.b && TOKEN && !ABSENDER && abreiseGesperrt(g.b)) z.push('<b style="color:#E5534B">⚠️ ' + esc(abreiseWarnTxt(g.b)) + "</b>"); });
     if (!BELEGT.has(k) && !stay.length && kurzMap().has(k)) {
       const n = kurzMap().get(k);
       z.push("<b>Buchung unmöglich:</b> Zwischen den Belegungen " + (n === 1 ? "bleibt nur 1 freie Nacht" : "bleiben nur " + n + " freie Nächte") + ", mindestens " + P.minNaechte + " Nächte sind nötig.");
@@ -4396,6 +4402,15 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
     const bz = stay[0], vonBis = (a, d) => "<b>" + esc(fmtTag(a)) + " bis<br>" + esc(fmtTag(d)) + '</b> <span class="hint">(' + diffDays(a, d) + (diffDays(a, d) === 1 ? " Nacht" : " Nächte") + ")</span>";
     const gd = gn && gn.arr && gn.dep ? gn : null;   // Gast mit bekannter Dauer
     const wer = bz ? typMarke("fam") + " <b>" + esc(bz.name) + "</b>" : gn ? typMarke(gn.typ) + (gn.name ? " <b>" + esc(gn.name) + "</b>" : "") : "";   // zuoberst: wer hier bucht
+    if (gehende.length && kommende.length) {   // Wechseltag: wer geht, wer kommt, wer reinigt
+      const wo = (g) => typMarke(g.typ) + (g.name ? " <b>" + esc(g.name) + "</b>" : ""), rkZ = gehende.map((g) => g.rk).filter(Boolean);
+      const warn = z.filter((t) => t.indexOf("⚠️") >= 0);
+      return "<b>Wechsel: " + esc(fmtTag(k)) + "</b>" +
+        "<p>👋 <b>Es geht:</b> " + gehende.map(wo).join(", ") + "</p>" +
+        "<p>🧳 <b>Es kommt:</b> " + kommende.map((g) => wo(g) + '<br><span class="hint">' + esc(fmtTag(g.arr)) + " bis " + esc(fmtTag(g.dep)) + " (" + diffDays(g.arr, g.dep) + (diffDays(g.arr, g.dep) === 1 ? " Nacht" : " Nächte") + ")</span>").join("<br>") + "</p>" +
+        (rkZ.length ? "<p>Reinigung am Abreisetag: " + rkZ.map(rkTxt).join(", ") + ".</p>" : "") +
+        warn.map((t) => "<p>" + t + "</p>").join("") + (bz ? "<p>🕓 " + esc(zeitenKurz()) + ".</p>" : "") + iconLeiste(k, stay, zs, zh) + gf;
+    }
     const gebucht = !!(bz || gn);   // Feld mit Buchung: keine Erklärung der Saison oder Staffel, die gibt es nur bei Feldern mit Buchungsoption
     const kopfX = gebucht ? "<p class=\"bwer\">" + wer + "</p>" + (bz ? vonBis(bz.arr, bz.dep) : gd ? vonBis(gd.arr, gd.dep) : kopf) : kopf;
     const opt = gebucht ? vz : vz.concat(monZeilen(k, mon));
