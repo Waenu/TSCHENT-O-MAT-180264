@@ -27,6 +27,16 @@
       "betrag": 165,
       "rechnung": "Gesendet am Di 3.11.2026, 19:00 Uhr. App-Version 2.88.3.0.\nAnreise\tFreitag 20.11.2026\nAbreise\tMontag 23.11.2026 (3 Nächte)\nFamilie\tNur ich\nFreunde\t0\nZimmer 1 unberührt\tJa\nSelbstreinigung\tJa\nTotal laut Rechner\tCHF 165.–\nReinigungskosten sind erst nach Ablauf der Familienstaffel bekannt und werden nachbelastet.\n#Preisberechnung\nDu pro Nacht\tCHF 55.–\nÜbernachtung (3 Nächte)\tCHF 165.–\nReinigung\tCHF 0.–\nZimmer 1 und rotes Bad bleiben unberührt: CHF 15.– weniger pro Nacht, du zahlst CHF 55.– statt CHF 70.–.",
       "bestaetigt": "2026-11-03T19:01"
+    },
+    {
+      "name": "Deborah",
+      "arr": "2026-12-12",
+      "dep": "2026-12-15",
+      "selbst": false,
+      "pers": 2,
+      "betrag": 870,
+      "rechnung": "Gesendet am Di 3.11.2026, 22:32 Uhr. App-Version 2.92.0.0.\nAnreise\tSamstag 12.12.2026\nAbreise\tDienstag 15.12.2026 (3 Nächte)\nFamilie\tIch und Partner\nFreunde\t2\nZimmer 1 unberührt\tNein\nReinigung\tNach Personen: ab 2½ Jahren zählt jede Person gleich\nTotal laut Rechner\tCHF 870.–\n#Preisberechnung\nFamilie pro Nacht\tCHF 70.–\nFreund 1 pro Nacht\tCHF 70.–\nFreund 2 pro Nacht\tCHF 70.–\nÜbernachtung (3 Nächte)\tCHF 630.–\nReinigung\tCHF 240.–\nReinigung: Anteil Familie\tCHF 120.–\nReinigung: Anteil pro Freund\tCHF 60.–\n#Aufteilung unter den Freunden\nFamilie zahlt\tCHF 330.–\nFreund 1 zahlt\tCHF 270.–\nFreund 2 zahlt\tCHF 270.–\nReinigung aufgeteilt: Nach Personen: ab 2½ Jahren zählt jede Person gleich.",
+      "bestaetigt": "2026-11-03T22:47"
     }
   ],
   "logbuch": [
@@ -333,6 +343,10 @@
     {
       "t": "2026-11-03T19:01",
       "text": "Bestätigt: Miriam, Fr 20.11.2026 bis Mo 23.11.2026, CHF 165"
+    },
+    {
+      "t": "2026-11-03T22:47",
+      "text": "Bestätigt: Deborah, Sa 12.12.2026 bis Di 15.12.2026, CHF 870"
     }
   ]
 }
