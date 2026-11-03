@@ -36,7 +36,8 @@
       "pers": 2,
       "betrag": 870,
       "rechnung": "Gesendet am Di 3.11.2026, 22:32 Uhr. App-Version 2.92.0.0.\nAnreise\tSamstag 12.12.2026\nAbreise\tDienstag 15.12.2026 (3 Nächte)\nFamilie\tIch und Partner\nFreunde\t2\nZimmer 1 unberührt\tNein\nReinigung\tNach Personen: ab 2½ Jahren zählt jede Person gleich\nTotal laut Rechner\tCHF 870.–\n#Preisberechnung\nFamilie pro Nacht\tCHF 70.–\nFreund 1 pro Nacht\tCHF 70.–\nFreund 2 pro Nacht\tCHF 70.–\nÜbernachtung (3 Nächte)\tCHF 630.–\nReinigung\tCHF 240.–\nReinigung: Anteil Familie\tCHF 120.–\nReinigung: Anteil pro Freund\tCHF 60.–\n#Aufteilung unter den Freunden\nFamilie zahlt\tCHF 330.–\nFreund 1 zahlt\tCHF 270.–\nFreund 2 zahlt\tCHF 270.–\nReinigung aufgeteilt: Nach Personen: ab 2½ Jahren zählt jede Person gleich.",
-      "bestaetigt": "2026-11-03T22:47"
+      "bestaetigt": "2026-11-03T22:47",
+      "bescheid": "2026-11-03T22:57"
     }
   ],
   "logbuch": [
@@ -347,6 +348,10 @@
     {
       "t": "2026-11-03T22:47",
       "text": "Bestätigt: Deborah, Sa 12.12.2026 bis Di 15.12.2026, CHF 870"
+    },
+    {
+      "t": "2026-11-03T22:57",
+      "text": "Bescheid gegeben: Deborah, Sa 12.12.2026 bis Di 15.12.2026"
     }
   ]
 }
