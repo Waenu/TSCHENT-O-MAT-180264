@@ -6,16 +6,6 @@
       "arr": "2026-11-06",
       "dep": "2026-11-08",
       "status": "abgelehnt"
-    },
-    {
-      "name": "Jerome",
-      "arr": "2026-11-25",
-      "dep": "2026-11-28",
-      "selbst": false,
-      "pers": 2,
-      "betrag": 405,
-      "rechnung": "Gesendet am Di 3.11.2026, 12:09 Uhr. App-Version 2.83.0.3.\nAnreise\tMittwoch 25.11.2026\nAbreise\tSamstag 28.11.2026 (3 Nächte)\nFamilie\tIch und 1 Kind\nGäste\t0\nZimmer 1 unberührt\tJa\nTotal laut Rechner\tCHF 405.–\n#Preisberechnung\nFamilie pro Nacht\tCHF 55.–\nÜbernachtung (3 Nächte)\tCHF 165.–\nReinigung\tCHF 240.–\nZimmer 1 und rotes Bad bleiben unberührt: CHF 15.– weniger pro Nacht, die Familie zahlt CHF 55.– statt CHF 70.–.",
-      "bestaetigt": "2026-11-03T12:09"
     }
   ],
   "logbuch": [
@@ -302,6 +292,10 @@
     {
       "t": "2026-11-03T12:09",
       "text": "Bestätigt: Jerome, Mi 25.11.2026 bis Sa 28.11.2026, CHF 405"
+    },
+    {
+      "t": "2026-11-03T14:28",
+      "text": "Entfernt: Jerome, Mi 25.11.2026 bis Sa 28.11.2026"
     }
   ]
 }
