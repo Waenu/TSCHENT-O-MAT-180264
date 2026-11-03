@@ -891,6 +891,8 @@
   .fzb i { display: block; height: 100%; background: var(--bk-eltern); border-radius: 7px; }
   .fzv { display: flex; flex-direction: column; align-items: flex-end; line-height: 1.15; }
   .fzv small { color: var(--muted); font-size: .72rem; }
+  .exrow .exb .exn { overflow: hidden; text-overflow: ellipsis; }
+  @media (max-width: 430px) { .exrow .exb.occ .exn { display: none; } }
 </style>
 
 </head>
@@ -1066,7 +1068,7 @@
    Nach jeder Änderung die Versionsnummer erhöhen und das Datum anpassen.
    ============================================================ */
 // Standardwerte (Reserve). Die gültigen Werte stehen in der Datei einstellungen.json.
-let VERSION = "2.88.5.0";
+let VERSION = "2.89.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1100,10 +1102,10 @@ const P = {
   minNaechte: 2,
   maxNaechte: 14,
   maxPersonen: 6,       // Betten (Personen mit normalem Bett, ohne Kinder ohne eigenes Bett)
-  gastZimmer: 45,       // Freund im selben Zimmer wie Sohn/Tochter
+  gastZimmer: 40,       // Freund im selben Zimmer wie Sohn/Tochter
   sparMaxPers: 4,       // bis zu dieser Zahl Personen insgesamt (Familie inkl. Kleinkinder + Gäste) kann Zimmer 1 unberührt bleiben
-  sparEin: 15,          // Ermässigung pro Nacht für die Familie, wenn Zimmer 1 (mit rotem Bad) unberührt bleibt
-  famAnteil: 25,        // Familie, wenn Sohn/Tochter das Zimmer mit einem Gast teilt
+  sparEin: 10,          // Ermässigung pro Nacht für die Familie, wenn Zimmer 1 (mit rotem Bad) unberührt bleibt
+  famAnteil: 30,        // Familie, wenn Sohn/Tochter das Zimmer mit einem Gast teilt
   reinigungSelbst: 0,   // Reinigung, wenn die Familie selbst reinigt (frische Waesche mitbringen, Betten selbst beziehen)
   lueckeMaxPersonen: 2,  // ganze Lücke: höchstens so viele Personen mit Bett (Kleinkinder im Kinderbettchen zusätzlich)
   lueckeMaxKleinkinder: 1,  // ganze Lücke: höchstens so viele Kleinkinder im Kinderbettchen
@@ -1663,7 +1665,7 @@ function bildLuecke() {
 function bildStaffel() {
   const chip = (z) => '<b class="zk zl">' + z + '</b>', bar = (k, t, f) => '<div class="exb ' + k + '" style="flex:' + f + '">' + (k === "occ" ? chip("BnB") : chip("Fam.")) + t + '</div>', rk = (t) => '<div class="exb rkx ' + t + '" aria-hidden="true"></div>';
   let h = '<div class="exbild" role="img" aria-label="Beispiel einer Familienstaffel">';
-  h += '<p class="extl">So läuft die Staffel</p><div class="exrow">' + bar("selbst", "Jerome", 3) + rk("k") + bar("selbst", "Miriam", 3) + rk("k") + bar("selbst", "Manuel", 3) + rk("e") + bar("occ", "", 1.4) + '</div>';
+  h += '<p class="extl">So läuft die Staffel</p><div class="exrow">' + bar("selbst", "Jerome", 2.5) + rk("k") + bar("selbst", "Miriam", 2.5) + rk("k") + bar("selbst", "Manuel", 2.5) + rk("e") + bar("occ", '<span class="exn">Gast</span>', 2.4) + '</div>';
   h += '<p class="exbild-cap">Alle reinigen selbst (Kästchen mit Rahmen). Erst wenn der Airbnb-Gast kommt, fällt die Endreinigung an (gefülltes Kästchen: die Eltern reinigen). Manuel bezahlt die Rechnung und holt die Anteile von Jerome und Miriam zurück.</p>';
   h += '<p class="extl" style="margin-top:12px">So endet sie früher</p><div class="exrow">' + bar("selbst", "Jerome", 3) + rk("k") + bar("eltern", "Miriam", 4) + rk("e") + bar("selbst", "Manuel", 3) + rk("k") + '</div>';
   h += '<p class="exbild-cap">Miriam will nicht selber reinigen, die Eltern reinigen (gefülltes Kästchen). Damit endet die Staffel für Jerome, seine Endreinigung ist jetzt fällig. Manuel beginnt danach eine neue Staffel und trägt seine Endreinigung allein.</p></div>';
@@ -1677,10 +1679,10 @@ function festUndVorbehaltTxt() {   // aus den Einstellungen: welche Zeiten fest 
   const fest = [];
   if (RUHE.length) fest.push("Aufenthalte, die <b>ganz</b> in der Staffel-Zeit" + fld("ruhe") + " liegen (" + ruheTxt() + ")");
   fest.push("Aufenthalte in der <b>Nebensaison</b>" + fld("rosa") + " (" + nebenTxt() + "), solange keine Nacht in der Hochsaison liegt");
-  if (FEST_MONATE.length) fest.push("Aufenthalte, die den <b>" + festTxt() + "</b> berühren (auch nur eine Nacht)");
+  if (FEST_MONATE.length) fest.push("Aufenthalte mit mindestens 1 Nacht im <b>" + festTxt() + "</b>");
   return "<p><b>Fest oder mit Vorbehalt?</b> Das hängt davon ab, wann ihr im Chalet seid:</p><ul>" +
     "<li><b>Fest</b> (in Airbnb gesperrt, volle Buchungssicherheit): " + fest.join("; ") + ".</li>" +
-    "<li><b>Mit Vorbehalt</b> (nicht in Airbnb gesperrt): Aufenthalte, die mindestens eine Nacht in der <b>Hochsaison</b>" + fld("hoch") + " haben (" + (mon || "keine Monate") + "). Dort sperren die Eltern den Aufenthalt <b>nicht</b>, ausser ihr bucht verbindlich.</li></ul>";
+    "<li><b>Mit Vorbehalt</b> (nicht in Airbnb gesperrt): Aufenthalte mit mindestens 1 Nacht in der <b>Hochsaison</b>" + fld("hoch") + " haben (" + (mon || "keine Monate") + "). Dort sperren die Eltern den Aufenthalt <b>nicht</b>, ausser ihr bucht verbindlich.</li></ul>";
 }
 function bildVorbehalt() {
   const v = VORLAUF, n = v + 6, tot = n + 1;
@@ -1699,7 +1701,7 @@ function bildKalender() {
   let h = '<div class="exbild" role="img" aria-label="Beispiel der Balken im Kalender"><div class="exgrid" style="grid-template-columns:repeat(7,minmax(0,1fr))">';
   wd.forEach((w) => { h += '<div class="cal-wd">' + w + '</div>'; });
   for (let i = 1; i <= 7; i++) h += '<div class="cal-d ' + (i >= 6 ? "occ" : "") + '" style="cursor:default;display:flex;align-items:center;justify-content:center">' + i + '</div>';
-  h += '<div class="exrow" style="grid-column:1/-1;grid-row:3"><div class="exb selbst" style="flex:2">Jerome<span class="hand" aria-hidden="true">👆</span></div><div class="exb rkx k" aria-hidden="true"></div><div class="exb stf" style="flex:2">▶ ▶ ▶ offen</div><div class="exb occ" style="flex:2">Airbnb</div></div>';
+  h += '<div class="exrow" style="grid-column:1/-1;grid-row:3"><div class="exb selbst" style="flex:2"><b class="zk zl">Fam.</b>Jerome<span class="hand" aria-hidden="true">👆</span></div><div class="exb rkx k" aria-hidden="true"></div><div class="exb stf" style="flex:2">▶ ▶ ▶ offen</div><div class="exb occ" style="flex:2"><b class="zk zl">BnB</b><span class="exn">Gast</span></div></div>';
   h += '</div><p class="exbild-cap">Voll grau: gesichert. Das rote Kästchen zwischen den Balken zeigt, wer reinigt (gefüllt: Eltern reinigen, Rahmen: Kinder reinigen). 👆 Tippe auf einen Termin, dann siehst du die Einzelheiten. Gestrichelt mit ▶: Staffel-Zeit, eine neue Staffel kann anschliessen. Gestreift: Airbnb-Gast. Die Balken erscheinen im Kalender erst, nachdem die Eltern einen Aufenthalt bestätigt haben.</p></div>';
   return h;
 }
@@ -1737,7 +1739,7 @@ function begriffeFuellen() {
     const mon = festTxt(), mn = MIN_MONATE[FEST_MONATE[0]] || P.minNaechte, nurFeb = FEST_MONATE.length === 1 && FEST_MONATE[0] === 2;
     const sum = det.querySelector("summary"); if (sum) sum.textContent = "⛷️ " + mon;
     const bsp = (g) => calc({ wer: "Nur ich", gaeste: g, zimmer: "Nein", spar: "Nein", selbst: "Nein", reinig: REINIG[0], nights: 7, festBoden: true });
-    let h = "<p>Im " + esc(mon) + " ist Skiferien-Zeit, das Chalet ist gefragt. Darum gelten hier eigene Regeln. Sobald auch nur eine Nacht deines Aufenthalts im " + esc(mon) + " liegt, gelten diese Regeln für den ganzen Aufenthalt.</p><ul>";
+    let h = "<p>Im " + esc(mon) + " ist Skiferien-Zeit, das Chalet ist gefragt, schon in der Woche davor und noch in der Woche danach. Darum gelten hier eigene Regeln. Es gibt keinen harten Schnitt: Sobald mindestens 1 Nacht deines Aufenthalts im " + esc(mon) + " liegt, gelten diese Regeln für den ganzen Aufenthalt.</p><ul>";
     h += "<li><b>Mindestens " + mn + " Nächte.</b>" + (nurFeb ? " Der Grund ist die Stückelung: Kurze Aufenthalte zerstückeln den Kalender, und die Eltern können die Zeit nicht mehr an Airbnb-Gäste vergeben. Beispiel: 28.1. bis 4.2. (7 Nächte) geht. 31.1. bis 2.2. (nur 2 Nächte) geht nicht, auch wenn er den Februar berührt: Sobald eine Nacht im Februar liegt, gelten die 7 Nächte für den ganzen Aufenthalt." : "") + "</li>";
     h += "<li><b>Fest, mit Buchungssicherheit.</b> Euer Termin wird in Airbnb gesperrt und nie mit Vorbehalt geführt. So könnt ihr eure Skiferien sicher planen.</li>";
     h += "<li><b>Auch wir Eltern verzichten.</b> Im " + esc(mon) + " verzichten wir Eltern auf eigene Ferien im Chalet, damit Einnahmen hereinkommen.</li>";
