@@ -27,12 +27,12 @@ Preisrechner für die Familie, Chalet Tschenten, Adelboden.
 | `maxPersonen` | Personen mit Bett |
 | `iban` / `bank` | Konto für die Überweisung, wird im Ergebnis angezeigt |
 | `zahlTage` | Frist in Tagen nach dem letzten Ferientag |
-| `lueckeMax` | Freie Nächte zwischen zwei Belegungen bis zu dieser Zahl gelten als Lücke (Airbnb-Mindestaufenthalt minus 1) |
+| `lueckeMax` | Freie Nächte zwischen zwei Belegungen bis zu dieser Zahl gelten als Lücke (= Airbnb-Mindestaufenthalt, 4). Bis 3 Nächte kann Airbnb nie verkaufen, 4 Nächte nur, solange der Vorlauf es erlaubt: bis dahin gesperrt |
 | `keinCheckinSonntag` | `true`: Sonntag ist bei Airbnb nie Check-in-Tag. Eine freie Strecke zwischen zwei Buchungen, die an einem Sonntag beginnt, zählt für Lücken erst ab Montag. Die Sonntagsnacht bleibt für die Familie gesperrt |
-| `lueckeVorlaufTage` | Lücken ausserhalb der Selbstreinigungs-Zeiten (dort ist die Familienstaffel nicht möglich) sind für die Familie erst so viele Tage vor Beginn der Lücke buchbar, vorher gesperrt |
+| `lueckeVorlaufTage` | nicht mehr verwendet (die Sperre ergibt sich aus Vorlauf und Mindestaufenthalt von Airbnb) |
 | `lueckeSperrMonate` | Monate (Liste), in denen Lücken für die Familie immer gesperrt sind (violett, nie freigegeben). Massgebend ist der Monat der ersten Nacht der Lücke |
 | `lueckeMaxPersonen` | Ganze Lücke: höchstens so viele Personen mit Bett, zusätzlich `lueckeMaxKleinkinder` Kleinkind(er) im Kinderbettchen. Dazu: keine Gäste, nur Zimmer 2, eigene Wäsche, Reinigung 240 |
-| `lueckeRabatt` | Prozent Rabatt auf die Übernachtungen, wenn die ganze Lücke gebucht wird (Reinigung bleibt gleich) |
+| `lueckeRabatt` | Rabatt für Lücken in Prozent, zurzeit 0 (es gibt keinen Rabatt) |
 | `hochsaisonMonate` | Ganze Monate, die jedes Jahr gelb markiert werden. Januar ist `[1]`, Februar `[2]`, mehrere zum Beispiel `[2, 7]` |
 | `spitzenzeiten` | Zeiten, in denen nur zu hohen Preisen vermietet wird (zum Beispiel Skirennen). Rot markiert, ohne Familienpreis: nur «Preis auf Anfrage». Format: `[["2027-01-15","2027-01-17","Skirennen"]]` (von, bis, Name) |
 | `hochsaison` | Zeiträume, die gelb markiert werden. Format: `[["2026-12-19","2027-01-03"], ["2027-02-06","2027-02-20"]]` (von, bis, beide eingeschlossen) |
