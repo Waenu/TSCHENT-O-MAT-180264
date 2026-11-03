@@ -1127,7 +1127,7 @@
    Nach jeder Änderung die Versionsnummer erhöhen und das Datum anpassen.
    ============================================================ */
 // Standardwerte (Reserve). Die gültigen Werte stehen in der Datei einstellungen.json.
-let VERSION = "2.91.0.1";
+let VERSION = "2.91.0.2";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -3510,7 +3510,20 @@ async function mamiPruefen() {
 // Zurücksetzen nur durch Papi: Er schickt der Person den Link …/#neuername=CODE, im Programm steht nur der Fingerabdruck des Codes.
 const NAME_RESET_HASH = "66e76fd538c6f8f06de66a1d0e903f771c00583cd9fa15c5f484b00c456c7a94";
 async function sha256Hex(t) { const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t)); return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join(""); }
+const ELTERN_HASH = "dd20c27896ec35668b3cf587193c2d52c3a1fbffeb282e4559584a703545a40c";   // Ausweg für Papi und Mami auf einem neuen Gerät: …/#eltern=CODE überspringt die Namensabfrage (danach Token oder Mami-Link einrichten); «#eltern=aus» schaltet es wieder ab
+let ELTERN_GERAET = false;
+try { ELTERN_GERAET = localStorage.getItem("tm2_eltern") === "1"; } catch (e) {}
 async function nameResetPruefen() {
+  const em = /[#&]eltern=([^&]+)/.exec(location.hash || "");
+  if (em) {
+    try {
+      const c = decodeURIComponent(em[1]);
+      if (c === "aus") { localStorage.removeItem("tm2_eltern"); ELTERN_GERAET = false; }
+      else if (window.crypto && crypto.subtle && (await sha256Hex(c)) === ELTERN_HASH) { localStorage.setItem("tm2_eltern", "1"); ELTERN_GERAET = true; }
+    } catch (e) {}
+    try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
+    return;
+  }
   const m = /[#&]neuername=([^&]+)/.exec(location.hash || "");
   if (!m) return;
   try {
@@ -3522,7 +3535,7 @@ async function nameResetPruefen() {
   try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
 }
 function nameWahlPruefen() {
-  if (TOKEN || MAMI || document.getElementById("nameWahl")) return;
+  if (TOKEN || MAMI || ELTERN_GERAET || document.getElementById("nameWahl")) return;
   if (ABSENDER && NAME_FIX) return;
   const ov = document.createElement("div"); ov.id = "nameWahl"; ov.setAttribute("role", "dialog"); ov.setAttribute("aria-modal", "true");
   const fertig = (n) => {
