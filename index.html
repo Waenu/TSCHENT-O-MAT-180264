@@ -865,6 +865,13 @@
   /* Glossar-Titel: Text darf umbrechen, mehr Abstand zwischen Symbol und Text */
   details.sub > summary { white-space: normal; line-height: 1.2; padding-top: 6px; padding-bottom: 6px; overflow-wrap: anywhere; }
   details.sub > summary .si { flex: none; margin-right: .6em; }
+
+  /* Glossar offen: «Ich reserviere jetzt» bleibt unten am Bildschirm fixiert */
+  .reserv-fix { display: none; position: fixed; left: 16px; right: 16px; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); z-index: 8; width: auto; min-height: 56px; font-size: 1.05rem; box-shadow: 0 2px 10px rgba(0,0,0,.45); }
+  .reserv-fix .bi { flex: 0 0 2rem; width: 2rem; }
+  .reserv-fix .bi svg { width: 28px; height: 28px; }
+  body.glossar-offen .reserv-fix { display: flex; }
+  body.glossar-offen { padding-bottom: 84px; }
 </style>
 
 </head>
@@ -907,7 +914,7 @@
       <summary>📚 Glossar</summary>
       <div class="rows">
         <details class="sub" id="b-wunschtermin"><summary>📅 Wunschtermin</summary><div class="bc" id="bc-wunschtermin"></div></details>
-        <details class="sub" id="b-kalender"><summary>🗓️ Erklärung Buchungskalender</summary><div class="bc"><p id="calHint"></p><p>Die Farben stehen als Legende direkt unter dem Kalender. Ist die Hilfe <span class="zei hilfe">?</span> an, erklärt sich jeder angetippte Tag.</p><div id="bildKalender"></div></div></details>
+        <details class="sub" id="b-kalender"><summary>🗓️ Buchungskalender</summary><div class="bc"><p id="calHint"></p><p>Die Farben stehen als Legende direkt unter dem Kalender. Ist die Hilfe <span class="zei hilfe">?</span> an, erklärt sich jeder angetippte Tag.</p><div id="bildKalender"></div></div></details>
         <details class="sub" id="b-auswahl"><summary>🔽 Auswahlfelder</summary><div class="bc" id="auswahlTxt">
           <p>Felder und Fragen zeigen, wo ihr steht:</p>
           <div class="exfields">
@@ -1039,7 +1046,7 @@
    Nach jeder Änderung die Versionsnummer erhöhen und das Datum anpassen.
    ============================================================ */
 // Standardwerte (Reserve). Die gültigen Werte stehen in der Datei einstellungen.json.
-let VERSION = "2.85.3.1";
+let VERSION = "2.85.4.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -4426,6 +4433,15 @@ document.querySelectorAll("details.sub > summary").forEach((sm) => {   // Symbol
   const m = t.nodeValue.match(/^\s*(\p{Extended_Pictographic}[\p{Extended_Pictographic}\uFE0F\u200D]*)\s*/u); if (!m) return;
   const sp = document.createElement("span"); sp.className = "si"; sp.textContent = m[1]; t.nodeValue = t.nodeValue.slice(m[0].length); sm.insertBefore(sp, t);
 });
+(function () {   // «Ich reserviere jetzt» unten festnageln, solange das Glossar offen ist
+  const g = document.getElementById("b-begriffe"), orig = document.getElementById("btnReserv");
+  if (!g || !orig) return;
+  const fix = orig.cloneNode(true); fix.id = "btnReservFix"; fix.classList.add("reserv-fix"); fix.removeAttribute("aria-controls");
+  fix.addEventListener("click", () => orig.click());
+  document.body.appendChild(fix);
+  const upd = () => document.body.classList.toggle("glossar-offen", !!(g.open && g.offsetParent !== null && !document.body.classList.contains("rechner-an")));
+  g.addEventListener("toggle", upd); document.addEventListener("click", () => setTimeout(upd, 60)); upd();
+})();
 aufentLaden();
 try { new ResizeObserver(() => zeichneBalken()).observe(document.getElementById("calGrid")); } catch (e) {}
 Promise.all([ladeEinstellungen(), ladeBelegt(), ladeBuchungen(), ladeGaeste()]).then(() => {
