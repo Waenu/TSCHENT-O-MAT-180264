@@ -877,6 +877,11 @@
   .cal-d.today:not(.sel) { outline: 3px solid #C2188F; outline-offset: 0; position: relative; z-index: 1; }
   :root[data-theme="dark"] .cal-d.today:not(.sel) { outline-color: #FF6FC0; }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .cal-d.today:not(.sel) { outline-color: #FF6FC0; } }
+/* Staffel-Beispielbilder: mit Kennzeichen Fam. und BnB, Schrift passt sich der Breite an (2.88.4.0) */
+  .exrow { font-size: clamp(0.52rem, 2.3vw, 0.72rem); gap: 3px; }
+  .exrow .exb.rkx { width: 11px; min-width: 11px; }
+  .exrow .exb { min-width: 0; padding: 0 5px; font-size: inherit; text-overflow: ellipsis; }
+  .exrow .exb .zk { font-size: .92em; height: 1.55em; min-width: 0; padding: 0 .3em; margin-right: .3em; flex: none; }
 </style>
 
 </head>
@@ -904,13 +909,13 @@
       <div class="rows">
         <div class="willkommen"><p class="rd-kopfzeile"><svg class="rd" viewBox="0 0 100 100" role="img" aria-label="Redner am Pult" focusable="false"><rect x="34" y="42" width="32" height="34" rx="6" fill="#0E1012"/><path d="M44 42 L50 54 L56 42 Z" fill="#F4F6F5"/><path d="M50 46 L48.3 56 L50 60 L51.7 56 Z" fill="#B3342B"/><path class="rd-arm" d="M35 50 L32 62"/><path class="rd-arm rd-un rd-l" d="M32 62 V74"/><circle class="rd-hd rd-l" cx="32" cy="74" r="4" fill="#E9B999"/><path class="rd-arm" d="M65 50 L68 62"/><path class="rd-arm rd-un rd-r" d="M68 62 V74"/><circle class="rd-hd rd-r" cx="68" cy="74" r="4" fill="#E9B999"/><g class="rd-kopf"><circle cx="50" cy="30" r="10" fill="#E9B999"/><path d="M40 28 C40 19 60 19 60 28 C57 24 43 24 40 28 Z" fill="#BFC4C8"/><circle cx="46" cy="31" r="3" fill="none" stroke="#26384A" stroke-width="1.2"/><circle cx="54" cy="31" r="3" fill="none" stroke="#26384A" stroke-width="1.2"/><path d="M49 31 H51" stroke="#26384A" stroke-width="1.2"/><ellipse class="rd-mund" cx="50" cy="36.2" rx="3.2" ry="2.4" fill="#5A1F1F"/></g><path d="M26 78 L74 78 L71 98 L29 98 Z" fill="#7A5230"/><rect x="20" y="72" width="60" height="6" rx="2" fill="#94673F"/><rect x="44" y="82" width="12" height="9" rx="1.5" fill="#D52B1E"/><path d="M50 84 V89 M47.5 86.5 H52.5" stroke="#fff" stroke-width="1.6"/><path d="M50 72 V67" stroke="#3A3F44" stroke-width="1.6"/><circle cx="50" cy="65.5" r="2.4" fill="#3A3F44"/></svg><b>Liebi Fraue und Mane</b></p><p>Mir ist bewusst, dass bei der ersten Benutzung alles etwas kompliziert scheint. Euch interessieren ja vor allem die Preise. Gebt euren Wunschtermin <a href="#cal" class="zum-heute" role="button">📅 im Kalender</a> ein und wer alles dabei sein soll. Wenn alle Felder grün sind, seht ihr die Kosten und wer wie viel bezahlt. Lest trotzdem irgendwann noch die Anleitung durch. Und wer findet das Osterei zuerst? 😉</p><p>Gruess, Papi</p></div>
         <p><b>Nur für die Familie:</b> Der Link bleibt in der Familie und wird nicht weitergegeben oder geteilt. Zur Familie gehören meine Kinder, ihre Partner und die Enkelkinder.</p>
-        <p><b>Nur über die App:</b> Buchungen nimmt Papi nur noch über den TSCHENT-O-MAT an, nicht mehr mündlich, per Kurier oder Rauchzeichen. Was nicht in der App steht, gilt nicht. Eine Anfrage ist verbindlich: Mit dem Senden bestätigst du, dass du den Aufenthalt zu diesen Bedingungen buchst.</p>
+        <p><b>Nur über die App:</b> Buchungen nehmen die Eltern nur noch über den TSCHENT-O-MAT an, nicht mehr mündlich, per Kurier oder Rauchzeichen. Was nicht in der App steht, gilt nicht. Eine Anfrage ist verbindlich: Mit dem Senden bestätigst du, dass du den Aufenthalt zu diesen Bedingungen buchst.</p>
         <p><b>TSCHENT-O-MAT ist interaktiv.</b> Von oben nach unten ausfüllen. Die Felder hängen zusammen: Eure Wahl bestimmt, was bei den nächsten Feldern zur Auswahl steht.</p>
         <p>Mit dem Pfeil ▾ lassen sich Menüs auf- und zuklappen.</p>
         <p>Mit gestrichelten Icons wie <button type="button" class="sym" data-info="b-luecke" aria-label="Beispiel: zur Erklärung springen">🧩</button> springt ihr zur Erklärung. Sie erscheint ausgeklappt. Mit dem gelben Knopf <span class="zei zur">↩ zurück</span> geht es an die Ausgangsstelle zurück.</p>
         <p>Hinweise erkennt ihr am blauen Rahmen. <b>ℹ️ Hinweis</b> erklärt etwas, <b>⚠️ Warnung</b> macht auf etwas aufmerksam, das den Aufenthalt oder den Preis verändert.</p>
         <p><b>❓ Kalender-Hilfe:</b> Im Kalender schwebt unten rechts ein runder Knopf <span class="zei hilfe">?</span>. Ist er grün gefüllt, erklärt sich jeder Tag, den ihr antippt, in einer Box unter dem Kalender. Mit einem Tipp auf den Knopf schaltet ihr die Hilfe aus (der Knopf ist dann durchgestrichen: <span class="zei hilfe aus">?</span>) und wieder ein. Beim nächsten Öffnen der Seite ist die Hilfe wieder an. Warnungen bleiben immer sichtbar.</p>
-        <p><b>Nach der Bestätigung:</b> Sobald du die Anfrage sendest, merkt sich dein Handy den Aufenthalt und zeigt «Anfrage gesendet». Erst wenn Papi bestätigt hat, erscheinen auf der Startseite deine Knöpfe <b>✅ Reinigungs-Checkliste</b> (die Arbeiten am Abreisetag) und, bei Selbstreinigung oder ganzer Lücke, <b>🧳 Anreise-Wäsche</b> <button type="button" class="sym" data-info="b-ruhe" aria-label="Zur Erklärung springen">🧹</button>. Lade die Seite 1 bis 2 Minuten nach der Bestätigung neu. Abhaken kannst du die Listen, sobald sie da sind, ohne weiteres Neuladen: Tippe in den Listen jeden Punkt an, wenn du ihn erledigt hast. Am Tag nach der Abreise verschwinden die Knöpfe wieder.</p>
+        <p><b>Nach der Bestätigung:</b> Sobald du die Anfrage sendest, merkt sich dein Handy den Aufenthalt und zeigt «Anfrage gesendet». Erst wenn die Eltern bestätigt haben, erscheinen auf der Startseite deine Knöpfe <b>✅ Reinigungs-Checkliste</b> (die Arbeiten am Abreisetag) und, bei Selbstreinigung, <b>🧳 Anreise-Wäsche</b> <button type="button" class="sym" data-info="b-ruhe" aria-label="Zur Erklärung springen">🧹</button>. Lade die Seite 1 bis 2 Minuten nach der Bestätigung neu. Abhaken kannst du die Listen, sobald sie da sind, ohne weiteres Neuladen: Tippe in den Listen jeden Punkt an, wenn du ihn erledigt hast. Am Tag nach der Abreise verschwinden die Knöpfe wieder.</p>
         <p><b>💻 Am Computer:</b> Der TSCHENT-O-MAT ist fürs Handy gebaut und am PC mit Google Chrome (oder Edge) getestet. In Firefox und anderen Browsern kann die Darstellung oder Bedienung abweichen. Wenn etwas komisch aussieht oder nicht reagiert, nehmt bitte Chrome oder Edge.</p>
         <p>Der Knopf <span class="zei menue">↑ Menü</span> unten links erscheint, sobald ihr nach unten scrollt. Ein Tipp darauf bringt euch nach oben zu den grossen Schaltflächen. Eure Eingaben bleiben dabei erhalten.</p>
       </div>
@@ -936,8 +941,8 @@
           <li><b>Zimmer 3:</b> Schlafzimmer mit Etagenbett, für Kinder oder Erwachsene.</li>
           <li><b>Blaues Badezimmer:</b> von der ganzen Wohnung aus zugänglich.</li>
         </ul></div></details>
-        <details class="sub" id="b-reisegruppe"><summary>👨‍👩‍👧‍👦 Reisegruppe</summary><div class="bc"><p>Eine Reisegruppe ist jede und jeder aus der Familie, in welcher Konstellation auch immer. Wer zusammen kommt, ist eine Reisegruppe, z. B. Jerome, Rahel, Malik und Jon, Manuel und Sarah, Deborah mit Kindern, Miriam mit Baby oder jemand allein.</p></div></details>
-        <details class="sub" id="b-staffel"><summary>🔗 Familienstaffel</summary><div class="bc" id="bc-staffel"><p>Reisegruppen, die die Wohnung nacheinander benutzen, ohne dass die Eltern dazwischen reinigen. Sie endet, sobald die Eltern oder ein Airbnb-Gast kommen, oder wenn jemand von euch nicht selber reinigen will. Wer nicht selber reinigt, verursacht damit den anderen Kosten.</p><p><b>Wer eine Staffel beginnt,</b> findet das Chalet gereinigt und bezogen und bringt keine Wäsche mit. Dafür sorgt er, dass die benutzte Wäsche zurückkommt. Die Regeln stehen unter «🧹 Selber reinigen».</p></div></details>
+        <details class="sub" id="b-reisegruppe"><summary>👨‍👩‍👧‍👦 Reisegruppe</summary><div class="bc"><p>Eine Reisegruppe ist jede und jeder aus der Familie, in welcher Konstellation auch immer. Wer zusammen kommt, ist eine Reisegruppe, z. B. Jerome, Deborah, Miriam oder Manuel mit ihren Familien oder jemand allein.</p></div></details>
+        <details class="sub" id="b-staffel"><summary>🔗 Familienstaffel</summary><div class="bc" id="bc-staffel"><p>Reisegruppen, die die Wohnung nacheinander benutzen, ohne dass die Eltern dazwischen reinigen. Sie endet, sobald die Eltern oder ein Airbnb-Gast kommen, oder wenn jemand von euch nicht selber reinigen will. Wer nicht selber reinigt, verursacht damit den anderen Kosten.</p><p><b>Wer eine Staffel beginnt,</b> findet das Chalet gereinigt und bezogen vor und bringt keine Wäsche mit. Dafür sorgt er, dass die benutzte Wäsche zurückkommt. Die Regeln stehen unter «🧹 Selber reinigen».</p></div></details>
         <details class="sub" id="b-februar" hidden><summary>⛷️ Februar (Skisaison)</summary><div class="bc" id="bc-februar"></div></details>
         <details class="sub" id="b-hochsaison" hidden><summary>🏔️ Hochsaison</summary><div class="bc" id="bc-hochsaison"></div></details>
         <details class="sub" id="b-prov"><summary>🔓 Termin mit Vorbehalt</summary><div class="bc" id="bc-prov"></div></details>
@@ -1052,7 +1057,7 @@
    Nach jeder Änderung die Versionsnummer erhöhen und das Datum anpassen.
    ============================================================ */
 // Standardwerte (Reserve). Die gültigen Werte stehen in der Datei einstellungen.json.
-let VERSION = "2.88.3.0";
+let VERSION = "2.88.4.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1309,7 +1314,7 @@ const FIELDS = [
     hint: () => S.selbst === "Nein" ? "Nein: Es gilt die normale Reinigung (" + chf(P.reinigung) + ")." : "Ja: Ihr bringt frische Wäsche mit und reinigt selbst. Die Reinigung kostet dann " + chf(P.reinigungSelbst) + ". Regeln siehe «🧹 Selbstreinigung» im Kalender." + (S.selbst === "Ja" ? "" : " Nein: Es gilt die normale Reinigung (" + chf(P.reinigung) + ")."),
     visible: () => false, opts: () => ["Ja", "Nein"] },
   { id: "waesche", label: "🧺 Wie kommt die benutzte Wäsche zurück zu den Eltern?", type: "str",
-    hint: () => "Ihr beginnt die Staffel: Ihr findet das Chalet gereinigt und bezogen und bringt keine Wäsche mit. Dafür besorgt ihr, dass die benutzte Wäsche zurückkommt. Beim Abreisen zieht ihr die Betten ab (die Moltons bleiben) und nehmt die Wäsche mit. Spätestens " + WAESCHE_TAGE + " Tage nach eurer Rückreise bringt oder sendet ihr sie den Eltern. Das Porto zahlt, wer sendet. Mit der Wahl bestätigt ihr diese Bedingung.",
+    hint: () => "Ihr beginnt die Staffel: Ihr findet das Chalet gereinigt und bezogen vor und bringt keine Wäsche mit. Dafür besorgt ihr, dass die benutzte Wäsche zurückkommt. Beim Abreisen zieht ihr die Betten ab (die Moltons bleiben) und nehmt die Wäsche mit. Spätestens " + WAESCHE_TAGE + " Tage nach eurer Rückreise bringt oder sendet ihr sie den Eltern. Das Porto zahlt, wer sendet. Mit der Wahl bestätigt ihr diese Bedingung.",
     visible: (d) => d.SM && S.selbst === "Ja" && !!ARR && istStaffelStart(ARR), opts: () => W_OPTS },
   { id: "reinig", label: "🍰 Wie werden die Reinigungskosten (" + chf(P.reinigung) + ") aufgeteilt?", type: "str",
     hint: () => "Das entscheidet ihr selbst. Das Total ändert sich nicht, nur wer wie viel zahlt. Die Familie gilt immer als ein Block. Bei «Nach Personen» zählen Kinder ab 2½ Jahren wie Erwachsene, Kinder unter 2½ Jahren zählen nicht. Bei «Nach Parteien» ist die Familie eine Partei und jeder Freund eine weitere: bei 3 Freunden zahlt die Familie ¼, bei 4 Freunden ⅕. Das ist nur fair, wenn alle Parteien gleich gross sind. Sonst teilt nach Personen.",
@@ -1647,12 +1652,12 @@ function bildLuecke() {
   return h + '<p class="exbild-cap">Beispiel: Der erste Airbnb-Gast reist am ' + wd[(start + vor) % 7] + ' ' + an + '. ab, der nächste kommt am ' + wd[(start + vor + n) % 7] + ' ' + ab + '. Dazwischen liegen ' + n + ' freie Nächte, das ist die Lücke. Ihr bucht sie ganz: Anreise ' + wd[(start + vor) % 7] + ' ' + an + '., Abreise ' + wd[(start + vor + n) % 7] + ' ' + ab + '. (' + n + ' Nächte).</p></div>';
 }
 function bildStaffel() {
-  const bar = (k, t, f) => '<div class="exb ' + k + '" style="flex:' + f + '">' + t + '</div>', rk = (t) => '<div class="exb rkx ' + t + '" aria-hidden="true"></div>';
+  const chip = (z) => '<b class="zk zl">' + z + '</b>', bar = (k, t, f) => '<div class="exb ' + k + '" style="flex:' + f + '">' + (k === "occ" ? chip("BnB") : chip("Fam.")) + t + '</div>', rk = (t) => '<div class="exb rkx ' + t + '" aria-hidden="true"></div>';
   let h = '<div class="exbild" role="img" aria-label="Beispiel einer Familienstaffel">';
-  h += '<p class="extl">So läuft die Staffel</p><div class="exrow">' + bar("selbst", "Jerome", 3) + rk("k") + bar("selbst", "Deborah", 3) + rk("k") + bar("selbst", "Manuel", 3) + rk("e") + bar("occ", "Airbnb", 3) + '</div>';
-  h += '<p class="exbild-cap">Alle reinigen selbst (Kästchen mit Rahmen). Erst wenn der Airbnb-Gast kommt, fällt die Endreinigung an (gefülltes Kästchen: die Eltern reinigen). Manuel bezahlt die Rechnung und holt die Anteile von Jerome und Deborah zurück.</p>';
-  h += '<p class="extl" style="margin-top:12px">So endet sie früher</p><div class="exrow">' + bar("selbst", "Jerome", 3) + rk("k") + bar("eltern", "Deborah", 4) + rk("e") + bar("selbst", "Manuel", 3) + rk("k") + '</div>';
-  h += '<p class="exbild-cap">Deborah will nicht selber reinigen, die Eltern reinigen (gefülltes Kästchen). Damit endet die Staffel für Jerome, seine Endreinigung ist jetzt fällig. Manuel beginnt danach eine neue Staffel und trägt seine Endreinigung allein.</p></div>';
+  h += '<p class="extl">So läuft die Staffel</p><div class="exrow">' + bar("selbst", "Jerome", 3) + rk("k") + bar("selbst", "Miriam", 3) + rk("k") + bar("selbst", "Manuel", 3) + rk("e") + bar("occ", "", 1.4) + '</div>';
+  h += '<p class="exbild-cap">Alle reinigen selbst (Kästchen mit Rahmen). Erst wenn der Airbnb-Gast kommt, fällt die Endreinigung an (gefülltes Kästchen: die Eltern reinigen). Manuel bezahlt die Rechnung und holt die Anteile von Jerome und Miriam zurück.</p>';
+  h += '<p class="extl" style="margin-top:12px">So endet sie früher</p><div class="exrow">' + bar("selbst", "Jerome", 3) + rk("k") + bar("eltern", "Miriam", 4) + rk("e") + bar("selbst", "Manuel", 3) + rk("k") + '</div>';
+  h += '<p class="exbild-cap">Miriam will nicht selber reinigen, die Eltern reinigen (gefülltes Kästchen). Damit endet die Staffel für Jerome, seine Endreinigung ist jetzt fällig. Manuel beginnt danach eine neue Staffel und trägt seine Endreinigung allein.</p></div>';
   return h;
 }
 function festUndVorbehaltTxt() {   // aus den Einstellungen: welche Zeiten fest sind und welche mit Vorbehalt (als Liste)
