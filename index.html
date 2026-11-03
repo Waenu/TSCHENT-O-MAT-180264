@@ -981,7 +981,7 @@
    Nach jeder Änderung die Versionsnummer erhöhen und das Datum anpassen.
    ============================================================ */
 // Standardwerte (Reserve). Die gültigen Werte stehen in der Datei einstellungen.json.
-let VERSION = "2.83.0.2";
+let VERSION = "2.83.0.3";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2534,7 +2534,7 @@ function familienText() {
   ];
   if (nt) { z.push(nt); z.push(""); }
   z.push("Alles Weitere steht im Tschent-O-Mat:");
-  z.push("https://waenu.github.io/Tschentomat/");
+  z.push("https://waenu.github.io/TSCHENT-O-MAT-180264/");
   z.push("");
   z.push("Gruss");
   z.push(ABSENDER);
@@ -3244,7 +3244,7 @@ document.getElementById("aufStatus").addEventListener("click", aufentWeg);
   aufentWeg(e);
 }));
 // ===== Bestätigen durch die Eltern: Link aus der Anfrage, Eintrag in buchungen.json über die GitHub-Schnittstelle =====
-const GH_REPO = "Waenu/Tschentomat-neu", GH_DATEI = "buchungen.json";
+const GH_REPO = "Waenu/TSCHENT-O-MAT-180264", GH_DATEI = "buchungen.json";
 let TOKEN = "";
 try { TOKEN = localStorage.getItem("tm2_token") || ""; } catch (e) {}
 // Ansicht «Mami»: darf alles sehen, aber nichts ändern oder bestätigen. Papi schickt einen Link (…/#mami=CODE) per WhatsApp; öffnet ihn Mami einmal, merkt sich ihr Handy die Ansicht. Im Programm steht nur der Fingerabdruck des Codes. «#mami=aus» schaltet sie wieder ab.

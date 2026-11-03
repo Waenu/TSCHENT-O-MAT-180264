@@ -77,4 +77,4 @@ Der schwebende «?»-Knopf (nur sichtbar, solange der Kalender im Bild ist) scha
 
 ## Testmodus
 
-Die App mit `?heute=2027-01-18` öffnen (zum Beispiel `https://waenu.github.io/Tschentomat/?heute=2027-01-18`): Sie rechnet dann so, als wäre dieser Tag heute. Oben erscheint eine rote Leiste mit ◀ und ▶ (ein Tag zurück oder vor) und «Echt». Es wird nichts gespeichert, ausser du bestätigst etwas auf dem Elterntelefon (das schreibt echt in `buchungen.json`). Für die Kinder ist der Modus nirgends sichtbar.
+Die App mit `?heute=2027-01-18` öffnen (zum Beispiel `https://waenu.github.io/TSCHENT-O-MAT-180264/?heute=2027-01-18`): Sie rechnet dann so, als wäre dieser Tag heute. Oben erscheint eine rote Leiste mit ◀ und ▶ (ein Tag zurück oder vor) und «Echt». Es wird nichts gespeichert, ausser du bestätigst etwas auf dem Elterntelefon (das schreibt echt in `buchungen.json`). Für die Kinder ist der Modus nirgends sichtbar.
