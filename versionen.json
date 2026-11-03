@@ -2,7 +2,7 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
-      "v": "2.83.0.3 bis 2.90.0.1",
+      "v": "2.83.0.3 bis 2.90.0.2",
       "datum": "2026-11-03",
       "titel": "Änderungen vom 03.11.2026",
       "arten": [
@@ -10,6 +10,7 @@
         "Layout"
       ],
       "punkte": [
+        "Namensliste ohne Zwischentitel «Partner», alle Namen linksbündig.",
         "Glossar «Familie»: Die Partner stehen als Paare bei ihren Kindern (Jerome und Rahel, Deborah und David, Miriam und Andreas, Manuel und Sarah).",
         "Neu: Die Partner David, Rahel, Andreas und Sarah können selbst buchen (Auswahl unter «Partner» unterhalb von Manuel) und stehen im Glossar unter «Familie».",
         "Bei «Geldverwendung» halten zwei Hände Banknoten, die davonflattern (Glossar und Rechner, nur bei «Bewegung: alles»).",
