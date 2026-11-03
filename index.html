@@ -258,14 +258,20 @@
   .marke span[data-z] { padding: 10px 3px; }
   .marke .pt { padding: 0 .1em; }
   body.rechner-an #markeStart, body.rechner-an #markeText, body.rechner-an #markeBahn { display: none; }
-  .marke-bahn { position: relative; height: 2.2em; margin: -6px 0 0; overflow: hidden; pointer-events: none; }
+  .marke-bahn { position: relative; height: 2.2em; margin: -6px 0 0; clip-path: inset(-4em 0 0 0); pointer-events: none; }   /* seitlich und unten abgeschnitten (Auto fährt von rechts ein), nach oben offen für die Gläser */
   .bahn-auto, .bahn-haus, .prost { position: absolute; bottom: 0; font-size: 1.5rem; line-height: 1.3; }
   .bahn-auto { left: 100%; animation: fahren 3s ease-out forwards; }
   .bahn-haus { left: 8%; animation: einblenden .6s ease-out both; }
-  .prost { left: 50%; margin-left: -.7em; font-size: 1.7rem; animation: prosten 2.4s ease-out forwards; }
+  .prost { left: 50%; width: 3.6rem; height: 2.5rem; margin-left: -1.8rem; transform-origin: 50% 100%; animation: prosten 2.4s ease-out forwards; }
+  .prost svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  .prost .fk { opacity: 0; transform-box: fill-box; transform-origin: center; animation: prostFunke 2.4s ease-out forwards; }
+  .prost .bl { animation: prostBlase 1.6s ease-out infinite; transform-box: fill-box; }
+  .prost .bl2 { animation-delay: .5s; } .prost .bl3 { animation-delay: 1s; }
+  @keyframes prostFunke { 0%, 38% { opacity: 0; transform: scale(.2) rotate(0); } 50% { opacity: 1; transform: scale(1.3) rotate(20deg); } 75%, 100% { opacity: 0; transform: scale(.9) rotate(40deg); } }
+  @keyframes prostBlase { 0% { opacity: 0; transform: translateY(0); } 25% { opacity: .9; } 100% { opacity: 0; transform: translateY(-9px); } }
   @keyframes fahren { to { left: 20%; } }
   @keyframes einblenden { from { opacity: 0; } to { opacity: 1; } }
-  @keyframes prosten { 0% { transform: scale(0) rotate(0); } 30% { transform: scale(1.4) rotate(-14deg); } 45% { transform: scale(1.4) rotate(14deg); } 60% { transform: scale(1.4) rotate(-8deg); } 85% { transform: scale(1.2) rotate(0); opacity: 1; } 100% { transform: scale(1.2); opacity: 0; } }
+  @keyframes prosten { 0% { transform: scale(0) rotate(0); } 30% { transform: scale(1.3) rotate(-7deg); } 45% { transform: scale(1.3) rotate(7deg); } 60% { transform: scale(1.3) rotate(-4deg); } 85% { transform: scale(1.2) rotate(0); opacity: 1; } 100% { transform: scale(1.2); opacity: 0; } }
   .marke span[data-e] { display: inline-block; padding: 10px 3px; }
   .marke-text { text-align: center; color: var(--marke); font-size: var(--t-small); min-height: 1.4em; margin: 0 0 18px; }
   @keyframes atmen { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.22); } }
@@ -910,6 +916,14 @@
   .exar small { font-size: inherit; } .exar b { color: var(--bk-eltern); margin-right: 3px; }
   .exar i { display: block; position: relative; height: 3px; width: 100%; background: var(--bk-eltern); margin-top: 3px; border-radius: 2px; }
   .exar i::after { content: ""; position: absolute; right: -2px; top: -4px; border: 5.5px solid transparent; border-left: 9px solid var(--bk-eltern); border-right: 0; }
+/* Zahlung: der Geldbeutel kippt, Münzen fallen heraus (nur bei «Bewegung: alles», nur transform und opacity, die Zeilenhöhe bleibt) */
+  .an-geld { position: relative; display: inline-block; width: 1.35em; text-align: center; vertical-align: baseline; }
+  .an-geld .gb { display: inline-block; transform-origin: 55% 92%; animation: geldKipp 8s ease-in-out infinite; }
+  .an-geld .mz { position: absolute; left: .15em; top: .35em; width: .3em; height: .3em; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #FFF2A8, #F0B400 70%); box-shadow: 0 0 0 1px #A87400; opacity: 0; animation: geldMuenze 8s ease-in infinite; pointer-events: none; }
+  .an-geld .m2 { left: 0; animation-delay: .22s; } .an-geld .m3 { left: .3em; animation-delay: .45s; }
+  @keyframes geldKipp { 0%, 14%, 62%, 100% { transform: rotate(0); } 24%, 46% { transform: rotate(-68deg); } 54% { transform: rotate(-52deg); } }
+  @keyframes geldMuenze { 0%, 22% { opacity: 0; transform: translate(0, 0) rotate(0); } 26% { opacity: 1; } 40% { opacity: 1; transform: translate(-.45em, 1.1em) rotate(200deg); } 46%, 100% { opacity: 0; transform: translate(-.55em, 1.5em) rotate(260deg); } }
+  @media (prefers-reduced-motion: reduce) { .an-geld .gb, .an-geld .mz { animation: none; } }
 </style>
 
 </head>
@@ -978,7 +992,7 @@
         <details class="sub" id="b-sicht"><summary>🔔 Lücke durch die Vorlaufzeit</summary><div class="bc" id="bc-sicht"></div></details>
         <details class="sub" id="b-ruhe"><summary>🧹 Selber reinigen</summary><div class="bc" id="bc-ruhe"></div></details>
         <details class="sub" id="b-endrein"><summary>🪣 Endreinigung</summary><div class="bc" id="bc-endrein"></div></details>
-        <details class="sub" id="b-zahlung"><summary>💰 Zahlung</summary><div class="bc" id="bc-zahlung"></div></details>
+        <details class="sub" id="b-zahlung"><summary><span class="an-geld" aria-hidden="true"><span class="gb">💰</span><i class="mz m1"></i><i class="mz m2"></i><i class="mz m3"></i></span> Zahlung</summary><div class="bc" id="bc-zahlung"></div></details>
         <details class="sub" id="b-trinkgeld"><summary>🐖 Trinkgeld</summary><div class="bc" id="bc-trinkgeld"></div></details>
         <details class="sub" id="b-sparen"><summary>💸 So sparst du Geld</summary><div class="bc" id="bc-sparen"></div></details>
         <details class="sub" id="b-rechnen"><summary>🧮 Wie wird gerechnet</summary><div class="bc" id="bc-rechnen"></div></details>
@@ -1085,7 +1099,7 @@
    Nach jeder Änderung die Versionsnummer erhöhen und das Datum anpassen.
    ============================================================ */
 // Standardwerte (Reserve). Die gültigen Werte stehen in der Datei einstellungen.json.
-let VERSION = "2.89.5.0";
+let VERSION = "2.89.7.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -4300,7 +4314,9 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
   function prost() {
     if (proste) return;
     proste = true;
-    neu("prost", "🥂", 2600);
+    const g = (x, rot) => '<g transform="translate(' + x + ' 0) rotate(' + rot + ' 0 55)"><path d="M-9 10 L9 10 L3.6 34 Q0 37.5 -3.6 34 Z" fill="#E9F4F8" fill-opacity=".35" stroke="#8FB7C9" stroke-width="1.3" stroke-linejoin="round"/><path d="M-7.7 15 L7.7 15 L3.3 33.4 Q0 36 -3.3 33.4 Z" fill="#F5CF55"/><rect x="-.9" y="36" width="1.8" height="17" fill="#B8D3DE"/><ellipse cx="0" cy="54.5" rx="8" ry="2.3" fill="#B8D3DE"/><circle cx="-1.5" cy="22" r=".9" fill="#fff" fill-opacity=".8"/><circle cx="1.8" cy="27" r=".8" fill="#fff" fill-opacity=".8"/><g fill="#fff" stroke="#DCE8EE" stroke-width=".6"><circle cx="-6.2" cy="11.5" r="4"/><circle cx="-2.2" cy="8.5" r="4.4"/><circle cx="2.4" cy="8.8" r="4.2"/><circle cx="6.4" cy="11.8" r="3.8"/><circle cx="0" cy="12.6" r="4"/><circle cx="-.4" cy="5.2" r="2.6"/></g></g>';
+    const sp = neu("prost", "", 2600);
+    sp.innerHTML = '<svg viewBox="0 0 100 64" focusable="false">' + g(28, 15) + g(72, -15) + '<g class="fk"><path d="M50 3 L52.2 9.8 L59 12 L52.2 14.2 L50 21 L47.8 14.2 L41 12 L47.8 9.8 Z" fill="#FFF3A6" stroke="#E7B800" stroke-width=".8"/></g><circle class="bl bl1" cx="43" cy="2" r="1.6" fill="#fff"/><circle class="bl bl2" cx="58" cy="3" r="1.4" fill="#fff"/><circle class="bl bl3" cx="50.5" cy="-1" r="1.2" fill="#fff"/></svg>';
     setTimeout(() => { proste = false; }, 2600);
   }
   function gruss() {
@@ -4594,7 +4610,7 @@ Promise.all([ladeEinstellungen(), ladeBelegt(), ladeBuchungen(), ladeGaeste()]).
       // Kleine Symbole im Text: erst bei «Bewegung an» werden sie umhüllt und bewegen sich kurz (bei «aus» bleibt der Text unberührt)
       const MOT = { "🧹": "e-besen", "🔒": "e-wackel", "🔓": "e-offen", "🪣": "e-eimer", "⚠️": "e-puls", "🧩": "e-dreh", "⛷️": "e-ski", "✉️": "e-flug", "💡": "e-puls", "✅": "e-puls", "📨": "e-flug", "✈️": "e-flug", "💰": "e-hupf", "💸": "e-flug", "🔔": "e-glocke" };
       const EMO = /(?:\p{Emoji_Presentation}|\p{Extended_Pictographic}\uFE0F)(?:\u200D(?:\p{Emoji_Presentation}|\p{Extended_Pictographic}\uFE0F?))*/gu;
-      const NICHT = "script, style, textarea, input, select, option, button, svg, .e, .zi, .zk, .bk, .cal-d, .rd, .bar, .sym, .an-auge, .an-bulb, .an-fire, .an-blatt, .an-unter, .ik-koffer, .ik-kreis, .ik-haken, .bigbtn, [data-noanim]";
+      const NICHT = "script, style, textarea, input, select, option, button, svg, .e, .zi, .zk, .bk, .cal-d, .rd, .bar, .sym, .an-geld, .an-auge, .an-bulb, .an-fire, .an-blatt, .an-unter, .ik-koffer, .ik-kreis, .ik-haken, .bigbtn, [data-noanim]";
       let EN = 0, io = null, mo = null, plan = false;
       const hueller = (wurzel) => {
         const w = document.createTreeWalker(wurzel, NodeFilter.SHOW_TEXT, { acceptNode: (t) => { EMO.lastIndex = 0; const pe = t.parentElement; return pe && EMO.test(t.nodeValue) && !pe.closest(NICHT) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT; } });
