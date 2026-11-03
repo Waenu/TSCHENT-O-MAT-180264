@@ -1,6 +1,6 @@
 {
   "_hinweis": "Nur die Zahlen und die Version ändern, sonst nichts. Beträge in CHF. Nach dem Speichern dauert es etwa eine Minute, bis alle die neuen Werte sehen.",
-  "version": "2.83.0.3",
+  "version": "2.84.0.0",
   "gueltigAb": "01.01.2027",
   "famPausch": 70,
   "gast": 70,
@@ -44,16 +44,9 @@
   ],
   "hochsaison": [],
   "spitzenzeiten": [],
-  "selbstReinigung": [
-    [
-      "03-01",
-      "04-30"
-    ],
-    [
-      "10-01",
-      "12-18"
-    ]
-  ],
+  "maerzHochWochen": 1,
+  "oktoberNebenWochen": 2,
+  "weihnachtsSperre": ["12-21", "12-24"],
   "lueckeMaxPersonen": 2,
   "keinCheckinSonntag": true,
   "lueckeVorlaufTage": 4,

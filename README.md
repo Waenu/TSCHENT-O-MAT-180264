@@ -18,7 +18,9 @@ Preisrechner für die Familie, Chalet Tschenten, Adelboden.
 | `famAnteil` | Familie pro Nacht, wenn Sohn oder Tochter das Zimmer mit einem Gast teilt |
 | `reinigung` | Reinigung pro Aufenthalt |
 | `reinigungSelbst` | Reinigung, wenn die Familie selbst reinigt und frische Wäsche mitbringt (0 = gratis) |
-| `selbstReinigung` | Zeiten (jedes Jahr gleich), in denen die Familie selbst reinigen darf. Format `[["11-01","12-18"]]` (Monat-Tag von, bis). Weitere Zeiträume mit Komma anfügen |
+| `maerzHochWochen` | Hochsaison im März bis zum Ende dieser vollen Woche (Montag bis Sonntag; Tage vor dem ersten Montag zählen zur Woche danach). 1 = erste volle Märzwoche |
+| `oktoberNebenWochen` | Nebensaison im Oktober bis zum Ende dieser vollen Woche (2 = zweite volle Woche). Danach beginnt die Tiefsaison (Staffel-Zeit) |
+| `weihnachtsSperre` | Von, bis (Monat-Tag, jedes Jahr gleich). Davor gilt Tiefsaison bis zum Tag vor dem Beginn, danach Hochsaison ab dem Tag nach dem Ende |
 | `sparEin` | Reduktion pro Nacht, wenn Zimmer 1 unberührt bleibt |
 | `sparMaxPers` | Bis so viele Personen insgesamt kann Zimmer 1 unberührt bleiben |
 | `minNaechte` / `maxNaechte` | Kleinste und grösste Anzahl Nächte |
@@ -59,7 +61,7 @@ Preisrechner für die Familie, Chalet Tschenten, Adelboden.
 ## Termine unter Vorbehalt (provisorisch)
 
 - Idee: Lücken füllen, die sonst leer blieben, ohne den Termin in Airbnb zu sperren. Ein Airbnb-Gast hat immer Vorrang, die Familie muss dann räumen oder gar nicht erst gehen. Normale Kosten.
-- Gilt automatisch für alle Aufenthalte, die mindestens eine Nacht ausserhalb der Selbstreinigungs-Zeiten (`selbstReinigung`) haben. Reine Staffel-Aufenthalte (März/April, Oktober bis 18. Dezember) sind fest und werden in Airbnb gesperrt.
+- Gilt automatisch für alle Aufenthalte, die mindestens eine Nacht ausserhalb der Tiefsaison (Staffel-Zeit) haben. Reine Staffel-Aufenthalte (Tiefsaison: März nach der Hochsaison bis April, Oktober nach der Nebensaison bis 20. Dezember) sind fest und werden in Airbnb gesperrt.
 - Kalender: gestreifter Balken mit Umriss. Rote Umrandung = Konflikt, ein Airbnb-Gast hat inzwischen eine dieser Nächte gebucht. Grüner Haken im weissen Kreis = «praktisch sicher» (Abreise innert `airbnbVorlaufTage`, es kann kaum noch jemand buchen).
 - Der Balken ist im sicheren Teil voll, im unsicheren schraffiert. Sicher sind alle Nächte vor «heute plus `airbnbVorlaufTage`», denn ein neuer Airbnb-Gast kann frühestens dann einchecken. Der volle Teil wächst jeden Tag. Liegt die Abreise innerhalb dieser Frist, ist der ganze Balken voll und das Häkchen erscheint. Anfrage, Hilfe und Warnung nennen das Datum («praktisch sicher am …»).
 - Bei provisorischen Terminen lassen sich die Knöpfe «Per WhatsApp senden» und «Anfrage kopieren» erst nach dem Pflicht-Häkchen «Ich habe das Risiko verstanden» benutzen. Der Anfragetext enthält dann den Satz, dass das Risiko bestätigt wurde.
