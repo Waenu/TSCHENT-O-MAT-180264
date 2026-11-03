@@ -1127,7 +1127,7 @@
    Nach jeder Änderung die Versionsnummer erhöhen und das Datum anpassen.
    ============================================================ */
 // Standardwerte (Reserve). Die gültigen Werte stehen in der Datei einstellungen.json.
-let VERSION = "2.91.0.0";
+let VERSION = "2.91.0.1";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2706,7 +2706,7 @@ function schnappText(z) {   // fertiger Text der Berechnung zum Zeitpunkt der An
 function anfrageText(r) {
   const x = r.d;
   const z = [];
-  z.push("Hallo Eltern");
+  z.push(PARTNER_ABS.indexOf(ABSENDER) >= 0 ? "Hallo Marianne und Silvan" : "Hallo Mami und Papi");   // Partner sagen Vornamen, die Kinder Mami und Papi
   z.push("");
   z.push("Anfrage für das Chalet Tschenten (noch keine Reservation):");
   z.push("");
@@ -3532,7 +3532,7 @@ function nameWahlPruefen() {
     try { aufentZeigen(); render(); bestZeigen(); renderKalender(); } catch (e) {}
   };
   const liste = () => {
-    ov.innerHTML = '<div class="nw-box"><h2>👋 Willkommen im TSCHENT-O-MAT</h2><p>Wer bist du? Wähle deinen Namen.</p><div class="nw-liste">' + ABS.map((n) => '<button type="button" class="btn nw-n" data-n="' + n + '">' + n + "</button>").join("") + "</div></div>";
+    ov.innerHTML = '<div class="nw-box"><h2>👋 Willkommen im TSCHENT-O-MAT</h2><p><b>Wer bist du?</b> Wähle deinen Namen.</p><div class="nw-liste">' + ABS.map((n) => '<button type="button" class="btn nw-n" data-n="' + n + '">' + n + "</button>").join("") + "</div></div>";
   };
   const sicher = (n) => {
     ov.innerHTML = '<div class="nw-box"><h2>Bist du wirklich ' + esc(n) + '?</h2><p>Der Name wird auf diesem Handy festgelegt und kann nicht mehr geändert werden. Nur Papi kann ihn zurücksetzen.</p><div class="btns"><button type="button" class="btn nw-ja" data-n="' + n + '">Ja, ich bin ' + esc(n) + '</button><button type="button" class="btn nw-nein">Nein, zurück</button></div></div>';
@@ -3544,7 +3544,7 @@ function nameWahlPruefen() {
     else if (e.target.closest(".nw-nein")) liste();
   });
   document.body.appendChild(ov); document.body.classList.add("name-offen");
-  if (ABSENDER) sicher(ABSENDER); else liste();   // schon früher gewählter Name: nur noch bestätigen
+  liste();   // die App kann nicht wissen, wer das Handy hat: immer «Wer bist du?», auch bei einem früher gespeicherten Namen
 }
 nameResetPruefen().then(() => mamiPruefen()).then(() => nameWahlPruefen());
 // «Ansicht als» Kind (nur mit Zugriff von Papi): beim Start immer zurück zu Eltern
