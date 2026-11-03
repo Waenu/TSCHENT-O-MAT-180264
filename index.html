@@ -951,6 +951,8 @@
   #nameWahl .btns { display: flex; flex-direction: column; gap: 10px; }
   body.name-offen { overflow: hidden; }
   .namefest { margin: 4px 0 0; font-weight: 700; }
+  .lk-row { border-top: 1px solid var(--line, rgba(128,128,128,.3)); padding: 8px 0; text-align: left; }
+  .lk-row .btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
 </style>
 
 </head>
@@ -1127,7 +1129,7 @@
    Nach jeder Änderung die Versionsnummer erhöhen und das Datum anpassen.
    ============================================================ */
 // Standardwerte (Reserve). Die gültigen Werte stehen in der Datei einstellungen.json.
-let VERSION = "2.91.0.2";
+let VERSION = "2.92.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -3536,7 +3538,7 @@ async function nameResetPruefen() {
 }
 function nameWahlPruefen() {
   if (TOKEN || MAMI || ELTERN_GERAET || document.getElementById("nameWahl")) return;
-  if (ABSENDER && NAME_FIX) return;
+  if (ABSENDER && NAME_FIX && !(einlAktiv() && EINL !== null && !EINL[ABSENDER])) return;
   const ov = document.createElement("div"); ov.id = "nameWahl"; ov.setAttribute("role", "dialog"); ov.setAttribute("aria-modal", "true");
   const fertig = (n) => {
     ABSENDER = n; NAME_FIX = true;
@@ -3557,9 +3559,51 @@ function nameWahlPruefen() {
     else if (e.target.closest(".nw-nein")) liste();
   });
   document.body.appendChild(ov); document.body.classList.add("name-offen");
+  if (einlAktiv()) {   // geschützt: nur mit persönlichem Link
+    ov.innerHTML = '<div class="nw-box"><h2>🔒 Dein persönlicher Link</h2><p>Den TSCHENT-O-MAT öffnest du mit deinem persönlichen Link. Den hat dir Papi per WhatsApp geschickt. Tippe ihn dort einfach an, mehr musst du nicht tun.</p>' + (LINK_MELDUNG ? '<p><b>' + esc(LINK_MELDUNG) + '</b></p>' : "") + (EINL === null ? '<p class="hint">Die Verbindung zum Server fehlt gerade. Versuche es mit Empfang nochmals.</p>' : "") + "</div>";
+    return;
+  }
   liste();   // die App kann nicht wissen, wer das Handy hat: immer «Wer bist du?», auch bei einem früher gespeicherten Namen
 }
-nameResetPruefen().then(() => mamiPruefen()).then(() => nameWahlPruefen());
+// ===== Persönliche Links: Papi erzeugt pro Person einen Link (…/#ich=Name.CODE). Ohne gültigen Link läuft die App für Kinder und Partner nicht. =====
+// einladungen.json enthält nur die Fingerabdrücke (SHA-256) der Codes. Erzeugt Papi einen neuen Link, wird der alte ungültig.
+let EINL = null, LINK_MELDUNG = "";   // EINL: Name → Fingerabdruck; null = nicht ladbar; {} = noch keine Links ausgegeben (Namensliste wie bisher)
+async function einlLaden() {
+  try {
+    const r = await fetch("einladungen.json?t=" + Date.now(), { cache: "no-store" });
+    if (r.status === 404) { EINL = {}; return; }
+    if (r.ok) { const j = await r.json(); EINL = j && j.hashes && typeof j.hashes === "object" ? j.hashes : {}; try { localStorage.setItem("tm2_einl", JSON.stringify(EINL)); } catch (e) {} return; }
+  } catch (e) {}
+  try { const c = JSON.parse(localStorage.getItem("tm2_einl") || "null"); EINL = c && typeof c === "object" ? c : null; } catch (e) { EINL = null; }
+}
+const einlAktiv = () => EINL === null || Object.keys(EINL).length > 0;
+async function einladungPruefen() {
+  if (TOKEN || MAMI || ELTERN_GERAET) return;
+  const m = /[#&]ich=([^&.]+)\.([^&]+)/.exec(location.hash || "");   // zuerst lesen: andere Teile der App räumen die Adresse beim Start auf
+  await einlLaden();
+  if (m) {
+    let ok = false; const n = decodeURIComponent(m[1]), c = decodeURIComponent(m[2]);
+    try { ok = ABS.indexOf(n) >= 0 && !!EINL && !!EINL[n] && (await sha256Hex(c)) === EINL[n]; } catch (e) {}
+    try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
+    if (ok) {
+      ABSENDER = n; NAME_FIX = true;
+      try { localStorage.setItem("tm2_absender", n); localStorage.setItem("tm2_namefix", "1"); localStorage.setItem("tm2_invcode", c); } catch (e) {}
+      try { aufentZeigen(); render(); bestZeigen(); renderKalender(); } catch (e) {}
+      return;
+    }
+    LINK_MELDUNG = "Dieser Link gilt nicht mehr. Bitte Papi um einen neuen Link.";
+  }
+  if (!einlAktiv()) return;   // noch keine Links ausgegeben: Namensliste wie bisher
+  let c = ""; try { c = localStorage.getItem("tm2_invcode") || ""; } catch (e) {}
+  let gueltig = false;
+  try { gueltig = !!(ABSENDER && c) && (EINL === null || (!!EINL[ABSENDER] && (await sha256Hex(c)) === EINL[ABSENDER])); } catch (e) {}
+  if (!gueltig) {
+    ABSENDER = ""; NAME_FIX = false;
+    try { localStorage.setItem("tm2_absender", ""); localStorage.removeItem("tm2_namefix"); localStorage.removeItem("tm2_invcode"); } catch (e) {}
+    try { aufentZeigen(); render(); bestZeigen(); renderKalender(); } catch (e) {}
+  }
+}
+nameResetPruefen().then(() => mamiPruefen()).then(() => einladungPruefen()).then(() => nameWahlPruefen());
 // «Ansicht als» Kind (nur mit Zugriff von Papi): beim Start immer zurück zu Eltern
 if (TOKEN && ABSENDER) {   // Kind-Modus übersteht ein Neuladen, solange die letzte Bedienung weniger als ANSICHT_TIMEOUT zurückliegt
   let ts = 0; try { ts = Number(localStorage.getItem("tm2_absender_ts")) || 0; } catch (e) {}
@@ -3623,6 +3667,52 @@ async function ghGaeste(fn) {
     throw new Error("Speichern fehlgeschlagen (Fehler " + r.status + ").");
   }
   throw new Error("Speichern fehlgeschlagen.");
+}
+async function ghEinl(fn) {   // einladungen.json (Fingerabdrücke der persönlichen Links) ändern, nur Papi mit Token
+  const url = "https://api.github.com/repos/" + GH_REPO + "/contents/einladungen.json";
+  const kopf = { Authorization: "Bearer " + TOKEN, Accept: "application/vnd.github+json" };
+  for (let versuch = 0; versuch < 2; versuch++) {
+    const g = await fetch(url + "?ref=main&t=" + Date.now(), { headers: kopf, cache: "no-store" });
+    if (g.status === 401 || g.status === 403) throw new Error("Das Token wird nicht akzeptiert. Es ist ungültig oder abgelaufen.");
+    let hashes = {}, sha;
+    if (g.status === 404) { /* Datei gibt es noch nicht: wird neu angelegt */ }
+    else if (g.ok) { const d = await g.json(); sha = d.sha; const j = JSON.parse(unb64(d.content)); hashes = j && j.hashes && typeof j.hashes === "object" ? j.hashes : {}; }
+    else throw new Error("GitHub antwortet mit Fehler " + g.status + ".");
+    hashes = fn(hashes);
+    const body = { message: "Persönliche Links aktualisiert (App)", content: b64(JSON.stringify({ hashes: hashes }, null, 2) + "\n"), branch: "main" };
+    if (sha) body.sha = sha;
+    const r = await fetch(url, { method: "PUT", headers: Object.assign({ "Content-Type": "application/json" }, kopf), body: JSON.stringify(body) });
+    if (r.ok) return hashes;
+    if ((r.status === 409 || r.status === 422) && versuch === 0) continue;
+    if (r.status === 401 || r.status === 403) throw new Error("Das Token darf in " + GH_REPO + " nicht schreiben.");
+    throw new Error("Speichern fehlgeschlagen (Fehler " + r.status + ").");
+  }
+  throw new Error("Speichern fehlgeschlagen.");
+}
+let INV = {}; try { INV = JSON.parse(localStorage.getItem("tm2_invlinks") || "{}") || {}; } catch (e) { INV = {}; }   // Papi: erzeugte Codes, nur auf diesem Gerät
+let zeigLk = false, LK_HASH = null;
+const lkNeuCode = () => { const a = new Uint8Array(9); crypto.getRandomValues(a); return btoa(String.fromCharCode.apply(null, a)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); };
+const lkLink = (n) => INV[n] ? location.origin + location.pathname + "#ich=" + encodeURIComponent(n) + "." + INV[n] : "";
+const lkText = (n) => "Hallo " + n + ", das ist dein persönlicher Link zum TSCHENT-O-MAT. Tippe ihn einfach an, mehr musst du nicht tun. Er gehört nur dir, bitte leite ihn nicht weiter.\n" + lkLink(n);
+function lkHtml() {
+  let h = '<div class="note h"><b>🔗 Persönliche Links</b><p class="hint">Sobald der erste Link ausgegeben ist, läuft die App für Kinder und Partner nur noch mit ihrem Link. Erzeuge zuerst alle acht und verschicke sie dann. Ein neu erzeugter Link macht den alten ungültig. Das ist auch der Reset: Erzeuge einen neuen Link und schicke ihn der Person.</p>';
+  if (LK_HASH === null) return h + '<p class="hint">Lade …</p></div>';
+  h += '<div class="btns"><button type="button" class="btn" data-lkalle="1">Alle acht Links neu erzeugen</button></div>';
+  ABS.forEach((n) => {
+    const da = !!INV[n], vergeben = !!LK_HASH[n];
+    h += '<div class="lk-row"><b>' + esc(n) + '</b> <span class="hint">' + (da ? "Link bereit" : vergeben ? "Link vergeben, hier nicht sichtbar" : "noch kein Link") + '</span><div class="btns">' +
+      (da ? '<a class="btn" target="_blank" rel="noopener" href="https://wa.me/?text=' + encodeURIComponent(lkText(n)) + '">Per WhatsApp</a><button type="button" class="btn" data-lkcp="' + n + '">Kopieren</button>' : "") +
+      '<button type="button" class="btn" data-lkneu="' + n + '">' + (da || vergeben ? "Neu erzeugen" : "Erzeugen") + '</button></div></div>';
+  });
+  return h + '<p class="hint">Der Code steht nur in diesem Link und auf diesem Handy. Auf einem anderen Gerät erzeugst du den Link neu.</p></div>';
+}
+async function lkLaden() { try { await einlLaden(); LK_HASH = EINL || {}; } catch (e) { LK_HASH = {}; } bestZeigen(); }
+async function lkErzeugen(namen) {
+  const neu = {}; namen.forEach((n) => { neu[n] = lkNeuCode(); });
+  const fp = {}; for (const n of namen) fp[n] = await sha256Hex(neu[n]);
+  await ghEinl((h) => Object.assign({}, h, fp));
+  namen.forEach((n) => { INV[n] = neu[n]; }); try { localStorage.setItem("tm2_invlinks", JSON.stringify(INV)); } catch (e) {}
+  LK_HASH = Object.assign({}, LK_HASH || {}, fp);
 }
 // ===== Privater Speicher für Beträge (nur Papi): eigenes Repository, das auf «Private» stehen muss =====
 const PRIV_REPO = "Waenu/Tschentomat-privat", PRIV_DATEI = "einnahmen.json";
@@ -3902,6 +3992,8 @@ function bestZeigen() {
     const wp = BUCH.filter((x) => x.waesche === "bringen" || x.waesche === "senden").sort((p, q) => (p.dep < q.dep ? 1 : -1));
     s += '<div class="vk-nav"><button type="button" class="btn" style="grid-column:1/-1" data-zeig="W">' + (zeigW ? "Wäsche-Protokoll ausblenden" : "🧺 Wäsche-Protokoll (" + wp.length + ")") + "</button></div>";
     if (zeigW) s += waescheProtokoll(wp);
+    s += '<div class="vk-nav"><button type="button" class="btn" style="grid-column:1/-1" data-zeig="K">' + (zeigLk ? "Persönliche Links ausblenden" : "🔗 Persönliche Links") + "</button></div>";
+    if (zeigLk) s += lkHtml();
     s += '<div class="vk-nav"><button type="button" class="btn" style="grid-column:1/-1" data-zeig="E">' + (zeigE ? "Einnahmen ausblenden" : "💰 Einnahmen") + "</button></div>";
     if (zeigE) s += einnahmenHtml();
     if (zeigL) s += "<b>📒 Logbuch</b>" + (LOGBUCH.length ? "<ul>" + LOGBUCH.slice().reverse().map((e) => "<li><span class=\"hint\">" + esc(fmtTag(e.t.slice(0, 10))) + ", " + esc(e.t.slice(11, 16)) + " Uhr</span> " + esc(e.text) + "</li>").join("") + "</ul>" : '<p class="hint">Noch keine Einträge.</p>');
@@ -4257,7 +4349,16 @@ document.getElementById("bestKasten").addEventListener("click", async (e) => {
   const find = (l, key) => l.find((x) => bKey(x) === key);
   if (e.target.closest("[data-zu]")) { bestMsg = ""; bestFehler = ""; bestZeigen(); return; }
   const ej = f("data-ejahr"); if (ej) { EJAHR = (EJAHR || Number(heuteKey().slice(0, 4))) + Number(ej); bestZeigen(); return; }
-  const z = f("data-zeig"); if (z) { if (z === "B") zeigB = !zeigB; else if (z === "L") zeigL = !zeigL; else if (z === "G") zeigG = !zeigG; else if (z === "E") zeigE = !zeigE; else if (z === "W") zeigW = !zeigW; else zeigA = !zeigA; bestZeigen(); return; }
+  const lkn = f("data-lkneu"), lkc = f("data-lkcp");
+  if (lkc) { kopiere(lkText(lkc), e.target.closest("[data-lkcp]"), "Kopiert"); return; }
+  if (lkn || e.target.closest("[data-lkalle]")) {
+    const alle = !lkn, namen = alle ? ABS.slice() : [lkn];
+    if (alle && LK_HASH && Object.keys(LK_HASH).length && !confirm("Alle acht Links neu erzeugen? Bereits verschickte Links werden ungültig.")) return;
+    bestBusy = true; bestFehler = "";
+    lkErzeugen(namen).then(() => { bestMsg = alle ? "Alle acht Links sind erzeugt." : "Neuer Link für " + lkn + " ist erzeugt."; }).catch((er) => { bestFehler = er.message; }).then(() => { bestBusy = false; bestZeigen(); });
+    return;
+  }
+  const z = f("data-zeig"); if (z) { if (z === "K") { zeigLk = !zeigLk; if (zeigLk) { LK_HASH = null; bestZeigen(); lkLaden(); return; } } else if (z === "B") zeigB = !zeigB; else if (z === "L") zeigL = !zeigL; else if (z === "G") zeigG = !zeigG; else if (z === "E") zeigE = !zeigE; else if (z === "W") zeigW = !zeigW; else zeigA = !zeigA; bestZeigen(); return; }
   if (e.target.closest("[data-gsave]")) {
     const q = (id) => (document.getElementById(id) || {}).value || "";
     const arr = q("gDat") || q("gSel"), typ = typWahl("gTyp"), name = gastKurz(q("gName")) || (typ === "block" ? "blockiert" : "");
