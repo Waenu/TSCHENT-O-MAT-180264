@@ -8,17 +8,6 @@
       "status": "abgelehnt"
     },
     {
-      "name": "Deborah",
-      "arr": "2027-06-17",
-      "dep": "2027-06-24",
-      "selbst": false,
-      "pers": 4,
-      "prov": true,
-      "betrag": 660,
-      "rechnung": "Gesendet am Mi 4.11.2026, 19:29 Uhr. App-Version 2.95.5.0.\nAnreise\tDonnerstag 17.06.2027\nAbreise\tDonnerstag 24.06.2027 (7 Nächte)\nFamilie\tIch, Partner und 2 Kinder\nFreunde\t0\nZimmer 1 unberührt\tJa\nTotal laut Rechner\tCHF 660.–\nMit Vorbehalt\tDer Termin wird nicht in Airbnb gesperrt, ein Airbnb-Gast hat Vorrang. Das Risiko wurde vom Absender bestätigt. Praktisch sicher wird der Aufenthalt erst am Mo 21.06.2027 (3 Tage vor der Abreise). Bis dahin kann ein Airbnb-Gast Vorrang bekommen.\n#Preisberechnung\nFamilie pro Nacht\tCHF 60.–\nÜbernachtung (7 Nächte)\tCHF 420.–\nReinigung\tCHF 240.–\nZimmer 1 und rotes Bad bleiben unberührt: CHF 10.– weniger pro Nacht, die Familie zahlt CHF 60.– statt CHF 70.–.",
-      "bestaetigt": "2026-11-04T19:30"
-    },
-    {
       "name": "Manuel",
       "arr": "2026-11-26",
       "dep": "2026-11-29",
@@ -400,6 +389,10 @@
     {
       "t": "2026-11-04T19:48",
       "text": "Entfernt: Jerome, Mo 16.11.2026 bis Do 19.11.2026"
+    },
+    {
+      "t": "2026-11-04T19:49",
+      "text": "Entfernt: Deborah, Do 17.06.2027 bis Do 24.06.2027"
     }
   ]
 }
