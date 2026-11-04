@@ -390,6 +390,12 @@
   .bar .lab { font-size: 0.95rem; min-width: 0; }
   .bar .lab small { font-size: var(--t-small); opacity: 0.9; }
   .bar .lab small.max { font-size: calc(var(--t-small) * 0.82); line-height: 1.15; }   /* Hinweis «maximal …»: bewusst kleiner, damit die Leiste niedrig bleibt */
+  .bar.gratis { background: #F2C230; color: #1B1B1B; }   /* Anteil der Familie ist 0: Leiste in Gold */
+  .bar .lab small.ziel { opacity: 1; font-weight: 600; }
+  .bar.gratis .lab small.ziel { font-weight: 800; }
+  .zielbox { margin: 8px 0 0; padding: 8px 10px; border-radius: 6px; background: var(--done-bg); border: 1px solid var(--done-line); font-size: var(--t-small); }
+  .zielbox p { margin: 2px 0; }
+  .zielbox.frei { font-weight: 800; margin: 8px 0 0; }
   .bar .lab small.spar { opacity: 1; font-weight: 700; color: #0A5A2A; }
   /* Spartipp: zwei Sterne leuchten abwechselnd, auch bei «Bewegung aus» (nur Aufhellen, keine grosse Bewegung) */
   .stern { display: inline-block; animation: sternWechsel 1.6s ease-in-out infinite; }
@@ -1144,7 +1150,7 @@
    Nach jeder Änderung die Versionsnummer erhöhen und das Datum anpassen.
    ============================================================ */
 // Standardwerte (Reserve). Die gültigen Werte stehen in der Datei einstellungen.json.
-let VERSION = "2.94.3.0";
+let VERSION = "2.95.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -3001,6 +3007,37 @@ function anfrageKasten(r) {
   h += '</div>';
   return h;
 }
+// Zielzeile: Was bringt dem eigenen Anteil (Familie bzw. «Nur ich») mehr Freunde oder eine Nacht mehr? Es werden echte Varianten durchgerechnet, gezeigt wird nur, was wirklich günstiger wird und buchbar ist.
+function zielHinweis(r) {
+  try {
+    if (!r || !r.ok || r.VERB || !ARR || !DEP || typeof S.gaeste !== "number") return null;
+    const base = r.FZ, d = r.d, ich = S.wer === "Nur ich";
+    if (base <= 0) return { frei: true, zeilen: [] };
+    const probe = (patch, dep) => {   // höchster Anteil über alle noch offenen Wahlen (Zimmer, Reinigungsaufteilung): so wird nie zu viel versprochen
+      const alt = Object.assign({}, S, patch), oldDep = DEP;
+      const zl = alt.gaeste > 0 && !alt.zimmer ? ["", "Ja", "Nein"] : [alt.zimmer], rl = alt.gaeste > 0 && !alt.reinig ? ["", ...REINIG] : [alt.reinig];
+      let best = null;
+      try {
+        if (dep) DEP = dep;
+        zl.forEach((z) => rl.forEach((ri) => { const c = calc(Object.assign({}, alt, { zimmer: z, reinig: ri })); if (c.ok && !c.VERB && (best === null || c.FZ > best)) best = c.FZ; }));
+      } finally { DEP = oldDep; }
+      return best;
+    };
+    const wer = ich ? "du" : "die Familie", zahlt = ich ? "zahlst du" : "zahlt die Familie", frei = ich ? "für dich ohne Kosten" : "für die Familie ohne Kosten";
+    const zeilen = [];
+    const bis = Math.min(d.frei + S.gaeste, S.gaeste + (S.gaeste === 0 ? 6 : 2));
+    for (let g = S.gaeste + 1; g <= bis; g++) {
+      const fz = probe({ gaeste: g }); if (fz === null || fz >= base) continue;
+      const k = g - S.gaeste, pre = S.gaeste === 0 ? "Mit " + g + (g === 1 ? " Freund" : " Freunden") : "Mit " + k + (k === 1 ? " Freund" : " Freunden") + " mehr";
+      zeilen.push({ fz, t: pre + (fz <= 0 ? ": " + frei + "." : " " + zahlt + " " + chf(base - fz) + " weniger.") });
+      if (fz <= 0) break;
+    }
+    const dep2 = addDays(DEP, 1);
+    if (kannAbreise(dep2)) { const fz = probe({}, dep2); if (fz !== null && fz < base) zeilen.push({ fz, t: "Mit 1 Nacht mehr (Abreise " + fmtTag(dep2) + ")" + (fz <= 0 ? ": " + frei + "." : " " + zahlt + " " + chf(base - fz) + " weniger.") }); }
+    zeilen.sort((x, y) => x.fz - y.fz);
+    return { frei: false, zeilen: zeilen.slice(0, 2).map((z) => z.t) };
+  } catch (e) { return null; }
+}
 // Wo eine Meldung steht: unter ihrem Feld; ist das Feld ausgeblendet (z. B. «Zimmer 1» bei gesperrter Frage), unter dem nächsten sichtbaren Feld davor, sonst oben
 const meldSichtbar = (id) => { const w = document.getElementById("f-" + id); return !!w && !w.hidden; };
 const meldOrt = (id) => [id, "gaeste", "wer", "art"].find(meldSichtbar) || "";
@@ -3052,6 +3089,7 @@ function render() {
   const res = document.getElementById("result");
   const bar = document.getElementById("bar");
   const lab = document.getElementById("barLab"), val = document.getElementById("barVal");
+  bar.classList.remove("gratis");
   if (!r.ok) {
     const wahl = /^Bitte wählen/.test(r.msg);
     res.hidden = wahl;   // «Bitte wählen» steht in der Leiste unten, das Preisfeld bleibt dann weg
@@ -3066,6 +3104,9 @@ function render() {
   const totTxt = tip > 0 ? "Total inkl. Trinkgeld für " : "Total für ";
   lab.textContent = totTxt + nTxt; val.textContent = chf(r.TOT + tip);
   if (r.d.SB) lab.innerHTML = totTxt + nTxt + "<br><small class=\"max\">maximal " + chf(r.TOT + tip + P.reinigung) + " mit Endreinigung</small>";
+  const zh = zielHinweis(r);
+  if (zh && zh.frei) { bar.classList.add("gratis"); lab.innerHTML += '<br><small class="ziel">✔ ' + (S.wer === "Nur ich" ? "Für dich" : "Für die Familie") + ' ohne Kosten</small>'; }
+  else if (zh && zh.zeilen.length) lab.innerHTML += '<br><small class="ziel">' + esc(zh.zeilen[0]) + '</small>';
   const sb = sparBetrag(r.d);
   if (sb > 0) lab.innerHTML += '<br><small class="spar"><span class="stern s1" aria-hidden="true">⭐</span>Bleibt Zimmer 1 zu, sparst du ' + chf(sb) + '<span class="stern s2" aria-hidden="true">⭐</span></small>';
   const x = r.d;
@@ -3116,6 +3157,7 @@ function render() {
     '<div class="total"><span class="small">für ' + x.nights + ' ' + (x.nights === 1 ? "Nacht" : "Nächte") + ', ' + x.PT + ' ' + (x.PT === 1 ? "Person" : "Personen") + ' mit Bett' + (x.KK > 0 ? ', ' + x.KK + (x.KK === 1 ? ' Kind' : ' Kinder') + ' im Kinderbettchen oder bei den eigenen Eltern' : '') + '</span>' +
     (ARR && DEP ? '<span class="small">vom ' + esc(fmtTag(ARR)) + ' bis ' + esc(fmtTag(DEP)) + '</span><span class="small">' + esc(zeitenKurz()) + '</span>' : '') +
     '<span class="big">' + chf(r.TOT) + '</span></div>' +
+    (zh && zh.frei ? '<p class="zielbox frei">✔ ' + (S.wer === "Nur ich" ? "Für dich" : "Für die Familie") + ' ohne Kosten: ' + (S.wer === "Nur ich" ? "dein Anteil" : "der Anteil der Familie") + ' ist ' + chf(0) + '.</p>' : (zh && zh.zeilen.length ? '<div class="zielbox">' + zh.zeilen.map((t) => '<p>' + esc(t) + '</p>').join("") + '</div>' : '')) +
     (x.LR > 0 ? '<p class="note"><b>Lückenpreis:</b> ' + x.LR + ' % günstiger auf die Übernachtungen, die Reinigung bleibt gleich.</p>' : '') +
     '<div id="rechBody" class="rows"' + (RECH_OFFEN ? '' : ' hidden') + '><table><tbody>' + det + '</tbody></table>' + notes + (x.SB ? endreinigungInfo(r) : '') + '</div>' +
     aufteilung +
