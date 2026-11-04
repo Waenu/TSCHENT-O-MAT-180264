@@ -2,7 +2,7 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
-      "v": "2.83.0.3 bis 2.93.6.0",
+      "v": "2.83.0.3 bis 2.93.7.0",
       "datum": "2026-11-03",
       "titel": "Änderungen vom 03.11.2026",
       "arten": [
@@ -10,6 +10,7 @@
         "Layout"
       ],
       "punkte": [
+        "Lücke mit Freunden: Bei «Freund im selben Zimmer» und «Zimmer 1 unberührt» erscheint «Ja» nur noch, wenn die Übernachtungen den Mindestbetrag erreichen. Statt der roten Warnung gibt es dann gar nicht erst die falsche Wahl, und ein Hinweis sagt, warum.",
         "Lücke mit Freunden: Der Mindestbetrag gilt jetzt pro Nacht (200 CHF für die Übernachtungen ohne Reinigung, also 400 / 600 / 800 für 2 / 3 / 4 Nächte). Es braucht in jeder Länge mindestens 2 Freunde. Der Betrag steht in einstellungen.json unter lueckeGastNacht.",
         "Text bei «Wer von der Familie kommt?»: «Ich» ist Sohn, Tochter oder Partner eines Kindes.",
         "Lücke mit Freunden, neue Regel: Die Familie bucht wie bisher. Mit Freunden müssen die Übernachtungen (ohne Reinigung) zusammen mindestens 500 CHF erreichen, sonst ist diese Zahl Freunde nicht wählbar (2 Nächte meist ab 3 Freunden, 3 Nächte ab 2). Der Aufschlag auf alle Personen entfällt. Der Betrag steht in einstellungen.json unter lueckeGastMin.",
