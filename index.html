@@ -513,7 +513,8 @@
   .symz { position: relative; display: flex; width: fit-content; align-items: center; gap: 6px; margin: 10px 0 8px; padding: 4px 6px; }
   .symz::after { inset: 0; --p: 14px; --d: 2px; --c: var(--accent); }
   .symik { font: inherit; line-height: 1; background: none; border: 0; color: inherit; width: 40px; height: 40px; padding: 0; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
-  .spiegel { display: inline-block; transform: scaleX(-1); }   /* offenes Schloss: Bügel zeigt nach rechts, zum Eimer */
+  .lk { width: 1.5em; height: 1.5em; display: inline-block; vertical-align: -0.4em; margin: -0.2em 0; }
+  .symik .lk { width: 1.7em; height: 1.7em; margin: 0; vertical-align: middle; }   /* Schloss zu und offen: gezeichnet, überall gleich */
   .symz-bis { margin: 0 0 8px; font-size: .95rem; text-align: center; }
   .bigbtn .bi { font-size: 1.7rem; line-height: 1; flex: 0 0 2.4rem; width: 2.4rem; text-align: center; }
   a.bigbtn { text-decoration: none; box-sizing: border-box; }
@@ -1019,6 +1020,7 @@
 
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="lkGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFD54F"/><stop offset="1" stop-color="#F29100"/></linearGradient><symbol id="lk-zu" viewBox="0 0 24 24"><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="#C9CED1" stroke-width="2.4" stroke-linecap="round"/><rect x="4.5" y="11" width="15" height="10.5" rx="2.2" fill="url(#lkGrad)" stroke="#B26A00" stroke-width="1"/><circle cx="12" cy="15.4" r="1.5" fill="#6B3E00"/><rect x="11.3" y="15.8" width="1.4" height="3" rx=".7" fill="#6B3E00"/></symbol><symbol id="lk-auf" viewBox="0 0 24 24"><g transform="rotate(38 16 11)"><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="#C9CED1" stroke-width="2.4" stroke-linecap="round"/></g><rect x="4.5" y="11" width="15" height="10.5" rx="2.2" fill="url(#lkGrad)" stroke="#B26A00" stroke-width="1"/><circle cx="12" cy="15.4" r="1.5" fill="#6B3E00"/><rect x="11.3" y="15.8" width="1.4" height="3" rx=".7" fill="#6B3E00"/></symbol></defs></svg>
 <div id="vorschau" style="background:#C98A00;color:#1a1200;text-align:center;font:700 14px system-ui,sans-serif;padding:6px 10px;padding-top:calc(6px + env(safe-area-inset-top,0px))">VORSCHAU 2.0.0.0 · nicht die gültige Version</div>
 <div class="wrap">
   <div class="themeRow"><button type="button" id="fsBtn" aria-label="Schriftgrösse ändern"><span class="s1">A</span><span class="s2">A</span><span class="s3">A</span></button><button type="button" id="animBtn" aria-label="Bewegung ändern" data-st="1" title="Bewegung ändern"><svg class="glb" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><defs><clipPath id="glbK"><circle cx="16" cy="16" r="13"/></clipPath></defs><circle cx="16" cy="16" r="13" fill="#2F7FD0"/><g clip-path="url(#glbK)"><g class="glb-land" fill="#4CAF6A"><path id="glbL" d="M3 11 q4-5 9-2 q3 3 -1 6 q-3 3 -6 1 z M17 18 q5-3 8 1 q1 5 -4 6 q-4 -1 -4 -7 z M22 8 q3-2 6 1 q0 3 -4 3 z"/><use href="#glbL" x="32"/></g></g><circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 8 q3-3 7-3" stroke="#fff" stroke-opacity=".55" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg></button><button type="button" id="suchBtn" aria-label="Suchen" title="Suchen">🔍</button><button type="button" id="themeBtn" aria-label="Hell- oder Dunkelmodus umschalten"></button></div>
@@ -1193,7 +1195,7 @@
    Nach jeder Änderung die Versionsnummer erhöhen und das Datum anpassen.
    ============================================================ */
 // Standardwerte (Reserve). Die gültigen Werte stehen in der Datei einstellungen.json.
-let VERSION = "2.97.1.0";
+let VERSION = "2.97.2.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1807,7 +1809,8 @@ const GELD_TEXT = "<p>Damit decken wir die laufenden Kosten des Chalets: Kurtaxe
 const HW = "<b>ℹ️ Hinweis:</b> ", WA = "<b>⚠️ Warnung:</b> ";
 // Kleines Farbfeld wie in der Legende und im Kalender (ruhe = Tiefsaison violett, hoch = Hochsaison orange, rosa = Nebensaison grün, fest = Skisaison blau, spitz = Spitzenzeit)
 const fld = (c) => '<i class="sw sw-' + c + ' sw-k" aria-hidden="true"></i>';
-function symBtn(id, emoji) { return '<button type="button" class="sym" data-info="' + id + '" aria-label="Zur Erklärung springen">' + (emoji === "🔓" ? '<span class="spiegel">🔓</span>' : emoji) + '</button>'; }
+const lockSvg = (offen) => '<svg class="lk" aria-hidden="true"><use href="#lk-' + (offen ? "auf" : "zu") + '"/></svg>';
+function symBtn(id, emoji) { return '<button type="button" class="sym" data-info="' + id + '" aria-label="Zur Erklärung springen">' + (emoji === "🔓" ? lockSvg(true) : emoji === "🔒" ? lockSvg(false) : emoji) + '</button>'; }
 function lueckenBeispiel() {   // «So rechnet es sich»: Beispiel für 2 Nächte in der Lücke, Familie zu zweit, mit 0 bis 4 Freunden (live aus der Rechnung)
   try {
     const z = [];
@@ -4942,7 +4945,7 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
     const b = stay[0], konf = b.prov && provKonflikt(b), sb = provSicherBis(), kf = provKonfliktAb(b), sicherBis = konf && kf && kf < sb ? kf : sb;
     const it = [], ik = (id, sym, label) => it.push('<button type="button" class="symik" data-info="' + id + '" aria-label="' + esc(label) + '">' + sym + "</button>");
     const kt = konf && kf && k >= kf, sich = !b.prov || k < sicherBis;   // Konflikt gilt erst ab dem ersten belegten Tag, der Teil davor bleibt gesichert
-    ik("b-prov", kt ? "⚠️" : sich ? "🔒" : '<span class="spiegel">🔓</span>', kt ? "Konflikt mit Airbnb-Gast" : sich ? "gesichert" : "noch nicht gesichert");
+    ik("b-prov", kt ? "⚠️" : sich ? lockSvg(false) : lockSvg(true), kt ? "Konflikt mit Airbnb-Gast" : sich ? "gesichert" : "noch nicht gesichert");
     const rk = rkVon(b);
     if (rk === "k") ik("b-ruhe", "🧹", "Kinder reinigen"); else if (rk === "e") ik("b-endrein", "🪣", "Eltern und Schwiegereltern reinigen");
     if (b.sb) ik("b-staffel", "🔗", "Familienstaffel");
@@ -4950,7 +4953,7 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
     if (b.lg) ik("b-luecke", "🧩", "Lücke");
     ik("b-zeiten", "🕓", "Ein- und Auschecken");
     let bis = "";
-    if (b.prov) bis = sicherBis >= b.dep ? "<p class=\"symz-bis\">🔒 ganz gesichert</p>" : sicherBis <= b.arr ? "<p class=\"symz-bis\">" + (konf ? "⚠️ Konflikt mit Airbnb-Gast" : '<span class="spiegel">🔓</span> noch nicht gesichert') + "</p>" : "<p class=\"symz-bis\">" + (konf ? "⚠️ " : '<span class="spiegel">🔓</span> ') + "gesichert bis " + esc(fmtTag(sicherBis).replace(/\.\d{4}$/, ".")) + (konf ? ", dann Konflikt" : "") + "</p>";
+    if (b.prov) bis = sicherBis >= b.dep ? "<p class=\"symz-bis\">" + lockSvg(false) + " ganz gesichert</p>" : sicherBis <= b.arr ? "<p class=\"symz-bis\">" + (konf ? "⚠️ Konflikt mit Airbnb-Gast" : lockSvg(true) + " noch nicht gesichert") + "</p>" : "<p class=\"symz-bis\">" + (konf ? "⚠️ " : lockSvg(true) + " ") + "gesichert bis " + esc(fmtTag(sicherBis).replace(/\.\d{4}$/, ".")) + (konf ? ", dann Konflikt" : "") + "</p>";
     return '<div class="symz" role="group" aria-label="Symbole zum Termin">' + it.join("") + "</div>" + bis;
   }
   function text(k) {
