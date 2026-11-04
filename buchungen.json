@@ -17,6 +17,17 @@
       "betrag": 180,
       "rechnung": "Gesendet am Mi 4.11.2026, 17:39 Uhr. App-Version 2.95.3.1.\nAnreise\tMontag 16.11.2026\nAbreise\tDonnerstag 19.11.2026 (3 Nächte)\nFamilie\tIch und Partner\nFreunde\t0\nZimmer 1 unberührt\tJa\nSelbstreinigung\tJa\nTotal laut Rechner\tCHF 180.–\nReinigungskosten sind erst nach Ablauf der Familienstaffel bekannt und werden nachbelastet.\n#Preisberechnung\nFamilie pro Nacht\tCHF 60.–\nÜbernachtung (3 Nächte)\tCHF 180.–\nReinigung\tCHF 0.–\nZimmer 1 und rotes Bad bleiben unberührt: CHF 10.– weniger pro Nacht, die Familie zahlt CHF 60.– statt CHF 70.–.",
       "bestaetigt": "2026-11-04T17:39"
+    },
+    {
+      "name": "Deborah",
+      "arr": "2027-06-17",
+      "dep": "2027-06-24",
+      "selbst": false,
+      "pers": 4,
+      "prov": true,
+      "betrag": 660,
+      "rechnung": "Gesendet am Mi 4.11.2026, 19:29 Uhr. App-Version 2.95.5.0.\nAnreise\tDonnerstag 17.06.2027\nAbreise\tDonnerstag 24.06.2027 (7 Nächte)\nFamilie\tIch, Partner und 2 Kinder\nFreunde\t0\nZimmer 1 unberührt\tJa\nTotal laut Rechner\tCHF 660.–\nMit Vorbehalt\tDer Termin wird nicht in Airbnb gesperrt, ein Airbnb-Gast hat Vorrang. Das Risiko wurde vom Absender bestätigt. Praktisch sicher wird der Aufenthalt erst am Mo 21.06.2027 (3 Tage vor der Abreise). Bis dahin kann ein Airbnb-Gast Vorrang bekommen.\n#Preisberechnung\nFamilie pro Nacht\tCHF 60.–\nÜbernachtung (7 Nächte)\tCHF 420.–\nReinigung\tCHF 240.–\nZimmer 1 und rotes Bad bleiben unberührt: CHF 10.– weniger pro Nacht, die Familie zahlt CHF 60.– statt CHF 70.–.",
+      "bestaetigt": "2026-11-04T19:30"
     }
   ],
   "logbuch": [
@@ -351,6 +362,10 @@
     {
       "t": "2026-11-04T17:39",
       "text": "Bestätigt: Jerome, Mo 16.11.2026 bis Do 19.11.2026, CHF 180, Wäsche: persönlich bringen bis So 22.11.2026"
+    },
+    {
+      "t": "2026-11-04T19:30",
+      "text": "Bestätigt: Deborah, Do 17.06.2027 bis Do 24.06.2027, CHF 660, mit Vorbehalt"
     }
   ]
 }
