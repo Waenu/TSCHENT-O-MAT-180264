@@ -1141,7 +1141,7 @@
    Nach jeder Änderung die Versionsnummer erhöhen und das Datum anpassen.
    ============================================================ */
 // Standardwerte (Reserve). Die gültigen Werte stehen in der Datei einstellungen.json.
-let VERSION = "2.94.0.0";
+let VERSION = "2.94.1.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1281,16 +1281,11 @@ function derive(s) {
 
 // Lücke mit Freunden: kleinste Zahl Freunde, bei der die Übernachtungen den Mindestbetrag erreichen (zu Normalpreisen: Freund 70, Zimmer 1 gebucht)
 const lueckeMin = (n) => P.lueckeGastNacht * nz(n);   // Mindest-Übernachtung für n Nächte in der Lücke (ohne Endreinigung)
-function lueckeGaesteMin(d) {
+function lueckeGaesteMin(d, patch) {
   if (!(d && d.LUE && P.lueckeGastNacht > 0)) return 1;
-  for (let g = 1; g <= d.frei; g++) { const t = derive(Object.assign({}, S, { gaeste: g, zimmer: "Nein", spar: "Nein" })); if (t.UE >= lueckeMin(t.nights)) return g; }
+  const basis = { zimmer: S.zimmer === "Ja" ? "Ja" : "Nein", spar: S.spar === "Ja" ? "Ja" : "Nein" };   // mit den bisherigen Antworten zu Zimmer und Zimmer 1 gerechnet
+  for (let g = 1; g <= d.frei; g++) { const t = derive(Object.assign({}, S, basis, patch || {}, { gaeste: g })); if (t.UE >= lueckeMin(t.nights)) return g; }
   return Infinity;
-}
-// Lücke mit Freunden: Ist diese Antwort (Zimmer, Zimmer 1) noch wählbar, ohne dass die Übernachtungen unter den Mindestbetrag fallen?
-function lueckeOptOk(d, patch) {
-  if (!(d && d.LUE && P.lueckeGastNacht > 0 && d.GE > 0)) return true;
-  const t = derive(Object.assign({}, S, patch));
-  return t.UE >= lueckeMin(t.nights);
 }
 function check(s, d) {
   if (typeof s.nights !== "number") return "Bitte wählen: Anreise und Abreise im Kalender";
@@ -1415,10 +1410,10 @@ const FIELDS = [
     hint: (d) => (S.wer === "Nur ich" && d.base + d.GE <= P.sparMaxPers)
       ? "Ein Freund im selben Zimmer zahlt " + chf(P.gastZimmer) + " statt " + chf(P.gast) + " pro Nacht, du dann nur " + chf(P.famAnteil) + " statt " + chf(P.famPausch) + ". Ihr teilt dann Zimmer 2 und das blaue Bad, Zimmer 1 und das rote Bad bleiben unberührt. Es sind ein Zimmer und ein Doppelbett weniger zu beziehen und zu reinigen."
       : "Ein Freund im selben Zimmer zahlt " + chf(P.gastZimmer) + " statt " + chf(P.gast) + " pro Nacht. Es sind ein Zimmer und ein Doppelbett weniger zu beziehen und zu reinigen.",
-    visible: (d) => d.GE > 0 && !d.lock && !d.voll, opts: (d) => ["Ja", "Nein"].filter((v) => lueckeOptOk(d, { zimmer: v })) },
+    visible: (d) => d.GE > 0 && !d.lock && !d.voll, opts: (d) => ["Ja", "Nein"].filter((v) => lueckeGaesteMin(d, { zimmer: v }) !== Infinity) },
   { id: "spar", label: "🔑 Bleibt Zimmer 1 (Schlafzimmer mit rotem Bad) unberührt?", type: "str",
     hint: (d) => d.sparGrund === "so" ? "Ihr teilt Zimmer 2 und das blaue Bad, Zimmer 1 und das rote Bad bleiben unberührt. Der Sonderpreis von " + chf(P.famAnteil) + " pro Nacht gilt dafür." : d.sparGrund === "pers" ? "Nicht möglich: Bei mehr als " + P.sparMaxPers + " Personen insgesamt (auch Kleinkinder) wird Zimmer 1 gebraucht." : (S.spar === "Nein" ? "{{Nein}}: das ganze Chalet steht zur Verfügung. Mit {{Ja}} zahlt die Familie " + chf(P.sparEin) + " weniger pro Nacht (nur Zimmer 2, Zimmer 3 und das blaue Bad)." : "{{Ja}}: nur Zimmer 2, Zimmer 3 und das blaue Bad werden benutzt. Die Familie zahlt " + chf(P.sparEin) + " weniger pro Nacht (" + chf(P.famPausch - P.sparEin) + " statt " + chf(P.famPausch) + ")." + (S.spar === "Ja" ? "" : " {{Nein}}: das ganze Chalet steht zur Verfügung.")),
-    visible: (d) => d.sparGrund === "", opts: (d) => ["Ja", "Nein"].filter((v) => lueckeOptOk(d, { spar: v })) },
+    visible: (d) => d.sparGrund === "", opts: (d) => ["Ja", "Nein"].filter((v) => lueckeGaesteMin(d, { spar: v }) !== Infinity) },
   { id: "selbst", label: "🧹 Bringt ihr frische Bettwäsche, Handtücher und Küchentücher mit und reinigt selbst?", type: "str",
     hint: () => S.selbst === "Nein" ? "Nein: Es gilt die normale Reinigung (" + chf(P.reinigung) + ")." : "Ja: Ihr bringt frische Wäsche mit und reinigt selbst. Die Reinigung kostet dann " + chf(P.reinigungSelbst) + ". Regeln siehe «🧹 Selbstreinigung» im Kalender." + (S.selbst === "Ja" ? "" : " Nein: Es gilt die normale Reinigung (" + chf(P.reinigung) + ")."),
     visible: () => false, opts: () => ["Ja", "Nein"] },
@@ -1429,11 +1424,16 @@ const FIELDS = [
     hint: () => "Das entscheidet ihr selbst. Das Total ändert sich nicht, nur wer wie viel zahlt. Die Familie gilt immer als ein Block. Bei «Nach Personen» zählen Kinder ab 2½ Jahren wie Erwachsene, Kinder unter 2½ Jahren zählen nicht. Bei «Nach Parteien» ist die Familie eine Partei und jeder Freund eine weitere: bei 3 Freunden zahlt die Familie ¼, bei 4 Freunden ⅕. Das ist nur fair, wenn alle Parteien gleich gross sind. Sonst teilt nach Personen.",
     visible: (d) => d.GE > 0, opts: () => REINIG }
 ];
-{   // Lücke mit Freunden: Hinweis, wenn «Ja» nicht wählbar ist
+{   // Lücke mit Freunden: Hinweis, wie viele Freunde «Ja» braucht
   const zf = FIELDS.find((f) => f.id === "zimmer"), zh = zf.hint, sf = FIELDS.find((f) => f.id === "spar"), sh = sf.hint;
-  const nein = (d) => " «Ja» ist hier nicht wählbar: Die Übernachtungen würden in der Lücke " + chf(lueckeMin(d.nights)) + " nicht erreichen. Mit mehr Freunden geht es.";
-  zf.hint = (d) => zh(d) + (lueckeOptOk(d, { zimmer: "Ja" }) ? "" : nein(d));
-  sf.hint = (d) => sh(d) + (lueckeOptOk(d, { spar: "Ja" }) ? "" : nein(d));
+  const mehr = (d, feld) => {
+    if (!(d.LUE && P.lueckeGastNacht > 0)) return "";
+    const ja = lueckeGaesteMin(d, { [feld]: "Ja" }), nein = lueckeGaesteMin(d, { [feld]: "Nein" });
+    if (ja === Infinity) return " In der Lücke geht «Ja» hier nicht: Mit so wenigen Plätzen erreichen die Übernachtungen " + chf(lueckeMin(d.nights)) + " nicht.";
+    return ja > nein ? " In der Lücke braucht es mit «Ja» mindestens " + ja + " Freunde (mit «Nein» " + nein + "), damit die Übernachtungen " + chf(lueckeMin(d.nights)) + " erreichen. Die Zahl der Freunde wählst du danach selbst." : "";
+  };
+  zf.hint = (d) => zh(d) + mehr(d, "zimmer");
+  sf.hint = (d) => sh(d) + mehr(d, "spar");
 }
 
 function normalize() {
@@ -1446,11 +1446,6 @@ function normalize() {
   if (typeof S.wer === "string" && S.wer && (S.luecke ? LWERL : WERL).indexOf(S.wer) < 0) { S.wer = ""; notice = S.luecke ? "Bei der ganzen Lücke sind höchstens 2 Erwachsene und 1 Kleinkind möglich. Bitte neu wählen." : "Die Auswahl «Wer von der Familie kommt» passt nicht mehr zum gewählten Datum. Bitte neu wählen."; }
   let d = derive(S);
   if (d.LUE && P.lueckeGastNacht > 0 && typeof S.gaeste === "number" && S.gaeste > 0 && S.gaeste < lueckeGaesteMin(d)) { S.gaeste = null; notice = "In der Lücke geht es nur ohne Freunde oder mit mindestens " + lueckeGaesteMin(d) + " Freunden. Bitte die Freunde neu wählen."; d = derive(S); }
-  if (d.LUE && P.lueckeGastNacht > 0 && d.GE > 0 && d.UE < lueckeMin(d.nights)) {   // eine frühere Antwort (Zimmer, Zimmer 1) passt nach der Änderung nicht mehr
-    if (S.zimmer === "Ja") { S.zimmer = ""; notice = "In der Lücke erreichen die Übernachtungen mit so wenigen Freunden im selben Zimmer " + chf(lueckeMin(d.nights)) + " nicht. Bitte «Freund im selben Zimmer» neu wählen."; }
-    else if (S.spar === "Ja") { S.spar = ""; notice = "In der Lücke erreichen die Übernachtungen so " + chf(lueckeMin(d.nights)) + " nicht. Bitte «Zimmer 1 unberührt» neu wählen."; }
-    d = derive(S);
-  }
   if (typeof S.gaeste === "number" && S.gaeste > d.frei) {
     if (d.LG) { S.gaeste = 0; notice = "Bei der ganzen Lücke sind keine Freunde möglich. Die Freunde wurden automatisch auf 0 gesetzt."; }
     else if (d.frei === 0) { S.gaeste = 0; notice = "Kein Platz mehr für Freunde. Die Freunde wurden automatisch auf 0 gesetzt."; }
@@ -1459,7 +1454,7 @@ function normalize() {
   }
   if (S.festMin && typeof S.gaeste === "number" && S.gaeste < P.festMinGaeste && d.frei >= P.festMinGaeste) { S.gaeste = null; notice = "Im " + festTxt() + " sind mindestens " + P.festMinGaeste + " Freunde nötig. Bitte die Freunde neu wählen."; d = derive(S); }
   if (d.frei === 0 && d.FP <= P.maxPersonen && typeof S.wer === "string" && S.wer && (S.wer !== MFG || typeof S.fam === "number")) { S.gaeste = 0; d = derive(S); }
-  if (d.GE === 0) { S.zimmer = ""; S.reinig = ""; }
+  if (d.GE === 0) { if (!(d.LUE && S.gaeste === null)) S.zimmer = ""; S.reinig = ""; }   // in der Lücke bleibt «Ja» stehen, wenn die Freunde neu gewählt werden müssen
   if (d.voll) S.zimmer = "";
   if (!d.SM) S.selbst = "";
   if (!(d.SM && S.selbst === "Ja" && ARR && istStaffelStart(ARR))) S.waesche = "";
