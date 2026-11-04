@@ -31,7 +31,8 @@ Preisrechner für die Familie, Chalet Tschenten, Adelboden.
 | `keinCheckinSonntag` | `true`: Sonntag ist bei Airbnb nie Check-in-Tag. Eine freie Strecke zwischen zwei Buchungen, die an einem Sonntag beginnt, zählt für Lücken erst ab Montag. Die Sonntagsnacht bleibt für die Familie gesperrt |
 | `lueckeVorlaufTage` | nicht mehr verwendet (die Sperre ergibt sich aus Vorlauf und Mindestaufenthalt von Airbnb) |
 | `lueckeSperrMonate` | Monate (Liste), in denen Lücken für die Familie immer gesperrt sind (violett, nie freigegeben). Massgebend ist der Monat der ersten Nacht der Lücke |
-| `lueckeMaxPersonen` | Ganze Lücke: höchstens so viele Personen mit Bett, zusätzlich `lueckeMaxKleinkinder` Kleinkind(er) im Kinderbettchen. Dazu: keine Gäste, nur Zimmer 2, eigene Wäsche, Reinigung 240 |
+| `lueckeMaxPersonen` | Nicht mehr in Gebrauch (seit 2.93.0.0 gilt in der Lücke wie sonst `maxPersonen`, Freunde erlaubt, alle Zimmer, die Eltern stellen die Wäsche und reinigen) |
+| `lueckeMindestpreisWoche` | Mindestpreis pro 7 Nächte (CHF, 0 = aus) nur für Aufenthalte mit Freunden, die ganz in einer Lücke liegen, ab 2 Nächten. Tiefer als `mindestpreisWoche`, damit sich die spontane Lücke für die Familie rasch lohnt |
 | `lueckeRabatt` | Rabatt für Lücken in Prozent, zurzeit 0 (es gibt keinen Rabatt) |
 | `hochsaisonMonate` | Ganze Monate, die jedes Jahr gelb markiert werden. Januar ist `[1]`, Februar `[2]`, mehrere zum Beispiel `[2, 7]` |
 | `spitzenzeiten` | Zeiten, in denen nur zu hohen Preisen vermietet wird (zum Beispiel Skirennen). Rot markiert, ohne Familienpreis: nur «Preis auf Anfrage». Format: `[["2027-01-15","2027-01-17","Skirennen"]]` (von, bis, Name) |

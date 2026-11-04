@@ -1,6 +1,6 @@
 {
   "_hinweis": "Nur die Zahlen und die Version ändern, sonst nichts. Beträge in CHF. Nach dem Speichern dauert es etwa eine Minute, bis alle die neuen Werte sehen.",
-  "version": "2.92.0.0",
+  "version": "2.93.1.0",
   "gueltigAb": "01.01.2027",
   "famPausch": 70,
   "gast": 70,
@@ -31,8 +31,12 @@
   "sichtMinNaechte": 2,
   "airbnbMinNaechte": 4,
   "airbnbMinNaechteMonat": {},
-  "festMonate": [2],
-  "minNaechteMonat": { "2": 7 },
+  "festMonate": [
+    2
+  ],
+  "minNaechteMonat": {
+    "2": 7
+  },
   "provisorisch": true,
   "airbnbVorlaufTage": 3,
   "hochsaisonMonate": [
@@ -46,7 +50,10 @@
   "spitzenzeiten": [],
   "maerzHochWochen": 1,
   "oktoberNebenWochen": 2,
-  "weihnachtsSperre": ["12-21", "12-24"],
+  "weihnachtsSperre": [
+    "12-21",
+    "12-24"
+  ],
   "lueckeMaxPersonen": 2,
   "keinCheckinSonntag": true,
   "lueckeVorlaufTage": 0,
@@ -104,5 +111,6 @@
     "💡 Alle Lichter ausschalten",
     "🌡️ Alle Heizungsregler auf Stufe 5 stellen",
     "🔐 Schlüssel und Fernbedienung in die Schlüsselbox legen"
-  ]
+  ],
+  "lueckeMindestpreisWoche": 1800
 }
