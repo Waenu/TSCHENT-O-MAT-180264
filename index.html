@@ -407,7 +407,7 @@
   .stern.s2 { animation-delay: .8s; }
   @keyframes sternWechsel { 0%, 100% { opacity: .2; transform: scale(.8); } 50% { opacity: 1; transform: scale(1.2); } }
   @media (prefers-reduced-motion: reduce) { .stern { animation-name: sternSanft; } @keyframes sternSanft { 0%, 100% { opacity: .35; } 50% { opacity: 1; } } }
-  #nachOben { position: fixed; left: 16px; bottom: calc(max(var(--bar-h, 0px), 74px) + 10px + env(safe-area-inset-bottom, 0px)); z-index: 6; background: var(--accent); color: var(--accent-fg); border: 0; border-radius: 22px; padding: 10px 16px; font: inherit; font-weight: 700; box-shadow: 0 2px 8px rgba(0,0,0,.35); }
+  #nachOben { position: fixed; left: 16px; bottom: calc(max(var(--bar-h, 0px), var(--fix-h, 0px) + 10px, 74px) + 10px + env(safe-area-inset-bottom, 0px)); z-index: 9; background: var(--accent); color: var(--accent-fg); border: 0; border-radius: 22px; padding: 10px 16px; font: inherit; font-weight: 700; box-shadow: 0 2px 8px rgba(0,0,0,.35); }
   .start { display: flex; flex-direction: column; gap: 10px; }
   body.rechner-an .start2 { display: none; }   /* beim Buchen steht die Cheminée-Anleitung nicht im Weg */
   #rechner[hidden] + .start2 { margin-top: -8px; }   /* ohne offenen Rechner bleibt der Abstand wie zwischen den Knöpfen */
@@ -510,9 +510,10 @@
   .sym::after, .symz::after { content: ""; position: absolute; inset: -1.5px; pointer-events: none; --c: var(--ac, var(--accent)); --p: 8px; --d: 1.5px;
     background: linear-gradient(90deg, var(--c) 50%, transparent 50%) 0 0 / var(--p) var(--d) repeat-x, linear-gradient(90deg, var(--c) 50%, transparent 50%) 0 100% / var(--p) var(--d) repeat-x, linear-gradient(0deg, var(--c) 50%, transparent 50%) 0 0 / var(--d) var(--p) repeat-y, linear-gradient(0deg, var(--c) 50%, transparent 50%) 100% 0 / var(--d) var(--p) repeat-y;
     animation: marsch 1.2s linear infinite; }
-  .symz { position: relative; display: flex; justify-content: space-around; align-items: center; gap: 4px; margin: 12px 4px 8px; padding: 6px 4px; }
+  .symz { position: relative; display: flex; width: fit-content; align-items: center; gap: 6px; margin: 10px 0 8px; padding: 4px 6px; }
   .symz::after { inset: 0; --p: 14px; --d: 2px; --c: var(--accent); }
-  .symik { font: inherit; font-size: 1.6rem; line-height: 1; background: none; border: 0; color: inherit; padding: 6px 10px; min-height: 44px; cursor: pointer; }
+  .symik { font: inherit; line-height: 1; background: none; border: 0; color: inherit; width: 40px; height: 40px; padding: 0; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+  .spiegel { display: inline-block; transform: scaleX(-1); }   /* offenes Schloss: Bügel zeigt nach rechts, zum Eimer */
   .symz-bis { margin: 0 0 8px; font-size: .95rem; text-align: center; }
   .bigbtn .bi { font-size: 1.7rem; line-height: 1; flex: 0 0 2.4rem; width: 2.4rem; text-align: center; }
   a.bigbtn { text-decoration: none; box-sizing: border-box; }
@@ -587,7 +588,7 @@
   .zei.menue { background: var(--accent); color: var(--accent-fg); border-radius: 999px; }
   .sym { line-height: 1.15; }
   .split-h { padding-left: 14px; }
-  #zurueck { position: fixed; right: 16px; bottom: calc(max(var(--bar-h, 0px), 74px) + 10px + env(safe-area-inset-bottom, 0px)); z-index: 6; background: #9A7400; color: #FFFFFF; border: 0; border-radius: 22px; padding: 10px 16px; font: inherit; font-weight: 700; box-shadow: 0 2px 8px rgba(0,0,0,.35); }
+  #zurueck { position: fixed; right: 16px; bottom: calc(max(var(--bar-h, 0px), var(--fix-h, 0px) + 10px, 74px) + 10px + env(safe-area-inset-bottom, 0px)); z-index: 9; background: #9A7400; color: #FFFFFF; border: 0; border-radius: 22px; padding: 10px 16px; font: inherit; font-weight: 700; box-shadow: 0 2px 8px rgba(0,0,0,.35); }
   .bar .val { font-family: var(--display); font-weight: 700; font-size: calc(1.9rem / var(--fs)); line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; }
   .bar.err { background: var(--error-bg); color: var(--error-fg); }
   .bar.err.wahl { background: var(--missing-bg); color: var(--fg); box-shadow: inset 0 4px 0 var(--missing-line); }   /* «Bitte wählen»: nur eine Erinnerung, daher orange wie die Felder «– wählen –» */
@@ -1192,7 +1193,7 @@
    Nach jeder Änderung die Versionsnummer erhöhen und das Datum anpassen.
    ============================================================ */
 // Standardwerte (Reserve). Die gültigen Werte stehen in der Datei einstellungen.json.
-let VERSION = "2.97.0.0";
+let VERSION = "2.97.1.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1806,7 +1807,7 @@ const GELD_TEXT = "<p>Damit decken wir die laufenden Kosten des Chalets: Kurtaxe
 const HW = "<b>ℹ️ Hinweis:</b> ", WA = "<b>⚠️ Warnung:</b> ";
 // Kleines Farbfeld wie in der Legende und im Kalender (ruhe = Tiefsaison violett, hoch = Hochsaison orange, rosa = Nebensaison grün, fest = Skisaison blau, spitz = Spitzenzeit)
 const fld = (c) => '<i class="sw sw-' + c + ' sw-k" aria-hidden="true"></i>';
-function symBtn(id, emoji) { return '<button type="button" class="sym" data-info="' + id + '" aria-label="Zur Erklärung springen">' + emoji + '</button>'; }
+function symBtn(id, emoji) { return '<button type="button" class="sym" data-info="' + id + '" aria-label="Zur Erklärung springen">' + (emoji === "🔓" ? '<span class="spiegel">🔓</span>' : emoji) + '</button>'; }
 function lueckenBeispiel() {   // «So rechnet es sich»: Beispiel für 2 Nächte in der Lücke, Familie zu zweit, mit 0 bis 4 Freunden (live aus der Rechnung)
   try {
     const z = [];
@@ -4933,12 +4934,15 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
     if (seher) h += '<div class="ar-nur">🔐 ' + (papi ? "Nur für dich" : "Nur für Eltern") + '</div>' + sperrZ + einn + (!papi ? "" : '<button type="button" class="ar" data-vw="' + esc(bKey(b)) + '"><span class="ar-i">👁️</span><span class="ar-t">Verwaltung<small>Buchung bearbeiten</small></span><span class="ar-c go" aria-hidden="true"></span></button>');
     return h;
   }
-  function symZeile(k, stay) {   // Symbolzeile statt Textzeilen: jedes Symbol springt zum Glossar (mit Zurück-Taste)
-    if (!stay.length) return "";
+  function symZeile(k, stay, gast) {   // Symbolzeile statt Textzeilen: jedes Symbol springt zum Glossar (mit Zurück-Taste)
+    if (!stay.length) {   // Airbnb-Gast oder Externer: immer Eltern/Schwiegereltern reinigen, dazu die Zeiten (Blockiert: nichts)
+      if (!gast || gast.typ === "block") return "";
+      return '<div class="symz" role="group" aria-label="Symbole zum Termin"><button type="button" class="symik" data-info="b-endrein" aria-label="Eltern und Schwiegereltern reinigen">🪣</button><button type="button" class="symik" data-info="b-zeiten" aria-label="Ein- und Auschecken">🕓</button></div>';
+    }
     const b = stay[0], konf = b.prov && provKonflikt(b), sb = provSicherBis(), kf = provKonfliktAb(b), sicherBis = konf && kf && kf < sb ? kf : sb;
     const it = [], ik = (id, sym, label) => it.push('<button type="button" class="symik" data-info="' + id + '" aria-label="' + esc(label) + '">' + sym + "</button>");
     const kt = konf && kf && k >= kf, sich = !b.prov || k < sicherBis;   // Konflikt gilt erst ab dem ersten belegten Tag, der Teil davor bleibt gesichert
-    ik("b-prov", kt ? "⚠️" : sich ? "🔒" : "🔓", kt ? "Konflikt mit Airbnb-Gast" : sich ? "gesichert" : "noch nicht gesichert");
+    ik("b-prov", kt ? "⚠️" : sich ? "🔒" : '<span class="spiegel">🔓</span>', kt ? "Konflikt mit Airbnb-Gast" : sich ? "gesichert" : "noch nicht gesichert");
     const rk = rkVon(b);
     if (rk === "k") ik("b-ruhe", "🧹", "Kinder reinigen"); else if (rk === "e") ik("b-endrein", "🪣", "Eltern und Schwiegereltern reinigen");
     if (b.sb) ik("b-staffel", "🔗", "Familienstaffel");
@@ -4946,7 +4950,7 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
     if (b.lg) ik("b-luecke", "🧩", "Lücke");
     ik("b-zeiten", "🕓", "Ein- und Auschecken");
     let bis = "";
-    if (b.prov) bis = sicherBis >= b.dep ? "<p class=\"symz-bis\">🔒 ganz gesichert</p>" : sicherBis <= b.arr ? "<p class=\"symz-bis\">" + (konf ? "⚠️ Konflikt mit Airbnb-Gast" : "🔓 noch nicht gesichert") + "</p>" : "<p class=\"symz-bis\">" + (konf ? "⚠️ " : "🔓 ") + "gesichert bis " + esc(fmtTag(sicherBis).replace(/\.\d{4}$/, ".")) + (konf ? ", dann Konflikt" : "") + "</p>";
+    if (b.prov) bis = sicherBis >= b.dep ? "<p class=\"symz-bis\">🔒 ganz gesichert</p>" : sicherBis <= b.arr ? "<p class=\"symz-bis\">" + (konf ? "⚠️ Konflikt mit Airbnb-Gast" : '<span class="spiegel">🔓</span> noch nicht gesichert') + "</p>" : "<p class=\"symz-bis\">" + (konf ? "⚠️ " : '<span class="spiegel">🔓</span> ') + "gesichert bis " + esc(fmtTag(sicherBis).replace(/\.\d{4}$/, ".")) + (konf ? ", dann Konflikt" : "") + "</p>";
     return '<div class="symz" role="group" aria-label="Symbole zum Termin">' + it.join("") + "</div>" + bis;
   }
   function text(k) {
@@ -5018,7 +5022,7 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
     const gebucht = !!(bz || gn);   // Feld mit Buchung: keine Erklärung der Saison oder Staffel, die gibt es nur bei Feldern mit Buchungsoption
     const kopfX = gebucht ? "<p class=\"bwer\">" + wer + "</p>" + (bz ? vonBis(bz.arr, bz.dep) : gd ? vonBis(gd.arr, gd.dep) : kopf) : kopf;
     const opt = gebucht ? vz : vz.concat(monZeilen(k, mon));
-    return kopfX + symZeile(k, stay) + (abrZ.length ? "<p>" + abrZ.join("</p><p>") + "</p>" : "") + (opt.length ? "<p>" + opt.join("</p><p>") + "</p>" : "") + z.map((s) => "<p>" + s + "</p>").join("") + iconLeiste(k, stay, zs, zh) + gf;
+    return kopfX + symZeile(k, stay, gn) + (abrZ.length ? "<p>" + abrZ.join("</p><p>") + "</p>" : "") + (opt.length ? "<p>" + opt.join("</p><p>") + "</p>" : "") + z.map((s) => "<p>" + s + "</p>").join("") + iconLeiste(k, stay, zs, zh) + gf;
   }
   window._gastBlase = (k, still) => zeigen(text(k), grid.querySelector('[data-k="' + k + '"]'), !!still);
   function zelle(e) {
@@ -5069,6 +5073,7 @@ document.querySelectorAll("details.sub > summary").forEach((sm) => {   // Symbol
   const fix = orig.cloneNode(true); fix.id = "btnReservFix"; fix.classList.add("reserv-fix"); fix.removeAttribute("aria-controls");
   fix.addEventListener("click", () => orig.click());
   document.body.appendChild(fix);
+  try { new ResizeObserver(() => document.documentElement.style.setProperty("--fix-h", fix.offsetHeight + "px")).observe(fix); } catch (e) {}   // Menü und Zurück sitzen immer über der festgenagelten Leiste
   const upd = () => document.body.classList.toggle("glossar-offen", !!(gl.some((g) => g.open && g.offsetParent !== null) && !document.body.classList.contains("rechner-an")));
   gl.forEach((g) => g.addEventListener("toggle", upd)); document.addEventListener("click", () => setTimeout(upd, 60)); upd();
   try { new IntersectionObserver((en) => { document.body.classList.toggle("reserv-im-bild", en.some((x) => x.isIntersecting)); }).observe(orig); } catch (e) {}   // echter Knopf im Bild: die festgenagelte Kopie verschwindet (nicht doppelt)
