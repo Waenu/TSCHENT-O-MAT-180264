@@ -6,17 +6,6 @@
       "arr": "2026-11-06",
       "dep": "2026-11-08",
       "status": "abgelehnt"
-    },
-    {
-      "name": "Miriam",
-      "arr": "2027-08-14",
-      "dep": "2027-08-22",
-      "selbst": false,
-      "pers": 2,
-      "verb": true,
-      "betrag": 1840,
-      "rechnung": "Gesendet am Di 3.11.2026, 22:33 Uhr. App-Version 2.92.0.0.\nAnreise\tSamstag 14.08.2027\nAbreise\tSonntag 22.08.2027 (8 Nächte)\nFamilie\tIch und Partner\nFreunde\t0\nTotal laut Rechner\tCHF 1’840.–\nVerbindliche Buchung\tWir buchen verbindlich vom Samstag 14.08.2027 bis Sonntag 22.08.2027 (8 Nächte) die Ferienwohnung. Bitte blockiert die Zeit in Airbnb. Mit Endreinigung durch die Eltern/Schwiegereltern.\n#Preisberechnung\nÜbernachtung (8 Nächte)\tCHF 1’600.–\nReinigung\tCHF 240.–\nVerbindliche Buchung: 8 Nächte in der Hochsaison zu CHF 200.–, dazu die Endreinigung CHF 240.–. Der Termin ist fest und wird in Airbnb gesperrt.",
-      "bestaetigt": "2026-11-04T19:45"
     }
   ],
   "logbuch": [
@@ -387,6 +376,10 @@
     {
       "t": "2026-11-04T19:49",
       "text": "Entfernt: Manuel, Do 26.11.2026 bis So 29.11.2026"
+    },
+    {
+      "t": "2026-11-04T19:49",
+      "text": "Entfernt: Miriam, Sa 14.08.2027 bis So 22.08.2027"
     }
   ]
 }
