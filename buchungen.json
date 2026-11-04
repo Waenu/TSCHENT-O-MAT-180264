@@ -8,17 +8,6 @@
       "status": "abgelehnt"
     },
     {
-      "name": "Jerome",
-      "arr": "2026-11-16",
-      "dep": "2026-11-19",
-      "selbst": true,
-      "pers": 2,
-      "waesche": "bringen",
-      "betrag": 180,
-      "rechnung": "Gesendet am Mi 4.11.2026, 17:39 Uhr. App-Version 2.95.3.1.\nAnreise\tMontag 16.11.2026\nAbreise\tDonnerstag 19.11.2026 (3 Nächte)\nFamilie\tIch und Partner\nFreunde\t0\nZimmer 1 unberührt\tJa\nSelbstreinigung\tJa\nTotal laut Rechner\tCHF 180.–\nReinigungskosten sind erst nach Ablauf der Familienstaffel bekannt und werden nachbelastet.\n#Preisberechnung\nFamilie pro Nacht\tCHF 60.–\nÜbernachtung (3 Nächte)\tCHF 180.–\nReinigung\tCHF 0.–\nZimmer 1 und rotes Bad bleiben unberührt: CHF 10.– weniger pro Nacht, die Familie zahlt CHF 60.– statt CHF 70.–.",
-      "bestaetigt": "2026-11-04T17:39"
-    },
-    {
       "name": "Deborah",
       "arr": "2027-06-17",
       "dep": "2027-06-24",
@@ -407,6 +396,10 @@
     {
       "t": "2026-11-04T19:45",
       "text": "Bestätigt: Miriam, Sa 14.08.2027 bis So 22.08.2027, CHF 1840, verbindlich"
+    },
+    {
+      "t": "2026-11-04T19:48",
+      "text": "Entfernt: Jerome, Mo 16.11.2026 bis Do 19.11.2026"
     }
   ]
 }
