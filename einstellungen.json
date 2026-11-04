@@ -1,6 +1,6 @@
 {
   "_hinweis": "Nur die Zahlen und die Version ändern, sonst nichts. Beträge in CHF. Nach dem Speichern dauert es etwa eine Minute, bis alle die neuen Werte sehen.",
-  "version": "2.93.3.1",
+  "version": "2.93.4.0",
   "gueltigAb": "01.01.2027",
   "famPausch": 70,
   "gast": 70,
@@ -112,5 +112,6 @@
     "🌡️ Alle Heizungsregler auf Stufe 5 stellen",
     "🔐 Schlüssel und Fernbedienung in die Schlüsselbox legen"
   ],
-  "lueckeMindestpreisWoche": 1500
+  "lueckeMindestpreisWoche": 0,
+  "lueckeBodenNacht": 250
 }

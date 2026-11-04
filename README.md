@@ -32,7 +32,8 @@ Preisrechner für die Familie, Chalet Tschenten, Adelboden.
 | `lueckeVorlaufTage` | nicht mehr verwendet (die Sperre ergibt sich aus Vorlauf und Mindestaufenthalt von Airbnb) |
 | `lueckeSperrMonate` | Monate (Liste), in denen Lücken für die Familie immer gesperrt sind (violett, nie freigegeben). Massgebend ist der Monat der ersten Nacht der Lücke |
 | `lueckeMaxPersonen` | Nicht mehr in Gebrauch (seit 2.93.0.0 gilt in der Lücke wie sonst `maxPersonen`, Freunde erlaubt, alle Zimmer, die Eltern stellen die Wäsche und reinigen) |
-| `lueckeMindestpreisWoche` | Mindestpreis pro 7 Nächte (CHF, 0 = aus) nur für Aufenthalte mit Freunden, die ganz in einer Lücke liegen, ab 2 Nächten. Tiefer als `mindestpreisWoche`, damit sich die spontane Lücke für die Familie rasch lohnt |
+| `lueckeBodenNacht` | Lücke mit Freunden: Mindestpreis pro Nacht für die Übernachtung (CHF, ohne Endreinigung, 0 = aus). Total mindestens Nächte mal dieser Betrag plus Endreinigung (2 Nächte: 740). Fehlt etwas, wird der Rest gleichmässig auf alle Personen verteilt; liegt das Total darüber, sinkt der Anteil der Familie bis auf 0 |
+| `lueckeMindestpreisWoche` | Nicht mehr in Gebrauch, solange `lueckeBodenNacht` gesetzt ist. Früher: Mindestpreis pro 7 Nächte (CHF, 0 = aus) nur für Aufenthalte mit Freunden, die ganz in einer Lücke liegen, ab 2 Nächten. Tiefer als `mindestpreisWoche`, damit sich die spontane Lücke für die Familie rasch lohnt |
 | `lueckeRabatt` | Rabatt für Lücken in Prozent, zurzeit 0 (es gibt keinen Rabatt) |
 | `hochsaisonMonate` | Ganze Monate, die jedes Jahr gelb markiert werden. Januar ist `[1]`, Februar `[2]`, mehrere zum Beispiel `[2, 7]` |
 | `spitzenzeiten` | Zeiten, in denen nur zu hohen Preisen vermietet wird (zum Beispiel Skirennen). Rot markiert, ohne Familienpreis: nur «Preis auf Anfrage». Format: `[["2027-01-15","2027-01-17","Skirennen"]]` (von, bis, Name) |
