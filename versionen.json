@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.97.5.0",
+      "datum": "2026-11-04",
+      "titel": "Farbfelder in Icon-Grösse",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Layout: Die kleinen Farbfelder im Text (zum Beispiel vor «Nebensaison:») sind jetzt so gross wie die Icons (1.25 em, vorher 15 px). Die Textzeilen werden dadurch nicht höher."
+      ]
+    },
+    {
       "v": "2.97.4.0",
       "datum": "2026-11-04",
       "titel": "Ameisenpfad mit Radius, Schloss-Grösse, Aufräumen",
