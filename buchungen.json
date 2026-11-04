@@ -28,17 +28,6 @@
       "betrag": 660,
       "rechnung": "Gesendet am Mi 4.11.2026, 19:29 Uhr. App-Version 2.95.5.0.\nAnreise\tDonnerstag 17.06.2027\nAbreise\tDonnerstag 24.06.2027 (7 Nächte)\nFamilie\tIch, Partner und 2 Kinder\nFreunde\t0\nZimmer 1 unberührt\tJa\nTotal laut Rechner\tCHF 660.–\nMit Vorbehalt\tDer Termin wird nicht in Airbnb gesperrt, ein Airbnb-Gast hat Vorrang. Das Risiko wurde vom Absender bestätigt. Praktisch sicher wird der Aufenthalt erst am Mo 21.06.2027 (3 Tage vor der Abreise). Bis dahin kann ein Airbnb-Gast Vorrang bekommen.\n#Preisberechnung\nFamilie pro Nacht\tCHF 60.–\nÜbernachtung (7 Nächte)\tCHF 420.–\nReinigung\tCHF 240.–\nZimmer 1 und rotes Bad bleiben unberührt: CHF 10.– weniger pro Nacht, die Familie zahlt CHF 60.– statt CHF 70.–.",
       "bestaetigt": "2026-11-04T19:30"
-    },
-    {
-      "name": "Deborah",
-      "arr": "2027-06-14",
-      "dep": "2027-06-19",
-      "selbst": false,
-      "pers": 4,
-      "prov": true,
-      "betrag": 540,
-      "rechnung": "Gesendet am Mi 4.11.2026, 19:31 Uhr. App-Version 2.95.5.0.\nAnreise\tMontag 14.06.2027\nAbreise\tSamstag 19.06.2027 (5 Nächte)\nFamilie\tIch, Partner und 2 Kinder\nFreunde\t0\nZimmer 1 unberührt\tJa\nTotal laut Rechner\tCHF 540.–\nMit Vorbehalt\tDer Termin wird nicht in Airbnb gesperrt, ein Airbnb-Gast hat Vorrang. Das Risiko wurde vom Absender bestätigt. Praktisch sicher wird der Aufenthalt erst am Mi 16.06.2027 (3 Tage vor der Abreise). Bis dahin kann ein Airbnb-Gast Vorrang bekommen.\n#Preisberechnung\nFamilie pro Nacht\tCHF 60.–\nÜbernachtung (5 Nächte)\tCHF 300.–\nReinigung\tCHF 240.–\nZimmer 1 und rotes Bad bleiben unberührt: CHF 10.– weniger pro Nacht, die Familie zahlt CHF 60.– statt CHF 70.–.",
-      "bestaetigt": "2026-11-04T19:32"
     }
   ],
   "logbuch": [
@@ -381,6 +370,10 @@
     {
       "t": "2026-11-04T19:32",
       "text": "Bestätigt: Deborah, Mo 14.06.2027 bis Sa 19.06.2027, CHF 540, mit Vorbehalt"
+    },
+    {
+      "t": "2026-11-04T19:32",
+      "text": "Entfernt: Deborah, Mo 14.06.2027 bis Sa 19.06.2027"
     }
   ]
 }
