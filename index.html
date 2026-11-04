@@ -1132,7 +1132,7 @@
    Nach jeder Änderung die Versionsnummer erhöhen und das Datum anpassen.
    ============================================================ */
 // Standardwerte (Reserve). Die gültigen Werte stehen in der Datei einstellungen.json.
-let VERSION = "2.93.2.2";
+let VERSION = "2.93.3.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1478,7 +1478,7 @@ const fmtTag = (k) => { const t = dparse(k); return WT_LANG[t.getUTCDay()] + " "
 // Nacht k gehört zu einem bestätigten Aufenthalt der Familie (auch wenn Airbnb ihn noch nicht als belegt zeigt, z. B. mit Vorbehalt)
 const nachtGebucht = (k) => BUCH.some((x) => x.arr <= k && k < x.dep);
 function naechteFrei(von, bis) { for (let k = von; k < bis; k = addDays(k, 1)) if (BELEGT.has(k) || GAPSPERR.has(k) || nachtGebucht(k) || istSperre(k)) return false; return true; }
-function nurLueckenNaechte(a, d) { for (let k = a; k < d; k = addDays(k, 1)) if (!GAP.has(k)) return false; return true; }
+function nurLueckenNaechte(a, d) { for (let k = a; k < d; k = addDays(k, 1)) if (!GAP.has(k) && !SICHT.has(k)) return false; return true; }   // echte Lücke oder Lücke durch die Vorlaufzeit
 function kannAnreise(k) {
   if (!(k >= heuteKey() && !BELEGT.has(k) && !GAPSPERR.has(k) && !nachtGebucht(k) && !istSperre(k))) return false;
   if (GAP.has(k) && !GAPSTART.has(k)) { const lg = lueckeVon(k); if (lg && diffDays(k, lg[1]) < P.minNaechte) return false; }   // mitten in einer Lücke: Anreise erlaubt, wenn bis zum Ende der Lücke noch die Mindestzahl Nächte bleibt (seit 2.93.0.0, vorher nur ganze Lücke)
@@ -2521,7 +2521,7 @@ function renderKalender() {
     if (S.verbOK === true && S.art === ART_V) msgs.push(HW + "<b>Verbindlich:</b> Dieser Termin ist fest und wird in Airbnb gesperrt, ihr habt damit Buchungssicherheit. " + symBtn("b-prov", "🔒"));
     if (provSel() && !(S.verbOK === true && S.art === "")) msgs.push(WA + "<b>Mit Vorbehalt:</b> Dieser Termin wird nicht in Airbnb gesperrt. Meldet sich ein Airbnb-Gast für diese Tage, hat er Vorrang und der Aufenthalt muss weichen. Plane eine Alternative ein. " + symBtn("b-prov", "🔓") + " <b>Buchungssicherheit:</b> " + provSicherZeile(ARR, DEP));
     const lg = lueckeVon(ARR);
-    if (ARR && DEP && !S.inLuecke) { let n = 0, t = 0; for (let k = ARR; k < DEP; k = addDays(k, 1)) { t++; if (GAP.has(k)) n++; } if (n > 0) msgs.push(HW + "Dein Aufenthalt liegt nur zum Teil in einer Lücke (" + n + " von " + t + " Nächten). Dann gilt er als normaler Termin. Der tiefere Mindestpreis der Lücke und die Regel «Eltern reinigen» gelten nur, wenn der ganze Aufenthalt in der Lücke liegt. " + symBtn("b-luecke", "🧩")); }
+    if (ARR && DEP && !S.inLuecke) { let n = 0, t = 0; for (let k = ARR; k < DEP; k = addDays(k, 1)) { t++; if (GAP.has(k) || SICHT.has(k)) n++; } if (n > 0) msgs.push(HW + "Dein Aufenthalt liegt nur zum Teil in einer Lücke (" + n + " von " + t + " Nächten). Dann gilt er als normaler Termin. Der tiefere Mindestpreis der Lücke und die Regel «Eltern reinigen» gelten nur, wenn der ganze Aufenthalt in der Lücke liegt. " + symBtn("b-luecke", "🧩")); }
     if (lg && !S.luecke && P.lueckeRabatt > 0 && !GAPDYN.has(lg[0])) msgs.push(HW + "Dieser Termin liegt in einer Lücke, aber ohne Rabatt. Mit Anreise am " + fmtTag(lg[0]) + " und Abreise am " + fmtTag(lg[1]) + " (die ganze Lücke) wäre es " + P.lueckeRabatt + " Prozent günstiger auf die Übernachtungen.");
   }
   warn.hidden = msgs.length === 0;
@@ -2769,7 +2769,7 @@ function anfrageText(r) {
   z.push("Freunde: " + x.GE);
   if (x.GE > 0 && !x.lock) z.push("Freund im selben Zimmer: " + x.ZE);
   if (!x.VERB) z.push("Zimmer 1 unberührt: " + (S.spar === "Ja" ? "Ja" : "Nein"));
-  if (S.inLuecke) { const lv = lueckeVon(ARR); z.push("Lücke: " + (lv && lv[0] === ARR && lv[1] === DEP ? "die ganze Lücke" : "ein Teil der Lücke" + (lv ? " vom " + fmtTagV(lv[0]) + " bis " + fmtTagV(lv[1]) : "")) + ", ohne Vorbehalt."); }
+  if (S.inLuecke) { const lv = lueckeVon(ARR); z.push("Lücke: " + (!lv ? "Lücke durch die Vorlaufzeit" : (lv[0] === ARR && lv[1] === DEP ? "die ganze Lücke" : "ein Teil der Lücke vom " + fmtTagV(lv[0]) + " bis " + fmtTagV(lv[1]))) + ", ohne Vorbehalt."); }
   if (x.LG) { z.push("Ganze Lücke: nur Zimmer 2 mit blauem Bad" + (x.KK > 0 ? ", das Kleinkind im Kinderbettchen in Zimmer 3 oder bei den Erwachsenen in Zimmer 2" : "") + ", ohne Freunde, eigene Bettwäsche, Handtücher und Küchentücher, Reinigung durch die Eltern/Schwiegereltern " + chf(P.reinigung)); }
   if (x.GE > 0) z.push("Reinigung: " + S.reinig);
   if (x.SB) z.push("Selbstreinigung: Ja");
