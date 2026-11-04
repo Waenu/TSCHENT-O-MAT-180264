@@ -37,7 +37,7 @@
       "pers": 2,
       "betrag": 210,
       "rechnung": "Gesendet am Di 3.11.2026, 22:33 Uhr. App-Version 2.92.0.0.\nAnreise\tDonnerstag 26.11.2026\nAbreise\tSonntag 29.11.2026 (3 Nächte)\nFamilie\tIch und Partner\nFreunde\t0\nZimmer 1 unberührt\tNein\nSelbstreinigung\tJa\nTotal laut Rechner\tCHF 210.–\nReinigungskosten sind erst nach Ablauf der Familienstaffel bekannt und werden nachbelastet.\n#Preisberechnung\nFamilie pro Nacht\tCHF 70.–\nÜbernachtung (3 Nächte)\tCHF 210.–\nReinigung\tCHF 0.–",
-      "bestaetigt": "2026-11-04T19:37"
+      "bestaetigt": "2026-11-04T19:42"
     }
   ],
   "logbuch": [
@@ -387,6 +387,10 @@
     },
     {
       "t": "2026-11-04T19:37",
+      "text": "Bestätigt: Manuel, Do 26.11.2026 bis So 29.11.2026, CHF 210"
+    },
+    {
+      "t": "2026-11-04T19:42",
       "text": "Bestätigt: Manuel, Do 26.11.2026 bis So 29.11.2026, CHF 210"
     }
   ]
