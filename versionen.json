@@ -2,6 +2,21 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.97.4.0",
+      "datum": "2026-11-04",
+      "titel": "Ameisenpfad mit Radius, Schloss-Grösse, Aufräumen",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Layout: Der laufende Pfad um Info-Symbole und Symbolzeile hat jetzt abgerundete Ecken (6 px, wie alle Boxen). Er läuft bei «alles» und «nur Wichtiges», bei «Bewegung aus» steht er still.",
+        "Layout: Das Schloss in Textzeilen war zu klein (eine alte Regel für die Balken-Schlösser hat es verkleinert). Jetzt ist es überall gleich gross.",
+        "Layout: Das orange Film-Kästchen ist gleich hoch wie das gelbe «Mit Vorbehalt».",
+        "Layout: Die Zeilen «noch nicht gesichert» und «ganz gesichert» unter der Symbolzeile sind weg, das Schloss zeigt es. «gesichert bis …» bleibt.",
+        "Layout: Der rote Text «Ein Airbnb-Gast hat Vorrang …» ist in den Tag-Hinweisen weg. Die Bestätigung beim Buchen bleibt."
+      ]
+    },
+    {
       "v": "2.97.3.0",
       "datum": "2026-11-04",
       "titel": "Einheitliche Eckradien, Status-Zeile ohne Schloss",
