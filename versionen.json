@@ -2,7 +2,7 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
-      "v": "2.96.0.0",
+      "v": "2.96.0.0 bis 2.96.1.0",
       "datum": "2026-11-04",
       "titel": "Änderungen vom 04.11.2026",
       "arten": [
@@ -11,6 +11,7 @@
         "Text"
       ],
       "punkte": [
+        "Layout: Kurzfilm kompakter. Der Kalender steht ganz oben und ist etwas kleiner, der Text darunter, so liest man beim Zuschauen mit. Titel und «Zurück» stehen jetzt unten. Der Film-Knopf steht im Glossar ganz oben unter «Mit Vorbehalt».",
         "Neu: Kurzfilm «Termin mit Vorbehalt» (ohne Ton, rund 36 Sekunden, mit Zeitleiste zum Zurück- und Vorspulen). Der Knopf 🎬 steht im Hinweis zu «Wie möchtest du buchen?» (Hochsaison) und im Glossar unter «Mit Vorbehalt».",
         "Regel: Meldet sich ein Airbnb-Gast auf einen Termin mit Vorbehalt, bleibt der Teil davor gesichert (voll). Nur der Rest ab der ersten Airbnb-Nacht ist gestrichelt und rot umrandet. Vorher wurde der ganze Balken gestrichelt.",
         "Glossar «Mit Vorbehalt» gekürzt und ergänzt: Am Wechseltag müssen alle um 10 Uhr draussen sein, damit die Eltern/Schwiegereltern bis 16 Uhr reinigen können. Wer schon im Chalet war, zahlt die normalen Kosten für die Tage und die Reinigung."
