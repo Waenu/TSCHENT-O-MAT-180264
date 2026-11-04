@@ -153,12 +153,12 @@
   #animBtn { position: relative; width: 44px; height: 44px; font-size: 1.3rem; line-height: 1; background: var(--surface); color: var(--fg); border: 2px solid var(--line); border-radius: 50%; cursor: pointer; padding: 0; }
   #animBtn[data-st="0"] { opacity: .75; }
   /* Bewegung in drei Stufen (Erde): 2 = alles (Erde dreht schnell), 1 = nur Wichtiges (Erde dreht langsam), 0 = aus (Erde steht still, nichts bewegt sich) */
-  .aus *:not(.stern), .aus *::before, .aus *::after { animation: none !important; }   /* der Stern beim Spartipp (.stern) bleibt immer in Bewegung */
+  .aus *:not(.stern):not(.blitz-go):not(.rv-blitz), .aus *::before, .aus *::after { animation: none !important; }   /* der Stern beim Spartipp (.stern) bleibt immer in Bewegung */
   #bewHinweis { position: fixed; left: 50%; bottom: 84px; transform: translateX(-50%); z-index: 60; max-width: 86vw; padding: 10px 16px; border-radius: 999px; background: var(--fg); color: var(--bg); font-weight: 700; font-size: .95rem; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,.35); opacity: 0; pointer-events: none; transition: opacity .25s; }
   #bewHinweis.da { opacity: 1; }
   /* Bewegung aus (Schalter oben oder «Bewegung reduzieren» im Handy): alle kleinen Animationen stehen still */
   /* Wichtig, daher immer in Bewegung (auch bei «Bewegung aus»): Redner (.rd), Ameisenpfade (.sym, .ant) und Staffel-Läufer (.laeufer, .rn) */
-  .ruhig *:not(.stern):not(.eigen):not(.rd):not(.rd *):not(.sym):not(.ant):not(.ant *):not(.laeufer):not(.laeufer *):not(.rn):not(.rn *):not(.glb-land), .ruhig *:not(.rd *):not(.sym)::before, .ruhig *:not(.rd *):not(.sym)::after { animation: none !important; }
+  .ruhig *:not(.stern):not(.eigen):not(.rd):not(.rd *):not(.sym):not(.ant):not(.ant *):not(.laeufer):not(.laeufer *):not(.rn):not(.rn *):not(.glb-land):not(.blitz-go):not(.rv-blitz), .ruhig *:not(.rd *):not(.sym)::before, .ruhig *:not(.rd *):not(.sym)::after { animation: none !important; }
   #animBtn .glb { width: 28px; height: 28px; display: block; margin: auto; overflow: visible; }
   .glb-land { animation: glbDreh 9s linear infinite; }
   html:not(.ruhig) .glb-land { animation-duration: 2.4s; }
@@ -956,6 +956,15 @@
 
   #btnReserv .bt, #btnReservFix .bt { min-width: 0; }
   #btnReserv .rv-z, #btnReservFix .rv-z { font-size: 0.82rem; font-weight: 400; line-height: 1.25; margin-top: 3px; }
+
+  /* Aktion buchbar: gelber Blitz in der Ecke, einmal pro Tag blitzt der Rahmen zweimal auf (auch bei «Bewegung aus» und «Bewegung reduzieren»: bewusst nicht abschaltbar, kurz und weich) */
+  #btnReserv { position: relative; }
+  .rv-blitz { position: absolute; top: -11px; right: 10px; width: 22px; height: 22px; fill: #F5C400; stroke: #7A5C00; stroke-width: 1.2; stroke-linejoin: round; pointer-events: none; }
+  .rv-blitz[hidden] { display: none; }
+  .bigbtn.blitz-go { animation: rvRahmen 1.5s ease-out 1; }
+  .blitz-go .rv-blitz { animation: rvBolt 1.5s ease-out 1; }
+  @keyframes rvRahmen { 0%, 100% { border-color: var(--accent); } 12% { border-color: #F5C400; background: rgba(245, 196, 0, .22); } 30% { border-color: var(--accent); background: var(--surface); } 48% { border-color: #F5C400; background: rgba(245, 196, 0, .22); } 70% { border-color: var(--accent); background: var(--surface); } }
+  @keyframes rvBolt { 0% { opacity: 0; transform: scale(.3) rotate(-14deg); } 12% { opacity: 1; transform: scale(1.5) rotate(6deg); } 30% { opacity: .2; transform: scale(1); } 48% { opacity: 1; transform: scale(1.5) rotate(-6deg); } 70%, 100% { opacity: 1; transform: scale(1); } }
 </style>
 
 </head>
@@ -1037,7 +1046,7 @@
       <div class="rows" id="meldenKasten"></div>
     </details>
     </div>
-    <button type="button" class="bigbtn main" id="btnReserv" aria-controls="rechner"><span class="bi" aria-hidden="true"><svg class="an-cal" width="34" height="34" viewBox="0 0 38 38" aria-hidden="true"><rect x="4" y="7" width="30" height="27" rx="4" fill="#fff" stroke="#C62828" stroke-width="2"/><rect x="4" y="7" width="30" height="9" rx="4" fill="#C62828"/><g class="an-unter"><text x="19" y="29" text-anchor="middle" font-size="14" font-weight="700" fill="#16302B" font-family="system-ui,sans-serif">2</text></g><g class="an-blatt"><rect x="5" y="17" width="28" height="16" fill="#fff"/><text x="19" y="29" text-anchor="middle" font-size="14" font-weight="700" fill="#16302B" font-family="system-ui,sans-serif">1</text></g></svg></span><span class="bt"><span class="rv-t">Reif für die Berge</span><small class="rv-z"></small></span></button>
+    <button type="button" class="bigbtn main" id="btnReserv" aria-controls="rechner"><span class="bi" aria-hidden="true"><svg class="an-cal" width="34" height="34" viewBox="0 0 38 38" aria-hidden="true"><rect x="4" y="7" width="30" height="27" rx="4" fill="#fff" stroke="#C62828" stroke-width="2"/><rect x="4" y="7" width="30" height="9" rx="4" fill="#C62828"/><g class="an-unter"><text x="19" y="29" text-anchor="middle" font-size="14" font-weight="700" fill="#16302B" font-family="system-ui,sans-serif">2</text></g><g class="an-blatt"><rect x="5" y="17" width="28" height="16" fill="#fff"/><text x="19" y="29" text-anchor="middle" font-size="14" font-weight="700" fill="#16302B" font-family="system-ui,sans-serif">1</text></g></svg></span><span class="bt"><span class="rv-t">Reif für die Berge</span><small class="rv-z"></small></span><svg class="rv-blitz" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg></button>
     <button type="button" class="bigbtn" id="btnAnreise" hidden><span class="bi" aria-hidden="true"><svg class="ik" viewBox="0 0 40 40" focusable="false"><g class="ik-koffer"><path d="M15 12 V8 a2 2 0 0 1 2 -2 h6 a2 2 0 0 1 2 2 V12" fill="none" stroke="#3B7DC4" stroke-width="2.4" stroke-linecap="round"/><rect x="8" y="12" width="24" height="21" rx="4" fill="#3B7DC4"/><path d="M14 16 V29 M26 16 V29" stroke="#fff" stroke-width="1.6" opacity=".55" stroke-linecap="round"/><circle class="ik-rad" cx="14" cy="36" r="2.6" fill="#8A9490"/><circle class="ik-rad" cx="26" cy="36" r="2.6" fill="#8A9490"/></g></svg></span><span class="bt">Anreise-Wäsche<small id="btnAnreiseSub"></small></span></button>
     <button type="button" class="bigbtn" id="btnCheck" hidden><span class="bi" aria-hidden="true"><svg class="ik" viewBox="0 0 40 40" focusable="false"><circle class="ik-kreis" cx="20" cy="20" r="15" fill="#2E9E5B"/><path class="ik-haken" d="M12.5 20.5 L18 26 L28 14.5" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="bt">Reinigungs-Checkliste<small id="btnCheckSub"></small></span></button>
     <div id="aufStatus" hidden></div>
@@ -1132,7 +1141,7 @@
    Nach jeder Änderung die Versionsnummer erhöhen und das Datum anpassen.
    ============================================================ */
 // Standardwerte (Reserve). Die gültigen Werte stehen in der Datei einstellungen.json.
-let VERSION = "2.93.7.1";
+let VERSION = "2.94.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2477,10 +2486,25 @@ function reservTexte() {
     let titel = t[0], zeile = t[1];
     let lk = null; for (let i = 0; i < 28 && !lk; i++) { const k = addDays(h, i); if (GAP.has(k) && !GAPSPERR.has(k)) lk = lueckeVon(k); else if (SICHT.has(k)) { let e = k; while (SICHT.has(e)) e = addDays(e, 1); lk = [k, e]; } }   // nur spontane Lücken: in den nächsten 4 Wochen, auch die gelben Tage ab heute (Vorlaufzeit)
     const tg = (k) => Number(k.slice(8)) + ". " + MONATE[Number(k.slice(5, 7)) - 1];
-    if (lk) { titel = "Kurzentschlossene gewinnen"; const von = lk[0] < h ? h : lk[0]; zeile = "Lücke frei: " + (von.slice(5, 7) === lk[1].slice(5, 7) ? Number(von.slice(8)) + "." : tg(von)) + " bis " + tg(lk[1]) + ", ab " + P.minNaechte + " Nächten. Mit Freunden wird es für dich noch günstiger."; }
-    else if (istRuhe(h)) zeile += " Staffel-Zeit: Ihr reinigt selbst und spart.";
+    let aktion = "";
+    if (lk) { aktion = "luecke"; titel = "Kurzentschlossene gewinnen"; const von = lk[0] < h ? h : lk[0]; zeile = "Lücke frei: " + (von.slice(5, 7) === lk[1].slice(5, 7) ? Number(von.slice(8)) + "." : tg(von)) + " bis " + tg(lk[1]) + ", ab " + P.minNaechte + " Nächten. Mit Freunden wird es für dich noch günstiger."; }
+    else {
+      let sw = null; try { sw = schweifListe().filter((x) => x.von <= addDays(h, 28)).sort((a, b) => (a.von < b.von ? -1 : 1))[0] || null; } catch (e) {}
+      if (sw) { aktion = "staffel"; titel = "Die Staffel sucht Anschluss"; zeile = "Offene Familienstaffel ab " + tg(sw.von < h ? h : sw.von) + ": Wer anschliesst und selbst reinigt, spart die Reinigung."; }
+      else if (istRuhe(h)) zeile += " Staffel-Zeit: Ihr reinigt selbst und spart.";
+    }
     document.querySelectorAll(".rv-t").forEach((e) => { e.textContent = titel; });
     document.querySelectorAll(".rv-z").forEach((e) => { e.textContent = zeile; e.hidden = !zeile; });
+    // Aktion buchbar: Blitz bleibt als Erinnerung in der Ecke, einmal pro Tag (und bei jeder neuen Art von Aktion) blitzt der Rahmen
+    const knoepfe = document.querySelectorAll("#btnReserv, #btnReservFix");
+    knoepfe.forEach((bt) => { bt.classList.toggle("aktion", !!aktion); const bz = bt.querySelector(".rv-blitz"); if (bz) bz.toggleAttribute("hidden", !aktion); });
+    if (aktion) {
+      const tag = aktion + ":" + h; let alt = ""; try { alt = localStorage.getItem("tm2_blitz") || ""; } catch (e) {}
+      if (alt !== tag) {
+        try { localStorage.setItem("tm2_blitz", tag); } catch (e) {}
+        knoepfe.forEach((bt) => { bt.classList.remove("blitz-go"); void bt.offsetWidth; bt.classList.add("blitz-go"); setTimeout(() => bt.classList.remove("blitz-go"), 1700); });
+      }
+    }
   } catch (e) {}
 }
 function renderKalender() {
