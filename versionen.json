@@ -2,7 +2,7 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
-      "v": "2.83.0.3 bis 2.94.2.1",
+      "v": "2.83.0.3 bis 2.94.3.0",
       "datum": "2026-11-03",
       "titel": "Änderungen vom 03.11.2026",
       "arten": [
@@ -10,6 +10,7 @@
         "Layout"
       ],
       "punkte": [
+        "Rechner: Meldungen wie «Mit dieser Auswahl wird Zimmer 1 gebraucht» oder «Bitte die Freunde neu wählen» stehen jetzt direkt unter dem betroffenen Feld statt ganz oben. So sieht man sie beim Wählen.",
         "Kalender: Wählt man die Anreise in einer Lücke, erscheint am letzten möglichen Abreisetag ein schmaler gelber Streifen links im Feld. So sieht man sofort, wie weit die Lücke reicht. Er verschwindet, sobald die Abreise gewählt ist.",
         "Der Link für Mamis Ansicht wurde erneuert. Der alte Link funktioniert auf neuen Geräten nicht mehr.",
         "Lücke mit Freunden: «Freund im selben Zimmer» und «Zimmer 1 unberührt» bleiben immer wählbar. Wer «Ja» wählt, braucht oft einen Freund mehr. Die Freunde werden dann geleert und du wählst die Zahl selbst, ein Hinweis nennt die Mindestzahl.",

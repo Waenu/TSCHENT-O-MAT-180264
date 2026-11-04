@@ -1144,7 +1144,7 @@
    Nach jeder Änderung die Versionsnummer erhöhen und das Datum anpassen.
    ============================================================ */
 // Standardwerte (Reserve). Die gültigen Werte stehen in der Datei einstellungen.json.
-let VERSION = "2.94.2.1";
+let VERSION = "2.94.3.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1369,7 +1369,8 @@ function calc(s) {
 /* ============ Oberfläche ============ */
 const EMPTY = { art: "", luecke: false, lueckeDyn: false, selbstOK: false, selbst: "", nights: null, wer: "", fam: null, gaeste: null, zimmer: "", kk: null, spar: "", sparAuto: false, reinig: "", waesche: "" };
 let S = Object.assign({}, EMPTY);
-let notice = "";
+let NOTICES = {};   // Meldungen nach Feld: erscheinen direkt unter dem betroffenen Feld (seit 2.94.3.0, vorher ein Feld ganz oben)
+const meld = (id, text) => { NOTICES[id] = text; };
 
 const range = (a, b) => { const r = []; for (let i = a; i <= b; i++) r.push(i); return r; };
 const chf = (n) => "CHF " + Math.round(n).toLocaleString("de-CH").replace(/[’']/g, "’") + ".–";
@@ -1440,22 +1441,22 @@ const FIELDS = [
 }
 
 function normalize() {
-  notice = "";
+  NOTICES = {};
   if (S.staffelEnde && S.selbstOK === true) S.art = ART_S;   // Staffel endet zwangsläufig: keine Auswahl
   else if (artOpts().indexOf(S.art) < 0) S.art = "";
   if ((S.art === ART_V && S.verbOK === true) || (S.art === ART_S && S.selbstOK === true)) S.gaeste = 0;
   if (S.selbstOK === true) S.selbst = S.art === ART_S ? "Ja" : (S.art === ART_N ? "Nein" : "");
   if (S.wer !== MFG) S.fam = null;
-  if (typeof S.wer === "string" && S.wer && (S.luecke ? LWERL : WERL).indexOf(S.wer) < 0) { S.wer = ""; notice = S.luecke ? "Bei der ganzen Lücke sind höchstens 2 Erwachsene und 1 Kleinkind möglich. Bitte neu wählen." : "Die Auswahl «Wer von der Familie kommt» passt nicht mehr zum gewählten Datum. Bitte neu wählen."; }
+  if (typeof S.wer === "string" && S.wer && (S.luecke ? LWERL : WERL).indexOf(S.wer) < 0) { S.wer = ""; meld("wer", S.luecke ? "Bei der ganzen Lücke sind höchstens 2 Erwachsene und 1 Kleinkind möglich. Bitte neu wählen." : "Die Auswahl «Wer von der Familie kommt» passt nicht mehr zum gewählten Datum. Bitte neu wählen."); }
   let d = derive(S);
-  if (d.LUE && P.lueckeGastNacht > 0 && typeof S.gaeste === "number" && S.gaeste > 0 && S.gaeste < lueckeGaesteMin(d)) { S.gaeste = null; notice = "In der Lücke geht es nur ohne Freunde oder mit mindestens " + lueckeGaesteMin(d) + " Freunden. Bitte die Freunde neu wählen."; d = derive(S); }
+  if (d.LUE && P.lueckeGastNacht > 0 && typeof S.gaeste === "number" && S.gaeste > 0 && S.gaeste < lueckeGaesteMin(d)) { S.gaeste = null; meld("gaeste", "In der Lücke geht es nur ohne Freunde oder mit mindestens " + lueckeGaesteMin(d) + " Freunden. Bitte die Freunde neu wählen."); d = derive(S); }
   if (typeof S.gaeste === "number" && S.gaeste > d.frei) {
-    if (d.LG) { S.gaeste = 0; notice = "Bei der ganzen Lücke sind keine Freunde möglich. Die Freunde wurden automatisch auf 0 gesetzt."; }
-    else if (d.frei === 0) { S.gaeste = 0; notice = "Kein Platz mehr für Freunde. Die Freunde wurden automatisch auf 0 gesetzt."; }
-    else { S.gaeste = null; notice = "Es ist nur noch Platz für " + d.frei + " " + gastWort(d.frei) + ". Bitte die Freunde neu wählen."; }
+    if (d.LG) { S.gaeste = 0; meld("gaeste", "Bei der ganzen Lücke sind keine Freunde möglich. Die Freunde wurden automatisch auf 0 gesetzt."); }
+    else if (d.frei === 0) { S.gaeste = 0; meld("gaeste", "Kein Platz mehr für Freunde. Die Freunde wurden automatisch auf 0 gesetzt."); }
+    else { S.gaeste = null; meld("gaeste", "Es ist nur noch Platz für " + d.frei + " " + gastWort(d.frei) + ". Bitte die Freunde neu wählen."); }
     d = derive(S);
   }
-  if (S.festMin && typeof S.gaeste === "number" && S.gaeste < P.festMinGaeste && d.frei >= P.festMinGaeste) { S.gaeste = null; notice = "Im " + festTxt() + " sind mindestens " + P.festMinGaeste + " Freunde nötig. Bitte die Freunde neu wählen."; d = derive(S); }
+  if (S.festMin && typeof S.gaeste === "number" && S.gaeste < P.festMinGaeste && d.frei >= P.festMinGaeste) { S.gaeste = null; meld("gaeste", "Im " + festTxt() + " sind mindestens " + P.festMinGaeste + " Freunde nötig. Bitte die Freunde neu wählen."); d = derive(S); }
   if (d.frei === 0 && d.FP <= P.maxPersonen && typeof S.wer === "string" && S.wer && (S.wer !== MFG || typeof S.fam === "number")) { S.gaeste = 0; d = derive(S); }
   if (d.GE === 0) { if (!(d.LUE && S.gaeste === null)) S.zimmer = ""; S.reinig = ""; }   // in der Lücke bleibt «Ja» stehen, wenn die Freunde neu gewählt werden müssen
   if (d.voll) S.zimmer = "";
@@ -1464,10 +1465,10 @@ function normalize() {
   if (d.kkMax === 0) S.kk = null;
   else if (d.kkFix) S.kk = d.kkMin;
   else if (typeof S.kk === "number" && S.kk < d.kkMin) S.kk = null;
-  else if (typeof S.kk === "number" && S.kk > d.kkMax) { S.kk = null; notice = "Die Auswahl hat weniger Kinder, bitte die Kleinkinder im Kinderbettchen oder bei den eigenen Eltern neu wählen."; }
+  else if (typeof S.kk === "number" && S.kk > d.kkMax) { S.kk = null; meld("kk", "Die Auswahl hat weniger Kinder, bitte die Kleinkinder im Kinderbettchen oder bei den eigenen Eltern neu wählen."); }
   if (d.sparLock) {
     const ziel = (d.sparGrund === "so" || d.sparGrund === "luecke") ? "Ja" : "Nein";
-    if (S.spar === "Ja" && ziel === "Nein" && !S.sparAuto) notice = "Mit dieser Auswahl wird Zimmer 1 gebraucht. Die Frage wurde auf Nein gesetzt.";
+    if (S.spar === "Ja" && ziel === "Nein" && !S.sparAuto) meld("spar", "Mit dieser Auswahl wird Zimmer 1 gebraucht. Die Frage wurde auf Nein gesetzt.");
     S.spar = ziel; S.sparAuto = true;
   } else if (S.sparAuto) { S.spar = ""; S.sparAuto = false; }
 }
@@ -3000,6 +3001,10 @@ function anfrageKasten(r) {
   h += '</div>';
   return h;
 }
+// Wo eine Meldung steht: unter ihrem Feld; ist das Feld ausgeblendet (z. B. «Zimmer 1» bei gesperrter Frage), unter dem nächsten sichtbaren Feld davor, sonst oben
+const meldSichtbar = (id) => { const w = document.getElementById("f-" + id); return !!w && !w.hidden; };
+const meldOrt = (id) => [id, "gaeste", "wer", "art"].find(meldSichtbar) || "";
+const meldZiel = (fid) => Object.keys(NOTICES).filter((id) => meldOrt(id) === fid).map((id) => NOTICES[id]).join(" ");
 function render() {
   const d = derive(S);
   FIELDS.forEach((f) => {
@@ -3034,8 +3039,13 @@ function render() {
     else hEl.innerHTML = esc(f.hint(d)).replace(/\{\{(.+?)\}\}/g, '<span class="hl">$1</span>');   // {{Wort}} im Hinweis = hervorgehoben
     if (f.id === (d.SM ? "art" : (d.frei > 0 ? "gaeste" : "wer"))) { const w = staffelWarnung(d); if (w) { const sp = document.createElement("span"); sp.className = "note h gelb-warn"; sp.style.display = "block"; sp.style.marginTop = "8px"; sp.innerHTML = WA + esc(w); hEl.appendChild(sp); } }
   });
-  const nb = document.getElementById("notice");
-  nb.hidden = !notice; nb.textContent = notice;
+  FIELDS.forEach((f) => {   // Meldungen erst nach dem Ein-/Ausblenden aller Felder setzen
+    const t = meldZiel(f.id), hEl = document.getElementById("h-" + f.id);
+    if (t && hEl) { const sp = document.createElement("span"); sp.className = "notice feldmeld"; sp.setAttribute("role", "status"); sp.style.display = "block"; sp.style.marginTop = "8px"; sp.textContent = t; hEl.appendChild(sp); }
+  });
+  const nb = document.getElementById("notice");   // oben nur noch, wenn das betroffene Feld gerade nicht sichtbar ist
+  const uebrig = Object.keys(NOTICES).filter((id) => !meldOrt(id)).map((id) => NOTICES[id]).join(" ");
+  nb.hidden = !uebrig; nb.textContent = uebrig;
 
   const r = calc(S);
   const tip = Math.max(0, parseInt(TRINK, 10) || 0);
@@ -3120,7 +3130,7 @@ function render() {
     '<div class="marke" id="marke"><span data-z="0">ankommen</span><span class="pt">·</span><span data-z="1">durchatmen</span><span class="pt">·</span><span data-z="2">geniessen</span></div>' + (ELTERN ? elternKasten() : '');
 }
 
-document.getElementById("reset").addEventListener("click", () => { ELTERN = false; EMPF = ""; TRINK = ""; RECH_OFFEN = false; TRINK_OFFEN = false; S = Object.assign({}, EMPTY); ARR = ""; DEP = ""; initKalenderMonat(); notice = ""; render(); renderKalender(); ZURUECK = null; document.getElementById("zurueck").hidden = true; setHilfe(false); hilfeZuklappen(); setRechner(false); window.scrollTo({ top: 0 }); });
+document.getElementById("reset").addEventListener("click", () => { ELTERN = false; EMPF = ""; TRINK = ""; RECH_OFFEN = false; TRINK_OFFEN = false; S = Object.assign({}, EMPTY); ARR = ""; DEP = ""; initKalenderMonat(); NOTICES = {}; render(); renderKalender(); ZURUECK = null; document.getElementById("zurueck").hidden = true; setHilfe(false); hilfeZuklappen(); setRechner(false); window.scrollTo({ top: 0 }); });
 function wendeEinstellungenAn(j) {
   if (!j || typeof j !== "object") return;
   Object.keys(P).forEach((k) => {
