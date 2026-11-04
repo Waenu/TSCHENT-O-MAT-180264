@@ -2,7 +2,7 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
-      "v": "2.83.0.3 bis 2.95.0.0",
+      "v": "2.83.0.3 bis 2.95.1.0",
       "datum": "2026-11-03",
       "titel": "Änderungen vom 03.11.2026",
       "arten": [
@@ -10,6 +10,7 @@
         "Layout"
       ],
       "punkte": [
+        "Rechner: Der Hinweis «… ohne Kosten» steht jetzt in Gold wie die Preisleiste, in der Leiste und im Kästchen unter dem Preis. So wird er nicht übersehen.",
         "Rechner: Zielzeile unter dem Preis. Sie zeigt, was mehr Freunde oder eine Nacht mehr für den eigenen Anteil bringen, bis hin zu «ohne Kosten». Ist der Anteil 0, wird die Preisleiste golden. Es werden nur Varianten gezeigt, die wirklich buchbar und günstiger sind.",
         "Rechner: Meldungen wie «Mit dieser Auswahl wird Zimmer 1 gebraucht» oder «Bitte die Freunde neu wählen» stehen jetzt direkt unter dem betroffenen Feld statt ganz oben. So sieht man sie beim Wählen.",
         "Kalender: Wählt man die Anreise in einer Lücke, erscheint am letzten möglichen Abreisetag ein schmaler gelber Streifen links im Feld. So sieht man sofort, wie weit die Lücke reicht. Er verschwindet, sobald die Abreise gewählt ist.",
