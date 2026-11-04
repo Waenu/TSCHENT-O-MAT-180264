@@ -158,7 +158,7 @@
   #bewHinweis.da { opacity: 1; }
   /* Bewegung aus (Schalter oben oder «Bewegung reduzieren» im Handy): alle kleinen Animationen stehen still */
   /* Wichtig, daher immer in Bewegung (auch bei «Bewegung aus»): Redner (.rd), Ameisenpfade (.sym, .ant) und Staffel-Läufer (.laeufer, .rn) */
-  .ruhig *:not(.stern):not(.eigen):not(.rd):not(.rd *):not(.sym):not(.filmik):not(.filmik *):not(.ant):not(.ant *):not(.laeufer):not(.laeufer *):not(.rn):not(.rn *):not(.glb-land):not(.blitz-go):not(.rv-blitz), .ruhig *:not(.rd *):not(.sym):not(.filmik *)::before, .ruhig *:not(.rd *):not(.sym):not(.filmik *)::after { animation: none !important; }
+  .ruhig *:not(.stern):not(.eigen):not(.rd):not(.rd *):not(.sym):not(.filmik):not(.filmik *):not(.ant):not(.ant *):not(.laeufer):not(.laeufer *):not(.rn):not(.rn *):not(.glb-land):not(.blitz-go):not(.rv-blitz), .ruhig *:not(.rd *):not(.sym):not(.filmik *)::before, .ruhig *:not(.rd *):not(.sym):not(.symz):not(.filmik *)::after { animation: none !important; }
   #animBtn .glb { width: 28px; height: 28px; display: block; margin: auto; overflow: visible; }
   .glb-land { animation: glbDreh 9s linear infinite; }
   html:not(.ruhig) .glb-land { animation-duration: 2.4s; }
@@ -505,9 +505,15 @@
   .exb .rn { width: 13px; height: 15px; margin-right: 2px; }
   @media (prefers-reduced-motion: reduce) { .zi, .zi-tropf, .zuw .lk-dach, .offw .lk-dach { animation: none !important; } .zi-tropf { display: none; } }
   /* Ameisenpfad um verlinkende Symbole */
-  @property --ameise { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
-  @keyframes ziAmeise { to { --ameise: 360deg; } }
-  .sym::after { content: ""; position: absolute; inset: -1.5px; border-radius: 8px; padding: 1.5px; background: repeating-conic-gradient(from var(--ameise), var(--ac, var(--accent)) 0 9deg, transparent 9deg 18deg); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); mask-composite: exclude; pointer-events: none; animation: ziAmeise 8s linear infinite; }
+  /* Pfad: gleichmässige eckige Striche, laufen im Uhrzeigersinn. Gleich bei den Info-Symbolen (.sym) und bei der Symbolzeile (.symz). Bei «Bewegung aus» steht er still. */
+  @keyframes marsch { to { background-position: var(--p) 0, calc(var(--p) * -1) 100%, 0 calc(var(--p) * -1), 100% var(--p); } }
+  .sym::after, .symz::after { content: ""; position: absolute; inset: -1.5px; pointer-events: none; --c: var(--ac, var(--accent)); --p: 8px; --d: 1.5px;
+    background: linear-gradient(90deg, var(--c) 50%, transparent 50%) 0 0 / var(--p) var(--d) repeat-x, linear-gradient(90deg, var(--c) 50%, transparent 50%) 0 100% / var(--p) var(--d) repeat-x, linear-gradient(0deg, var(--c) 50%, transparent 50%) 0 0 / var(--d) var(--p) repeat-y, linear-gradient(0deg, var(--c) 50%, transparent 50%) 100% 0 / var(--d) var(--p) repeat-y;
+    animation: marsch 1.2s linear infinite; }
+  .symz { position: relative; display: flex; justify-content: space-around; align-items: center; gap: 4px; margin: 12px 4px 8px; padding: 6px 4px; }
+  .symz::after { inset: 0; --p: 14px; --d: 2px; --c: var(--accent); }
+  .symik { font: inherit; font-size: 1.6rem; line-height: 1; background: none; border: 0; color: inherit; padding: 6px 10px; min-height: 44px; cursor: pointer; }
+  .symz-bis { margin: 0 0 8px; font-size: .95rem; text-align: center; }
   .bigbtn .bi { font-size: 1.7rem; line-height: 1; flex: 0 0 2.4rem; width: 2.4rem; text-align: center; }
   a.bigbtn { text-decoration: none; box-sizing: border-box; }
   #btnBuch[hidden], #btnAnsichten[hidden] { display: none; }
@@ -1077,6 +1083,7 @@
         <details class="sub" id="b-sicht"><summary>🔔 Lücke durch die Vorlaufzeit</summary><div class="bc" id="bc-sicht"></div></details>
         <details class="sub" id="b-ruhe"><summary>🧹 Selber reinigen</summary><div class="bc" id="bc-ruhe"></div></details>
         <details class="sub" id="b-endrein"><summary>🪣 Endreinigung</summary><div class="bc" id="bc-endrein"></div></details>
+        <details class="sub" id="b-zeiten"><summary>🕓 Ein- und Auschecken</summary><div class="bc" id="bc-zeiten"></div></details>
         <details class="sub" id="b-zahlung"><summary><span class="an-geld" aria-hidden="true"><span class="gb">💰</span><i class="mz m1"></i><i class="mz m2"></i><i class="mz m3"></i></span> Zahlung</summary><div class="bc" id="bc-zahlung"></div></details>
         <details class="sub" id="b-trinkgeld"><summary><span class="an-schwein" aria-hidden="true">🐖</span> Trinkgeld</summary><div class="bc" id="bc-trinkgeld"></div></details>
         <details class="sub" id="b-sparen"><summary>💸 So sparst du Geld</summary><div class="bc" id="bc-sparen"></div></details>
@@ -1185,7 +1192,7 @@
    Nach jeder Änderung die Versionsnummer erhöhen und das Datum anpassen.
    ============================================================ */
 // Standardwerte (Reserve). Die gültigen Werte stehen in der Datei einstellungen.json.
-let VERSION = "2.96.3.0";
+let VERSION = "2.97.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1989,6 +1996,7 @@ function begriffeFuellen() {
       "<li><b>Mit Vorbehalt:</b> Ab " + P.hochMinNaechte + " Nächten, auch mit Freunden. Der Termin wird nicht in Airbnb gesperrt, ein Airbnb-Gast hat Vorrang. " + symBtn("b-prov", "🔓") + "</li></ul>" +
       "<p>Wie die Preise entstehen, steht unter «Wie wird gerechnet». " + symBtn("b-rechnen", "🧮") + "</p>");
   })();
+  set("bc-zeiten", "<p>Einchecken ab <b>" + ZEIT_AN + "</b>, Auschecken bis <b>" + ZEIT_AB + "</b>. Das gilt für jede Buchung.</p><p>Bis " + ZEIT_AB + " müssen alle draussen sein, damit die Eltern/Schwiegereltern bis " + ZEIT_AN + " reinigen können, falls am selben Tag ein neuer Gast kommt.</p>");
   set("bc-prov", festUndVorbehaltTxt() + "<p><b>Mit Vorbehalt</b>" + filmKnopf() + " heisst: Der Termin ist in Airbnb nicht gesperrt. Meldet sich ein Airbnb-Gast für dieselben Tage, hat er Vorrang und ihr müsst weichen.</p><p>Habt ihr noch nicht begonnen, fällt nichts an. Seid ihr schon im Chalet, bleibt ihr bis zum Anreisetag des Gastes. Um " + ZEIT_AB + " müssen alle draussen sein: Die Eltern/Schwiegereltern reinigen, damit der Gast um " + ZEIT_AN + " einziehen kann. Ihr zahlt die normalen Kosten für die Tage, die ihr dort wart, und die Reinigung. Plant deshalb eine Alternative ein, besonders in der Hochsaison.</p><p><b>Gesichert 🔒:</b> Ein Airbnb-Gast braucht " + VORLAUF + " Tage Vorlauf (so in Airbnb eingestellt). Nächte, die weniger als " + VORLAUF + " Tage von heute entfernt sind, kann niemand mehr buchen: Dort ist der Balken <b>voll</b>, sonst <b>gestrichelt</b> 🔓. Der volle Teil wächst jeden Tag. Rot umrandet heisst Konflikt mit einem Airbnb-Gast: Der Teil davor bleibt gesichert.</p><p>Wer in der Hochsaison (" + HOCH_MONATE.filter((m) => FEST_MONATE.indexOf(m) < 0).map((m) => MONATE[m - 1]).join(", ").replace(/, ([^,]*)$/, " und $1") + ") Sicherheit will, bucht <b>verbindlich</b>: Dann sperren die Eltern/Schwiegereltern die Zeit in Airbnb. " + symBtn("b-hochsaison", "🏔️") + "</p>" + bildVorbehalt() + "<p>In den Staffel-Zeiten, in der Nebensaison" + (FEST_MONATE.length ? " und im " + festTxt() : "") + " sind Termine <b>fest</b>.</p>");
   set("bc-wunschtermin", "<p>Den Wunschtermin wählt ihr im Kalender. Wie das geht, steht unter «Kalender». Die Farben stehen als Legende unter dem Kalender. " + symBtn("b-kalender", "🗓️") + "</p>");
   set("bc-sicht", "<p><b>Lücke durch die Vorlaufzeit 🔔</b> Airbnb kann diese Nächte nicht mehr verkaufen: Ein Airbnb-Gast braucht " + VORLAUF + " Tage Vorlauf, er bleibt mindestens " + AIRBNB_MIN + " Nächte, und sonntags gibt es keinen Check-in. Darum steht diese Zeit euch offen: zum normalen Familienpreis, <b>ohne Vorbehalt</b>, auch in der Hochsaison. Mindestens " + Math.max(P.minNaechte, P.sichtMinNaechte) + " Nächte" + (P.hochMinNaechte > Math.max(P.minNaechte, P.sichtMinNaechte) ? ", in der Hochsaison mindestens " + P.hochMinNaechte : "") + ".</p><p>Im Kalender sind diese Tage <b>gelb</b>, wie eine Lücke. Das Gelb wandert täglich: Mit jedem Tag kann Airbnb weniger verkaufen, darum kommen Nächte dazu, und die vergangenen fallen weg.</p>" + bildSicht() + "<p>Das gilt auch bei nur 2 oder 3 Nächten, solange Airbnb dahinter noch verkaufen kann. Bleiben bis zur nächsten Belegung höchstens " + LUECKE_MAX + " Nächte übrig (Airbnb kann gar nichts mehr verkaufen), ist es eine <b>Lücke</b> " + symBtn("b-luecke", "🧩") + " mit denselben Regeln.</p>");
@@ -2658,7 +2666,7 @@ document.addEventListener("input", (e) => {
   if (n) { n.focus(); const l = n.value.length; try { n.setSelectionRange(l, l); } catch (err) {} }
 });
 document.addEventListener("click", (e) => {
-  const b = e.target.closest(".sym[data-info]");
+  const b = e.target.closest(".sym[data-info], .symik[data-info]");
   if (b) { e.preventDefault(); springeZu(b.dataset.info); return; }
   if (e.target.closest("#zurueck")) zurueckGehen();
   if (e.target.closest("#trinkOk")) {
@@ -4908,10 +4916,7 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
       const kurz = b.betrag > 0 ? esc(chf(b.betrag).replace(" ", "\u00a0")) + ", " + (b.prov ? "fällig mit der Sicherung" : bez ? "bezahlt am " + esc(fmtTag(b.bezahlt.slice(0, 10))) : "noch offen") : "Preisberechnung";
       h += zeile("rech", "🧾", bez ? "Quittung" : "Rechnung", kurz, false) + '<div class="ipan" data-ipan="rech" hidden>' + rechnungHtml(b.rechnung, b.bestaetigt) + "</div>";
     }
-    if (zs.length) {
-      const konf = stay.some((x) => x.prov && provKonflikt(x)), sicher = !konf && stay.every((x) => !x.prov || k < provSicherBis());
-      h += zeile("sich", konf ? "⚠️" : sicher ? "🔒" : "🔓", "Buchungssicherheit", konf ? "Konflikt mit Airbnb-Gast" : sicher ? "gesichert" : "noch nicht gesichert", !sicher) + '<div class="ipan" data-ipan="sich" hidden>' + zs.map((t) => "<p>" + t + "</p>").join("") + (papi && konf ? '<button type="button" class="btn main" data-vw="' + esc(bKey(b)) + '">👁️ Zum Termin in der Verwaltung</button>' : "") + "</div>";
-    }
+    if (papi && stay.some((x) => x.prov && provKonflikt(x))) h += '<button type="button" class="btn main" data-vw="' + esc(bKey(b)) + '">👁️ Zum Termin in der Verwaltung</button>';   // Sicherheit steht jetzt in der Symbolzeile
     if (zh.length) {
       const it = zh.map(hinItem);
       h += zeile("hin", "ℹ️", "Hinweise", it.slice(0, 2).map((x) => esc(x.ti)).join(", "), false) + '<div class="ipan ar-list" data-ipan="hin" hidden>' + it.map((x) => x.html).join("") + "</div>";
@@ -4927,6 +4932,22 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
     const sperrZ = !ngP ? "" : zeile("sperr", "📌", "Aufgabe: in Airbnb sperren", "noch offen", true) + '<div class="ipan" data-ipan="sperr" hidden><p>📌 <b>Aufgabe für dich:</b> Der Termin ist bestätigt und dem Kind zugesagt, Airbnb zeigt die Tage aber noch als frei. Bitte sperren, sonst kann ein Airbnb-Gast sie noch buchen. Die Airbnb-Daten kommen mit Verzögerung: Kurz nach dem Sperren kann dieser Hinweis noch stehen.</p><button type="button" class="btn main" data-vw="' + esc(bKey(b)) + '">👁️ Zum Termin in der Verwaltung</button></div>';
     if (seher) h += '<div class="ar-nur">🔐 ' + (papi ? "Nur für dich" : "Nur für Eltern") + '</div>' + sperrZ + einn + (!papi ? "" : '<button type="button" class="ar" data-vw="' + esc(bKey(b)) + '"><span class="ar-i">👁️</span><span class="ar-t">Verwaltung<small>Buchung bearbeiten</small></span><span class="ar-c go" aria-hidden="true"></span></button>');
     return h;
+  }
+  function symZeile(k, stay) {   // Symbolzeile statt Textzeilen: jedes Symbol springt zum Glossar (mit Zurück-Taste)
+    if (!stay.length) return "";
+    const b = stay[0], konf = b.prov && provKonflikt(b), sb = provSicherBis(), kf = provKonfliktAb(b), sicherBis = konf && kf && kf < sb ? kf : sb;
+    const it = [], ik = (id, sym, label) => it.push('<button type="button" class="symik" data-info="' + id + '" aria-label="' + esc(label) + '">' + sym + "</button>");
+    const kt = konf && kf && k >= kf, sich = !b.prov || k < sicherBis;   // Konflikt gilt erst ab dem ersten belegten Tag, der Teil davor bleibt gesichert
+    ik("b-prov", kt ? "⚠️" : sich ? "🔒" : "🔓", kt ? "Konflikt mit Airbnb-Gast" : sich ? "gesichert" : "noch nicht gesichert");
+    const rk = rkVon(b);
+    if (rk === "k") ik("b-ruhe", "🧹", "Kinder reinigen"); else if (rk === "e") ik("b-endrein", "🪣", "Eltern und Schwiegereltern reinigen");
+    if (b.sb) ik("b-staffel", "🔗", "Familienstaffel");
+    if (b.waesche === "bringen") ik("b-staffel", "🧳", "Eigene Wäsche mitbringen"); else if (b.waesche === "senden") ik("b-staffel", "🧺", "Wäsche zurückgeben");
+    if (b.lg) ik("b-luecke", "🧩", "Lücke");
+    ik("b-zeiten", "🕓", "Ein- und Auschecken");
+    let bis = "";
+    if (b.prov) bis = sicherBis >= b.dep ? "<p class=\"symz-bis\">🔒 ganz gesichert</p>" : sicherBis <= b.arr ? "<p class=\"symz-bis\">" + (konf ? "⚠️ Konflikt mit Airbnb-Gast" : "🔓 noch nicht gesichert") + "</p>" : "<p class=\"symz-bis\">" + (konf ? "⚠️ " : "🔓 ") + "gesichert bis " + esc(fmtTag(sicherBis).replace(/\.\d{4}$/, ".")) + (konf ? ", dann Konflikt" : "") + "</p>";
+    return '<div class="symz" role="group" aria-label="Symbole zum Termin">' + it.join("") + "</div>" + bis;
   }
   function text(k) {
     const heute = heuteKey(), kopf = "<b>" + esc(fmtTag(k)) + "</b>";
@@ -4949,7 +4970,6 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
     const z = [], zs = [], zh = [], mon = [];
     const vz = [];   // Lücke / «Kurzfristig frei»: steht ganz oben unter dem Datum, damit es nicht unter dem Bildschirmrand verschwindet   // mon: Erklärung der Monatsfarbe, steht zuoberst
     const stay = BUCH.filter((b) => b.arr <= k && k < b.dep), abr = BUCH.filter((b) => b.dep === k), zb = stay.length ? zh : z;
-    stay.forEach((b) => z.push("Am Abreisetag: " + rkTxt(rkVon(b)) + (b.prov ? ". Termin mit Vorbehalt" : "") + "."));
     stay.filter((b) => !b.prov).forEach(() => zs.push("🔒 <b>Gesichert:</b> Dieser Aufenthalt ist in Airbnb gesperrt."));
     stay.filter((b) => b.prov).forEach((b) => {
       if (provKonflikt(b)) { zs.push("⚠️ <b>Konflikt:</b> Ein Airbnb-Gast hat sich auf diese Tage eingetragen. Der Aufenthalt muss weichen. " + symBtn("b-prov", "🔓")); return; }
@@ -4993,12 +5013,12 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
         "<p>👋 <b>Es geht:</b> " + gehende.map(wo).join(", ") + "</p>" +
         "<p>🧳 <b>Es kommt:</b> " + kommende.map((g) => wo(g) + '<br><span class="hint">' + esc(fmtTag(g.arr)) + " bis " + esc(fmtTag(g.dep)) + " (" + diffDays(g.arr, g.dep) + (diffDays(g.arr, g.dep) === 1 ? " Nacht" : " Nächte") + ")</span>").join("<br>") + "</p>" +
         (rkZ.length ? "<p>Reinigung am Abreisetag: " + rkZ.map(rkTxt).join(", ") + ".</p>" : "") +
-        warn.map((t) => "<p>" + t + "</p>").join("") + (bz ? "<p>🕓 " + esc(zeitenKurz()) + ".</p>" : "") + iconLeiste(k, stay, zs, zh) + gf;
+        warn.map((t) => "<p>" + t + "</p>").join("") + symZeile(k, stay) + iconLeiste(k, stay, zs, zh) + gf;
     }
     const gebucht = !!(bz || gn);   // Feld mit Buchung: keine Erklärung der Saison oder Staffel, die gibt es nur bei Feldern mit Buchungsoption
     const kopfX = gebucht ? "<p class=\"bwer\">" + wer + "</p>" + (bz ? vonBis(bz.arr, bz.dep) : gd ? vonBis(gd.arr, gd.dep) : kopf) : kopf;
     const opt = gebucht ? vz : vz.concat(monZeilen(k, mon));
-    return kopfX + (abrZ.length ? "<p>" + abrZ.join("</p><p>") + "</p>" : "") + (opt.length ? "<p>" + opt.join("</p><p>") + "</p>" : "") + z.map((s) => "<p>" + s + "</p>").join("") + (bz ? "<p>🕓 " + esc(zeitenKurz()) + ".</p>" : "") + iconLeiste(k, stay, zs, zh) + gf;
+    return kopfX + symZeile(k, stay) + (abrZ.length ? "<p>" + abrZ.join("</p><p>") + "</p>" : "") + (opt.length ? "<p>" + opt.join("</p><p>") + "</p>" : "") + z.map((s) => "<p>" + s + "</p>").join("") + iconLeiste(k, stay, zs, zh) + gf;
   }
   window._gastBlase = (k, still) => zeigen(text(k), grid.querySelector('[data-k="' + k + '"]'), !!still);
   function zelle(e) {
