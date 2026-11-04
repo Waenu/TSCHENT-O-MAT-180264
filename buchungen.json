@@ -38,6 +38,17 @@
       "betrag": 210,
       "rechnung": "Gesendet am Di 3.11.2026, 22:33 Uhr. App-Version 2.92.0.0.\nAnreise\tDonnerstag 26.11.2026\nAbreise\tSonntag 29.11.2026 (3 Nächte)\nFamilie\tIch und Partner\nFreunde\t0\nZimmer 1 unberührt\tNein\nSelbstreinigung\tJa\nTotal laut Rechner\tCHF 210.–\nReinigungskosten sind erst nach Ablauf der Familienstaffel bekannt und werden nachbelastet.\n#Preisberechnung\nFamilie pro Nacht\tCHF 70.–\nÜbernachtung (3 Nächte)\tCHF 210.–\nReinigung\tCHF 0.–",
       "bestaetigt": "2026-11-04T19:42"
+    },
+    {
+      "name": "Miriam",
+      "arr": "2027-08-14",
+      "dep": "2027-08-22",
+      "selbst": false,
+      "pers": 2,
+      "verb": true,
+      "betrag": 1840,
+      "rechnung": "Gesendet am Di 3.11.2026, 22:33 Uhr. App-Version 2.92.0.0.\nAnreise\tSamstag 14.08.2027\nAbreise\tSonntag 22.08.2027 (8 Nächte)\nFamilie\tIch und Partner\nFreunde\t0\nTotal laut Rechner\tCHF 1’840.–\nVerbindliche Buchung\tWir buchen verbindlich vom Samstag 14.08.2027 bis Sonntag 22.08.2027 (8 Nächte) die Ferienwohnung. Bitte blockiert die Zeit in Airbnb. Mit Endreinigung durch die Eltern/Schwiegereltern.\n#Preisberechnung\nÜbernachtung (8 Nächte)\tCHF 1’600.–\nReinigung\tCHF 240.–\nVerbindliche Buchung: 8 Nächte in der Hochsaison zu CHF 200.–, dazu die Endreinigung CHF 240.–. Der Termin ist fest und wird in Airbnb gesperrt.",
+      "bestaetigt": "2026-11-04T19:45"
     }
   ],
   "logbuch": [
@@ -392,6 +403,10 @@
     {
       "t": "2026-11-04T19:42",
       "text": "Bestätigt: Manuel, Do 26.11.2026 bis So 29.11.2026, CHF 210"
+    },
+    {
+      "t": "2026-11-04T19:45",
+      "text": "Bestätigt: Miriam, Sa 14.08.2027 bis So 22.08.2027, CHF 1840, verbindlich"
     }
   ]
 }
