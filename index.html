@@ -1157,7 +1157,7 @@
    Nach jeder Änderung die Versionsnummer erhöhen und das Datum anpassen.
    ============================================================ */
 // Standardwerte (Reserve). Die gültigen Werte stehen in der Datei einstellungen.json.
-let VERSION = "2.95.4.0";
+let VERSION = "2.95.4.1";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1534,7 +1534,8 @@ const fmtTag = (k) => { const t = dparse(k); return WT_LANG[t.getUTCDay()] + " "
 // Nacht k gehört zu einem bestätigten Aufenthalt der Familie (auch wenn Airbnb ihn noch nicht als belegt zeigt, z. B. mit Vorbehalt)
 const nachtGebucht = (k) => BUCH.some((x) => x.arr <= k && k < x.dep);
 function naechteFrei(von, bis) { for (let k = von; k < bis; k = addDays(k, 1)) if (BELEGT.has(k) || GAPSPERR.has(k) || nachtGebucht(k) || istSperre(k)) return false; return true; }
-function nurLueckenNaechte(a, d) { for (let k = a; k < d; k = addDays(k, 1)) if (!GAP.has(k) && !SICHT.has(k)) return false; return true; }   // echte Lücke oder Lücke durch die Vorlaufzeit
+const lueckenNacht = (k) => GAP.has(k) || (GAPSTART.has(k) && !GAPSPERR.has(k));   // auch die erste Nacht einer Lücke, die an einem Sonntag beginnt (sie steht nicht in GAP, gehört aber zur Lücke)
+function nurLueckenNaechte(a, d) { for (let k = a; k < d; k = addDays(k, 1)) if (!lueckenNacht(k) && !SICHT.has(k)) return false; return true; }   // echte Lücke oder Lücke durch die Vorlaufzeit
 function kannAnreise(k) {
   if (!(k >= heuteKey() && !BELEGT.has(k) && !GAPSPERR.has(k) && !nachtGebucht(k) && !istSperre(k))) return false;
   if (GAP.has(k) && !GAPSTART.has(k)) { const lg = lueckeVon(k); if (lg && diffDays(k, lg[1]) < P.minNaechte) return false; }   // mitten in einer Lücke: Anreise erlaubt, wenn bis zum Ende der Lücke noch die Mindestzahl Nächte bleibt (seit 2.93.0.0, vorher nur ganze Lücke)
@@ -1586,7 +1587,7 @@ const NEBEN_MONATE = [5, 9];   // Nebensaison (grün im Kalender): diese Monate 
 const istNeben = (k) => NEBEN_MONATE.indexOf(Number(k.slice(5, 7))) >= 0 || (k.slice(5, 7) === "10" && k <= saisonGrenzen(parseInt(k.slice(0, 4), 10)).okt);
 const monatVon = (k) => parseInt(k.slice(5, 7), 10);
 function festStay(arr, dep) { if (!arr || !dep || !FEST_MONATE.length) return false; for (let k = arr; k < dep; k = addDays(k, 1)) if (FEST_MONATE.indexOf(monatVon(k)) >= 0) return true; return false; }
-function minFuer(arr, dep) { let m = P.minNaechte; if (!arr || !dep) return m; { let alle = true; for (let k = arr; k < dep; k = addDays(k, 1)) if (!GAP.has(k)) { alle = false; break; } if (alle) return m; }   // ganz in einer Lücke: nur die normale Mindestzahl, nicht die der Hochsaison oder des Februars
+function minFuer(arr, dep) { let m = P.minNaechte; if (!arr || !dep) return m; { let alle = true; for (let k = arr; k < dep; k = addDays(k, 1)) if (!lueckenNacht(k)) { alle = false; break; } if (alle) return m; }   // ganz in einer Lücke: nur die normale Mindestzahl, nicht die der Hochsaison oder des Februars
   for (let k = arr; k < dep; k = addDays(k, 1)) { const x = MIN_MONATE[monatVon(k)]; if (x > m) m = x; if (P.hochMinNaechte > m && istHoch(k) && FEST_MONATE.indexOf(monatVon(k)) < 0) m = P.hochMinNaechte; } if (P.sichtMinNaechte > m && inSicht(arr, dep)) m = P.sichtMinNaechte; return m; }
 // Mindestnächte für «Kurzfristig frei» ab Tag k (Hochsaison: Vorgabe für Termine mit Vorbehalt bleibt)
 function sichtMinFuer(k) { let m = Math.max(P.minNaechte, P.sichtMinNaechte); if (istHoch(k) && FEST_MONATE.indexOf(monatVon(k)) < 0 && P.hochMinNaechte > m) m = P.hochMinNaechte; return m; }
@@ -1656,7 +1657,7 @@ let SICHT = new Set();         // «Kurzfristig frei»: Nächte, die Airbnb nich
 let SICHTSTART = new Map();    // erste Nacht der Strecke -> Ende der Strecke (erste Nacht, die Airbnb wieder verkaufen kann, oder nächste Belegung)
 let GAPDYN = new Set();        // erste Nacht einer später entstandenen Lücke (höchstens 3 Nächte, kein Rabatt)
 let GAPDYNN = new Set();       // alle Nächte der später entstandenen Lücken
-const sichtNacht = (k) => SICHT.has(k) || GAP.has(k);   // Nächte, die Airbnb nicht mehr verkaufen kann (Lücke oder Vorlaufzeit): fest, kein Vorbehalt
+const sichtNacht = (k) => SICHT.has(k) || lueckenNacht(k);   // Nächte, die Airbnb nicht mehr verkaufen kann (Lücke oder Vorlaufzeit): fest, kein Vorbehalt
 // Sichtbarkeitsregel: Von jeder freien Strecke wird der vordere Teil bestimmt, den Airbnb nicht mehr verkaufen kann
 // (frühester Check-in heute + Vorlauf, nie sonntags, mindestens AIRBNB_MIN Nächte bis zur nächsten Belegung). Davor (verkaufbare Zeit dahinter) immer dicker Rahmen; grün nur, wenn bis zur nächsten Belegung höchstens 3 Nächte bleiben.
 function berechneSicht() {
@@ -2609,7 +2610,7 @@ function renderKalender() {
     if (S.verbOK === true && S.art === ART_V) msgs.push(HW + "<b>Verbindlich:</b> Dieser Termin ist fest und wird in Airbnb gesperrt, ihr habt damit Buchungssicherheit. " + symBtn("b-prov", "🔒"));
     if (provSel() && !(S.verbOK === true && S.art === "")) msgs.push(WA + "<b>Mit Vorbehalt:</b> Dieser Termin wird nicht in Airbnb gesperrt. Meldet sich ein Airbnb-Gast für diese Tage, hat er Vorrang und der Aufenthalt muss weichen. Plane eine Alternative ein. " + symBtn("b-prov", "🔓") + " <b>Buchungssicherheit:</b> " + provSicherZeile(ARR, DEP));
     const lg = lueckeVon(ARR);
-    if (ARR && DEP && !S.inLuecke) { let n = 0, t = 0; for (let k = ARR; k < DEP; k = addDays(k, 1)) { t++; if (GAP.has(k) || SICHT.has(k)) n++; } if (n > 0) msgs.push(HW + "Dein Aufenthalt liegt nur zum Teil in einer Lücke (" + n + " von " + t + " Nächten). Dann gilt er als normaler Termin. Der tiefere Mindestpreis der Lücke und die Regel «Eltern reinigen» gelten nur, wenn der ganze Aufenthalt in der Lücke liegt. " + symBtn("b-luecke", "🧩")); }
+    if (ARR && DEP && !S.inLuecke) { let n = 0, t = 0; for (let k = ARR; k < DEP; k = addDays(k, 1)) { t++; if (lueckenNacht(k) || SICHT.has(k)) n++; } if (n > 0) msgs.push(HW + "Dein Aufenthalt liegt nur zum Teil in einer Lücke (" + n + " von " + t + " Nächten). Dann gilt er als normaler Termin. Der tiefere Mindestpreis der Lücke und die Regel «Eltern reinigen» gelten nur, wenn der ganze Aufenthalt in der Lücke liegt. " + symBtn("b-luecke", "🧩")); }
     if (lg && !S.luecke && P.lueckeRabatt > 0 && !GAPDYN.has(lg[0])) msgs.push(HW + "Dieser Termin liegt in einer Lücke, aber ohne Rabatt. Mit Anreise am " + fmtTag(lg[0]) + " und Abreise am " + fmtTag(lg[1]) + " (die ganze Lücke) wäre es " + P.lueckeRabatt + " Prozent günstiger auf die Übernachtungen.");
   }
   warn.hidden = msgs.length === 0;
