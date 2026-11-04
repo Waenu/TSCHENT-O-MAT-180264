@@ -355,6 +355,9 @@
   .cal-info p { margin: 8px 0 0; }
   .note.spitz { background: var(--spitz-bg); border: 2px solid var(--spitz-line); font-weight: 600; }
   .cal-d.gap:not(.sel):not(.in) { background: var(--sperr-bg); border-color: var(--sperr-line); border-width: 2px; }
+  .cal-d.lstart { position: relative; }   /* erster Tag einer Lücke (Sonntag): gelber Bügel rechts */
+  .cal-d.lstart > * { position: relative; z-index: 1; }
+  .cal-d.lstart::before { content: ""; position: absolute; right: 0; top: 3px; bottom: 3px; width: 30%; background: var(--sperr-bg); border: 1.5px solid var(--sperr-line); border-right: 0; border-radius: 10px 0 0 10px; pointer-events: none; z-index: 0; }
   .cal-d.lend { position: relative; }   /* Abreisetag am Ende einer buchbaren Lücke: schmaler gelber Streifen links (die Nacht davor gehört zur Lücke) */
   .cal-d.lend > * { position: relative; z-index: 1; }
   .cal-d.lend::after { content: ""; position: absolute; left: 0; top: 3px; bottom: 3px; width: 30%; background: var(--sperr-bg); border: 1.5px solid var(--sperr-line); border-left: 0; border-radius: 0 10px 10px 0; pointer-events: none; z-index: 0; }
@@ -1154,7 +1157,7 @@
    Nach jeder Änderung die Versionsnummer erhöhen und das Datum anpassen.
    ============================================================ */
 // Standardwerte (Reserve). Die gültigen Werte stehen in der Datei einstellungen.json.
-let VERSION = "2.95.3.1";
+let VERSION = "2.95.4.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2427,6 +2430,8 @@ function monatBauen(g, calY, calM) {
   const erster = new Date(Date.UTC(calY, calM, 1));
   const lead = (erster.getUTCDay() + 6) % 7;
   const tage = new Date(Date.UTC(calY, calM + 1, 0)).getUTCDate();
+  const LSTART = new Set();   // erster Tag einer Lücke, der selbst nicht gelb ist (Sonntag: nur die Familie kann dort anreisen): Bügel rechts, die Nacht danach gehört zur Lücke
+  GAPSTART.forEach((en, st) => { if (!GAP.has(st) && !GAPSPERR.has(st)) LSTART.add(st); });
   const LEND = new Set();   // letzter Abreisetag der Lücke oder «kurzfristig frei»-Strecke, in der die gewählte Anreise liegt (nur solange noch keine Abreise gewählt ist)
   if (ARR && !DEP && !GAPSPERR.has(ARR)) {
     const lg = lueckeVon(ARR); if (lg) LEND.add(lg[1]);
@@ -2462,6 +2467,7 @@ function monatBauen(g, calY, calM) {
     else if (istRuhe(k) && !BELEGT.has(k)) b.classList.add("ruhe");
     else if (istNeben(k)) b.classList.add("rosa");
     if (LEND.has(k) && k >= heute) b.classList.add("lend");
+    if (LSTART.has(k) && k >= heute && !BELEGT.has(k)) b.classList.add("lstart");
     if (istArr || istDep) b.classList.add("sel");
     if (k === heute) b.classList.add("today");
     b.disabled = !ok;
