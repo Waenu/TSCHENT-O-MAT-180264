@@ -1228,7 +1228,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.101.2.0";
+let VERSION = "2.101.2.1";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -5280,7 +5280,7 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
     const z = [], zs = [], zh = [], mon = [];
     const vz = [];   // Lücke / «Kurzfristig frei»: steht ganz oben unter dem Datum, damit es nicht unter dem Bildschirmrand verschwindet   // mon: Erklärung der Monatsfarbe, steht zuoberst
     const stay = BUCH.filter((b) => b.arr <= k && k < b.dep), abr = BUCH.filter((b) => b.dep === k), zb = stay.length ? zh : z;
-    stay.filter((b) => b.sb).forEach((b) => zh.push(rkVon(b) === "e" ? "<b>Staffel:</b> Gebucht mit Selbstreinigung. Die Staffel " + (b.dep < heuteKey() ? "endete" : "endet") + " bei dieser Buchung am " + esc(fmtTag(b.dep)) + ", weil die Eltern reinigen müssen: " + esc(staffelEndeGrund(b)) + ". Die Endreinigung (" + chf(P.reinigung) + ") wird fällig. " + symBtn("b-staffel", "🔗") : "<b>Staffel:</b> Gebucht mit Selbstreinigung. Die Staffel geht nach dieser Buchung weiter. " + symBtn("b-staffel", "🔗")));
+    stay.filter((b) => b.sb && rkVon(b) === "e").forEach((b) => zh.push(rkVon(b) === "e" ? "<b>Staffel:</b> Gebucht mit Selbstreinigung. Die Staffel " + (b.dep < heuteKey() ? "endete" : "endet") + " bei dieser Buchung am " + esc(fmtTag(b.dep)) + ", weil die Eltern reinigen müssen: " + esc(staffelEndeGrund(b)) + ". Die Endreinigung (" + chf(P.reinigung) + ") wird fällig. " + symBtn("b-staffel", "🔗") : "<b>Staffel:</b> Gebucht mit Selbstreinigung. Die Staffel geht nach dieser Buchung weiter. " + symBtn("b-staffel", "🔗")));
     stay.filter((b) => !b.prov).forEach(() => zs.push("🔒 <b>Gesichert:</b> Dieser Aufenthalt ist in Airbnb gesperrt. " + symBtn("b-prov", "🔒")));
     stay.filter((b) => b.prov).forEach((b) => {
       if (provKonflikt(b)) { zs.push("⚠️ <b>Konflikt:</b> Ein Airbnb-Gast hat sich auf diese Tage eingetragen. Der Aufenthalt muss weichen. " + symBtn("b-prov", "🔓")); return; }
