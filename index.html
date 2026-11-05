@@ -1235,7 +1235,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.103.1.0";
+let VERSION = "2.103.2.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -5207,6 +5207,8 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
     blase.innerHTML = '<div class="txt">' + html + '</div><button type="button" id="calBlaseZu" aria-label="Hilfe schliessen">✕</button>';
     blase.hidden = false;
     blase.dataset.mon = html === START ? "" : letzteMon;
+    if (html !== START && monGrad && html === monHtml) { blase.style.border = "2px solid transparent"; blase.style.background = "linear-gradient(var(--note-bg), var(--note-bg)) padding-box, " + monGrad + " border-box"; }
+    else { blase.style.border = ""; blase.style.background = ""; }
     try { gbSumme(); } catch (e) {}
     if (still) return;   // Monatswechsel: nicht scrollen, sonst verschwinden die Pfeile oben aus dem Bild
     // Box ins Bild holen, falls sie unter dem Bildschirmrand liegt (der angetippte Tag bleibt sichtbar)
@@ -5246,22 +5248,29 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
     if (catKey(k) === "rosa" || !rest.length) return [monKurz(k)].concat(rest);
     return rest;
   }
-  function monatText() {   // ohne berührten Tag: dieselbe Box wie bei einem Tag, aber mit dem Monatsnamen als Titel
+  let monGrad = "", monHtml = "";   // Rahmen der Monatsbox: Farbverlauf nach Anteil der Zeiten im Monat (leer: einfarbig nach letzteMon)
+  function monatText() {   // ohne berührten Tag: nur der Monat selbst (Name, Zeiten mit ihren Farben), keine Hinweise zu einem einzelnen Tag
     const heute = heuteKey(), n = new Date(Date.UTC(calY, calM + 1, 0)).getUTCDate(), tage = [];
     for (let d = 1; d <= n; d++) { const k = dkey(calY, calM, d); if (k >= heute) tage.push(k); }
     const kopf = "<b>" + esc(MONATE[calM] + (FEST_MONATE.indexOf(calM + 1) >= 0 ? " (Skisaison)" : "")) + "</b>";
-    if (!tage.length) { letzteMon = ""; return kopf + "<p>Dieser Monat liegt in der Vergangenheit.</p>"; }
-    const rep = tage.find((k) => !BELEGT.has(k) && !nachtGebucht(k) && k !== DEP) || tage[0];
-    const vorLast = lastK;
-    let h = text(rep) || "";
-    lastK = vorLast;
-    h = h.replace(/^<p class="bwer">[\s\S]*?<span class="hint">[^<]*<\/span>/, kopf).replace(/^<b>[^<]*<\/b>/, kopf).replace(/^<b>[^<]*<\/b>/, kopf);
-    const gesehen = [catKey(rep)];
-    let c0 = catKey(rep);
-    tage.forEach((k) => { const c = catKey(k); if (c !== c0) { c0 = c; if (gesehen.indexOf(c) < 0) { gesehen.push(c); h += "<p><b>Ab " + k.slice(8) + "." + k.slice(5, 7) + ".:</b> " + monKurz(k) + "</p>"; } } });
-    const zaehl = {}; tage.forEach((k) => { const c = catKey(k); zaehl[c] = (zaehl[c] || 0) + 1; });
-    letzteMon = catKey(rep);
-    return h;
+    monGrad = "";
+    if (!tage.length) { letzteMon = ""; monHtml = kopf + "<p>Dieser Monat liegt in der Vergangenheit.</p>"; return monHtml; }
+    const anz = new Map(), erster = new Map();   // Zeit-Kategorie → Anzahl Tage, erster Tag (Reihenfolge des Auftretens)
+    tage.forEach((k) => { const c = catKey(k); if (!anz.has(c)) { anz.set(c, 0); erster.set(c, k); } anz.set(c, anz.get(c) + 1); });
+    let h = kopf, i = 0, haupt = "", max = -1;
+    anz.forEach((a, c) => {
+      const k = erster.get(c);
+      h += "<p>" + (i++ ? "<b>Ab " + Number(k.slice(8)) + "." + Number(k.slice(5, 7)) + ".:</b> " : "") + monKurz(k) + "</p>";
+      if (a > max) { max = a; haupt = c; }
+    });
+    letzteMon = haupt;   // einfarbig: die Zeit mit den meisten Tagen
+    const farbe = { hoch: "--hoch-line", fest: "--fest-line", spitz: "--spitz-line", rosa: "--rosa-line", ruhe: "--ruhe-line", xmas: "--xmas-line" };
+    if (anz.size > 1 && Array.from(anz.keys()).every((c) => farbe[c])) {   // zweifarbig (mehrfarbig): Rahmen anteilig nach Tagen
+      let p0 = 0; const st = [];
+      anz.forEach((a, c) => { const p1 = p0 + a * 100 / tage.length; st.push("var(" + farbe[c] + ") " + p0.toFixed(1) + "% " + p1.toFixed(1) + "%"); p0 = p1; });
+      monGrad = "linear-gradient(to right, " + st.join(", ") + ")";
+    }
+    monHtml = h; return h;
   }
   function iconLeiste(k, stay, zs, zh) {   // gebuchter Tag: ausklappbare Zeilen mit Symbol und Text, nur eine offen; Papi zusätzlich «Nur für dich»
     if (!stay.length) return "";

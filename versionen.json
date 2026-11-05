@@ -2,6 +2,19 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.103.2.0",
+      "datum": "2026-11-05",
+      "titel": "Monatsbox zeigt nur den Monat, Rahmen nach Anteil der Farben",
+      "arten": [
+        "Layout",
+        "Text"
+      ],
+      "punkte": [
+        "Layout: Beim Wechsel des Monats zeigt die Box nur den Monat mit allen seinen Zeiten und Farbfeldern (zum Beispiel im Februar «Skisaison», im März «Hochsaison» und «Staffel-Zeit»). Der Rahmen ist bei mehreren Zeiten mehrfarbig, anteilig nach Tagen.",
+        "Text: Hinweise zu einem einzelnen Tag, etwa ein Gastname im Februar oder eine Lücke, erscheinen nur noch nach dem Antippen dieses Tages."
+      ]
+    },
+    {
       "v": "2.103.1.0",
       "datum": "2026-11-05",
       "titel": "Monatsspruch zurück, Auswahl «Aktuelle Angebote» bündig",
