@@ -6,16 +6,6 @@
       "arr": "2026-11-06",
       "dep": "2026-11-08",
       "status": "abgelehnt"
-    },
-    {
-      "name": "Manuel",
-      "arr": "2027-05-12",
-      "dep": "2027-05-15",
-      "selbst": false,
-      "pers": 2,
-      "betrag": 630,
-      "rechnung": "Gesendet am Do 5.11.2026, 10:15 Uhr. App-Version 2.100.3.0.\nAnreise\tMittwoch 12.05.2027\nAbreise\tSamstag 15.05.2027 (3 Nächte)\nFamilie\tIch und Partner\nFreunde\t1\nZimmer 1 unberührt\tJa\nReinigung\tNach Parteien: Familie und jeder Freund zahlen gleich viel\nTotal laut Rechner\tCHF 630.–\n#Preisberechnung\nFamilie pro Nacht\tCHF 60.–\nFreund 1 pro Nacht\tCHF 70.–\nÜbernachtung (3 Nächte)\tCHF 390.–\nReinigung\tCHF 240.–\nReinigung: Anteil Familie\tCHF 120.–\nReinigung: Anteil pro Freund\tCHF 120.–\n#Aufteilung unter den Freunden\nFamilie zahlt\tCHF 300.–\nFreund 1 zahlt\tCHF 330.–\nZimmer 1 und rotes Bad bleiben unberührt: CHF 10.– weniger pro Nacht, die Familie zahlt CHF 60.– statt CHF 70.–.\nReinigung aufgeteilt: Nach Parteien: Familie und jeder Freund zahlen gleich viel.",
-      "bestaetigt": "2026-11-05T10:16"
     }
   ],
   "logbuch": [
@@ -426,6 +416,10 @@
     {
       "t": "2026-11-05T10:16",
       "text": "Bestätigt: Manuel, Mi 12.05.2027 bis Sa 15.05.2027, CHF 630"
+    },
+    {
+      "t": "2026-11-05T10:19",
+      "text": "Entfernt: Manuel, Mi 12.05.2027 bis Sa 15.05.2027"
     }
   ]
 }
