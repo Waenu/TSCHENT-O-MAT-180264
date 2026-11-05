@@ -301,8 +301,7 @@
   .cal-wd { font-size: var(--t-small); color: var(--muted); text-align: center; padding: 2px 0; font-weight: 700; }
   .cal-d { font: inherit; color: var(--fg); min-height: 56px; padding: 3px 0 0; border: 1px solid var(--line); border-radius: 6px; background: transparent; cursor: pointer; font-variant-numeric: tabular-nums; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; line-height: 1.1; }
   .cal-d { position: relative; }
-  .cal-clr { grid-column: 6 / 8; font: inherit; font-weight: 700; font-size: 0.9rem; color: var(--fg); min-height: 44px; padding: 0 8px; border: 2px solid var(--fg); border-radius: 6px; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; white-space: nowrap; }
-  .cal-clr span { font-size: 1.1rem; line-height: 1; }
+  .cal-clr { grid-column: 7; font: inherit; color: var(--fg); min-height: 56px; padding: 0; border: 2px solid var(--fg); border-radius: 6px; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; }
   .cal-d .pin { position: absolute; top: 1px; right: 1px; font-style: normal; font-size: 0.85rem; line-height: 1; pointer-events: none; }
   .cal-d > span { font-size: 0.82rem; }
   .cal-d small { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.03em; }
@@ -1237,7 +1236,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.104.1.0";
+let VERSION = "2.104.2.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2589,8 +2588,10 @@ function monatBauen(g, calY, calM) {
     const rest = (lead + tage) % 7;
     for (let i = 0; rest && i < 7 - rest; i++) g.appendChild(document.createElement("div"));
     const c = document.createElement("button");
-    c.type = "button"; c.className = "cal-clr"; c.innerHTML = '<span aria-hidden="true">✕</span> löschen';
-    c.setAttribute("aria-label", "Auswahl löschen: Anreise und Abreise abwählen");
+    const zuletzt = DEP || ARR, tg = Number(zuletzt.slice(8));   // Tagesnummer des zuletzt gewählten Tages im durchgestrichenen Kalenderblatt
+    c.type = "button"; c.className = "cal-clr";
+    c.innerHTML = '<svg viewBox="0 0 32 32" width="34" height="34" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="6" width="24" height="22" rx="3"/><path d="M4 12h24M10 3.5v5M22 3.5v5"/><text x="16" y="24" text-anchor="middle" font-size="11" font-weight="700" fill="currentColor" stroke="none" font-family="inherit">' + tg + '</text><path d="M3 29L29 3" stroke-width="2.6"/></svg>';
+    c.setAttribute("aria-label", "Auswahl löschen (zuletzt gewählt: " + fmtTag(zuletzt) + "): Anreise und Abreise abwählen"); c.title = "Auswahl löschen";
     c.addEventListener("click", () => { kalenderKlick(""); if (window._monatWechsel) window._monatWechsel(); });
     g.appendChild(c);
   }
