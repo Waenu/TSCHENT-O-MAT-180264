@@ -1210,7 +1210,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.98.0.0";
+let VERSION = "2.99.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1826,19 +1826,23 @@ const HW = "<b>ℹ️ Hinweis:</b> ", WA = "<b>⚠️ Warnung:</b> ";
 const fld = (c) => '<i class="sw sw-' + c + ' sw-k" aria-hidden="true"></i>';
 const lockSvg = (offen) => '<svg class="lks" aria-hidden="true"><use href="#lk-' + (offen ? "auf" : "zu") + '"/></svg>';
 function symBtn(id, emoji) { return '<button type="button" class="sym" data-info="' + id + '" aria-label="Zur Erklärung springen">' + (emoji === "🔓" ? lockSvg(true) : emoji === "🔒" ? lockSvg(false) : emoji) + '</button>'; }
-function lueckenBeispiel() {   // «So rechnet es sich»: Beispiel für 2 Nächte in der Lücke, Familie zu zweit, mit 0 bis 4 Freunden (live aus der Rechnung)
+function lueckenBeispiel() {   // «So rechnet es sich»: Beispiel für 2 Nächte in der Lücke, Familie zu zweit, mit 0 bis 4 Freunden (live aus der Rechnung), als Balken wie bei der Skisaison
   try {
     const z = [];
     for (let g = 0; g <= 4; g++) {
       const sx = { wer: "Ich und Partner", kk: 0, gaeste: g, zimmer: "Nein", spar: "Nein", selbst: "Nein", reinig: REINIG[0], nights: 2, inLuecke: true };
-      const wort = "<b>" + (g === 0 ? "Allein" : "Mit " + g + (g === 1 ? " Freund" : " Freunden")) + ":</b> ";
-      if (g > 0 && P.lueckeGastNacht > 0 && derive(sx).UE < lueckeMin(2)) { z.push("<li>" + wort + "nicht wählbar, die Übernachtungen erreichen " + chf(lueckeMin(2)) + " nicht</li>"); continue; }
+      const lab = g === 0 ? "Allein" : g + (g === 1 ? " Freund" : " Freunde");
+      if (g > 0 && P.lueckeGastNacht > 0 && derive(sx).UE < lueckeMin(2)) { z.push({ lab: lab, no: true }); continue; }
       const r = calc(sx);
       if (!r || !r.ok) return "";
-      const fz = Math.round(r.FZ), fr = g ? Math.round((r.HZ + r.WZ) / g) : 0;
-      z.push("<li>" + wort + (fz === 0 ? "ihr zahlt <b>nichts</b>" : "ihr zahlt " + chf(fz)) + (g ? ", jeder Freund " + chf(fr) : "") + "</li>");
+      z.push({ lab: lab, fz: Math.round(r.FZ), tot: r.TOT, fr: g ? Math.round((r.HZ + r.WZ) / g) : 0, g: g });
     }
-    return "<p><b>So rechnet es sich 💡</b> Beispiel für 2 Nächte, ihr zu zweit:</p><ul>" + z.join("") + "</ul>";
+    const mx = Math.max.apply(null, z.map((x) => x.fz || 0)) || 1;
+    const gratis = z.find((x) => !x.no && x.fz === 0);
+    return "<p><b>So rechnet es sich 💡</b> Beispiel für 2 Nächte, ihr zu zweit. Mit jedem Freund wird es für euch günstiger" + (gratis ? ", ab " + gratis.g + " Freunden sind es <b>gratis</b>" : "") + ":</p>" +
+      '<div class="fzchart" role="img" aria-label="So viel zahlt ihr in der Lücke je nach Anzahl Freunde">' + z.map((x) => x.no
+        ? '<div class="fzr"><span class="fzl">' + x.lab + '</span><span class="fzb"></span><span class="fzv"><b>nicht wählbar</b><small>zu wenig Umsatz</small></span></div>'
+        : '<div class="fzr"><span class="fzl">' + x.lab + '</span><span class="fzb"><i style="width:' + Math.max(x.fz > 0 ? 4 : 0, Math.round(x.fz / mx * 100)) + '%"></i></span><span class="fzv"><b class="fz">' + (x.fz === 0 ? "nichts" : chf(x.fz)) + '</b><small>' + (x.g ? "jeder Freund " + chf(x.fr) : "Total " + chf(x.tot)) + '</small></span></div>').join("") + "</div>";
   } catch (e) { return ""; }
 }
 function lueckenRegeln() {
@@ -2015,11 +2019,12 @@ function begriffeFuellen() {
   set("bc-prov", "<p>" + filmKnopf() + "</p><p><b>Mit Vorbehalt</b> heisst: Der Termin ist in Airbnb nicht gesperrt. Meldet sich ein Airbnb-Gast für dieselben Tage, hat er Vorrang und ihr weicht.</p><p>Habt ihr noch nicht begonnen, fällt nichts an. Seid ihr schon im Chalet, bleibt ihr bis zum Anreisetag des Gastes und seid um " + ZEIT_AB + " draussen. Ihr zahlt die normalen Kosten für die Tage, die ihr dort wart, und die Reinigung. Plant deshalb eine Alternative ein.</p><p><b>Gesichert:</b> Ein Airbnb-Gast braucht " + VORLAUF + " Tage Vorlauf. Der Teil bis dahin ist gesichert (Balken voll), der Rest noch offen (gestrichelt). Der volle Teil wächst jeden Tag.</p>" + festUndVorbehaltTxt() + bildVorbehalt());
   set("bc-sicht", "<p>" + filmKnopf("luecke") + "</p><p><b>Lücke durch die Vorlaufzeit 🔔</b> Airbnb kann diese Nächte nicht mehr verkaufen: Ein Gast braucht " + VORLAUF + " Tage Vorlauf, bleibt mindestens " + AIRBNB_MIN + " Nächte, und sonntags gibt es keinen Check-in. Darum steht diese Zeit euch offen: zum normalen Familienpreis, <b>ohne Vorbehalt</b>, auch in der Hochsaison. Mindestens " + Math.max(P.minNaechte, P.sichtMinNaechte) + " Nächte" + (P.hochMinNaechte > Math.max(P.minNaechte, P.sichtMinNaechte) ? ", in der Hochsaison mindestens " + P.hochMinNaechte : "") + ".</p><p>Im Kalender ist diese Zeit <b>gelb</b> und wandert täglich mit: Mit jedem Tag kann Airbnb weniger verkaufen, es kommen Nächte dazu, die vergangenen fallen weg. Das gilt auch bei nur 2 oder 3 Nächten, solange Airbnb dahinter noch verkaufen kann.</p>");
   set("bc-luecke", "<p>" + filmKnopf("luecke") + "</p><p><b>Lücken 🧩</b> Eine Lücke ist freie Zeit zwischen zwei Airbnb-Gästen von höchstens " + LUECKE_MAX + " Nächten. Ihr bucht sie zum normalen Familienpreis, <b>fest und ohne Vorbehalt</b>: ganz oder teilweise, ab " + P.minNaechte + " Nächten, an jedem Tag der Lücke. Auch <b>Freunde</b> sind willkommen, bis " + P.maxPersonen + " Personen, alle Zimmer. Die Eltern reinigen und stellen die Wäsche, ihr bringt keine mit und reinigt nicht selber.</p><p><b>Wann buchbar:</b> Bis " + (AIRBNB_MIN - 1) + " Nächte sofort, Airbnb kann sie nie verkaufen. " + AIRBNB_MIN + " Nächte sind <b>gesperrt</b>, solange der Vorlauf (" + VORLAUF + " Tage) es Airbnb erlaubt, danach gelb und buchbar. Das Datum steht in der Info-Box. In der Staffel-Zeit ist sie sofort buchbar. Längere freie Zeit bleibt normal buchbar.</p><p><b>Sonntag:</b> Endet ein Gast am Samstag, kann Airbnb den Sonntag nicht vergeben. Ihr reist schon am Sonntag an, die Lücke hat eine Nacht mehr.</p><p><b>Später entstandene Lücke:</b> Auch Zeit, die erst durch den Vorlauf und den Mindestaufenthalt von Airbnb übrig bleibt, wird zur Lücke, sobald höchstens " + LUECKE_MAX + " Nächte bleiben (siehe «Lücke durch die Vorlaufzeit» " + symBtn("b-sicht", "🔔") + "). Es gelten dieselben Regeln und derselbe Preis.</p>" + (P.lueckeGastNacht > 0 ? "<p><b>Freunde in der Lücke:</b> Ohne Freunde buchst du die Lücke wie bisher. Mit Freunden müssen die Übernachtungen (ohne Endreinigung) pro Nacht mindestens " + chf(P.lueckeGastNacht) + " erreichen, also " + chf(lueckeMin(2)) + " bei 2 Nächten, " + chf(lueckeMin(3)) + " bei 3 und " + chf(lueckeMin(4)) + " bei 4 Nächten. Ein Freund zahlt " + chf(P.gast) + " pro Nacht, die Familie " + chf(P.famPausch) + ". Zu wenige Freunde sind deshalb nicht wählbar: Es braucht meist mindestens 2. Bringen die Freunde mehr, sinkt der Anteil der Familie bis auf 0, das Total aber nie unter dem Mindestbetrag plus Endreinigung (" + chf(P.reinigung) + "), bei 2 Nächten also " + chf(lueckeMin(2) + P.reinigung) + ". Das gilt nur, wenn der ganze Aufenthalt in der Lücke liegt.</p>" + lueckenBeispiel() : ""));
-  set("bc-ruhe", RUHE.length ? bildRuhe() + "<ul><li>Möglich " + ruhe + ".</li>" +
+  document.getElementById("bc-staffel").insertAdjacentHTML("afterbegin", "<p>" + filmKnopf("staffel") + "</p>");
+  set("bc-ruhe", RUHE.length ? "<p>" + filmKnopf("staffel") + "</p>" + bildRuhe() + "<ul><li>Möglich " + ruhe + ".</li>" +
     "<li>Für euch Kinder mit Partnern und Kindern. Ohne Freunde wählt ihr beim Buchen «Staffel» und reinigt selbst. Mit Freunden wählt ihr «Normal», dann reinigen die Eltern. Das wählt ihr im Feld «Wie möchtest du buchen?» " + symBtn("b-auswahl", "🔽") + "</li>" +
-    "<li><b>Nicht jeder Termin geht als Staffel.</b> Eine Staffel beginnen kann nur, wer nach seiner Abreise noch eine weitere Familie anschliessen lassen kann: Bis zum nächsten Airbnb-Gast müssen mindestens " + P.minNaechte + " freie Nächte bleiben. Sonst trägt er die ganze Endreinigung allein, weil niemand seinen Anteil zahlt, und muss zusätzlich selbst putzen. Dann gilt der normale Termin, die Eltern reinigen. Wer eine laufende Staffel fortsetzt, kann immer mitmachen. Ob es geht, meldet euch der Rechner nach der Wahl des Datums («Keine Staffel möglich»).</li>" +
+    "<li><b>Nicht jeder Termin geht als Staffel:</b> Bis zum nächsten Airbnb-Gast müssen mindestens " + P.minNaechte + " freie Nächte bleiben, sonst reinigen die Eltern. Wer eine laufende Staffel fortsetzt, kann immer mitmachen. Ob es geht, meldet der Rechner nach der Datumswahl («Keine Staffel möglich»).</li>" +
     "<li>Frische Bettwäsche, Handtücher und Küchentücher mitbringen und selbst beziehen. Bettdecken und Kissen nie ohne frischen Duvet- und Kissenbezug benutzen. Alles nehmt ihr wieder mit. Nur die Moltons bleiben nach dem Benutzen auf der Matratze. Die Liste mit den Mengen für eure Personenzahl findet ihr nach der Bestätigung im Knopf «🧳 Anreise-Wäsche» auf der Startseite, zum Abhaken.</li>" +
-    "<li><b>Wer die Staffel beginnt:</b> Die Eltern haben das Chalet gereinigt und die Betten bezogen. Ihr bringt keine Wäsche mit und benutzt, was bereitliegt. Beim Abreisen zieht ihr die Betten ab (die Moltons bleiben), damit die nächste Familie ihre eigene Wäsche aufziehen kann. Die benutzte Wäsche nehmt ihr mit. Dafür sorgt ihr, dass sie zurückkommt: Ihr bringt sie den Eltern oder sendet sie per Post, spätestens " + WAESCHE_TAGE + " Tage nach eurer Rückreise. Das Porto zahlt, wer sendet. Beim Buchen wählt ihr, ob ihr bringt oder sendet. Dafür bezieht ihr eine fertige Wohnung und spart die eigene Wäsche. Die Endreinigung zahlen alle Familien der Staffel gleich viel, auch ihr.</li>" +
+    "<li><b>Wer die Staffel beginnt:</b> Die Wohnung ist gereinigt und bezogen, ihr bringt keine Wäsche. Beim Abreisen zieht ihr die Betten ab (die Moltons bleiben) und nehmt die Wäsche mit. Ihr bringt sie den Eltern oder sendet sie per Post, spätestens " + WAESCHE_TAGE + " Tage nach der Rückreise. Das Porto zahlt, wer sendet. Beim Buchen wählt ihr, ob ihr bringt oder sendet. Die Endreinigung zahlen alle Familien der Staffel gleich viel, auch ihr.</li>" +
     "<li>Wer geht, reinigt: WC putzen, staubsaugen, Küche sauber, Abfall entsorgen, alles picobello.</li>" +
     "<li>Ihr zahlt den Eltern noch keine Reinigung (" + chf(P.reinigungSelbst) + "). Die Endreinigung durch die Eltern ist trotzdem Pflicht, weil sie ihren Standard wahren wollen.</li></ul>" : "<p>Zurzeit gibt es keine Zeiten, in denen ihr selbst reinigen könnt.</p>");
   set("bc-endrein", "<p><b>Aufwand</b></p><ul>" +
@@ -3458,7 +3463,7 @@ function ovOeffnen(id, an) {
 }
 // ===== Kurzfilm «Termin mit Vorbehalt» (2.96.0.0): läuft nur auf Wunsch, ohne Ton, Zeitleiste zum Spulen =====
 let FILM_RUN = 0;
-function filmKnopf(typ) { return '<button type="button" class="filmik" data-film="' + (typ || "1") + '" aria-label="Kurzfilm ansehen: ' + (typ === "luecke" ? "So funktionieren Lücken" : "So funktioniert Mit Vorbehalt") + '" title="Kurzfilm">🎬</button>'; }
+function filmKnopf(typ) { return '<button type="button" class="filmik" data-film="' + (typ || "1") + '" aria-label="Kurzfilm ansehen: ' + (typ === "luecke" ? "So funktionieren Lücken" : typ === "staffel" ? "So funktioniert die Familienstaffel" : "So funktioniert Mit Vorbehalt") + '" title="Kurzfilm">🎬</button>'; }
 function filmVorbehalt() {
   const run = ++FILM_RUN, ziel = document.getElementById("ovFilmIn"), TOTAL = 36500;
   ziel.innerHTML = '<div class="cal-grid fv-grid" id="fvGrid"></div>' +
@@ -3605,7 +3610,84 @@ function filmLuecke() {
   requestAnimationFrame(tick);
 }
 
-document.addEventListener("click", (e) => { const f = e.target.closest("[data-film]"); if (f) { e.preventDefault(); if (f.dataset.film === "luecke") filmLuecke(); else filmVorbehalt(); } });
+function filmStaffel() {
+  const run = ++FILM_RUN, ziel = document.getElementById("ovFilmIn"), TOTAL = 52000;
+  ziel.innerHTML = '<div class="cal-grid fv-grid" id="fvGrid"></div>' +
+    '<div class="fv-cap" aria-live="polite"><div class="fv-szene" id="fvSzene"></div><div class="fv-titel" id="fvTitel"></div><p class="fv-text" id="fvText"></p></div>' +
+    '<div class="fv-fuss"><input type="range" class="fv-seek" id="fvSeek" min="0" max="' + TOTAL + '" step="50" value="0" aria-label="Zeitleiste: mit dem Finger ziehen zum Zurück- oder Vorspulen"><div class="fv-ctl"><button type="button" class="ov-back" id="fvPause">Pause</button><button type="button" class="ov-back" id="fvNochmal">Nochmal</button><button type="button" class="ov-back" data-ov="ovFilm">← Zurück</button></div></div>';
+  ovOeffnen("ovFilm", true);
+  const grid = document.getElementById("fvGrid"), cells = {}, d2 = (n) => (n < 10 ? "0" : "") + n;
+  ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"].forEach((w) => { const h = document.createElement("div"); h.className = "cal-wd"; h.textContent = w; grid.appendChild(h); });
+  { const hz = document.createElement("div"); hz.className = "fv-hzeile"; hz.innerHTML = '<span class="fv-heute" id="fvHeute"></span>'; grid.appendChild(hz); }   // belegt die drei leeren Felder vor dem 1. Juli (Mo bis Mi)   // 1. Juli 2027 ist ein Donnerstag
+  for (let n = 1; n <= 31; n++) { const c = document.createElement("div"); c.className = "cal-d hoch"; c.innerHTML = "<span>" + n + "</span>"; grid.appendChild(c); cells[n] = c; }
+  const chip = (t) => '<b class="zk zl">' + t + "</b>", nm = (t) => '<span class="bkn">' + t + "</span>";
+  const mid = (n) => cells[n].offsetLeft + cells[n].offsetWidth / 2;
+  const topOf = (n) => (cells[n].offsetTop + cells[n].offsetHeight - 28) + "px";
+  const rowOf = (n) => Math.floor((n + 2) / 7), rowL = (n) => cells[n - ((n + 2) % 7)].offsetLeft;
+  const rowRight = (n) => { const c = cells[n + (6 - ((n + 2) % 7))]; return c.offsetLeft + c.offsetWidth; };   // rechter Rand der Woche (Sonntag)
+  const dyn = [];
+  const mkd = (cls, l, w, top, html) => { const e = document.createElement("div"); e.className = "bk " + cls; e.style.left = l + "px"; e.style.width = w + "px"; e.style.top = top; e.innerHTML = html || ""; grid.appendChild(e); dyn.push(e); };
+  const bar = (a, b, cls, h1, h2) => {   // Balken von Anreisetag a bis Abreisetag b (jeweils Tagesmitte), über Wochenwechsel in zwei Stücken
+    if (rowOf(a) === rowOf(b)) mkd(cls, mid(a), mid(b) - mid(a), topOf(a), h1);
+    else { mkd(cls + " fr", mid(a), rowRight(a) - mid(a), topOf(a), h1); mkd(cls + " fl", rowL(b), mid(b) - rowL(b), topOf(b), mid(b) - rowL(b) > 50 ? h2 : ""); }
+  };
+  const rkAt = (n, t) => mkd("rk " + t, cells[n].offsetLeft + cells[n].offsetWidth / 3, cells[n].offsetWidth / 3, topOf(n), "");
+  const CH = P.reinigung, TEIL = Math.round(CH / 3);
+  const FAM = (n) => chip("Fam.") + nm(n), BNB = () => chip("BnB") + nm("Airbnb-Gast");
+  let S = {};
+  const draw = () => {
+    dyn.forEach((e) => e.remove()); dyn.length = 0;
+    S.bars.forEach((x) => {
+      if (x.air) bar(x.a, x.b, "air", BNB(), nm("Airbnb-Gast"));
+      else { bar(x.a, x.b, "gruen", FAM(x.n), nm(x.n)); if (x.rk) rkAt(x.b, x.rk); }
+    });
+    for (let n = 1; n <= 31; n++) {
+      const occ = S.bars.some((x) => x.air && n >= x.a && n < x.b);
+      cells[n].className = "cal-d ruhe" + (n < S.heute ? " past" : "") + (n === S.heute ? " today" : "") + (occ ? " occ" : "");
+    }
+    document.getElementById("fvHeute").innerHTML = "Heute<br>" + S.heute + ". Juli 2027";
+  };
+  const J = (rk) => ({ n: "Jerome", a: 5, b: 10, rk: rk }), M = (rk) => ({ n: "Miriam", a: 10, b: 15, rk: rk }), Ma = (rk) => ({ n: "Manuel", a: 15, b: 20, rk: rk }), G = (a, b) => ({ air: true, a: a, b: b });
+  const TXT = [
+    ["Szene 1 von 6", "Die Familienstaffel", "Jerome kommt mit seiner Familie und reinigt beim Abreisen selber. Die Eltern putzen nicht dazwischen. So kann die <b>nächste Familie</b> direkt anschliessen."],
+    ["Szene 2 von 6", "Wer geht, reinigt", "Miriam und Manuel schliessen an. Am Wechseltag reinigt, wer geht (WC, Staubsaugen, Küche, Abfall, alles picobello). Das Kästchen mit <b>Rahmen</b> heisst: Die Kinder reinigen selber."],
+    ["Szene 3 von 6", "Der Airbnb-Gast beendet die Staffel", "Kommt ein Airbnb-Gast, reinigen die Eltern (<b>gefülltes Kästchen</b>). Jetzt fällt die Endreinigung (" + chf(CH) + ") an. Alle Familien der Staffel zahlen gleich viel, hier je " + chf(TEIL) + ". Die letzte bezahlt zuerst alles und holt sich die Anteile der anderen zurück."],
+    ["Szene 4 von 6", "Sie endet früher", "Miriam will nicht selber reinigen: Die Eltern reinigen nach ihr (gefülltes Kästchen). Damit endet die Staffel, Jeromes Endreinigung ist fällig. Manuel beginnt danach eine neue Staffel und trägt seine Endreinigung allein. Wer nicht selber reinigt, verursacht den anderen Kosten."],
+    ["Szene 5 von 6", "Nicht jeder Termin geht als Staffel", "Wer eine Staffel beginnt, muss danach noch eine weitere Familie anschliessen lassen können: Bis zum nächsten Airbnb-Gast müssen mindestens " + P.minNaechte + " freie Nächte bleiben. Hier ist nur 1 Nacht frei: <b>keine Staffel</b>, die Eltern reinigen. Wer eine laufende Staffel fortsetzt, kann immer mitmachen."],
+    ["Szene 6 von 6", "Wäsche", "Wer die Staffel <b>beginnt</b>, findet eine fertige Wohnung und bringt keine Wäsche. Beim Abreisen zieht er die Betten ab und nimmt die Wäsche mit: Bringen oder per Post senden, spätestens " + WAESCHE_TAGE + " Tage nach der Rückreise. Alle <b>folgenden Familien</b> bringen frische Wäsche mit und nehmen sie wieder mit."]
+  ];
+  const szene = (i) => { const t = TXT[i]; document.getElementById("fvSzene").textContent = t[0]; document.getElementById("fvTitel").textContent = t[1]; document.getElementById("fvText").innerHTML = t[2]; };
+  const zeige = (i, bars, heute) => { szene(i); S = { heute: heute || 3, bars: bars }; draw(); };
+  const EV = [
+    [0, () => zeige(0, [J(null)])],
+    [7000, () => zeige(1, [J("k"), M("k"), Ma(null)])],
+    [16000, () => zeige(2, [J("k"), M("k"), Ma("e"), G(20, 25)])],
+    [26000, () => zeige(3, [J("k"), M("e"), Ma("e"), G(20, 25)])],
+    [35000, () => zeige(4, [J("e"), G(11, 17)])],
+    [43000, () => zeige(5, [J("k"), M("k"), Ma("e"), G(20, 25)])],
+    [TOTAL, () => {}]
+  ];
+  const seek = document.getElementById("fvSeek"), pb = document.getElementById("fvPause");
+  let t0 = 0, idx = 0, laeuft = true, last = performance.now(), ziehen = false, warLaufend = false;
+  const springe = (ms) => { t0 = ms; idx = 0; while (idx < EV.length && EV[idx][0] <= ms) { EV[idx][1](); idx++; } };
+  const tick = (now) => {
+    if (run !== FILM_RUN || document.getElementById("ovFilm").hidden) return;
+    if (laeuft) t0 += now - last; last = now;
+    while (idx < EV.length && t0 >= EV[idx][0]) { EV[idx][1](); idx++; }
+    if (!ziehen) seek.value = Math.min(TOTAL, t0);
+    if (t0 >= TOTAL && laeuft) { laeuft = false; pb.textContent = "Fertig"; }
+    requestAnimationFrame(tick);
+  };
+  pb.onclick = () => { if (t0 >= TOTAL) return; laeuft = !laeuft; pb.textContent = laeuft ? "Pause" : "Weiter"; };
+  document.getElementById("fvNochmal").onclick = () => { t0 = 0; idx = 0; laeuft = true; last = performance.now(); pb.textContent = "Pause"; };
+  seek.addEventListener("input", () => { if (!ziehen) { ziehen = true; warLaufend = laeuft; laeuft = false; } springe(Number(seek.value)); pb.textContent = "Weiter"; });
+  seek.addEventListener("change", () => { ziehen = false; if (warLaufend && t0 < TOTAL) { laeuft = true; last = performance.now(); pb.textContent = "Pause"; } });
+  window.addEventListener("resize", () => { if (run === FILM_RUN && !document.getElementById("ovFilm").hidden) draw(); });
+  requestAnimationFrame(tick);
+}
+
+
+document.addEventListener("click", (e) => { const f = e.target.closest("[data-film]"); if (f) { e.preventDefault(); if (f.dataset.film === "luecke") filmLuecke(); else if (f.dataset.film === "staffel") filmStaffel(); else filmVorbehalt(); } });
 document.getElementById("ovFilm").addEventListener("click", (e) => { if (e.target.closest("[data-ov]")) { FILM_RUN++; ovOeffnen("ovFilm", false); } });
 
 function ovWeg(a) {
@@ -5038,7 +5120,9 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
     if (rk === "k") ik("b-ruhe", "🧹", "Kinder reinigen"); else if (rk === "e") ik("b-endrein", "🪣", "Eltern reinigen");
     if (b.sb) ik("b-staffel", "🔗", "Familienstaffel");
     if (b.waesche === "bringen") ik("b-staffel", "🧳", "Eigene Wäsche mitbringen"); else if (b.waesche === "senden") ik("b-staffel", "🧺", "Wäsche zurückgeben");
-    if (b.lg) ik("b-luecke", "🧩", "Lücke");
+    if (b.lg || nurLueckenNaechte(b.arr, b.dep)) ik("b-luecke", "🧩", "Lücke");
+    { let hochN = false; for (let d = b.arr; d < b.dep; d = addDays(d, 1)) if (istHoch(d)) { hochN = true; break; } if (hochN && !festStay(b.arr, b.dep) && !(b.lg || nurLueckenNaechte(b.arr, b.dep))) ik("b-hochsaison", "🏔️", "Hochsaison"); }
+    if (festStay(b.arr, b.dep)) ik("b-februar", "⛷️", "Skisaison");
     ik("b-zeiten", "🕓", "Ein- und Auschecken");
     let bis = "";
     if (b.prov) bis = sicherBis >= b.dep ? "" : sicherBis <= b.arr ? (konf ? "<p class=\"symz-bis\">⚠️ Konflikt mit Airbnb-Gast</p>" : "") : "<p class=\"symz-bis\">" + (konf ? "⚠️ " : "") + "gesichert bis " + esc(fmtTag(sicherBis).replace(/\.\d{4}$/, ".")) + (konf ? ", dann Konflikt" : "") + "</p>";
@@ -5065,7 +5149,7 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
     const z = [], zs = [], zh = [], mon = [];
     const vz = [];   // Lücke / «Kurzfristig frei»: steht ganz oben unter dem Datum, damit es nicht unter dem Bildschirmrand verschwindet   // mon: Erklärung der Monatsfarbe, steht zuoberst
     const stay = BUCH.filter((b) => b.arr <= k && k < b.dep), abr = BUCH.filter((b) => b.dep === k), zb = stay.length ? zh : z;
-    stay.filter((b) => !b.prov).forEach(() => zs.push("🔒 <b>Gesichert:</b> Dieser Aufenthalt ist in Airbnb gesperrt."));
+    stay.filter((b) => !b.prov).forEach(() => zs.push("🔒 <b>Gesichert:</b> Dieser Aufenthalt ist in Airbnb gesperrt. " + symBtn("b-prov", "🔒")));
     stay.filter((b) => b.prov).forEach((b) => {
       if (provKonflikt(b)) { zs.push("⚠️ <b>Konflikt:</b> Ein Airbnb-Gast hat sich auf diese Tage eingetragen. Der Aufenthalt muss weichen. " + symBtn("b-prov", "🔓")); return; }
       const S = provSicherBis();
@@ -5091,7 +5175,7 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
       else if (ARR && DEP && k >= ARR && k <= DEP && istHoch(k)) { /* Möglichkeiten und Warnung stehen im Hinweis unter dem Kalender */ }
       else if (istNeben(k) && !istHoch(k)) mon.push(fld("rosa") + "<b>Nebensaison:</b> Hier ist ein Aufenthalt <b>fest</b> und wird in Airbnb gesperrt, ihr habt volle Buchungssicherheit. Es gelten die normalen Familienpreise.");
       else if (provStay(k, addDays(k, 1))) { zb.push("Ein Aufenthalt wäre hier ein <b>Termin mit Vorbehalt</b>: nicht in Airbnb gesperrt. " + symBtn("b-prov", "🔓")); }
-      if (schweifListe().some((s) => k >= s.von && k <= s.bis)) vz.unshift("🔗 <b>Offene Familienstaffel</b> (gestrichelter Balken mit ▶): Wer hier selbst reinigt, führt sie weiter. Mit «Normal» wird sie unterbrochen und die Endreinigung der Gäste davor fällig.");
+      if (schweifListe().some((s) => k >= s.von && k <= s.bis)) vz.unshift("🔗 <b>Offene Familienstaffel</b> (gestrichelter Balken mit ▶): Wer hier selbst reinigt, führt sie weiter. Mit «Normal» wird sie unterbrochen und die Endreinigung der Gäste davor fällig. " + symBtn("b-staffel", "🔗"));
       const c = grid.querySelector('[data-k="' + k + '"]');
       if (c && c.classList.contains("off") && ARR && !DEP) zb.push("Als Abreise nicht möglich: zu kurz, zu lang oder ein belegter Tag liegt dazwischen.");
     }
