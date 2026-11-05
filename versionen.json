@@ -2,6 +2,19 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.101.1.1",
+      "datum": "2026-11-05",
+      "titel": "Kinder-Ansicht ohne Verwaltungsmeldung, Partner/in",
+      "arten": [
+        "Fehler",
+        "Text"
+      ],
+      "punkte": [
+        "Fehler: In der Kinder-Ansicht («Ansicht als») erscheint die Bestätigungsmeldung der Eltern mit «Jetzt erledigen» und «Dem Kind Bescheid geben» nicht mehr.",
+        "Text: Bei der Auswahl «Wer kommt» und in den Hilfetexten steht jetzt «Partner/in»."
+      ]
+    },
+    {
       "v": "2.101.1.0",
       "datum": "2026-11-05",
       "titel": "Film «Lücken»: zwei Lücken im Vergleich und Storno",
