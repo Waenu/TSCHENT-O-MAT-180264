@@ -2,6 +2,22 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.100.4.0",
+      "datum": "2026-11-05",
+      "titel": "Glossar aufgeräumt: Hochsaison, Reinigung, Bedienung",
+      "arten": [
+        "Layout",
+        "Text"
+      ],
+      "punkte": [
+        "Layout: «Ein- und Auschecken» ist ein eigener Eintrag im Glossar direkt nach «Endreinigung» und kein Untermenü mehr.",
+        "Text: Bedienung: «Wichtig» ist ein normaler Absatz (mit dem Hinweis, dass der Verzicht von allen erwartet wird, die nicht die vollen Kosten zahlen, und wofür die App entwickelt wurde), neuer Absatz «Erklärvideos», «Sind alle Felder grün, erscheint der Preis». Bei den Auswahlfeldern entfällt der überflüssige Absatz.",
+        "Text: Hochsaison in zwei Abschnitten (Verbindlich, Mit Vorbehalt). Unter «So sparst du Geld» steht bei der Hochsaison nur noch der Vorbehalt.",
+        "Text: Februar: «Lieber mit Freunden» statt «Allein oder mit Kollegen», überall «Freunde» statt «Kollegen».",
+        "Text: «Selber reinigen» und «Endreinigung» erklären nur noch die Reinigung. Wer die Endreinigung bei einer Staffel zahlt, steht jetzt bei «Familienstaffel»."
+      ]
+    },
+    {
       "v": "2.100.3.2",
       "datum": "2026-11-05",
       "titel": "Fehler: Film-Knopf bei der Familienstaffel mehrfach",
