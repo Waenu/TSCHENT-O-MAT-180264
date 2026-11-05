@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.105.1.1",
+      "datum": "2026-11-05",
+      "titel": "«Freund oder Freundin» bei der Zimmerfrage",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Text: Die Frage «Schläft ein Freund oder eine Freundin im selben Zimmer wie ich?», ihr Erklärtext und die Meldung «Bitte wählen» nennen jetzt Freund oder Freundin."
+      ]
+    },
+    {
       "v": "2.105.1.0",
       "datum": "2026-11-05",
       "titel": "Beim Blättern immer die Monatserklärung",
