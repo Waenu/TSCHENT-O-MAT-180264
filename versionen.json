@@ -2,6 +2,22 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.98.0.0",
+      "datum": "2026-11-05",
+      "titel": "Neuer Kurzfilm: Lücken",
+      "arten": [
+        "Neu",
+        "Layout",
+        "Text"
+      ],
+      "punkte": [
+        "Neu: Kurzfilm 🎬 zu den Lücken: Lücke zwischen zwei Airbnb-Gästen, ganz oder teilweise buchen, gesperrt bis der Vorlauf vorbei ist, Sonntag mit einer Nacht mehr. Der Knopf steht bei «Lücken» und «Lücke durch die Vorlaufzeit».",
+        "Text: «Lücken» und «Lücke durch die Vorlaufzeit» gestrafft, die beiden Skizzen ersetzt der Film.",
+        "Layout: «Familienstaffel» und «Selber reinigen» stehen jetzt bei den Termin-Arten.",
+        "Text: Neuer Hinweis in der Benutzung: Die Eltern verzichten in Hochsaison und Februar auf eigene Ferien und füllen nur die übrigen Lücken."
+      ]
+    },
+    {
       "v": "2.97.8.0",
       "datum": "2026-11-05",
       "titel": "Glossar: Doppeltes raus, Reinigung gebündelt",
