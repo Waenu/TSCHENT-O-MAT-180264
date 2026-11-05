@@ -1235,7 +1235,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.103.2.0";
+let VERSION = "2.103.3.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -5265,10 +5265,10 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
     });
     letzteMon = haupt;   // einfarbig: die Zeit mit den meisten Tagen
     const farbe = { hoch: "--hoch-line", fest: "--fest-line", spitz: "--spitz-line", rosa: "--rosa-line", ruhe: "--ruhe-line", xmas: "--xmas-line" };
-    if (anz.size > 1 && Array.from(anz.keys()).every((c) => farbe[c])) {   // zweifarbig (mehrfarbig): Rahmen anteilig nach Tagen
+    if (anz.size > 1 && Array.from(anz.keys()).every((c) => farbe[c])) {   // zweifarbig (mehrfarbig): Rahmen anteilig nach Tagen, von oben nach unten
       let p0 = 0; const st = [];
       anz.forEach((a, c) => { const p1 = p0 + a * 100 / tage.length; st.push("var(" + farbe[c] + ") " + p0.toFixed(1) + "% " + p1.toFixed(1) + "%"); p0 = p1; });
-      monGrad = "linear-gradient(to right, " + st.join(", ") + ")";
+      monGrad = "linear-gradient(to bottom, " + st.join(", ") + ")";
     }
     monHtml = h; return h;
   }
