@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.100.5.7",
+      "datum": "2026-11-05",
+      "titel": "Film-Knopf im Glossar mit Text",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Text: Der Film-Knopf im Glossar trägt jetzt den Text «Erklärvideo ansehen» (Mit Vorbehalt, Lücken, Familienstaffel, Selber reinigen)."
+      ]
+    },
+    {
       "v": "2.100.5.6",
       "datum": "2026-11-05",
       "titel": "Bild der goldenen Leiste bei «So sparst du Geld»",
