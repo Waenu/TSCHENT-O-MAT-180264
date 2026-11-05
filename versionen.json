@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.100.5.5",
+      "datum": "2026-11-05",
+      "titel": "Beispiel mit Freunden zurückgenommen",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Text: Das Beispiel in «So sparst du Geld» und die Zeile «Jeder Freund zahlt nur …» in der goldenen Leiste sind wieder entfernt."
+      ]
+    },
+    {
       "v": "2.100.5.4",
       "datum": "2026-11-05",
       "titel": "Goldene Leiste zeigt den Preis pro Freund",
