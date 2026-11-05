@@ -535,6 +535,11 @@
   #auswahlTxt { display: flex; flex-direction: column; gap: 8px; }
   #auswahlTxt p { margin: 0; }
   .exbild { margin: 4px 0 2px; }
+  details.sub .bc .exgold { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; padding: 10px 14px; border-radius: 8px; background: #F2C230; color: #1B1B1B; }
+  details.sub .bc .exgold-l { font-size: 0.95rem; }
+  details.sub .bc .exgold-r { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+  details.sub .bc .exgold-v { font-family: var(--display); font-weight: 700; font-size: 1.9rem; line-height: 1; white-space: nowrap; }
+  details.sub .bc .exgold-b { font-weight: 700; line-height: 1.2; padding: 6px 12px; border: 2px solid currentColor; border-radius: 6px; white-space: nowrap; }
   details.sub .bc .exbild-cap { margin: 8px 0 0; font-size: var(--t-small); color: var(--muted); }
   details.sub .bc .extl { margin: 0 0 4px; }
   .exlist { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
@@ -1220,7 +1225,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.100.5.5";
+let VERSION = "2.100.5.6";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1982,6 +1987,11 @@ function begriffeFuellen() {
     if (P.hochNachtMin > 0) h += "<li><b>Hochsaison:</b> Mit Vorbehalt zahlst du den normalen Familienpreis. " + symBtn("b-hochsaison", "🏔️") + "</li>";
     if (FEST_MONATE.length) h += "<li><b>" + esc(festTxt()) + ":</b> Eigene Regeln mit Mindestpreis, mit Freunden sinkt dein Anteil" + (gratisAb() ? ", ab " + gratisAb() + " Freunden ist es für dich gratis" : "") + ". " + symBtn("b-februar", "⛷️") + "</li>";
     h += "</ul>";
+    try {   // Bild: so sieht die goldene Leiste aus, wenn es für dich gratis ist (Beträge live aus der Rechnung)
+      const r4 = calc({ wer: "Nur ich", kk: 0, gaeste: 5, zimmer: "Nein", spar: "Nein", selbst: "Nein", reinig: REINIG[0], nights: 4 });
+      if (r4 && r4.ok && r4.FZ === 0) h += '<div class="exgold" role="img" aria-label="Beispiel der goldenen Leiste: Total für 4 Nächte ' + chf(r4.TOT) + ', für dich ohne Kosten"><div class="exgold-l">Total für 4 Nächte<br><b>✔ Für dich ohne Kosten</b></div><div class="exgold-r"><span class="exgold-v">' + chf(r4.TOT) + '</span><span class="exgold-b">Details ▾</span></div></div>' +
+        '<p class="exbild-cap">Beispiel: Du und 5 Freunde, 4 Nächte. Jeder Freund zahlt nur ' + chf(r4.TOT / 5) + ' inklusive Reinigung. Du bist kostenlos dabei. Gold heisst: für dich ohne Kosten.</p>';
+    } catch (e) {}
     set("bc-sparen", h);
   })();
   (function () {
