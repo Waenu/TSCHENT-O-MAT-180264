@@ -595,7 +595,7 @@
   #zurueck { position: fixed; right: 16px; bottom: calc(max(var(--bar-h, 0px), var(--fix-h, 0px) + 10px, 74px) + 10px + env(safe-area-inset-bottom, 0px)); z-index: 9; background: #9A7400; color: #FFFFFF; border: 0; border-radius: 22px; padding: 10px 16px; font: inherit; font-weight: 700; box-shadow: 0 2px 8px rgba(0,0,0,.35); }
   .bar[data-klick] { cursor: pointer; }
   .bar .val { text-align: right; }
-  .bar .val small.bdet { display: block; font-family: inherit; font-size: 0.7rem; font-weight: 600; margin-top: 3px; opacity: 0.9; }
+  .bar .lab .bdet { text-decoration: underline; text-underline-offset: 3px; }
   .bar .val { font-family: var(--display); font-weight: 700; font-size: calc(1.9rem / var(--fs)); line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; }
   .bar.err { background: var(--error-bg); color: var(--error-fg); }
   .bar.err.wahl { background: var(--missing-bg); color: var(--fg); box-shadow: inset 0 4px 0 var(--missing-line); }   /* «Bitte wählen»: nur eine Erinnerung, daher orange wie die Felder «– wählen –» */
@@ -1080,7 +1080,7 @@
             <div class="exf"><span class="exsel missing">– wählen –</span><span>orange: noch wählen</span></div>
             <div class="exf"><span class="exsel done">Beispiel ✓</span><span>grün: gewählt</span></div>
           </div>
-          <p><b>Erst wenn alle Felder grün sind, erscheint das Resultat mit dem Preis.</b></p>
+          <p>Erst wenn alle Felder grün sind, erscheint das Resultat mit dem Preis.</p>
         </div></details>
         <p class="gl-thema">Wer und wo</p>
         <details class="sub" id="b-familie"><summary>👪 Familie</summary><div class="bc"><p>Zur Familie gehören die vier Kinder und ihre Partner:</p><ul><li>Jerome und Rahel</li><li>Deborah und David</li><li>Miriam und Andreas</li><li>Manuel und Sarah</li></ul><p>Die Partner gehören als Familienmitglieder dazu. Sie buchen selbst mit ihrem eigenen Namen und können mit ihren Freunden kommen (siehe «Reisegruppe»).</p></div></details>
@@ -1219,7 +1219,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.100.5.0";
+let VERSION = "2.100.5.1";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2030,7 +2030,7 @@ function begriffeFuellen() {
   set("bc-sicht", "<p>" + filmKnopf("luecke") + "</p><p><b>Lücke durch die Vorlaufzeit 🔔</b> Airbnb kann diese Nächte nicht mehr verkaufen: Ein Gast braucht " + VORLAUF + " Tage Vorlauf, bleibt mindestens " + AIRBNB_MIN + " Nächte, und sonntags gibt es keinen Check-in. Darum steht diese Zeit euch offen: zum normalen Familienpreis, <b>ohne Vorbehalt</b>, auch in der Hochsaison. Mindestens " + Math.max(P.minNaechte, P.sichtMinNaechte) + " Nächte" + (P.hochMinNaechte > Math.max(P.minNaechte, P.sichtMinNaechte) ? ", in der Hochsaison mindestens " + P.hochMinNaechte : "") + ".</p><p>Im Kalender ist diese Zeit <b>gelb</b> und wandert täglich mit: Mit jedem Tag kann Airbnb weniger verkaufen, es kommen Nächte dazu, die vergangenen fallen weg. Das gilt auch bei nur 2 oder 3 Nächten, solange Airbnb dahinter noch verkaufen kann.</p>");
   set("bc-luecke", "<p>" + filmKnopf("luecke") + "</p><p><b>Lücken 🧩</b> Eine Lücke ist freie Zeit zwischen zwei Airbnb-Gästen von höchstens " + LUECKE_MAX + " Nächten. Ihr bucht sie zum normalen Familienpreis, <b>fest und ohne Vorbehalt</b>: ganz oder teilweise, ab " + P.minNaechte + " Nächten, an jedem Tag der Lücke. Auch <b>Freunde</b> sind willkommen, bis " + P.maxPersonen + " Personen, alle Zimmer. Die Eltern reinigen und stellen die Wäsche, ihr bringt keine mit und reinigt nicht selber.</p><p><b>Wann buchbar:</b> Bis " + (AIRBNB_MIN - 1) + " Nächte sofort, Airbnb kann sie nie verkaufen. " + AIRBNB_MIN + " Nächte sind <b>gesperrt</b>, solange der Vorlauf (" + VORLAUF + " Tage) es Airbnb erlaubt, danach gelb und buchbar. Das Datum steht in der Info-Box. In der Staffel-Zeit ist sie sofort buchbar. Längere freie Zeit bleibt normal buchbar.</p><p><b>Sonntag:</b> Endet ein Gast am Samstag, kann Airbnb den Sonntag nicht vergeben. Ihr reist schon am Sonntag an, die Lücke hat eine Nacht mehr.</p><p><b>Später entstandene Lücke:</b> Auch Zeit, die erst durch den Vorlauf und den Mindestaufenthalt von Airbnb übrig bleibt, wird zur Lücke, sobald höchstens " + LUECKE_MAX + " Nächte bleiben (siehe «Lücke durch die Vorlaufzeit» " + symBtn("b-sicht", "🔔") + "). Es gelten dieselben Regeln und derselbe Preis.</p>" + (P.lueckeGastNacht > 0 ? "<p><b>Freunde in der Lücke:</b> Ohne Freunde buchst du die Lücke wie bisher. Mit Freunden müssen die Übernachtungen (ohne Endreinigung) pro Nacht mindestens " + chf(P.lueckeGastNacht) + " erreichen, also " + chf(lueckeMin(2)) + " bei 2 Nächten, " + chf(lueckeMin(3)) + " bei 3 und " + chf(lueckeMin(4)) + " bei 4 Nächten. Ein Freund zahlt " + chf(P.gast) + " pro Nacht, die Familie " + chf(P.famPausch) + ". Zu wenige Freunde sind deshalb nicht wählbar: Es braucht meist mindestens 2. Bringen die Freunde mehr, sinkt der Anteil der Familie bis auf 0, das Total aber nie unter dem Mindestbetrag plus Endreinigung (" + chf(P.reinigung) + "), bei 2 Nächten also " + chf(lueckeMin(2) + P.reinigung) + ". Das gilt nur, wenn der ganze Aufenthalt in der Lücke liegt.</p>" + lueckenBeispiel() : ""));
   document.getElementById("stRechnung").innerHTML = "<b>Endreinigung bei der Staffel:</b> Sie fällt an, sobald die Staffel endet. Die Eltern stellen nur eine Rechnung, getrennt vom Aufenthalt, an die letzte Reisegruppe. War sie allein in der Staffel, sind es die vollen " + chf(P.reinigung) + ". Waren mehrere Reisegruppen in der Staffel, bezahlt die letzte zuerst alles und holt sich die Anteile der anderen zurück, anteilig nach Reisegruppe. Das Eintreiben des Geldes regeln die Reisegruppen untereinander. " + symBtn("b-endrein", "🪣");
-  { const bs = document.getElementById("bc-staffel"); if (!bs.querySelector(".filmik")) bs.insertAdjacentHTML("afterbegin", "<p>" + filmKnopf("staffel") + "</p>"); }   // nur einmal, sonst stapeln sich die Knöpfe bei jedem Neuaufbau
+  { const bs = document.getElementById("bc-staffel"); if (!bs.querySelector(".filmik")) bs.insertAdjacentHTML("afterbegin", "<p>" + filmKnopf("staffel") + " Erklärung per Animation</p>"); }   // nur einmal, sonst stapeln sich die Knöpfe bei jedem Neuaufbau
   set("bc-ruhe", RUHE.length ? "<p>" + filmKnopf("staffel") + "</p>" + bildRuhe() + "<ul><li>Möglich " + ruhe + ".</li>" +
     "<li>Selbst reinigt ihr in der Familienstaffel, ohne Freunde. Mit Freunden reinigen die Eltern. Wie die Staffel funktioniert, steht unter «Familienstaffel». " + symBtn("b-staffel", "🔗") + " Gewählt wird im Feld «Wie möchtest du buchen?» " + symBtn("b-auswahl", "🔽") + "</li>" +
     "<li>Frische Bettwäsche, Handtücher und Küchentücher mitbringen und selbst beziehen. Bettdecken und Kissen nie ohne frischen Duvet- und Kissenbezug benutzen. Alles nehmt ihr wieder mit. Nur die Moltons bleiben nach dem Benutzen auf der Matratze. Die Liste mit den Mengen für eure Personenzahl findet ihr nach der Bestätigung im Knopf «🧳 Anreise-Wäsche» auf der Startseite, zum Abhaken.</li>" +
@@ -3190,8 +3190,8 @@ function render() {
   bar.classList.remove("err", "wahl"); res.hidden = false;
   const nTxt = r.d.nights + " " + (r.d.nights === 1 ? "Nacht" : "Nächte");
   const totTxt = tip > 0 ? "Total inkl. Trinkgeld für " : "Total für ";
-  lab.textContent = totTxt + nTxt; val.innerHTML = chf(r.TOT + tip) + '<small class="bdet">Details ▾</small>'; bar.dataset.klick = "1";
-  if (r.d.SB) lab.innerHTML = totTxt + nTxt + "<br><small class=\"max\">maximal " + chf(r.TOT + tip + P.reinigung) + " mit Endreinigung</small>";
+  const DET = '<br><span class="bdet">Details ▾</span>'; lab.innerHTML = totTxt + nTxt + DET; val.textContent = chf(r.TOT + tip); bar.dataset.klick = "1";
+  if (r.d.SB) lab.innerHTML = totTxt + nTxt + DET + "<br><small class=\"max\">maximal " + chf(r.TOT + tip + P.reinigung) + " mit Endreinigung</small>";
   const zh = zielHinweis(r);
   if (zh && zh.frei) { bar.classList.add("gratis"); lab.innerHTML += '<br><small class="ziel">✔ ' + (S.wer === "Nur ich" ? "Für dich" : "Für die Familie") + ' ohne Kosten</small>'; }
   else if (zh && zh.zeilen.length) lab.innerHTML += '<br><small class="ziel' + (zh.zeilen[0].frei ? ' frei' : '') + '">' + esc(zh.zeilen[0].t) + '</small>';
