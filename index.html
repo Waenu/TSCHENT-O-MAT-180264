@@ -659,6 +659,10 @@
   .ov-in { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; padding-bottom: 40px; }
   .ov h2 { margin: 0; font-size: 1.35rem; }
   #bestKasten .vk-sec { display: flex; align-items: center; gap: 8px; margin: 12px 0 4px; font-weight: 700; }
+  #bestKasten .vk-sec[data-vksec] { cursor: pointer; padding: 8px 4px; border-bottom: 1px solid rgba(127,127,127,0.35); }
+  #bestKasten .vk-sec .vk-pfeil { width: 1em; }
+  #bestKasten .vk-sec .n.heiss { background: #F28C28; color: #1A1200; }
+  #bestKasten .vk-body[hidden] { display: none; }
   #bestKasten .vk-sec .n { background: var(--accent); color: var(--accent-fg, #fff); border-radius: 999px; padding: 0 8px; font-size: 0.8em; }
   #bestKasten .vk { background: var(--surface); border: 2px solid var(--accent); border-radius: 6px; padding: 12px; margin: 6px 0; display: flex; flex-direction: column; gap: 8px; }
   #bestKasten .vk.spring { outline: 4px solid var(--missing-line); outline-offset: 2px; }
@@ -1211,7 +1215,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.100.1.0";
+let VERSION = "2.100.2.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -4326,7 +4330,26 @@ function rechDetails(r, bt) { return '<details class="rechd"><summary>🧾 Preis
 function vkKarte(x, cls, chips, status, acts) {
   return '<div class="vk' + (cls ? " " + cls : "") + '" data-vk="' + esc(bKey(x)) + '"><div class="vk-top"><span class="vk-name">' + esc(x.name) + '</span><button type="button" class="vk-datum" data-zk="' + esc(x.arr) + '" aria-label="Im Kalender zeigen">📅 ' + esc(fmtTag(x.arr)) + " bis " + esc(fmtTag(x.dep)) + " ›</button></div>" + chips + (status ? '<div class="vk-st hint">' + status + "</div>" : "") + (typeof x.rechnung === "string" ? rechDetails(x.rechnung, x.bestaetigt) : "") + '<div class="vk-acts">' + acts + "</div></div>";
 }
-function vkSek(titel, n) { return '<div class="vk-sec">' + titel + ' <span class="n">' + n + "</span></div>"; }
+const VK_OFFEN = new Set();   // geöffnete Abschnitte der Verwaltung (bleiben beim Neuzeichnen offen, nach dem Neuladen sind alle eingeklappt)
+function vkSek(titel, n, heiss) { return '<div class="vk-sec" role="button" tabindex="0" data-vksec="' + esc(titel) + '" aria-expanded="false"><span class="vk-pfeil" aria-hidden="true">▸</span><span class="vk-t">' + titel + '</span> <span class="n' + (heiss && n ? " heiss" : "") + '">' + n + "</span></div>"; }
+function vkEinklappen(k) {   // jeden Abschnitt mit Titel samt Inhalt bis zum nächsten Titel einklappen
+  k.querySelectorAll(":scope > .vk-sec[data-vksec]").forEach((h) => {
+    const body = document.createElement("div"); body.className = "vk-body";
+    let nx = h.nextElementSibling;
+    while (nx && !nx.matches(".vk-sec, .vk-trenn, .vk-nav, details.papi-hinweis")) { const w = nx.nextElementSibling; body.appendChild(nx); nx = w; }
+    h.after(body);
+    const auf = VK_OFFEN.has(h.getAttribute("data-vksec"));
+    body.hidden = !auf; h.setAttribute("aria-expanded", auf ? "true" : "false");
+    h.querySelector(".vk-pfeil").textContent = auf ? "▾" : "▸";
+  });
+}
+function vkUmschalten(h) {
+  const key = h.getAttribute("data-vksec"), body = h.nextElementSibling;
+  if (!body || !body.classList.contains("vk-body")) return;
+  const auf = body.hidden; body.hidden = !auf;
+  if (auf) VK_OFFEN.add(key); else VK_OFFEN.delete(key);
+  h.setAttribute("aria-expanded", auf ? "true" : "false"); h.querySelector(".vk-pfeil").textContent = auf ? "▾" : "▸";
+}
 function bescheidStatus(x) { const b = x.bescheid || ""; return "<span>" + (b ? "✉️ Bescheid gegeben am " + esc(fmtTag(b.slice(0, 10))) + ", " + b.slice(11, 16) + " Uhr" : "<b class=\"bs-fehlt\">✉️ Noch kein Bescheid gegeben</b>") + "</span>"; }
 function bescheidKnopf(x, abgelehnt) { const b = x.bescheid || ""; return bestWaLink(bestText(x, abgelehnt), bKey(x), b ? (abgelehnt ? "Nochmals Absage" : "Nochmals Bescheid") : (abgelehnt ? "Absage schicken" : "Bescheid geben")); }
 // Kopierzeile (Knopf kopiert den Text) und Titel für den Pimlical-Eintrag
@@ -4372,7 +4395,7 @@ function gaesteFormular() {
   const h = heuteKey(), starts = [];
   if (BELEGT_AIR) Array.from(BELEGT_AIR).sort().forEach((k) => { if (!BELEGT_AIR.has(addDays(k, -1)) && belegtEnde(k) >= h) starts.push(k); });
   const opt = starts.slice(0, 40).map((k) => { const g = GAESTE.find((x) => x.arr === k); return '<option value="' + k + '">' + esc(fmtTag(k)) + " bis " + esc(fmtTag(belegtEnde(k))) + (g ? " · " + esc(g.name) : "") + "</option>"; }).join("");
-  let t = vkSek("👤 Gäste mit Namen", GAESTE.length);
+  let t = vkSek("👤 Gäste mit Namen", GAESTE.length).replace(' data-vksec="', ' data-fest="');
   t += '<p class="hint">Die Namen stehen öffentlich in gaeste.json und im Kalender. Gib den Namen so ein, wie er im Kalender stehen soll, z. B. «Maria K.». Die App ändert ihn nicht und löscht nichts von selbst. Folgt ein zweiter Gast ohne Lücke, wähle sein Anreisedatum bei «Anderes Datum». Das zweite Datumsfeld ist die Abreise (freiwillig, sonst bis zum Ende der Belegung). Einfacher geht es im Kalender: Tag antippen, dann Anreise und Abreise wählen.</p>';
   t += '<div class="vk vk-gast"><select id="gSel" aria-label="Airbnb-Belegung"><option value="">Belegung wählen …</option>' + opt + '</select>' + typKnoepfe3("gTyp", "airbnb") + '<input id="gDat" type="date" aria-label="Anderes Datum (Anreise)" min="' + h + '"><input id="gDep" type="date" aria-label="Abreise (freiwillig)" min="' + h + '"><input id="gName" type="text" maxlength="40" placeholder="Name, z. B. Maria K." autocomplete="off"><div class="vk-acts"><button type="button" class="btn main full" data-gsave="1">💾 Speichern</button></div></div>';
   const gl = GAESTE.slice().sort((p, q) => (p.arr < q.arr ? -1 : 1));
@@ -4468,12 +4491,12 @@ function bestZeigen() {
     const xo = xmasOffen();
     if (xo.length) s += '<div class="note h rot-warn"><b>⚠️ Weihnachtssperre in Airbnb noch nicht gesetzt:</b> Es fehlen die Nächte ' + xo.map((k) => esc(fmtTag(k))).join(", ") + '. Bitte in Airbnb sperren (Check-in ab dem ' + (parseInt(SPERRE[1].slice(3), 10) + 1) + '. ' + MONATE[parseInt(SPERRE[1].slice(0, 2), 10) - 1] + '). Die Airbnb-Daten kommen mit Verzögerung, kurz nach dem Sperren kann der Hinweis noch stehen.</div>';
     const alm = alarmListe();
-    if (alm.length) s += vkSek("🔔 Alarme: Mitteilung fällig", alm.length) + alm.map((a) => '<div class="note h"><p>' + a.text + '</p><a class="btn" ' + (a.typ === "ende" ? "data-endinfo" : "data-wainfo") + '="' + esc(bKey(a.x)) + '" href="https://wa.me/?text=' + encodeURIComponent(a.typ === "ende" ? endeInfoText(a.x) : waescheInfoText(a.x)) + '" target="_blank" rel="noopener">' + WA_SVG + (a.typ === "ende" ? "Staffel-Ende-Info senden" : "Wäsche-Info senden") + "</a></div>").join("");
+    if (alm.length) s += vkSek("🔔 Alarme: Mitteilung fällig", alm.length, true) + alm.map((a) => '<div class="note h"><p>' + a.text + '</p><a class="btn" ' + (a.typ === "ende" ? "data-endinfo" : "data-wainfo") + '="' + esc(bKey(a.x)) + '" href="https://wa.me/?text=' + encodeURIComponent(a.typ === "ende" ? endeInfoText(a.x) : waescheInfoText(a.x)) + '" target="_blank" rel="noopener">' + WA_SVG + (a.typ === "ende" ? "Staffel-Ende-Info senden" : "Wäsche-Info senden") + "</a></div>").join("");
     const zl = BUCH.filter((x) => zahlOffen(x) && x.dep < h).sort((p, q) => (p.dep < q.dep ? -1 : 1));
-    if (zl.length) s += vkSek("💳 Zahlungen offen", zl.length) + zl.map((x) => zahlZeile(x)).join("");
+    if (zl.length) s += vkSek("💳 Zahlungen offen", zl.length, true) + zl.map((x) => zahlZeile(x)).join("");
     const wl = BUCH.filter((x) => (x.waesche === "bringen" || x.waesche === "senden") && !x.waescheZurueck && x.dep < h).sort((p, q) => (waescheBis(p) < waescheBis(q) ? -1 : 1));   // Wäsche bleibt gemeldet, bis Papi den Eingang quittiert
-    if (wl.length) s += vkSek("🧺 Wäsche noch nicht zurück", wl.length) + wl.map((x) => waescheZeile(x)).join("");
-    s += vkSek("📨 Offene Anfragen", OFFEN.length);
+    if (wl.length) s += vkSek("🧺 Wäsche noch nicht zurück", wl.length, true) + wl.map((x) => waescheZeile(x)).join("");
+    s += vkSek("📨 Offene Anfragen", OFFEN.length, true);
     s += OFFEN.length ? OFFEN.slice().sort((a, b) => (a.arr < b.arr ? -1 : a.arr > b.arr ? 1 : (a.dep < b.dep ? -1 : a.dep > b.dep ? 1 : 0))).map((x) => vkKarte(x, "offen", vkChips(x, true), "",
       '<button type="button" class="btn main" data-ja="' + esc(bKey(x)) + '">✅ Bestätigen</button><button type="button" class="btn" data-nein="' + esc(bKey(x)) + '">✖ Ablehnen</button>')).join("")
       : '<p class="hint">Keine offenen Anfragen. Tippe in einer Anfrage auf den Bestätigungs-Link, dann erscheint sie hier.</p>';
@@ -4481,7 +4504,7 @@ function bestZeigen() {
     const bp = bl.filter((x) => x.prov).sort(nachDatum), bf = bl.filter((x) => !x.prov).sort(nachDatum);
     s += vkSek("🔓 Mit Vorbehalt, noch nicht fest", bp.length) + (bp.length ? bp.map(festKarte).join("") : '<p class="hint">Keine Termine mit Vorbehalt.</p>');
     s += vkSek("🔒 Bestätigt, fest", bf.length) + (bf.length ? bf.map(festKarte).join("") : '<p class="hint">Keine festen Aufenthalte.</p>');
-    s += '<hr class="vk-trenn">' + vkSek("📚 Nachschlagen", "") .replace(' <span class="n"></span>', "");
+    s += '<hr class="vk-trenn">' + vkSek("📚 Nachschlagen", "").replace(' <span class="n"></span>', "").replace(' data-vksec="', ' data-fest="');
     s += '<div class="vk-nav"><button type="button" class="btn" data-zeig="A">' + (zeigA ? "Abgelehnte ausblenden" : "Abgelehnte anzeigen (" + ABGEL.length + ")") + '</button><button type="button" class="btn" data-zeig="L">' + (zeigL ? "Logbuch ausblenden" : "Logbuch anzeigen (" + LOGBUCH.length + ")") + "</button></div>";
     s += '<div class="vk-nav"><button type="button" class="btn" style="grid-column:1/-1" data-zeig="G">' + (zeigG ? "Gäste ausblenden" : "👤 Gäste mit Namen (" + GAESTE.length + ")") + "</button></div>";
     if (zeigG) s += gaesteFormular();
@@ -4519,6 +4542,7 @@ function bestZeigen() {
       '<li><b>Kinder sehen davon nichts:</b> ohne Token fehlen Verwaltung, Logbuch und Gäste ganz.</li></ul></details>';
   }
   k.innerHTML = s;
+  vkEinklappen(k);
 }
 function zahlText(x) {
   return "Hoi " + x.name + ", dein Aufenthalt vom " + fmtTagV(x.arr) + " bis " + fmtTagV(x.dep) + " war hoffentlich schön. 😊 Die Zahlung von " + chf(x.betrag) + " ist bei uns noch nicht eingegangen (Frist war der " + fmtTagV(zahlFrist(x)) + "). Bitte überweise den Betrag in den nächsten Tagen. Die Bankverbindung findest du im TSCHENT-O-MAT unter «Zahlung». Danke dir! Gruss, Papi";
@@ -4844,6 +4868,7 @@ window._zurVerwaltung = (key, tag) => {   // Auge im Kalender-Hinweis (nur Papi)
   requestAnimationFrame(() => {
     const k = document.getElementById("bestKasten"), c = [...k.querySelectorAll("[data-vk]")].find((el) => el.getAttribute("data-vk") === key);
     if (!c) { bestMsg = "Dieser Aufenthalt ist vorbei und steht nicht mehr in der Verwaltung."; bestZeigen(); k.scrollIntoView({ behavior: "auto", block: "start" }); return; }
+    const vb = c.closest(".vk-body"); if (vb && vb.hidden) { vkUmschalten(vb.previousElementSibling); }   // eingeklappten Abschnitt öffnen, damit die Karte sichtbar ist
     c.scrollIntoView({ behavior: "auto", block: "center" });
     c.classList.add("spring"); setTimeout(() => c.classList.remove("spring"), 3500);
   });
@@ -4861,6 +4886,7 @@ document.getElementById("bestKasten").addEventListener("click", async (e) => {
   if (wa) { bescheidVermerken(wa.getAttribute("data-bescheid")); return; }
   const wi = e.target.closest("[data-wainfo]");
   if (wi) { waescheInfoVermerken(wi.getAttribute("data-wainfo")); return; }
+  const vks = e.target.closest(".vk-sec[data-vksec]"); if (vks) { vkUmschalten(vks); return; }
   const ei = e.target.closest("[data-endinfo]");
   if (ei) { endeInfoVermerken(ei.getAttribute("data-endinfo")); return; }
   const er = e.target.closest("[data-erinnert]");
