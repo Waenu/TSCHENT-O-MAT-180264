@@ -1235,7 +1235,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.105.0.0";
+let VERSION = "2.105.1.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2727,12 +2727,13 @@ function renderKalender() {
     : "Die Belegung konnte nicht geladen werden, alle Tage erscheinen frei. Der Termin ist nur eine Anfrage, die Eltern prüfen ihn.";
 }
 // Termin-Box: eine einzige Box unter dem Kalender, sobald Anreise und Abreise gewählt sind. Warnungen (⚠️) stehen immer, Erklärungen nur bei eingeschalteter Hilfe «?»
-let TERMIN_SIG = "";
+let TERMIN_SIG = "", TERMIN_AUS = false;   // TERMIN_AUS: beim Blättern durch die Monate weicht die Termin-Box der Monatserklärung, bis ein anderer Termin gewählt wird
 function terminBox() {
   const el = document.getElementById("calTermin"); if (!el) return;
   const sig = ARR + "|" + DEP, neu = sig !== TERMIN_SIG; TERMIN_SIG = sig;
   if (!(ARR && DEP)) { el.hidden = true; el.innerHTML = ""; el.classList.remove("mitw"); return; }
-  if (neu) { const bl = document.getElementById("calBlase"); if (bl) bl.hidden = true; }   // die Tageserklärung weicht der Termin-Box: nie zwei Boxen für denselben Fall
+  if (neu) { TERMIN_AUS = false; const bl = document.getElementById("calBlase"); if (bl) bl.hidden = true; }   // die Tageserklärung weicht der Termin-Box: nie zwei Boxen für denselben Fall
+  if (TERMIN_AUS) { el.hidden = true; el.innerHTML = ""; el.classList.remove("mitw"); return; }
   const an = window._hilfeAn ? window._hilfeAn() : true;
   const arr = ARR, dep = DEP, W = [], I = [];
   const sp = spitzTermin();
@@ -5424,7 +5425,8 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
   grid.addEventListener("click", () => { arrAlt = ARR; }, true);   // Anreise vor dem Klick merken: wird sie abgewählt, geht die Box zurück zum Monat
   grid.addEventListener("click", (e) => { if (GFORM && (GFORM.mode || GFORM.justSet)) { if (GFORM.mode) { const c0 = zelle(e); if (c0 && c0.dataset.k) gastTagWahl(c0.dataset.k); } return; } const c = zelle(e); if (ARR && DEP && c && c.dataset.k === DEP) { blase.hidden = true; return; } if (!an && !(c && c.dataset.k && (c.classList.contains("occ") || c.classList.contains("provtag") || BUCH.some((b) => b.arr <= c.dataset.k && c.dataset.k <= b.dep)))) return; if (c && c.dataset.k && !ARR && arrAlt && arrAlt === c.dataset.k) { zeigen(monatText(), null, true); return; } if (c && c.dataset.k) { zeigen(text(c.dataset.k), grid.querySelector('[data-k="' + c.dataset.k + '"]')); eigenMerken(c.dataset.k); } });
   blase.addEventListener("click", (e) => { if (e.target.closest("#calBlaseZu")) { blase.hidden = true; zu = true; return; } const vw = e.target.closest("[data-vw]"); if (vw && TOKEN && !ABSENDER) { window._zurVerwaltung(vw.getAttribute("data-vw"), lastK); return; } const ip = e.target.closest("[data-ip]"); if (ip) { const auf = ip.getAttribute("aria-expanded") !== "true"; blase.querySelectorAll("[data-ip]").forEach((x) => { x.setAttribute("aria-expanded", "false"); x.classList.remove("on"); }); blase.querySelectorAll("[data-ipan]").forEach((x) => { x.hidden = true; }); if (auf) { ip.setAttribute("aria-expanded", "true"); ip.classList.add("on"); const pn = blase.querySelector('[data-ipan="' + ip.dataset.ip + '"]'); if (pn) pn.hidden = false; } } });
-  window._monatWechsel = () => { if (an && (!zu || !blase.hidden)) zeigen(monatText(), null, true); };
+  window._monatWechsel = () => { if (ARR && DEP) { TERMIN_AUS = true; try { terminBox(); } catch (e) {} }   // Blättern: immer die Monatserklärung, nie die eingefrorene Termin-Box eines anderen Monats
+    if (an && (!zu || !blase.hidden)) zeigen(monatText(), null, true); };
   document.querySelector("#cal .cal-nav").addEventListener("click", () => window._monatWechsel());
   knopf.addEventListener("click", () => { knopf.classList.remove("neu"); setze(!an); });
   grid.classList.toggle("hilfe", an);

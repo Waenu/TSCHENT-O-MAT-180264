@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.105.1.0",
+      "datum": "2026-11-05",
+      "titel": "Beim Blättern immer die Monatserklärung",
+      "arten": [
+        "Fehler"
+      ],
+      "punkte": [
+        "Fehler: Blättert man mit gewähltem Termin durch die Monate, bleibt die Termin-Box nicht mehr eingefroren (zum Beispiel Juli im Dezember). Beim Blättern erscheint immer die Monatserklärung. Die Termin-Box kommt zurück, sobald ein anderer Termin gewählt wird."
+      ]
+    },
+    {
       "v": "2.105.0.0",
       "datum": "2026-11-05",
       "titel": "Eine Termin-Box statt vieler Hinweis-Kästen",
