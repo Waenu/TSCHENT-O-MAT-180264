@@ -2,6 +2,19 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.101.0.0",
+      "datum": "2026-11-05",
+      "titel": "Wäsche zurückgeben: Untermenü in der Reinigungs-Checkliste",
+      "arten": [
+        "Neu",
+        "Text"
+      ],
+      "punkte": [
+        "Neu: Wer eine Staffel beginnt und die Wäsche bringt oder sendet, sieht in der Reinigungs-Checkliste den Teil «Wäsche zurückgeben» mit eingerücktem Untermenü zum Abhaken: Duvets und Kissen ausschütteln, umstülpen, nochmals ausschütteln, Reissverschluss zumachen, zusammenlegen, dann bringen oder senden.",
+        "Text: Im Glossar bei «Familienstaffel» steht, wo die Anleitung zu finden ist."
+      ]
+    },
+    {
       "v": "2.100.5.9",
       "datum": "2026-11-05",
       "titel": "Abschnitt «Eltern» freundlicher",

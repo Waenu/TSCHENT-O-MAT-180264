@@ -851,6 +851,8 @@
   .sw-rosa { border-color: var(--rosa-line); background: var(--rosa-bg); }
   .bk { position: absolute; display: flex; align-items: center; gap: 3px; height: 28px; line-height: 28px; border-radius: 14px; background: var(--accent); color: var(--accent-fg); font-size: calc(0.8rem * 0.92 / var(--fs)); font-weight: 700; padding: 0 4px; box-sizing: border-box; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; pointer-events: none; z-index: 2; opacity: 0.92; }
   #aufStatus { text-align: center; }
+  .chk-unter { margin: 8px 0 4px; font-weight: 700; }
+  .chk-einr { margin-left: 22px; padding-left: 10px; border-left: 3px solid var(--accent); display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
   .chk-teil { margin: 10px 0 0; font-size: 1.1rem; color: var(--accent); }
   .chk-danke { background: var(--done-bg); border: 2px solid var(--done-line); border-radius: 6px; padding: 14px; font-size: 1.2rem; font-weight: 700; text-align: center; }
   .chk-stand { color: var(--muted); }
@@ -1225,7 +1227,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.100.5.9";
+let VERSION = "2.101.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2045,7 +2047,7 @@ function begriffeFuellen() {
   set("bc-ruhe", RUHE.length ? "<p>" + filmGlossar("staffel") + "</p>" + bildRuhe() + "<ul><li>Möglich " + ruhe + ".</li>" +
     "<li>Selbst reinigt ihr in der Familienstaffel, ohne Freunde. Mit Freunden reinigen die Eltern. Wie die Staffel funktioniert, steht unter «Familienstaffel». " + symBtn("b-staffel", "🔗") + " Gewählt wird im Feld «Wie möchtest du buchen?» " + symBtn("b-auswahl", "🔽") + "</li>" +
     "<li>Frische Bettwäsche, Handtücher und Küchentücher mitbringen und selbst beziehen. Bettdecken und Kissen nie ohne frischen Duvet- und Kissenbezug benutzen. Alles nehmt ihr wieder mit. Nur die Moltons bleiben nach dem Benutzen auf der Matratze. Die Liste mit den Mengen für eure Personenzahl findet ihr nach der Bestätigung im Knopf «🧳 Anreise-Wäsche» auf der Startseite, zum Abhaken.</li>" +
-    "<li><b>Wer die Staffel beginnt:</b> Die Wohnung ist gereinigt und bezogen, ihr bringt keine Wäsche. Beim Abreisen zieht ihr die Betten ab (die Moltons bleiben) und nehmt die Wäsche mit. Ihr bringt sie den Eltern oder sendet sie per Post, spätestens " + WAESCHE_TAGE + " Tage nach der Rückreise. Das Porto zahlt, wer sendet. Beim Buchen wählt ihr, ob ihr bringt oder sendet.</li>" +
+    "<li><b>Wer die Staffel beginnt:</b> Die Wohnung ist gereinigt und bezogen, ihr bringt keine Wäsche. Beim Abreisen zieht ihr die Betten ab (die Moltons bleiben) und nehmt die Wäsche mit. Ihr bringt sie den Eltern oder sendet sie per Post, spätestens " + WAESCHE_TAGE + " Tage nach der Rückreise. Das Porto zahlt, wer sendet. Beim Buchen wählt ihr, ob ihr bringt oder sendet. Wie ihr die Duvets und Kissen für die Wäsche vorbereitet, steht in der Reinigungs-Checkliste, die ihr nach der Bestätigung bekommt.</li>" +
     "<li>Wer geht, reinigt: WC putzen, staubsaugen, Küche sauber, Abfall entsorgen, alles picobello.</li>" +
     "<li>Ihr zahlt den Eltern noch keine Reinigung (" + chf(P.reinigungSelbst) + "). Die Endreinigung durch die Eltern ist trotzdem Pflicht, weil sie ihren Standard wahren wollen.</li></ul>" : "<p>Zurzeit gibt es keine Zeiten, in denen ihr selbst reinigen könnt.</p>");
   set("bc-endrein", "<p><b>Aufwand</b></p><ul>" +
@@ -3392,7 +3394,12 @@ async function ladeEinstellungen() {
 let CHECK_SELBST = ["🛏️ Betten abziehen (draussen wegen Staub), die Moltons bleiben", "🪶 Mit dem Staubwedel alles abstauben", "🧹 Alle benutzten Räume staubsaugen, auch den grossen Teppich im Wohnzimmer", "🚽 Toilette reinigen", "🚿 Duschkabine reinigen", "🧽 Badezimmer nass aufnehmen (keine Haare dürfen bleiben)", "🍳 Küche sauber machen, auch den leeren Kühlschrank", "🪑 Draussen: Tisch hochklappen, Stühle stapeln", "🧺 Draussen: Teppiche vor den Eingängen zum Haus ausklopfen", "🌳 Die Umgebung ums Haus muss sauber sein", "🧴 Glanzspüler, Putzessig oder Staubsaugersäcke aufgebraucht oder fast leer? Bitte melden"];   // nur bei Selbstreinigung
 let CHECK_ALLE = ["🧊 Kühlschrank ganz leer machen. Keine angefangenen Packungen (Müesli etc.) in der Küche lassen. Alles muss weg.", "🍽️ Geschirrspüler ausräumen, ausschalten, Tür offen lassen", "🗑️ Kehricht entsorgen (Sack mit grüner Marke)", "♻️ Glas, Papier, Weissblech und Aluminium zur Sammelstelle bringen", "🪟 Alle Fenster schliessen", "💡 Alle Lichter ausschalten", "🌡️ Alle Heizungsregler auf Stufe 5 stellen", "🔐 Schlüssel und Fernbedienung in die Schlüsselbox legen"];   // bei jedem Aufenthalt
 let WAESCHE = [["Duvetbezug", 1], ["Kissenbezug", 1], ["Spannleintuch", 1], ["Frottiertuch gross", 2], ["Frottiertuch klein", 2], ["Küchentuch", 1], ["Waschlappen", 1]];
-const checkListe = (a) => (a && a.sb ? CHECK_SELBST : []).concat(CHECK_ALLE);
+// Wäsche zurückgeben (nur wer die Staffel beginnt und die Wäsche bringt oder sendet): Untermenü mit den Einzelschritten
+const WR_TITEL = "🧺 Duvets und Kissen für die Wäsche vorbereiten";
+const WR_SCHRITTE = ["Auf der Terrasse ausschütteln", "Umstülpen und nochmals ausschütteln", "Reissverschluss zumachen (sonst geht es nicht in die Waschmaschine)", "Zusammenlegen"];
+const wrMit = (a) => (a.waesche === "senden" ? "📮 Wäsche per Post senden, spätestens " : "🚗 Wäsche den Eltern bringen, spätestens ") + WAESCHE_TAGE + " Tage nach der Rückreise";
+const wrListe = (a) => (a && a.sb && (a.waesche === "bringen" || a.waesche === "senden") ? WR_SCHRITTE.concat([wrMit(a)]) : []);
+const checkListe = (a) => (a && a.sb ? CHECK_SELBST : []).concat(wrListe(a), CHECK_ALLE);
 let AUFENT = null;      // lokal gemerkte Anfrage {arr, dep, sb, pers}
 let HAKEN = {};         // Haken je Aufenthalt: { "arr|dep": { Text: true } }
 let BUCH_ABGEL = [];    // von den Eltern abgelehnte Anfragen (nur für die Rückmeldung an das Kind)
@@ -3762,12 +3769,13 @@ function checkZeichnen() {
   const alle = liste.length > 0 && done === liste.length;
   const btn = (i) => '<button type="button" class="chk-item' + (h[i] ? ' erledigt' : '') + '" data-chk="' + liste.indexOf(i) + '" aria-pressed="' + (h[i] ? 'true' : 'false') + '"><span class="box">' + (h[i] ? '✓' : '') + '</span><span>' + esc(i) + '</span></button>';
   const teil = (titel, arr) => arr.length ? '<h3 class="chk-teil">' + titel + '</h3>' + arr.map(btn).join("") : "";
+  const wr = wrListe(a), wrTeil = wr.length ? '<h3 class="chk-teil">🧺 Wäsche zurückgeben</h3><p class="chk-unter">' + WR_TITEL + '</p><div class="chk-einr">' + WR_SCHRITTE.map(btn).join("") + '</div>' + btn(wr[wr.length - 1]) : "";
   document.getElementById("ovCheckIn").innerHTML =
     '<button type="button" class="ov-back" data-ov="ovCheck">← Zurück</button>' +
     '<h2>✅ Reinigungs-Checkliste</h2>' +
     '<p class="chk-stand">' + (a.ok ? "Bestätigt. " : "Noch nicht bestätigt. ") + 'Erledigt am Abreisetag, ' + fmtTagV(a.dep) + '.</p>' +
     (alle ? '<div class="chk-danke">🎉 Danke, du hast all diese Sachen erledigt.</div>' : '<p class="chk-stand">' + done + ' von ' + liste.length + ' erledigt. Tippe jeden Punkt an, wenn er erledigt ist.</p>') +
-    '<div class="chk-liste' + (alle ? ' chk-alle' : '') + '">' + (a.sb ? teil("🧹 Wohnung reinigen", CHECK_SELBST) : "") + teil("🚪 Vor dem Gehen", CHECK_ALLE) + '</div>' + ovWeg(a);
+    '<div class="chk-liste' + (alle ? ' chk-alle' : '') + '">' + (a.sb ? teil("🧹 Wohnung reinigen", CHECK_SELBST) : "") + wrTeil + teil("🚪 Vor dem Gehen", CHECK_ALLE) + '</div>' + ovWeg(a);
 }
 // Aufgeklapptes Thema der Anleitung: Überschrift an den oberen Rand
 document.addEventListener("toggle", (e) => {
