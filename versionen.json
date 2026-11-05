@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.100.5.3",
+      "datum": "2026-11-05",
+      "titel": "Beispiel mit 5 Freunden in «So sparst du Geld»",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Text: «So sparst du Geld» zeigt ein Beispiel: Mit 5 Freunden zahlt jeder Freund 5 Nächte für CHF 390 und 4 Nächte für CHF 320 inklusive Reinigung, du bist kostenlos dabei. Die Beträge kommen live aus der Rechnung."
+      ]
+    },
+    {
       "v": "2.100.5.2",
       "datum": "2026-11-05",
       "titel": "Details-Knopf grösser, rechts unter dem Preis",
