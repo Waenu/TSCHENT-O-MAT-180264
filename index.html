@@ -301,6 +301,10 @@
   .cal-wd { font-size: var(--t-small); color: var(--muted); text-align: center; padding: 2px 0; font-weight: 700; }
   .cal-d { font: inherit; color: var(--fg); min-height: 56px; padding: 3px 0 0; border: 1px solid var(--line); border-radius: 6px; background: transparent; cursor: pointer; font-variant-numeric: tabular-nums; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; line-height: 1.1; }
   .cal-d { position: relative; }
+  .cal-clr { font: inherit; color: var(--fg); min-height: 56px; padding: 0; border: 2px solid var(--fg); border-radius: 6px; background: transparent; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+  .cal-clr span { font-size: 1.15rem; line-height: 1; font-weight: 700; }
+  .cal-clr small { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.03em; }
+  .cal-clr-platz { min-height: 56px; }
   .cal-d .pin { position: absolute; top: 1px; right: 1px; font-style: normal; font-size: 0.85rem; line-height: 1; pointer-events: none; }
   .cal-d > span { font-size: 0.82rem; }
   .cal-d small { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.03em; }
@@ -1235,7 +1239,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.103.3.5";
+let VERSION = "2.104.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1823,7 +1827,8 @@ function initKalenderMonat() { const n = heuteDate(); calY = n.getFullYear(); ca
 
 function kalenderKlick(k) {
   if (GFORM && GFORM.mode) { gastTagWahl(k); return; }
-  if (!ARR || (ARR && DEP)) { if (kannAnreise(k)) { ARR = k; DEP = ""; } }
+  if (k === "") { ARR = ""; DEP = ""; }   // Knopf «löschen» unter dem Kalender: Anreise und Abreise abwählen
+  else if (!ARR || (ARR && DEP)) { if (kannAnreise(k)) { ARR = k; DEP = ""; } }
   else if (k === ARR) { ARR = ""; }
   else if (kannAbreise(k)) { DEP = k; }
   else if (kannAnreise(k)) { ARR = k; DEP = ""; }
@@ -2582,6 +2587,17 @@ function monatBauen(g, calY, calM) {
   };
   for (let i = 0; i < lead; i++) g.appendChild(document.createElement("div"));
   for (let d = 1; d <= tage; d++) g.appendChild(zelleBauen(dkey(calY, calM, d), d));
+  if (!(GFORM && GFORM.mode)) {   // «löschen»: immer in der Sonntag-Spalte der letzten Zeile (ist sie voll, in einer eigenen Zeile darunter); ohne Auswahl bleibt der Platz leer, damit der Kalender nicht springt
+    const rest = (lead + tage) % 7;
+    for (let i = 0; i < (rest === 0 ? 6 : 6 - rest); i++) g.appendChild(document.createElement("div"));
+    if (ARR || DEP) {
+      const c = document.createElement("button");
+      c.type = "button"; c.className = "cal-clr"; c.innerHTML = '<span aria-hidden="true">✕</span><small>löschen</small>';
+      c.setAttribute("aria-label", "Auswahl löschen: Anreise und Abreise abwählen");
+      c.addEventListener("click", () => { kalenderKlick(""); if (window._monatWechsel) window._monatWechsel(); });
+      g.appendChild(c);
+    } else { const pl = document.createElement("div"); pl.className = "cal-clr-platz"; g.appendChild(pl); }
+  }
 }
 
 // Einstieg zum Kalender: grosser Titel nach Jahreszeit, kleine Werbezeile nach Lage (eine buchbare Lücke geht vor, in der Staffel-Zeit ein Sparhinweis)
