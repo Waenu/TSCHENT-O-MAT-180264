@@ -2,6 +2,19 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.101.1.0",
+      "datum": "2026-11-05",
+      "titel": "Film «Lücken»: zwei Lücken im Vergleich und Storno",
+      "arten": [
+        "Layout",
+        "Text"
+      ],
+      "punkte": [
+        "Layout: Der Film «Lücken» hat jetzt 7 Szenen. Neu: «Zwei Lücken, ein Unterschied» (kurze Lücke sofort gelb, Lücke mit 4 Nächten gesperrt, abwechselnd ein- und ausgeblendet), «Heute rückt vor» und «Wenn ein Gast storniert» (der Termin der Familie bleibt, das Risiko tragen die Eltern).",
+        "Text: Im Glossar bei «Lücken» steht, dass kurze Lücken lange im Voraus buchbar sind und wer bei einem Storno das Risiko trägt."
+      ]
+    },
+    {
       "v": "2.101.0.0",
       "datum": "2026-11-05",
       "titel": "Wäsche zurückgeben: Untermenü in der Reinigungs-Checkliste",

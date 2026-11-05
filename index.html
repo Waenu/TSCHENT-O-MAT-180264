@@ -1024,6 +1024,7 @@
   .fv-grid .cal-wd { padding: 0; font-size: .75rem; }
   .fv-grid .bk { transition: left .9s ease, width .9s ease; }
   .fv-grid .bk.aus { display: none; }
+  .fv-grid .cal-d.blink { outline: 3px solid #F2C230; outline-offset: -3px; }
   .fv-cap { margin: 10px 0 4px; padding: 10px 12px; border: 2px solid var(--accent); border-radius: 6px; background: var(--surface); min-height: 168px; }
   .fv-szene { font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
   .fv-titel { font-size: 1.1rem; font-weight: 700; margin: 2px 0 4px; }
@@ -1227,7 +1228,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.101.0.0";
+let VERSION = "2.101.1.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2041,7 +2042,7 @@ function begriffeFuellen() {
   })();
   set("bc-prov", "<p>" + filmGlossar() + "</p><p><b>Mit Vorbehalt</b> heisst: Der Termin ist in Airbnb nicht gesperrt. Meldet sich ein Airbnb-Gast für dieselben Tage, hat er Vorrang und ihr weicht.</p><p>Habt ihr noch nicht begonnen, fällt nichts an. Seid ihr schon im Chalet, bleibt ihr bis zum Anreisetag des Gastes und seid um " + ZEIT_AB + " draussen. Ihr zahlt die normalen Kosten für die Tage, die ihr dort wart, und die Reinigung. Plant deshalb eine Alternative ein.</p><p><b>Gesichert:</b> Ein Airbnb-Gast braucht " + VORLAUF + " Tage Vorlauf. Der Teil bis dahin ist gesichert (Balken voll), der Rest noch offen (gestrichelt). Der volle Teil wächst jeden Tag.</p>" + festUndVorbehaltTxt() + bildVorbehalt());
   set("bc-sicht", "<p>" + filmGlossar("luecke") + "</p><p><b>Lücke durch die Vorlaufzeit 🔔</b> Airbnb kann diese Nächte nicht mehr verkaufen: Ein Gast braucht " + VORLAUF + " Tage Vorlauf, bleibt mindestens " + AIRBNB_MIN + " Nächte, und sonntags gibt es keinen Check-in. Darum steht diese Zeit euch offen: zum normalen Familienpreis, <b>ohne Vorbehalt</b>, auch in der Hochsaison. Mindestens " + Math.max(P.minNaechte, P.sichtMinNaechte) + " Nächte" + (P.hochMinNaechte > Math.max(P.minNaechte, P.sichtMinNaechte) ? ", in der Hochsaison mindestens " + P.hochMinNaechte : "") + ".</p><p>Im Kalender ist diese Zeit <b>gelb</b> und wandert täglich mit: Mit jedem Tag kann Airbnb weniger verkaufen, es kommen Nächte dazu, die vergangenen fallen weg. Das gilt auch bei nur 2 oder 3 Nächten, solange Airbnb dahinter noch verkaufen kann.</p>");
-  set("bc-luecke", "<p>" + filmGlossar("luecke") + "</p><p><b>Lücken 🧩</b> Eine Lücke ist freie Zeit zwischen zwei Airbnb-Gästen von höchstens " + LUECKE_MAX + " Nächten. Ihr bucht sie zum normalen Familienpreis, <b>fest und ohne Vorbehalt</b>: ganz oder teilweise, ab " + P.minNaechte + " Nächten, an jedem Tag der Lücke. Auch <b>Freunde</b> sind willkommen, bis " + P.maxPersonen + " Personen, alle Zimmer. Die Eltern reinigen und stellen die Wäsche, ihr bringt keine mit und reinigt nicht selber.</p><p><b>Wann buchbar:</b> Bis " + (AIRBNB_MIN - 1) + " Nächte sofort, Airbnb kann sie nie verkaufen. " + AIRBNB_MIN + " Nächte sind <b>gesperrt</b>, solange der Vorlauf (" + VORLAUF + " Tage) es Airbnb erlaubt, danach gelb und buchbar. Das Datum steht in der Info-Box. In der Staffel-Zeit ist sie sofort buchbar. Längere freie Zeit bleibt normal buchbar.</p><p><b>Sonntag:</b> Endet ein Gast am Samstag, kann Airbnb den Sonntag nicht vergeben. Ihr reist schon am Sonntag an, die Lücke hat eine Nacht mehr.</p><p><b>Später entstandene Lücke:</b> Auch Zeit, die erst durch den Vorlauf und den Mindestaufenthalt von Airbnb übrig bleibt, wird zur Lücke, sobald höchstens " + LUECKE_MAX + " Nächte bleiben (siehe «Lücke durch die Vorlaufzeit» " + symBtn("b-sicht", "🔔") + "). Es gelten dieselben Regeln und derselbe Preis.</p>" + (P.lueckeGastNacht > 0 ? "<p><b>Freunde in der Lücke:</b> Ohne Freunde buchst du die Lücke wie bisher. Mit Freunden müssen die Übernachtungen (ohne Endreinigung) pro Nacht mindestens " + chf(P.lueckeGastNacht) + " erreichen, also " + chf(lueckeMin(2)) + " bei 2 Nächten, " + chf(lueckeMin(3)) + " bei 3 und " + chf(lueckeMin(4)) + " bei 4 Nächten. Ein Freund zahlt " + chf(P.gast) + " pro Nacht, die Familie " + chf(P.famPausch) + ". Zu wenige Freunde sind deshalb nicht wählbar: Es braucht meist mindestens 2. Bringen die Freunde mehr, sinkt der Anteil der Familie bis auf 0, das Total aber nie unter dem Mindestbetrag plus Endreinigung (" + chf(P.reinigung) + "), bei 2 Nächten also " + chf(lueckeMin(2) + P.reinigung) + ". Das gilt nur, wenn der ganze Aufenthalt in der Lücke liegt.</p>" + lueckenBeispiel() : ""));
+  set("bc-luecke", "<p>" + filmGlossar("luecke") + "</p><p><b>Lücken 🧩</b> Eine Lücke ist freie Zeit zwischen zwei Airbnb-Gästen von höchstens " + LUECKE_MAX + " Nächten. Ihr bucht sie zum normalen Familienpreis, <b>fest und ohne Vorbehalt</b>: ganz oder teilweise, ab " + P.minNaechte + " Nächten, an jedem Tag der Lücke. Auch <b>Freunde</b> sind willkommen, bis " + P.maxPersonen + " Personen, alle Zimmer. Die Eltern reinigen und stellen die Wäsche, ihr bringt keine mit und reinigt nicht selber.</p><p><b>Wann buchbar:</b> Bis " + (AIRBNB_MIN - 1) + " Nächte sofort, Airbnb kann sie nie verkaufen. " + AIRBNB_MIN + " Nächte sind <b>gesperrt</b>, solange der Vorlauf (" + VORLAUF + " Tage) es Airbnb erlaubt, danach gelb und buchbar. Das Datum steht in der Info-Box. In der Staffel-Zeit ist sie sofort buchbar. Längere freie Zeit bleibt normal buchbar. Lücken bis " + (AIRBNB_MIN - 1) + " Nächte könnt ihr schon lange im Voraus buchen. Storniert ein Airbnb-Gast, bleibt euer Termin. Das Risiko tragen die Eltern.</p><p><b>Sonntag:</b> Endet ein Gast am Samstag, kann Airbnb den Sonntag nicht vergeben. Ihr reist schon am Sonntag an, die Lücke hat eine Nacht mehr.</p><p><b>Später entstandene Lücke:</b> Auch Zeit, die erst durch den Vorlauf und den Mindestaufenthalt von Airbnb übrig bleibt, wird zur Lücke, sobald höchstens " + LUECKE_MAX + " Nächte bleiben (siehe «Lücke durch die Vorlaufzeit» " + symBtn("b-sicht", "🔔") + "). Es gelten dieselben Regeln und derselbe Preis.</p>" + (P.lueckeGastNacht > 0 ? "<p><b>Freunde in der Lücke:</b> Ohne Freunde buchst du die Lücke wie bisher. Mit Freunden müssen die Übernachtungen (ohne Endreinigung) pro Nacht mindestens " + chf(P.lueckeGastNacht) + " erreichen, also " + chf(lueckeMin(2)) + " bei 2 Nächten, " + chf(lueckeMin(3)) + " bei 3 und " + chf(lueckeMin(4)) + " bei 4 Nächten. Ein Freund zahlt " + chf(P.gast) + " pro Nacht, die Familie " + chf(P.famPausch) + ". Zu wenige Freunde sind deshalb nicht wählbar: Es braucht meist mindestens 2. Bringen die Freunde mehr, sinkt der Anteil der Familie bis auf 0, das Total aber nie unter dem Mindestbetrag plus Endreinigung (" + chf(P.reinigung) + "), bei 2 Nächten also " + chf(lueckeMin(2) + P.reinigung) + ". Das gilt nur, wenn der ganze Aufenthalt in der Lücke liegt.</p>" + lueckenBeispiel() : ""));
   document.getElementById("stRechnung").innerHTML = "<b>Endreinigung bei der Staffel:</b> Sie fällt an, sobald die Staffel endet. Die Eltern stellen nur eine Rechnung, getrennt vom Aufenthalt, an die letzte Reisegruppe. War sie allein in der Staffel, sind es die vollen " + chf(P.reinigung) + ". Waren mehrere Reisegruppen in der Staffel, bezahlt die letzte zuerst alles und holt sich die Anteile der anderen zurück, anteilig nach Reisegruppe. Das Eintreiben des Geldes regeln die Reisegruppen untereinander. " + symBtn("b-endrein", "🪣");
   { const bs = document.getElementById("bc-staffel"); if (!bs.querySelector(".filmik")) bs.insertAdjacentHTML("afterbegin", "<p>" + filmGlossar("staffel") + "</p>"); }   // nur einmal, sonst stapeln sich die Knöpfe bei jedem Neuaufbau
   set("bc-ruhe", RUHE.length ? "<p>" + filmGlossar("staffel") + "</p>" + bildRuhe() + "<ul><li>Möglich " + ruhe + ".</li>" +
@@ -3574,7 +3575,7 @@ function filmVorbehalt() {
   requestAnimationFrame(tick);
 }
 function filmLuecke() {
-  const run = ++FILM_RUN, ziel = document.getElementById("ovFilmIn"), TOTAL = 46000;
+  const run = ++FILM_RUN, ziel = document.getElementById("ovFilmIn"), TOTAL = 53000;
   ziel.innerHTML = '<div class="cal-grid fv-grid" id="fvGrid"></div>' +
     '<div class="fv-cap" aria-live="polite"><div class="fv-szene" id="fvSzene"></div><div class="fv-titel" id="fvTitel"></div><p class="fv-text" id="fvText"></p></div>' +
     '<div class="fv-fuss"><input type="range" class="fv-seek" id="fvSeek" min="0" max="' + TOTAL + '" step="50" value="0" aria-label="Zeitleiste: mit dem Finger ziehen zum Zurück- oder Vorspulen"><div class="fv-ctl"><button type="button" class="ov-back" id="fvPause">Pause</button><button type="button" class="ov-back" id="fvNochmal">Nochmal</button><button type="button" class="ov-back" data-ov="ovFilm">← Zurück</button></div></div>';
@@ -3600,34 +3601,42 @@ function filmLuecke() {
   let S = {};
   const draw = () => {
     dyn.forEach((e) => e.remove()); dyn.length = 0;
-    bar(S.A[0], S.A[1], "air", BNB(), nm("Airbnb-Gast"));
-    bar(S.B[0], S.B[1], "air", BNB(), nm("Airbnb-Gast"));
+    S.air.forEach((a) => bar(a[0], a[1], "air", BNB(), nm("Airbnb-Gast")));
     if (S.fam) { bar(S.fam[0], S.fam[1], "gruen", FAM(), nm("Miriam")); rkAt(S.fam[1]); }
     for (let n = 1; n <= 31; n++) {
-      const istA = n >= S.A[0] && n < S.A[1], istB = n >= S.B[0] && n < S.B[1], inGap = n >= S.gap[0] && n < S.gap[1];
-      cells[n].className = "cal-d hoch" + (n < S.heute ? " past" : "") + (n === S.heute ? " today" : "") + (istA || istB ? " occ" : inGap && !S.fam ? (S.sperr ? " occ" : " gap") : "");
+      const occ = S.air.some((a) => n >= a[0] && n < a[1]), gp = S.gaps.find((g) => n >= g.a && n < g.b);
+      const famGap = !!(gp && S.fam && S.fam[0] < gp.b && S.fam[1] > gp.a);
+      cells[n].className = "cal-d hoch" + (n < S.heute ? " past" : "") + (n === S.heute ? " today" : "") + (occ ? " occ" : gp && !famGap && !gp.hide ? (gp.sperr ? " occ" : " gap") : "") + (S.blink && n >= S.blink[0] && n < S.blink[1] ? " blink" : "");
     }
     document.getElementById("fvHeute").innerHTML = "Heute<br>" + S.heute + ". Juli 2027";
   };
+  const G2 = G0 + N + 7, V2 = G2 + 1 - VORLAUF;   // zweite Lücke (LUECKE_MAX Nächte) und der Tag, ab dem sie für Airbnb nicht mehr buchbar ist
   const TXT = [
-    ["Szene 1 von 6", "Eine Lücke", "Zwischen zwei Airbnb-Gästen bleiben " + N + " freie Nächte (<b>12. bis " + (G0 + N) + ". Juli</b>). Das ist eine <b>Lücke</b> 🧩. Airbnb kann sie nicht verkaufen: Ein Gast bleibt mindestens " + AIRBNB_MIN + " Nächte. Darum gehört sie euch."],
-    ["Szene 2 von 6", "Ihr bucht die ganze Lücke", "Miriam bucht alle " + N + " Nächte. Normaler Familienpreis, <b>fest und ohne Vorbehalt</b>: Der Balken ist <b>dunkelgrau voll</b>. Die Eltern reinigen (<b>rotes Kästchen</b>) und stellen die Wäsche."],
-    ["Szene 3 von 6", "Oder nur einen Teil", "Ihr müsst nicht die ganze Lücke nehmen. Miriam bucht nur die letzten " + MINN + " Nächte, mindestens " + MINN + " Nächte müssen es sein. Die Anreise ist an jedem Tag der Lücke möglich."],
-    ["Szene 4 von 6", "Eine Lücke von " + LUECKE_MAX + " Nächten: noch gesperrt", "Hier sind es " + LUECKE_MAX + " freie Nächte. Das ist der Mindestaufenthalt: Airbnb kann sie noch verkaufen, solange der Vorlauf (" + VORLAUF + " Tage) es erlaubt. Bis dahin ist die Lücke <b>gesperrt</b>."],
-    ["Szene 5 von 6", "Der Vorlauf ist vorbei", "Heute ist der " + (13 - VORLAUF) + ". Juli. Ein Airbnb-Gast braucht " + VORLAUF + " Tage Vorlauf und könnte nicht mehr am 12. anreisen. Die Lücke ist jetzt <b>gelb</b> und für euch buchbar. Lücken bis " + (AIRBNB_MIN - 1) + " Nächte sind immer sofort buchbar."],
-    ["Szene 6 von 6", "Sonntag: eine Nacht mehr", "Airbnb hat sonntags keinen Check-in. Der Gast reist am Sonntag 18. ab, der nächste kommt am Donnerstag 22. Airbnb kann den Sonntag nicht vergeben, für euch ist er frei: Ihr könnt <b>schon am Sonntag</b> anreisen. Die Lücke hat eine Nacht mehr."]
+    ["Szene 1 von 7", "Eine Lücke", "Zwischen zwei Airbnb-Gästen bleiben " + N + " freie Nächte (<b>12. bis " + (G0 + N) + ". Juli</b>). Das ist eine <b>Lücke</b> 🧩. Airbnb kann sie nicht verkaufen: Ein Gast bleibt mindestens " + AIRBNB_MIN + " Nächte. Darum gehört sie euch."],
+    ["Szene 2 von 7", "Ihr bucht die ganze Lücke", "Miriam bucht alle " + N + " Nächte. Normaler Familienpreis, <b>fest und ohne Vorbehalt</b>: Der Balken ist <b>dunkelgrau voll</b>. Die Eltern reinigen (<b>rotes Kästchen</b>) und stellen die Wäsche."],
+    ["Szene 3 von 7", "Oder nur einen Teil", "Ihr müsst nicht die ganze Lücke nehmen. Miriam bucht nur die letzten " + MINN + " Nächte, mindestens " + MINN + " Nächte müssen es sein. Die Anreise ist an jedem Tag der Lücke möglich."],
+    ["Szene 4 von 7", "Zwei Lücken, ein Unterschied", "Oben eine Lücke mit " + N + " freien Nächten, unten eine mit " + LUECKE_MAX + ". Lücken bis " + N + " Nächte sind <b>sofort buchbar</b>, auch Monate im Voraus (gelb). Die Lücke mit " + LUECKE_MAX + " Nächten bleibt <b>gesperrt</b>, solange Airbnb sie noch verkaufen kann."],
+    ["Szene 5 von 7", "Heute rückt vor", "Die kurze Lücke bleibt die ganze Zeit gelb. Die andere wird erst gelb, wenn der Vorlauf (" + VORLAUF + " Tage) vorbei ist: Ein Airbnb-Gast könnte dann nicht mehr am " + G2 + ". anreisen. Ab dann ist auch sie für euch buchbar."],
+    ["Szene 6 von 7", "Wenn ein Gast storniert", "Miriam hat die kurze Lücke fest gebucht. Storniert der Airbnb-Gast danach, bleibt Miriams Termin bestehen. Das Risiko tragen die Eltern: Die frei gewordenen Nächte hätte Airbnb vielleicht verkauft."],
+    ["Szene 7 von 7", "Sonntag: eine Nacht mehr", "Airbnb hat sonntags keinen Check-in. Der Gast reist am Sonntag 18. ab, der nächste kommt am Donnerstag 22. Airbnb kann den Sonntag nicht vergeben, für euch ist er frei: Ihr könnt <b>schon am Sonntag</b> anreisen. Die Lücke hat eine Nacht mehr."]
   ];
   const szene = (i) => { const t = TXT[i]; document.getElementById("fvSzene").textContent = t[0]; document.getElementById("fvTitel").textContent = t[1]; document.getElementById("fvText").innerHTML = t[2]; };
   const step = (patch) => { Object.assign(S, patch); draw(); };
-  const BASIS = () => ({ heute: 3, A: [8, G0], B: [G0 + N, G0 + N + 4], gap: [G0, G0 + N], fam: null, sperr: false });
+  const E = G0 + N;   // Ende der kurzen Lücke
+  const BASIS = () => ({ heute: 3, air: [[8, G0], [E, E + 4]], gaps: [{ a: G0, b: E }], fam: null, blink: null });
+  const ZWEI = (h, sp) => ({ heute: h, air: [[8, G0], [E, G2], [G2 + LUECKE_MAX, G2 + LUECKE_MAX + 4]], gaps: [{ a: G0, b: E }, { a: G2, b: G2 + LUECKE_MAX, sperr: sp }], fam: null, blink: null });
+  const gapB = (patch) => { Object.assign(S.gaps[1], patch); draw(); };
   const EV = [
     [0, () => { S = BASIS(); szene(0); draw(); }],
-    [7000, () => { szene(1); step({ fam: [G0, G0 + N] }); }],
-    [15000, () => { szene(2); step({ fam: [G0 + N - MINN, G0 + N] }); }],
-    [23000, () => { szene(3); S = { heute: 5, A: [8, G0], B: [G0 + LUECKE_MAX, G0 + LUECKE_MAX + 4], gap: [G0, G0 + LUECKE_MAX], fam: null, sperr: true }; draw(); }],
-    [25000, () => step({ heute: 7 })], [26500, () => step({ heute: 8 })], [28000, () => step({ heute: 9 })],
-    [29500, () => { szene(4); step({ heute: 13 - VORLAUF, sperr: false }); }],
-    [37000, () => { szene(5); S = { heute: 3, A: [14, 18], B: [22, 26], gap: [18, 22], fam: null, sperr: false }; draw(); }],
+    [7000, () => { szene(1); step({ fam: [G0, E] }); }],
+    [15000, () => { szene(2); step({ fam: [E - MINN, E] }); }],
+    [23000, () => { szene(3); S = ZWEI(1, true); draw(); }],
+    [25500, () => gapB({ hide: true })], [26500, () => gapB({ hide: false })], [27500, () => gapB({ hide: true })], [28500, () => gapB({ hide: false })],
+    [31000, () => { szene(4); step({ heute: 8 }); }],
+    [33000, () => step({ heute: 14 })], [35000, () => step({ heute: 18 })], [37000, () => { step({ heute: V2 }); gapB({ sperr: false }); }],
+    [41000, () => { szene(5); S = BASIS(); S.fam = [G0, E]; draw(); }],
+    [44000, () => step({ air: [[8, G0]], blink: [E, E + 4] })], [45500, () => step({ blink: null })], [46500, () => step({ blink: [E, E + 4] })],
+    [49000, () => { szene(6); S = { heute: 3, air: [[14, 18], [22, 26]], gaps: [{ a: 18, b: 22 }], fam: null, blink: null }; draw(); }],
     [TOTAL, () => {}]
   ];
   const seek = document.getElementById("fvSeek"), pb = document.getElementById("fvPause");
