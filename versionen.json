@@ -2,6 +2,18 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.104.1.0",
+      "datum": "2026-11-05",
+      "titel": "Löschen-Feld in eigener Zeile",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Layout: Das Feld «✕ löschen» steht immer in einer eigenen Zeile unter dem letzten Tag, rechts aussen und zwei Spalten breit. Es liegt damit nie unter einem Buchungsbalken, der in den nächsten Monat läuft, und der Text wird nicht mehr abgeschnitten.",
+        "Layout: Ohne Auswahl bleibt keine leere Zeile mehr unter dem Kalender."
+      ]
+    },
+    {
       "v": "2.104.0.0",
       "datum": "2026-11-05",
       "titel": "Auswahl löschen im Kalender",
