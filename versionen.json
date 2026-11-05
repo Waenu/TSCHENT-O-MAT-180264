@@ -2,6 +2,21 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.97.7.0",
+      "datum": "2026-11-05",
+      "titel": "Glossar nach Themen geordnet, «Eltern» statt «Eltern/Schwiegereltern»",
+      "arten": [
+        "Layout",
+        "Text"
+      ],
+      "punkte": [
+        "Layout: Das Glossar ist nach Themen geordnet (Bedienung, Wer und wo, Termin-Arten, Reinigung, Geld), mit kleinen Überschriften.",
+        "Text: «Wunschtermin» ist im Eintrag «Kalender und Wunschtermin» aufgegangen. Der Kalender erwähnt das Wischen durch die Monate.",
+        "Text: Überall steht jetzt «Eltern» statt «Eltern/Schwiegereltern». In der Benutzung steht, warum.",
+        "Text: Bei «Auswahlfelder» ist der Satz zu den Terminen ohne Auswahl klarer, bei «Familie» fehlt «je zuerst genannt»."
+      ]
+    },
+    {
       "v": "2.97.6.0",
       "datum": "2026-11-05",
       "titel": "Glossar «Termin mit Vorbehalt» gestrafft, Film-Knöpfe immer sichtbar",
