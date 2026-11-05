@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.100.3.2",
+      "datum": "2026-11-05",
+      "titel": "Fehler: Film-Knopf bei der Familienstaffel mehrfach",
+      "arten": [
+        "Fehler"
+      ],
+      "punkte": [
+        "Fehler: Im Glossar «Familienstaffel» stapelten sich die Film-Knöpfe 🎬 bei jedem Neuaufbau der Seite. Jetzt steht dort nur noch einer."
+      ]
+    },
+    {
       "v": "2.100.3.1",
       "datum": "2026-11-05",
       "titel": "Kalender-Info: Verwaltungs-Knopf entfernt",
