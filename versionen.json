@@ -2,6 +2,19 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.99.1.0",
+      "datum": "2026-11-05",
+      "titel": "Staffel-Film überarbeitet",
+      "arten": [
+        "Layout",
+        "Text"
+      ],
+      "punkte": [
+        "Layout: Im Staffel-Film haben die roten Kästchen mehr Platz (halbe Tagesbreite), die Balken enden davor.",
+        "Text: Das Kästchen von Jerome erscheint sofort bei der Buchung. Danach schliesst zuerst Manuel an, dann Miriam in der Lücke dazwischen, jeweils mit der passenden Reinigung. Der Film hat jetzt 7 Szenen."
+      ]
+    },
+    {
       "v": "2.99.0.0",
       "datum": "2026-11-05",
       "titel": "Kurzfilm Familienstaffel, Icons im Balken",
