@@ -2,6 +2,21 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.105.0.0",
+      "datum": "2026-11-05",
+      "titel": "Eine Termin-Box statt vieler Hinweis-Kästen",
+      "arten": [
+        "Neu"
+      ],
+      "punkte": [
+        "Neu: Sobald Anreise und Abreise gewählt sind, erscheint direkt unter dem Kalender eine einzige Termin-Box mit kurzen Sätzen und Glossar-Symbolen. Die vier Kästen weiter unten (Spitzenzeit, Staffel/Normal, Lücke, Sammelbox) fallen weg.",
+        "Neu: Warnungen (⚠️, oranger Rahmen) stehen immer. Erklärungen erscheinen nur bei eingeschalteter Hilfe «?».",
+        "Neu: Glossar-Eintrag «Spitzenzeit».",
+        "Text: Die drei Meldungen «Skisaison», «Nebensaison» und «Verbindlich» sind zu «Fest gebucht» zusammengefasst, die Meldung «Lücke ohne Rabatt» entfällt (Rabatt steht auf 0).",
+        "Neu: Bei einem normalen Termin in der Staffel-Zeit erscheint eine kurze Zeile zur Staffel (ohne Freunde selbst reinigen, mit Freunden reinigen die Eltern)."
+      ]
+    },
+    {
       "v": "2.104.3.0",
       "datum": "2026-11-05",
       "titel": "Löschen-Feld liegend, zwei Tagesfelder breit",
