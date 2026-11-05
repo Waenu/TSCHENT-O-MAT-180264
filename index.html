@@ -1215,7 +1215,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.100.2.1";
+let VERSION = "2.100.3.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -4611,6 +4611,19 @@ async function endeInfoVermerken(key) {
   } catch (err) { bestFehler = "Der Vermerk «Staffel-Ende-Info gegeben» konnte nicht gespeichert werden: " + (err && err.message ? err.message : "Fehler"); }
   bestZeigen();
 }
+function aufgabenVon(x) {   // offene Aufgaben zu einem Aufenthalt, kurz (gleiche Fälle wie die Karte in der Verwaltung)
+  const out = [], h = heuteKey(), prov = !!x.prov;
+  if (provKonflikt(x)) out.push("Konflikt mit Airbnb-Gast: Kind informieren");
+  if (!prov && nichtGesperrt(x)) out.push("in Airbnb sperren");
+  if (!prov && abreiseGesperrt(x)) out.push("Abreisetag in Airbnb entsperren");
+  if (prov && !hochVorbehalt(x) && !provSicher(x) && !provKonflikt(x)) out.push("Vorbehalt: in Airbnb sperren, sobald sicher");
+  if (!x.bescheid) out.push("Bescheid geben");
+  if (x.sb && x.waesche && !istStaffelStart(x.arr, x) && !x.waescheInfo) out.push("Wäsche-Info senden");
+  if (alarmListe().some((a) => a.typ === "ende" && a.x === x)) out.push("Staffel-Ende-Info senden");
+  if (x.dep < h && zahlOffen(x)) out.push("Zahlung offen");
+  if (x.dep < h && (x.waesche === "bringen" || x.waesche === "senden") && !x.waescheZurueck) out.push("Wäsche zurück quittieren");
+  return out;
+}
 function waescheInfoText(x) { return "Hoi " + x.name + ", für deinen Aufenthalt vom " + fmtTagV(x.arr) + " bis " + fmtTagV(x.dep) + " hat sich etwas geändert: Vor dir beginnt jetzt eine andere Familie die Staffel. Du bringst deshalb eigene Bettwäsche, Handtücher und Küchentücher mit, siehe «Anreise-Wäsche» im TSCHENT-O-MAT. Die benutzte Wäsche musst du nicht zurückbringen. Das Chalet reinigst du am Schluss selbst."; }
 async function erinnertVermerken(key) {
   const jetzt = jetztStr();
@@ -5166,7 +5179,6 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
       const kurz = b.betrag > 0 ? esc(chf(b.betrag).replace(" ", "\u00a0")) + ", " + (b.prov ? "fällig mit der Sicherung" : bez ? "bezahlt am " + esc(fmtTag(b.bezahlt.slice(0, 10))) : "noch offen") : "Preisberechnung";
       h += zeile("rech", "🧾", bez ? "Quittung" : "Rechnung", kurz, false) + '<div class="ipan" data-ipan="rech" hidden>' + rechnungHtml(b.rechnung, b.bestaetigt) + "</div>";
     }
-    if (papi && stay.some((x) => x.prov && provKonflikt(x))) h += '<button type="button" class="btn main" data-vw="' + esc(bKey(b)) + '">👁️ Zum Termin in der Verwaltung</button>';   // Sicherheit steht jetzt in der Symbolzeile
     if (zh.length) {
       const it = zh.map(hinItem);
       h += zeile("hin", "ℹ️", "Hinweise", it.slice(0, 2).map((x) => esc(x.ti)).join(", "), false) + '<div class="ipan ar-list" data-ipan="hin" hidden>' + it.map((x) => x.html).join("") + "</div>";
@@ -5178,9 +5190,9 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
       const mn = MONATE[Number(ym.slice(5, 7)) - 1];
       einn = zeile("einn", "💰", "Einnahmen", kurzChf(b.betrag) + ", zählt im " + esc(mn), false) + '<div class="ipan" data-ipan="einn" hidden><p>Diese Buchung: <b>' + esc(kurzChf(b.betrag)) + "</b></p><p>" + esc(mn) + " " + jj + " (Familie): <b>" + esc(kurzChf(mon)) + "</b></p><p>Seit Jahresanfang bis heute: <b>" + esc(kurzChf(jahrBis)) + "</b><br>Gebucht für " + jj + ": <b>" + esc(kurzChf(jahrAll)) + '</b></p><p class="hint">' + (EINN_STATUS === "ok" ? "Familie aus den Buchungen, Ext. aus dem privaten Speicher. Ein Betrag zählt im Monat der Anreise." : "Nur Familie. Die Beträge der Ext.-Gäste fehlen noch (privater Speicher nicht eingerichtet oder nicht geladen).") + "</p>" + extZeilen(ym, jj, heute) + "</div>";
     }
-    const ngP = papi && !stay.some((x) => x.prov && provKonflikt(x)) && stay.some(nichtGesperrt);   // nur für Papi: bestätigt, aber in Airbnb noch nicht gesperrt
-    const sperrZ = !ngP ? "" : zeile("sperr", "📌", "Aufgabe: in Airbnb sperren", "noch offen", true) + '<div class="ipan" data-ipan="sperr" hidden><p>📌 <b>Aufgabe für dich:</b> Der Termin ist bestätigt und dem Kind zugesagt, Airbnb zeigt die Tage aber noch als frei. Bitte sperren, sonst kann ein Airbnb-Gast sie noch buchen. Die Airbnb-Daten kommen mit Verzögerung: Kurz nach dem Sperren kann dieser Hinweis noch stehen.</p><button type="button" class="btn main" data-vw="' + esc(bKey(b)) + '">👁️ Zum Termin in der Verwaltung</button></div>';
-    if (seher) h += '<div class="ar-nur">🔐 ' + (papi ? "Nur für dich" : "Nur für Eltern") + '</div>' + sperrZ + einn + (!papi ? "" : '<button type="button" class="ar" data-vw="' + esc(bKey(b)) + '"><span class="ar-i">👁️</span><span class="ar-t">Verwaltung<small>Buchung bearbeiten</small></span><span class="ar-c go" aria-hidden="true"></span></button>');
+    const aufg = papi ? [].concat.apply([], stay.map(aufgabenVon)) : [];   // nur für Papi: was bei diesem Aufenthalt noch zu tun ist
+    const sperrZ = !aufg.length ? "" : zeile("aufg", "📌", "Aufgaben offen", aufg.map((t) => "– " + esc(t)).join("<br>"), true) + '<div class="ipan" data-ipan="aufg" hidden><p>📌 <b>Aufgaben für dich:</b></p><ul>' + aufg.map((t) => "<li>" + esc(t) + "</li>").join("") + '</ul><p class="hint">Alles Weitere erledigst du in der Verwaltung. Airbnb-Daten kommen mit Verzögerung: Kurz nach dem Sperren kann «in Airbnb sperren» noch stehen.</p><button type="button" class="btn main" data-vw="' + esc(bKey(b)) + '">👁️ Zum Termin in der Verwaltung</button></div>';
+    if (seher) h += '<div class="ar-nur">🔐 ' + (papi ? "Nur für dich" : "Nur für Eltern") + '</div>' + sperrZ + einn + (!papi || aufg.length ? "" : '<button type="button" class="ar" data-vw="' + esc(bKey(b)) + '"><span class="ar-i">👁️</span><span class="ar-t">Verwaltung<small>Buchung bearbeiten</small></span><span class="ar-c go" aria-hidden="true"></span></button>');
     return h;
   }
   function symZeile(k, stay, gast) {   // Symbolzeile statt Textzeilen: jedes Symbol springt zum Glossar (mit Zurück-Taste)

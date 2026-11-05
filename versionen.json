@@ -2,6 +2,18 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.100.3.0",
+      "datum": "2026-11-05",
+      "titel": "Kalender-Info: «Aufgaben offen» führt zur Verwaltung",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Layout: In der Info-Box eines Aufenthalts (nur für Papi) steht statt «Aufgabe: in Airbnb sperren» jetzt allgemein «Aufgaben offen», klein darunter die offenen Aufgaben als kurze Liste (in Airbnb sperren, Bescheid geben, Wäsche-Info, Zahlung, Wäsche zurück u. a.). Der Knopf «Zum Termin in der Verwaltung» sitzt in dieser Zeile.",
+        "Layout: Der separate Knopf «Verwaltung» darunter steht nur noch, wenn keine Aufgabe offen ist (zum Bearbeiten)."
+      ]
+    },
+    {
       "v": "2.100.2.1",
       "datum": "2026-11-05",
       "titel": "Hochsaison: Grund für «Verbindlich nur ohne Freunde»",
