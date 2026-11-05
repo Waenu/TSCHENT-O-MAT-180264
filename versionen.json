@@ -2,6 +2,20 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.97.6.0",
+      "datum": "2026-11-05",
+      "titel": "Glossar «Termin mit Vorbehalt» gestrafft, Film-Knöpfe immer sichtbar",
+      "arten": [
+        "Layout",
+        "Text"
+      ],
+      "punkte": [
+        "Text: Der Glossar-Eintrag «Termin mit Vorbehalt» ist von etwa 350 auf 250 Wörter gestrafft. Der Film-Knopf steht ganz oben, doppelte Sätze (verbindlich buchen, fest in der Staffel-Zeit, gesichert/gestrichelt) sind zusammengelegt.",
+        "Layout: Die Skizzen in diesem Eintrag haben keine Schlösser mehr in den Balken (wie im Kalender). Im Titel steht das gezeichnete offene Schloss.",
+        "Layout: Im Film bleiben die Zeitleiste und die Knöpfe Pause, Nochmal und Zurück unten am Bildschirmrand sichtbar, auch wenn der Film höher ist als der Bildschirm."
+      ]
+    },
+    {
       "v": "2.97.5.0",
       "datum": "2026-11-04",
       "titel": "Farbfelder in Icon-Grösse",
