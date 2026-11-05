@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.100.2.1",
+      "datum": "2026-11-05",
+      "titel": "Hochsaison: Grund für «Verbindlich nur ohne Freunde»",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Text: Im Glossar «Hochsaison» steht jetzt, warum Verbindlich nur ohne Freunde geht: Der Pauschalpreis ist für die Familie gerechnet und wäre für das ganze Chalet mit Freunden zu günstig."
+      ]
+    },
+    {
       "v": "2.100.2.0",
       "datum": "2026-11-05",
       "titel": "Verwaltung: Abschnitte eingeklappt",
