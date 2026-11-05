@@ -1228,7 +1228,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.101.1.1";
+let VERSION = "2.101.2.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2587,19 +2587,21 @@ const SAISON_TITEL = {
   11: ["Kaminfeuer sucht Gäste", "Der erste Schnee kommt bald, das Cheminée wartet schon."],
   12: ["Die Skisaison beginnt", "Termine für Weihnachten und Januar jetzt anfragen. Schnee bestellt, Lieferung ungewiss."]
 };
+var RESERV_ZIEL = "";   // Tag, zu dem der grosse Knopf springt, solange eine Lücke oder Staffel beworben wird
 function reservTexte() {
   try {
     const h = heuteKey(), m = Number(h.slice(5, 7)), t = SAISON_TITEL[m] || ["Reif für die Berge", ""];
     let titel = t[0], zeile = t[1];
     let lk = null; for (let i = 0; i < 28 && !lk; i++) { const k = addDays(h, i); if (GAP.has(k) && !GAPSPERR.has(k)) lk = lueckeVon(k); else if (SICHT.has(k)) { let e = k; while (SICHT.has(e)) e = addDays(e, 1); lk = [k, e]; } }   // nur spontane Lücken: in den nächsten 4 Wochen, auch die gelben Tage ab heute (Vorlaufzeit)
     const tg = (k) => Number(k.slice(8)) + ". " + MONATE[Number(k.slice(5, 7)) - 1];
-    let aktion = "";
-    if (lk) { aktion = "luecke"; titel = "Kurzentschlossene gewinnen"; const von = lk[0] < h ? h : lk[0]; zeile = "Lücke frei: " + (von.slice(5, 7) === lk[1].slice(5, 7) ? Number(von.slice(8)) + "." : tg(von)) + " bis " + tg(lk[1]) + ", ab " + P.minNaechte + " Nächten. Mit Freunden wird es für dich noch günstiger."; }
+    let aktion = "", ziel = "";
+    if (lk) { aktion = "luecke"; ziel = lk[0] < h ? h : lk[0]; titel = "Kurzentschlossene gewinnen"; const von = lk[0] < h ? h : lk[0]; zeile = "Lücke frei: " + (von.slice(5, 7) === lk[1].slice(5, 7) ? Number(von.slice(8)) + "." : tg(von)) + " bis " + tg(lk[1]) + ", ab " + P.minNaechte + " Nächten. Mit Freunden wird es für dich noch günstiger."; }
     else {
       let sw = null; try { sw = schweifListe().filter((x) => x.von <= addDays(h, 28)).sort((a, b) => (a.von < b.von ? -1 : 1))[0] || null; } catch (e) {}
-      if (sw) { aktion = "staffel"; titel = "Die Staffel sucht Anschluss"; zeile = "Offene Familienstaffel ab " + tg(sw.von < h ? h : sw.von) + ": Wer anschliesst und selbst reinigt, spart die Reinigung."; }
+      if (sw) { aktion = "staffel"; ziel = sw.von < h ? h : sw.von; titel = "Die Staffel sucht Anschluss"; zeile = "Offene Familienstaffel ab " + tg(sw.von < h ? h : sw.von) + ": Wer anschliesst und selbst reinigt, spart die Reinigung."; }
       else if (istRuhe(h)) zeile += " Staffel-Zeit: Ihr reinigt selbst und spart.";
     }
+    RESERV_ZIEL = ziel;
     document.querySelectorAll(".rv-t").forEach((e) => { e.textContent = titel; });
     document.querySelectorAll(".rv-z").forEach((e) => { e.textContent = zeile; e.hidden = !zeile; });
     // Aktion buchbar: der kleine Blitz zeigt sich nur bei der Animation, einmal pro Tag (und bei jeder neuen Art von Aktion) blitzt der Rahmen
@@ -2761,6 +2763,7 @@ document.getElementById("btnHilfe").addEventListener("click", () => {
   setHilfe(an);
 });
 document.getElementById("btnReserv").addEventListener("click", () => {
+  if (RESERV_ZIEL) { zumKalender(RESERV_ZIEL); return; }   // Lücke oder Staffel beworben: direkt in den passenden Monat, Anreisetag markiert
   ZURUECK = null; document.getElementById("zurueck").hidden = true;
   setHilfe(false); hilfeZuklappen(); setChem(false); ansichtZu(); setRechner(true);
   document.getElementById("cal").scrollIntoView({ behavior: "smooth", block: "start" });
