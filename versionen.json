@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.102.0.0",
+      "datum": "2026-11-05",
+      "titel": "Pin 📌 im Kalender: hier ist noch etwas zu erledigen",
+      "arten": [
+        "Neu"
+      ],
+      "punkte": [
+        "Neu: Nur in der Eltern-Ansicht zeigt der Kalender einen 📌 auf dem ersten Tag jedes Aufenthalts, bei dem noch etwas zu erledigen ist (zum Beispiel in Airbnb sperren oder Bescheid geben). Sobald alles erledigt ist, verschwindet er."
+      ]
+    },
+    {
       "v": "2.101.2.1",
       "datum": "2026-11-05",
       "titel": "Feld «Hinweise» nur noch mit neuem Inhalt",
