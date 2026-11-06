@@ -2,6 +2,18 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.106.2.1",
+      "datum": "2026-11-06",
+      "titel": "Familienstaffel im Glossar kürzer",
+      "arten": [
+        "Layout",
+        "Text"
+      ],
+      "punkte": [
+        "Familienstaffel: zuerst eine kurze Erklärung, Bilder und ganzer Text stehen unter «Mehr erfahren»."
+      ]
+    },
+    {
       "v": "2.106.2.0",
       "datum": "2026-11-06",
       "titel": "Freunde in der Lücke ab 3 Nächten, schon mit 1 Freund",
