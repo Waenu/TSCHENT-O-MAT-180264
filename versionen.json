@@ -2,6 +2,19 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.106.2.12",
+      "datum": "2026-11-06",
+      "titel": "Fehler: Lücke mit 2 Nächten ohne Auswahl bei Zimmer 1",
+      "arten": [
+        "Fehler",
+        "Text"
+      ],
+      "punkte": [
+        "In einer Lücke mit 2 Nächten hatte «Bleibt Zimmer 1 unberührt?» keine Auswahl (weder Ja noch Nein). Behoben.",
+        "Benutzung: «Dafür braucht es auch von euch …»."
+      ]
+    },
+    {
       "v": "2.106.2.11",
       "datum": "2026-11-06",
       "titel": "Glossar: Freunde-Feld in der Lücke erklärt",
