@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.106.1.0",
+      "datum": "2026-11-06",
+      "titel": "Angebote als Einladung",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Die Auswahl unter dem Monatsspruch heisst je nach Lage «Eine Lücke wartet auf euch», «Eine Staffel startet bald» oder «Lücken und Staffeln für euch». Die Einträge lauten «Lücke buchen: …» und «Staffel beginnen: ab …»."
+      ]
+    },
+    {
       "v": "2.106.0.1",
       "datum": "2026-11-06",
       "titel": "Löschen-Feld ausgeschaltet",

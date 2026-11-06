@@ -1235,7 +1235,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.106.0.1";
+let VERSION = "2.106.1.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2629,9 +2629,9 @@ function angebote() {
     if (!st || en <= st) continue;
     bis = en;
     const n = diffDays(st, en);
-    out.push({ typ: "L", von: st, bis: en, text: "Lücke " + von(st, en) + ", " + n + (n === 1 ? " Nacht" : " Nächte") });
+    out.push({ typ: "L", von: st, bis: en, text: "Lücke buchen: " + von(st, en) + " (" + n + (n === 1 ? " Nacht" : " Nächte") + ")" });
   }
-  try { schweifListe().forEach((x) => { if (x.bis >= h) { const st = x.von < h ? h : x.von; out.push({ typ: "S", von: st, bis: x.bis, text: "Staffel ab " + tg(st) }); } }); } catch (e) {}
+  try { schweifListe().forEach((x) => { if (x.bis >= h) { const st = x.von < h ? h : x.von; out.push({ typ: "S", von: st, bis: x.bis, text: "Staffel beginnen: ab " + tg(st) }); } }); } catch (e) {}
   return out.sort((a, b) => (a.von < b.von ? -1 : a.von > b.von ? 1 : a.typ < b.typ ? -1 : 1));
 }
 function angeboteFuellen() {
@@ -2640,7 +2640,9 @@ function angeboteFuellen() {
   const l = angebote(), sig = l.map((x) => x.typ + x.von + x.bis).join(",");
   if (box.dataset.sig === sig) return;
   box.dataset.sig = sig;
-  sel.innerHTML = '<option value="">Aktuelle Angebote</option>' + l.map((x) => '<option value="' + x.typ + "|" + x.von + "|" + x.bis + '">' + esc(x.text) + "</option>").join("");
+  const nL = l.filter((x) => x.typ === "L").length, nS = l.length - nL;   // Beschriftung der geschlossenen Auswahl: als Einladung, je nach Lage
+  const kopf = nL && nS ? "Lücken und Staffeln für euch" : nL ? (nL === 1 ? "Eine Lücke wartet auf euch" : nL + " Lücken warten auf euch") : nS === 1 ? "Eine Staffel startet bald" : nS ? nS + " Staffeln starten bald" : "Aktuelle Angebote";
+  sel.innerHTML = '<option value="">' + kopf + '</option>' + l.map((x) => '<option value="' + x.typ + "|" + x.von + "|" + x.bis + '">' + esc(x.text) + "</option>").join("");
   box.hidden = !l.length;
   document.getElementById("btnReserv").classList.toggle("mit-ang", !!l.length);
 }
