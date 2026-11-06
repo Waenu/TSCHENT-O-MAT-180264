@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.106.2.11",
+      "datum": "2026-11-06",
+      "titel": "Glossar: Freunde-Feld in der Lücke erklärt",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Glossar, Lücken: ein Satz erklärt, dass das Feld für Freunde bei weniger als 3 Nächten nicht erscheint."
+      ]
+    },
+    {
       "v": "2.106.2.10",
       "datum": "2026-11-06",
       "titel": "Lücke: Freunde-Feld bei 2 Nächten ausgeblendet",
