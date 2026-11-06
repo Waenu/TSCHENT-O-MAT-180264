@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.106.2.15",
+      "datum": "2026-11-06",
+      "titel": "Redner: «Liebi Fraue und Manne»",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Der Redner begrüsst jetzt mit «Liebi Fraue und Manne» (vorher «Mane»)."
+      ]
+    },
+    {
       "v": "2.106.2.14",
       "datum": "2026-11-06",
       "titel": "«Lücke wegen Vorlaufzeit» statt «durch die»",
