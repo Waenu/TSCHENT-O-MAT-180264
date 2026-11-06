@@ -1237,7 +1237,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.106.2.2";
+let VERSION = "2.106.2.3";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1989,11 +1989,11 @@ function glossarKurz(offen) {
     hochsaison: "In der Hochsaison, wenn das Chalet bei Airbnb-Gästen besonders gefragt ist, habt ihr zwei Möglichkeiten: verbindlich zu einem festen Preis oder mit Vorbehalt zum normalen Familienpreis. Mit Vorbehalt tragt ihr das Risiko, dass ein Airbnb-Gast Vorrang hat.",
     prov: "Mit Vorbehalt heisst: Der Termin ist in Airbnb nicht gesperrt. Meldet sich ein Airbnb-Gast für dieselben Tage, hat er Vorrang, und ihr weicht. Plant darum eine Alternative ein.",
     februar: "Im Februar ist Skiferien-Zeit, darum gelten eigene Regeln: ein längerer Mindestaufenthalt, ein fester Termin mit Buchungssicherheit und ein Mindestpreis. Mit Freunden wird es für dich günstiger.",
-    ruhe: "In den Staffel-Zeiten könnt ihr ohne Freunde selbst reinigen und zahlt beim Aufenthalt keine Reinigung. Wer geht, reinigt, und die Wäsche regelt ihr nach den Angaben unter «Mehr erfahren».",
+    ruhe: "In den Staffel-Zeiten könnt ihr ohne Freunde selbst reinigen und zahlt beim Aufenthalt keine Reinigung. Wer geht, reinigt. Wie das mit der Wäsche geht, steht weiter unten.",
     luecke: "Eine Lücke ist freie Zeit zwischen zwei Airbnb-Gästen von höchstens " + LUECKE_MAX + " Nächten. Ihr bucht sie zum normalen Familienpreis, fest und ohne Vorbehalt, ab " + P.minNaechte + " Nächten, mit Freunden ab " + P.lueckeGastMinNaechte + " Nächten. Die Eltern reinigen.",
     endrein: "Die Endreinigung kostet " + chf(P.reinigung) + " und deckt Fahrt, Reinigung und Wäsche der Eltern ab. Sie fällt nach jedem Aufenthalt an, in einer Familienstaffel erst am Ende. Wie ihr sie mit Freunden aufteilt, entscheidet ihr selbst.",
     rechnen: "Euer Familienpreis richtet sich nach den Marktpreisen von Airbnb. Die Familie zahlt pauschal " + chf(P.famPausch) + " pro Nacht, jeder Freund " + chf(P.gast) + ", dazu kommt die Endreinigung (" + chf(P.reinigung) + "). Die genaue Rechnung klappst du unter dem Preis mit «Buchungsübersicht» auf.",
-    sparen: "So wird dein Aufenthalt günstiger: zum Beispiel mit Freunden, mit unberührtem Zimmer 1, mit einer Lücke oder mit Selberreinigen in der Familienstaffel. Alle Möglichkeiten stehen unter «Mehr erfahren»."
+    sparen: "So wird dein Aufenthalt günstiger: zum Beispiel mit Freunden, mit unberührtem Zimmer 1, mit einer Lücke oder mit Selberreinigen in der Familienstaffel."
   };
   Object.keys(K).forEach((id) => {
     const bc = document.getElementById("bc-" + id);
@@ -2113,6 +2113,7 @@ function begriffeFuellen() {
     "</ul>" +
     "<p>Die genaue Rechnung für deinen Termin klappst du unter dem Preis mit «Buchungsübersicht» auf. Dort steht auch, wer wie viel zahlt.</p>");
   set("bc-geld", GELD_TEXT);
+  { const sz = document.getElementById("b-spitzenzeit"); if (sz) sz.hidden = !SPITZ.length; }   // Eintrag nur zeigen, wenn eine Spitzenzeit eingetragen ist
   glossarKurz(offen);
 }
 // Sprung zu Erklärungen unter «Glossar», mit Zurück-Knopf
