@@ -2,6 +2,29 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.106.2.14",
+      "datum": "2026-11-06",
+      "titel": "«Lücke wegen Vorlaufzeit» statt «durch die»",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Der Name «Lücke durch die Vorlaufzeit» heisst überall «Lücke wegen Vorlaufzeit», weil die Lücke eine Folge der Vorlaufzeit ist."
+      ]
+    },
+    {
+      "v": "2.106.2.13",
+      "datum": "2026-11-06",
+      "titel": "Glossar: Kalender kürzer",
+      "arten": [
+        "Layout",
+        "Text"
+      ],
+      "punkte": [
+        "Glossar: «Kalender und Wunschtermin» heisst jetzt «Kalender» und zeigt zuerst eine Kurzfassung, der Rest steht unter «Mehr erfahren»."
+      ]
+    },
+    {
       "v": "2.106.2.12",
       "datum": "2026-11-06",
       "titel": "Fehler: Lücke mit 2 Nächten ohne Auswahl bei Zimmer 1",
