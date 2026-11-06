@@ -1235,7 +1235,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.105.2.0";
+let VERSION = "2.106.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2600,19 +2600,20 @@ function monatBauen(g, calY, calM) {
 }
 
 // Einstieg zum Kalender: grosser Titel nach Jahreszeit, kleine Werbezeile nach Lage (eine buchbare Lücke geht vor, in der Staffel-Zeit ein Sparhinweis)
+// Monatssprüche (seit 2.106.0.0): pro Monat 10 Sprüche mit Symbol, der Spruch wechselt alle 2 Stunden (12-mal am Tag)
 const SAISON_TITEL = {
-  1: ["Neues Jahr, neue Pisten", "Die Skisaison läuft. Wer jetzt bucht, tauscht Alltag gegen Schnee."],
-  2: ["Pulverschnee-Wochen", "Ganze Wochen, mindestens 7 Nächte. Die Piste ruft, der Wecker schweigt."],
-  3: ["Letzte Schwünge, erste Blumen", "Der Winter packt langsam, ihr dürft schon den Frühling vorbeibringen."],
-  4: ["Aprilwetter mit Aussicht", "Mal Sonne, mal Schnee, immer Berge. Wetter nach Wahl gibt es leider nicht."],
-  5: ["Geniesse den Bergfrühling", "Alles blüht, nur ihr noch nicht. Hier ist euer Termin."],
-  6: ["Jetzt wird es alpin", "Wanderschuhe raus, Kuhglocken an. Sommertermine jetzt anfragen."],
-  7: ["Sommerfrische statt Hitzewelle", "Hier oben ist es angenehm kühl, versprochen."],
-  8: ["Sommerfrische statt Hitzewelle", "Hier oben ist es angenehm kühl, versprochen."],
-  9: ["Der goldene Herbst beginnt", "Nebelmeer am Morgen, Kaminfeuer am Abend."],
-  10: ["Besuche das Vogellisi", "Bunte Wälder und ruhige Tage, ganz ohne Gedränge."],
-  11: ["Kaminfeuer sucht Gäste", "Der erste Schnee kommt bald, das Cheminée wartet schon."],
-  12: ["Die Skisaison beginnt", "Termine für Weihnachten und Januar jetzt anfragen. Schnee bestellt, Lieferung ungewiss."]
+  1: ["❄️", [["Winterzauber pur", "Draussen glitzert der Schnee, drinnen wartet Gemütlichkeit."], ["Schneeflocken inklusive", "Aufwachen, verschneite Berge sehen und den Tag geniessen."], ["Kaminzeit", "Wenn es draussen kalt wird, wird es bei uns besonders schön."], ["Tief durchatmen", "Klare Bergluft statt Alltagsstress."], ["Januar-Auszeit", "Der perfekte Monat für Ruhe, Entspannung und Natur."], ["Wintermärchen", "Die Berge zeigen sich jetzt von ihrer schönsten Seite."], ["Kuschelmodus aktiv", "Wärme, Aussicht und Erholung an einem Ort."], ["Schnee vor der Tür", "Ferien direkt im Winterparadies."], ["Bergglück im Weiss", "Entdecken, entspannen, geniessen."], ["Kurz mal weg", "Manchmal reicht ein Wochenende für neue Energie."]]],
+  2: ["❤️", [["Zeit zu zweit", "Romantische Wintertage in den Bergen."], ["Herzklopfen garantiert", "Sonnenuntergänge und verschneite Gipfel inklusive."], ["Winterliebe", "Gemeinsam Erinnerungen schaffen."], ["Valentinstag verlängern", "Warum nur einen Tag geniessen?"], ["Kuschelige Ferientage", "Ideal für Paare und Geniesser."], ["Bergromantik", "Ein Ort zum Ankommen und Wohlfühlen."], ["Winterträume", "Schnee, Ruhe und ganz viel Gemütlichkeit."], ["Gemeinsam abschalten", "Die Berge übernehmen den Rest."], ["Liebe zur Natur", "Erholung beginnt bereits beim Ausblick."], ["Glücksmomente", "Sammelt Erinnerungen statt Termine."]]],
+  3: ["🌷", [["Frühling klopft an", "Die ersten Sonnenstrahlen sind unterwegs."], ["Erwachen der Berge", "Natur, Licht und frische Energie."], ["Mehr Sonne, mehr Ferien", "Jetzt die schönste Übergangszeit geniessen."], ["Frühlingsgefühle", "Bergluft macht glücklich."], ["Raus ins Licht", "Der Winter verabschiedet sich langsam."], ["Sonnenterrassen warten", "Perfekt zum Auftanken."], ["Frischer Wind", "Der Alltag kann warten."], ["Bergfrühling", "Natur erleben und durchatmen."], ["Sonnenmomente", "Länger hell, länger geniessen."], ["Neustart mit Aussicht", "Die Berge geben Kraft."]]],
+  4: ["🌼", [["Frühlingszauber", "Jeden Tag ein bisschen mehr Natur."], ["Bunte Aussichten", "Blumen, Berge und Erholung."], ["April kann alles", "Ausser langweilig sein."], ["Aufblühen", "Die perfekte Zeit für eine kleine Auszeit."], ["Naturkino", "Jeden Morgen eine neue Aussicht."], ["Frische Bergtage", "So fühlt sich Frühling an."], ["Zeit für Genuss", "Ankommen und den Moment leben."], ["Frühling deluxe", "Mit Bergblick schmeckt alles besser."], ["Lieblingsplatz finden", "Vielleicht direkt vor unserem Chalet."], ["Einfach loslassen", "Der Frühling macht den Rest."]]],
+  5: ["🌿", [["Bergsommer voraus", "Die schönste Zeit beginnt."], ["Grün soweit das Auge reicht", "Natur pur direkt vor der Haustür."], ["Mai-Auszeit", "Perfekt für Wanderer und Geniesser."], ["Sonnenstunden sammeln", "Und Erinnerungen gleich dazu."], ["Ferien im Grünen", "Ruhe, Aussicht und frische Luft."], ["Natur tanken", "Ganz ohne Steckdose."], ["Mai macht glücklich", "Besonders mit Bergblick."], ["Wanderlust", "Die Wege warten schon."], ["Bergfrühling erleben", "Jetzt zeigt sich die Natur von ihrer schönsten Seite."], ["Einfach geniessen", "Mehr braucht es oft nicht."]]],
+  6: ["☀️", [["Sommer beginnt hier", "Mit Aussicht auf Erholung."], ["Sonnenseite des Lebens", "Direkt vor eurer Tür."], ["Bergsommer pur", "Wandern, entspannen, geniessen."], ["Lange Tage", "Mehr Zeit für Ferien."], ["Gipfelglück", "Schritt für Schritt dem Alltag entkommen."], ["Juni-Juwel", "Der Geheimtipp unter den Ferienmonaten."], ["Frische Bergluft", "Der beste Luxus ist kostenlos."], ["Sonne tanken", "Die Berge liefern Energie."], ["Sommerfrische", "Erholung auf höchstem Niveau."], ["Ferienmodus", "Jetzt aktivieren."]]],
+  7: ["🌞", [["Sommerträume", "So schön kann Abschalten sein."], ["Bergferien deluxe", "Aussicht inklusive."], ["Sonnenplatz gesucht?", "Gefunden."], ["Hochsaison fürs Glück", "Willkommen in den Bergen."], ["Natur statt Nachrichten", "Manchmal tut das gut."], ["Juli-Genuss", "Jeder Tag ein Ferientag."], ["Fern vom Alltag", "Nah an der Natur."], ["Sommermomente", "Die man nicht vergisst."], ["Aussicht auf Erholung", "Garantiert ohne Stau."], ["Lieblingsferien", "Beginnen genau hier."]]],
+  8: ["⛰️", [["Sommer auf dem Höhepunkt", "Die Berge auch."], ["Ferien mit Weitblick", "Und viel Platz zum Durchatmen."], ["August-Abenteuer", "Tagsüber draussen, abends gemütlich."], ["Bergglück", "Einfach, ehrlich, erholsam."], ["Sonne und Freiheit", "Mehr braucht es nicht."], ["Abschalten leicht gemacht", "Die Natur hilft dabei."], ["Postkartenkulisse", "Live statt auf dem Handy."], ["Ferien, wie sie sein sollen", "Entspannt und unkompliziert."], ["Zeit gewinnen", "Durch weniger Termine."], ["Sommererinnerungen", "Werden hier geschrieben."]]],
+  9: ["🍂", [["Goldener Herbst", "Die Berge leuchten."], ["Lieblingsmonat", "Für Wanderer und Geniesser."], ["Herbstzauber", "Farben, Ruhe und klare Sicht."], ["Berggold", "Die schönste Jahreszeit."], ["Sonnenstunden verlängern", "Mit einer Auszeit in den Bergen."], ["Herbstluft", "Frisch, klar und wohltuend."], ["Naturkino 2.0", "Jetzt in Goldtönen."], ["Wanderschuhe bereit?", "Die Saison läuft."], ["Herbstglück", "Ganz ohne Hektik."], ["Farbenrausch", "Direkt vor dem Fenster."]]],
+  10: ["🍁", [["Goldene Momente", "Der Herbst zeigt seine Schokoladenseite."], ["Herbstferien", "Genau zur richtigen Zeit."], ["Farbenmeer", "Natur kann spektakulär sein."], ["Kuschelwetter", "Mit Aussicht noch besser."], ["Kraft tanken", "Bevor der Winter kommt."], ["Goldener Bergherbst", "Ein Erlebnis für alle Sinne."], ["Aussicht geniessen", "Und den Alltag vergessen."], ["Herbstromantik", "Ganz natürlich."], ["Zeit zum Durchatmen", "Die Berge sind bereit."], ["Wohlfühlmonat", "Für alle, die Ruhe suchen."]]],
+  11: ["🔥", [["Kaminfeuer sucht Gäste", "Draussen kühl, drinnen gemütlich."], ["Kuschelzeit", "Der perfekte Monat für Entschleunigung."], ["Wärme tanken", "Am Feuer und in den Bergen."], ["Novemberruhe", "Ferien fern vom Trubel."], ["Berggemütlichkeit", "Jetzt besonders schön."], ["Lieblingsplatz am Fenster", "Mit Blick auf die Natur."], ["Feuer & Fernsicht", "Eine unschlagbare Kombination."], ["Wohlfühlwetter", "Für entspannte Ferientage."], ["Ruhe geniessen", "Bevor der Winter startet."], ["Ankommen", "Und einfach bleiben wollen."]]],
+  12: ["🎄", [["Winterwunderland", "Die Festtage in den Bergen erleben."], ["Festliche Auszeit", "Weihnachtsstimmung inklusive."], ["Bergweihnachten", "So gemütlich wie früher."], ["Advent mit Aussicht", "Jeden Tag ein neues Panorama."], ["Schnee, Sterne, Chalet", "Mehr braucht es nicht."], ["Feiertage geniessen", "Statt Geschenke stressen."], ["Weihnachtszauber", "Direkt vor der Haustür."], ["Jahreswechsel mit Stil", "Inmitten der Berge."], ["Silvesterblick", "Das neue Jahr beginnt fantastisch."], ["Winterträume werden wahr", "Willkommen im Chalet."]]]
 };
 // Angebote: alle buchbaren Lücken und offenen Staffeln im Kalender, nach Datum (Auswahl unter dem grossen Feld)
 function angebote() {
@@ -2659,7 +2660,8 @@ function angebotWaehlen(v) {   // Lücke: Anreise und Abreise gleich gesetzt; St
 }
 function reservTexte() {
   try {
-    const h = heuteKey(), m = Number(h.slice(5, 7)), t = SAISON_TITEL[m] || ["Reif für die Berge", ""];
+    const h = heuteKey(), m = Number(h.slice(5, 7)), sm = SAISON_TITEL[m], slot = Number(h.slice(8)) * 12 + Math.floor(new Date().getHours() / 2);   // alle 2 Stunden ein anderer Spruch des Monats
+    const t = sm ? [sm[0] + " " + sm[1][slot % 10][0], sm[1][slot % 10][1]] : ["Reif für die Berge", ""];
     let titel = t[0], zeile = t[1];
     let lk = null; for (let i = 0; i < 28 && !lk; i++) { const k = addDays(h, i); if (GAP.has(k) && !GAPSPERR.has(k)) lk = lueckeVon(k); else if (SICHT.has(k)) { let e = k; while (SICHT.has(e)) e = addDays(e, 1); lk = [k, e]; } }   // nur spontane Lücken: in den nächsten 4 Wochen, auch die gelben Tage ab heute (Vorlaufzeit)
     const tg = (k) => Number(k.slice(8)) + ". " + MONATE[Number(k.slice(5, 7)) - 1];
@@ -2681,6 +2683,7 @@ function reservTexte() {
     }
   } catch (e) {}
 }
+setInterval(() => { try { reservTexte(); } catch (e) {} }, 300000);   // Spruch auch bei offener App wechseln
 function renderKalender() {
   reservTexte(); angeboteFuellen();
   const heute = heuteKey();

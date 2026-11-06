@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.106.0.0",
+      "datum": "2026-11-06",
+      "titel": "Neue Monatssprüche mit Symbol",
+      "arten": [
+        "Neu"
+      ],
+      "punkte": [
+        "Pro Monat gibt es 10 Sprüche mit Titel und Zeile, dazu ein Symbol für den Monat. Der Spruch wechselt alle 2 Stunden, also mehrmals am Tag."
+      ]
+    },
+    {
       "v": "2.105.2.0",
       "datum": "2026-11-06",
       "titel": "Kalender: nur 365 Tage ab heute",
