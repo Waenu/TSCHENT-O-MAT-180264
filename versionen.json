@@ -2,6 +2,30 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.106.2.8",
+      "datum": "2026-11-06",
+      "titel": "«Mehr erfahren» lockerer",
+      "arten": [
+        "Text",
+        "Layout"
+      ],
+      "punkte": [
+        "Der Knopf «Mehr erfahren» hat pro Eintrag einen lockeren Text und wechselt beim Aufklappen."
+      ]
+    },
+    {
+      "v": "2.106.2.7",
+      "datum": "2026-11-06",
+      "titel": "Glossar: weitere Einträge kürzer",
+      "arten": [
+        "Layout",
+        "Text"
+      ],
+      "punkte": [
+        "Lücke durch die Vorlaufzeit, Reinigungskästchen, Zahlung, Trinkgeld und Geldverwendung zeigen zuerst eine Kurzfassung, der Rest steht unter «Mehr erfahren»."
+      ]
+    },
+    {
       "v": "2.106.2.6",
       "datum": "2026-11-06",
       "titel": "Glossar: Titel «Das Wichtigste»",
