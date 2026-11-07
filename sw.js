@@ -1,6 +1,6 @@
 // Service Worker: zuerst Netz, sonst gespeicherte Fassung (läuft so auch ohne Empfang).
-const CACHE = "tschentomat-neu-v1";
-const DATEIEN = ["./", "index.html", "einstellungen.json", "versionen.json", "manifest.json", "icon-192.png", "icon-512.png"];
+const CACHE = "tschentomat-neu-v2";
+const DATEIEN = ["./", "index.html", "einstellungen.json", "versionen.json", "manifest.json", "icon-192.png", "icon-512.png", "fonts/barlow-condensed-latin-600-normal.woff2", "fonts/barlow-condensed-latin-700-normal.woff2", "fonts/source-sans-3-latin-400-normal.woff2", "fonts/source-sans-3-latin-600-normal.woff2", "fonts/source-sans-3-latin-700-normal.woff2"];
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(DATEIEN)).then(() => self.skipWaiting()));
 });
