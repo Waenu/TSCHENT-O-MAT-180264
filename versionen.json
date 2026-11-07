@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.108.0.1",
+      "datum": "2026-11-07",
+      "titel": "Symbol «Lücke wegen Vorlaufzeit»: ⏸️ statt Glocke",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Das Symbol für «Lücke wegen Vorlaufzeit» ist jetzt ⏸️ (zeitlicher Unterbruch). Die Glocke 🔔 bleibt nur bei den Alarmen für die Eltern."
+      ]
+    },
+    {
       "v": "2.108.0.0",
       "datum": "2026-11-07",
       "titel": "Gelöschter Termin: Meldung «Storniert» beim Kind",
