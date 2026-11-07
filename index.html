@@ -678,6 +678,7 @@
   .jahr-t i.st-s, .jahr-leg i.st-s { background: transparent; box-shadow: inset 0 0 0 1px var(--zc, var(--line)); }
   .jahr-t i.st-p, .jahr-leg i.st-p { --zc: var(--line); background: transparent; }
   .jahr-t i.leer { border: 0; background: none; }
+  .jahr-leg .fr { gap: 3px; flex-wrap: wrap; } .jahr-leg .fr i:last-of-type { margin-right: 3px; }
   .jahr-m b em { font-style: normal; font-weight: 400; color: var(--muted); }
   .jahr-leg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; font-size: .78rem; line-height: 1.2; } .jahr-leg div > span { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; } .jahr-leg i { width: 14px; height: 14px; flex: none; border-radius: 3px; border: 2px solid var(--zc, var(--line)); box-sizing: border-box; background: var(--zc, var(--line)); } .jahr-leg[hidden] { display: none; }
   .ov-in { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; padding-bottom: 40px; }
@@ -1251,7 +1252,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.107.1.1";
+let VERSION = "2.107.1.2";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -5065,7 +5066,10 @@ function jahrZeigen() {
   if (uebrigVorhanden()) l += lz("n", "Übrige Zeit");
   let r = "";
   if (P.lueckeRabatt > 0 || SICHT_AN) r += lz("gap", "Lücke");
-  r += lz("fest", "frei") + '<span><i class="z-fest st-b"></i>belegt</span><span><i class="z-n st-p"></i>vergangen, nicht buchbar</span>';
+  const frz = [];   // «frei» trägt die Farben aller Zeiten, in denen ein freier Tag liegen kann (freie Tage sind in der Farbe ihrer Zeit gefüllt)
+  if (HOCH.length > 0 || HOCH_MONATE.some((m) => FEST_MONATE.indexOf(m) < 0)) frz.push("hoch");
+  frz.push("rosa"); if (FEST_MONATE.length) frz.push("fest"); if (RUHE.length) frz.push("ruhe"); if (SPITZ.length) frz.push("spitz"); if (uebrigVorhanden()) frz.push("n"); if (P.lueckeRabatt > 0 || SICHT_AN) frz.push("gap"); frz.push("xmas");
+  r += '<span class="fr">' + frz.map((c) => '<i class="z-' + c + '"></i>').join("") + "frei</span>" + '<span><i class="z-fest st-b"></i>belegt</span><span><i class="z-n st-p"></i>vergangen, nicht buchbar</span>';
   h += '</div><div class="jahr-leg" id="jahrLeg"><div>' + l + "</div><div>" + r + "</div></div>";
   document.getElementById("ovJahrIn").innerHTML = h;
   ovOeffnen("ovJahr", true);
