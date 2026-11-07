@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.107.2.3",
+      "datum": "2026-11-07",
+      "titel": "Kalender: gelber Rahmen am Anfang und Ende einer Lücke",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Am Tag, an dem eine Lücke beginnt, ist nur im rechten Drittel der Rahmen gelb (ab 16 Uhr gehört die Nacht der Lücke). Am Tag, an dem sie endet, ist nur im linken Drittel der Rahmen gelb (Abreise um 10 Uhr). Der Hintergrund bleibt in der Farbe der Zeit, der gelbe Bügel im Feld entfällt."
+      ]
+    },
+    {
       "v": "2.107.2.2",
       "datum": "2026-11-07",
       "titel": "Kalender: Knopf «Heute» bleibt sichtbar",
