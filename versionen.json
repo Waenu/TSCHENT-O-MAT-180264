@@ -2,6 +2,21 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.107.3.0",
+      "datum": "2026-11-07",
+      "titel": "Einheitlicher Name «Tiefsaison»; Familienstaffel eigene Zeile; Skisaison ohne Monatsklammer",
+      "arten": [
+        "Funktion",
+        "Text"
+      ],
+      "punkte": [
+        "Die violette Zeit heisst überall «Tiefsaison» (vorher teils «Staffel-Zeit»). «Staffel» bleibt der Name der Familienstaffel.",
+        "Die Tabelle «Auf einen Blick» hat eine eigene violette Zeile «Familienstaffel».",
+        "«Skisaison» steht ohne «(Februar)» in Legende und Terminbox.",
+        "«Weihnachtssperre» heisst in Legende, Jahresübersicht, Terminbox, Tabelle und Papi-Warnung jetzt «Weihnachtstage»."
+      ]
+    },
+    {
       "v": "2.107.2.14",
       "datum": "2026-11-07",
       "titel": "Auf einen Blick: Wochenangaben in Klammern verständlicher",
