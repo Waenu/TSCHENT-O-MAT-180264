@@ -2,6 +2,40 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.107.1.1",
+      "datum": "2026-11-07",
+      "titel": "Testleiste: grosse Tasten",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Die roten Tasten ◀ und ▶ der Testleiste sind deutlich grösser (mindestens 64 × 48 px), ebenso die übrigen Knöpfe und das Datumsfeld, damit sie am Handy gut zu treffen sind."
+      ]
+    },
+    {
+      "v": "2.107.1.0",
+      "datum": "2026-11-07",
+      "titel": "Testmodus: Schalter auf dem Monatsnamen, Kalender folgt den Tagesschritten",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Der versteckte Schalter für den Testmodus sitzt jetzt auf dem Monatsnamen über dem Kalender: dreimal schnell tippen schaltet ein oder aus. Die alte Stelle links oben im Kopf entfällt.",
+        "Mit ◀ und ▶ in der Testleiste wechselt der Kalender bei einem Monatswechsel den Monat mit."
+      ]
+    },
+    {
+      "v": "2.107.0.1",
+      "datum": "2026-11-07",
+      "titel": "Wunschtermin finden: nur noch die Jahresübersicht",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "In der Zeile «Wunschtermin finden» bleibt nur noch das Symbol der Jahresübersicht. Die Knöpfe zur Kalender-Erklärung und zur Tabelle sind weg, beides steht weiter im Glossar."
+      ]
+    },
+    {
       "v": "2.107.0.0",
       "datum": "2026-11-07",
       "titel": "Neu: «Auf einen Blick», die Regeln als Tabelle",
