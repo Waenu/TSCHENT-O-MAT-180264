@@ -6,17 +6,6 @@
       "arr": "2026-11-06",
       "dep": "2026-11-08",
       "status": "abgelehnt"
-    },
-    {
-      "name": "Manuel",
-      "arr": "2027-04-01",
-      "dep": "2027-04-03",
-      "selbst": true,
-      "pers": 2,
-      "waesche": "bringen",
-      "betrag": 120,
-      "rechnung": "Gesendet am Sa 7.11.2026, 15:14 Uhr. App-Version 2.107.2.14.\nAnreise\tDonnerstag 1.04.2027\nAbreise\tSamstag 3.04.2027 (2 Nächte)\nFamilie\tIch und 1 Kind\nFreunde\t0\nZimmer 1 unberührt\tJa\nSelbstreinigung\tJa\nTotal laut Rechner\tCHF 120.–\nReinigungskosten sind erst nach Ablauf der Familienstaffel bekannt und werden nachbelastet.\n#Preisberechnung\nFamilie pro Nacht\tCHF 60.–\nÜbernachtung (2 Nächte)\tCHF 120.–\nReinigung\tCHF 0.–\nZimmer 1 und rotes Bad bleiben unberührt: CHF 10.– weniger pro Nacht, die Familie zahlt CHF 60.– statt CHF 70.–.",
-      "bestaetigt": "2026-11-07T15:15"
     }
   ],
   "logbuch": [
@@ -475,6 +464,10 @@
     {
       "t": "2026-11-07T15:35",
       "text": "Entfernt: Deborah, Sa 12.12.2026 bis Di 15.12.2026"
+    },
+    {
+      "t": "2026-11-07T15:36",
+      "text": "Entfernt: Manuel, Do 1.04.2027 bis Sa 3.04.2027"
     }
   ]
 }
