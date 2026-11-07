@@ -125,7 +125,7 @@ def ueberschneidet(a1, d1, a2, d2):
 def abgleichen(gaeste, buchungen, ereignisse, heute):
     """Gibt (neue Liste, Meldungen) zurück. gaeste: Liste von dicts."""
     meld = []
-    bestaetigt = [b for b in buchungen if b.get("status") != "abgelehnt" and b.get("arr") and b.get("dep")]
+    bestaetigt = [b for b in buchungen if b.get("status") not in ("abgelehnt", "storniert") and b.get("arr") and b.get("dep")]
     ziel = {}   # arr -> dict(name, dep)
     for e in ereignisse:
         t = e.get("summary", "")
