@@ -348,6 +348,7 @@
   .sw-xmas { border-color: var(--xmas-line); background: var(--xmas-bg); }
   #btnAnsichten.warn::after { content: " ⚠️"; }
   .alarm-n { display: inline-block; margin-left: 8px; padding: 0 8px; border-radius: 6px; background: #E5A100; color: #1A1200; font-size: .8em; font-weight: 700; }
+  .alarm-n.ok { background: #3FA66B; color: #06210F; }
   .alarm-n[hidden] { display: none; }
   .sw-fest { border-color: var(--fest-line); background: var(--fest-bg); }
   .sw-gap { border-color: var(--sperr-line); background: var(--sperr-bg); }
@@ -1261,7 +1262,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.109.0.1";
+let VERSION = "2.110.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -4711,6 +4712,15 @@ function einnahmenHtml() {
     '<p class="hint">Beträge in CHF. Ein Betrag zählt im Monat der Anreise. «Was bleibt» bei Airbnb und Ext. = Nächte nach Abzug der Provision, ohne Reinigung. Familie: Reinigung aus der gespeicherten Preisberechnung der Buchung.' + (ohneRein ? " Bei " + ohneRein + (ohneRein === 1 ? " Buchung" : " Buchungen") + " ohne Preisberechnung ist die Reinigung nicht getrennt, sie steckt im Betrag." : "") + ' Reinigung plus «Was bleibt» ergibt das, was bei dir ankommt.' +
     (EINN_STATUS === "ok" ? "" : " <b>Die Beträge von Airbnb und Ext. fehlen: privater Speicher nicht geladen.</b>") + "</p></div>";
 }
+function punkteOffen() {   // Zahl am Knopf «Verwaltung»: offene Anfragen plus alle offenen Aufgaben (gleiche Fälle wie in der Verwaltung)
+  const h = heuteKey();
+  let n = OFFEN.length + (xmasOffen().length ? 1 : 0);
+  BUCH.forEach((x) => {
+    if (x.dep >= h) n += aufgabenVon(x).length;
+    else { if (zahlOffen(x)) n++; if ((x.waesche === "bringen" || x.waesche === "senden") && !x.waescheZurueck) n++; }   // nach der Abreise zählen nur Zahlung und Wäsche
+  });
+  return n;
+}
 function bestZeigen() {
   const k = document.getElementById("bestKasten"), kn = document.getElementById("btnAnsichten"), h = heuteKey(), link = bestLesen();
   if (link) {
@@ -4738,9 +4748,9 @@ function bestZeigen() {
   if (!TOKEN && !bestMsg) { k.hidden = true; k.innerHTML = ""; kn.hidden = true; return; }
   kn.classList.toggle("warn", !!(TOKEN && !ABSENDER && xmasOffen().length));
   { let an = kn.querySelector(".alarm-n"); if (!an) { an = document.createElement("span"); an.className = "alarm-n"; kn.appendChild(an); }
-    let nA = 0;
-    if (TOKEN && !ABSENDER) { const ba = BUCH.filter((x) => x.dep >= h); nA = ba.filter(provKonflikt).length + ba.filter(abreiseGesperrt).length + ba.filter(nichtGesperrt).length + (xmasOffen().length ? 1 : 0) + alarmListe().length; }
-    an.textContent = nA ? "🔔 " + nA : ""; an.hidden = !nA; }
+    const zeig = !!(TOKEN && !ABSENDER), nA = zeig ? punkteOffen() : 0;
+    an.textContent = nA ? String(nA) : "✓"; an.classList.toggle("ok", !nA); an.hidden = !zeig;
+    an.title = nA ? nA + (nA === 1 ? " offener Punkt" : " offene Punkte") : "Alles erledigt"; }
   kn.hidden = false; kn.classList.toggle("on", zeigAns); kn.setAttribute("aria-expanded", zeigAns ? "true" : "false");
   k.hidden = !zeigAns;
   let s = "";
