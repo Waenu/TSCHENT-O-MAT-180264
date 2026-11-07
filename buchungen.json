@@ -17,16 +17,6 @@
       "betrag": 180,
       "rechnung": "Gesendet am Fr 6.11.2026, 19:21 Uhr. App-Version 2.106.2.0.\nAnreise\tSamstag 12.12.2026\nAbreise\tDienstag 15.12.2026 (3 Nächte)\nFamilie\tIch, Partner/in und 2 Kinder\nFreunde\t0\nZimmer 1 unberührt\tJa\nSelbstreinigung\tJa\nTotal laut Rechner\tCHF 180.–\nReinigungskosten sind erst nach Ablauf der Familienstaffel bekannt und werden nachbelastet.\n#Preisberechnung\nFamilie pro Nacht\tCHF 60.–\nÜbernachtung (3 Nächte)\tCHF 180.–\nReinigung\tCHF 0.–\nZimmer 1 und rotes Bad bleiben unberührt: CHF 10.– weniger pro Nacht, die Familie zahlt CHF 60.– statt CHF 70.–.",
       "bestaetigt": "2026-11-06T19:37"
-    },
-    {
-      "name": "Jerome",
-      "arr": "2026-11-08",
-      "dep": "2026-11-10",
-      "selbst": false,
-      "pers": 2,
-      "betrag": 360,
-      "rechnung": "Gesendet am Sa 7.11.2026, 13:12 Uhr. App-Version 2.107.1.1.\nAnreise\tSonntag 8.11.2026\nAbreise\tDienstag 10.11.2026 (2 Nächte)\nFamilie\tIch und 1 Kind\nFreunde\t0\nZimmer 1 unberührt\tJa\nLücke\tein Teil der Lücke vom Samstag 7.11.2026 bis Mittwoch 11.11.2026, ohne Vorbehalt.\nTotal laut Rechner\tCHF 360.–\n#Preisberechnung\nFamilie pro Nacht\tCHF 60.–\nÜbernachtung (2 Nächte)\tCHF 120.–\nReinigung\tCHF 240.–\nZimmer 1 und rotes Bad bleiben unberührt: CHF 10.– weniger pro Nacht, die Familie zahlt CHF 60.– statt CHF 70.–.",
-      "bestaetigt": "2026-11-07T13:12"
     }
   ],
   "logbuch": [
@@ -473,6 +463,10 @@
     {
       "t": "2026-11-07T13:12",
       "text": "Bestätigt: Jerome, So 8.11.2026 bis Di 10.11.2026, CHF 360"
+    },
+    {
+      "t": "2026-11-07T13:14",
+      "text": "Entfernt: Jerome, So 8.11.2026 bis Di 10.11.2026"
     }
   ]
 }
