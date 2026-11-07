@@ -1252,7 +1252,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.107.2.0";
+let VERSION = "2.107.2.1";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2863,6 +2863,7 @@ function renderKalender() {
 }
 // Termin-Box: eine einzige Box unter dem Kalender, sobald Anreise und Abreise gewählt sind. Warnungen (⚠️) stehen immer, Erklärungen nur bei eingeschalteter Hilfe «?»
 let TERMIN_SIG = "", TERMIN_AUS = false;   // TERMIN_AUS: beim Blättern durch die Monate weicht die Termin-Box der Monatserklärung, bis ein anderer Termin gewählt wird
+function kopfRaum() { const h = document.querySelector("#cal h2"), leiste = parseInt(document.body.style.paddingTop, 10) || 0; return h ? Math.max(0, h.getBoundingClientRect().top - leiste - 8) : Infinity; }   // mit Testleiste (oben festgeklebt) bleibt der Titel darunter sichtbar   // so weit darf die Seite höchstens hochgescrollt werden, damit der Titel des Kalenders sichtbar bleibt
 function terminBox() {
   const el = document.getElementById("calTermin"); if (!el) return;
   const sig = ARR + "|" + DEP, neu = sig !== TERMIN_SIG; TERMIN_SIG = sig;
@@ -2899,7 +2900,8 @@ function terminBox() {
   if (neu && !el.hidden) {   // Box ins Bild holen, falls sie unter der Preisleiste liegt
     const r = el.getBoundingClientRect(), unten = window.innerHeight - ((document.getElementById("bar") || {}).offsetHeight || 90) - 10;
     const ruhig = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (r.bottom > unten) window.scrollBy({ top: Math.min(r.bottom - unten + 10, Math.max(0, r.top - 70)), behavior: ruhig ? "auto" : "smooth" });
+    const d = Math.min(r.bottom - unten + 10, Math.max(0, r.top - 70), kopfRaum());   // der Titel «Wunschtermin finden» bleibt oben im Bild
+    if (r.bottom > unten && d > 0) window.scrollBy({ top: d, behavior: ruhig ? "auto" : "smooth" });
   }
 }
 document.addEventListener("input", (e) => {
@@ -5369,6 +5371,7 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
     if (r.bottom > unten) {
       let d = r.bottom - unten + 10;
       if (zelle) d = Math.min(d, Math.max(0, zelle.getBoundingClientRect().top - 70));
+      d = Math.min(d, kopfRaum());   // der Titel «Wunschtermin finden» bleibt oben im Bild
       if (d > 0) window.scrollBy({ top: d, behavior: ruhig ? "auto" : "smooth" });
     } else if (r.top < 60) window.scrollBy({ top: r.top - 70, behavior: ruhig ? "auto" : "smooth" });
   };
