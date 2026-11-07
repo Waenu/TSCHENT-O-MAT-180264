@@ -2,6 +2,20 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.107.3.1",
+      "datum": "2026-11-07",
+      "titel": "Staffel-Schweif ohne gestrichelten Rand",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Der Schweif der offenen Familienstaffel ist eine leicht durchsichtige Fläche mit Pfeilen. Der gestrichelte Rand (Ameisenpfad) entfällt.",
+        "Die Hilfetexte nennen den Schweif «durchsichtig mit ▶» statt «gestrichelt».",
+        "Tabelle «Auf einen Blick»: Zeile «Skisaison» statt «Februar»; zuerst alle Saisons (mit Weihnachtstage), unten Lücke und Familienstaffel.",
+        "Der Schweif hat eckige Enden und etwas mehr Kontrast."
+      ]
+    },
+    {
       "v": "2.107.3.0",
       "datum": "2026-11-07",
       "titel": "Einheitlicher Name «Tiefsaison»; Familienstaffel eigene Zeile; Skisaison ohne Monatsklammer",
