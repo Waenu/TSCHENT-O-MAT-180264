@@ -1261,7 +1261,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.108.0.1";
+let VERSION = "2.108.0.2";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2752,7 +2752,7 @@ function angebote() {
     if (!st || en <= st) continue;
     bis = en;
     const n = diffDays(st, en);
-    out.push({ typ: "L", von: st, bis: en, text: "Lücke buchen: " + von(st, en) + " (" + n + (n === 1 ? " Nacht" : " Nächte") + ")" });
+    out.push({ typ: "L", von: st, bis: en, text: "Lücke buchen: " + von(st, en) + " (" + (n > P.minNaechte ? "maximal " + n + " Nächte" : n + (n === 1 ? " Nacht" : " Nächte")) + ")" });   // grössere Lücke: «maximal N Nächte», weil auch weniger geht (ab minNaechte)
   }
   try { schweifListe().forEach((x) => { if (x.bis >= h) { const st = x.von < h ? h : x.von; out.push({ typ: "S", von: st, bis: x.bis, text: "Staffel beginnen: ab " + tg(st) }); } }); } catch (e) {}
   return out.sort((a, b) => (a.von < b.von ? -1 : a.von > b.von ? 1 : a.typ < b.typ ? -1 : 1));
