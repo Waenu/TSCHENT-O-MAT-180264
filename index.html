@@ -1111,7 +1111,7 @@
       <summary>📚 Glossar</summary>
       <div class="rows">
         <p class="gl-thema">Übersicht</p>
-        <details class="sub" id="b-blick"><summary>📋 Auf einen Blick</summary><div class="bc" id="bc-blick"></div></details>
+        <details class="sub" id="b-blick"><summary>📊 Auf einen Blick</summary><div class="bc" id="bc-blick"></div></details>
         <p class="gl-thema">Bedienung</p>
         <details class="sub" id="b-kalender"><summary>🗓️ Kalender</summary><div class="bc" id="bc-kalender"><p id="calHint"></p><p>Die Legende direkt unter dem Kalender hilft euch, den Wunschtermin zu finden. Ist die Hilfe <span class="zei hilfe">?</span> an, erklärt sich jeder angetippte Tag.</p><div id="bildKalender"></div></div></details>
         <details class="sub" id="b-auswahl"><summary>🔽 Auswahlfelder</summary><div class="bc" id="auswahlTxt">
@@ -1169,7 +1169,7 @@
   <div id="notice" class="notice" role="status" hidden></div>
 
   <section id="cal" class="card cal" aria-label="Wunschtermin">
-    <h2>Wunschtermin finden <button type="button" class="sym" id="jahrBtn" aria-label="Jahresübersicht zeigen">🗓️</button></h2>
+    <h2>Wunschtermin finden <button type="button" class="sym" id="jahrBtn" aria-label="Jahresübersicht zeigen">🗓️</button><button type="button" class="sym" data-info="b-blick" aria-label="Regeln auf einen Blick">📊</button></h2>
     <div class="cal-nav">
       <div class="cal-links"><button type="button" id="calPrev" aria-label="Vorheriger Monat">‹</button><button type="button" id="calHeute" class="cal-heute" aria-label="Zum aktuellen Monat">Heute</button></div>
       <strong id="calTitle"></strong>
@@ -1257,7 +1257,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.107.2.6";
+let VERSION = "2.107.2.9";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2843,7 +2843,7 @@ function renderKalender() {
   {
     const el = document.getElementById("calHoch");
     const hochOn = HOCH.length > 0 || HOCH_MONATE.length > 0;
-    let h = '<p class="leg-h">Kalender ' + symBtn("b-blick", "📋") + "</p>";
+    let h = '<p class="leg-h">Kalender</p>';
     const hm = HOCH_MONATE.filter((m) => FEST_MONATE.indexOf(m) < 0);
     if (hochOn) h += '<p><i class="sw sw-hoch"></i><b>Hochsaison</b>' + (hm.length ? " (" + hochTxt() + ")" : "") + "</p>";
     h += '<p><i class="sw sw-rosa"></i><b>Nebensaison</b> (' + nebenTxt() + ')</p>';
@@ -5412,7 +5412,7 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
   function monatText() {   // ohne berührten Tag: nur der Monat selbst (Name, Zeiten mit ihren Farben), keine Hinweise zu einem einzelnen Tag
     const heute = heuteKey(), n = new Date(Date.UTC(calY, calM + 1, 0)).getUTCDate(), tage = [];
     for (let d = 1; d <= n; d++) { const k = dkey(calY, calM, d); if (k >= heute) tage.push(k); }
-    const kopf = "<b>" + esc(MONATE[calM] + (FEST_MONATE.indexOf(calM + 1) >= 0 ? " (Skisaison)" : "")) + "</b>" + " " + symBtn("b-blick", "📋");
+    const kopf = "<b>" + esc(MONATE[calM] + (FEST_MONATE.indexOf(calM + 1) >= 0 ? " (Skisaison)" : "")) + "</b>" + " " + symBtn("b-blick", "📊");
     monGrad = "";
     if (!tage.length) { letzteMon = ""; monHtml = kopf + "<p>Dieser Monat liegt in der Vergangenheit.</p>"; return monHtml; }
     const anz = new Map(), erster = new Map();   // Zeit-Kategorie → Anzahl Tage, erster Tag (Reihenfolge des Auftretens)
