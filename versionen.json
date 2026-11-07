@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.107.2.2",
+      "datum": "2026-11-07",
+      "titel": "Kalender: Knopf «Heute» bleibt sichtbar",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Wenn die Hilfe-Box oder die Termin-Box erscheint, scrollt die Seite höchstens so weit, dass der Knopf «Heute» oben im Bild bleibt. Der Titel «Wunschtermin finden» darf dabei hinausscrollen, dafür ist mehr von der Box zu sehen."
+      ]
+    },
+    {
       "v": "2.107.2.1",
       "datum": "2026-11-07",
       "titel": "Kalender: Titel bleibt sichtbar, wenn die Hilfe-Box erscheint",
