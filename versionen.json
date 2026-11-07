@@ -2,6 +2,28 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.111.0.0",
+      "datum": "2026-11-07",
+      "titel": "Eigenes Bestätigungsfenster statt Browser-Fenster",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Rückfragen wie «Anfrage wirklich ablehnen?» erscheinen in einem eigenen Fenster der App statt im Browser-Fenster «Auf waenu.github.io wird Folgendes angezeigt»."
+      ]
+    },
+    {
+      "v": "2.110.1.1",
+      "datum": "2026-11-07",
+      "titel": "Hinweis «Zimmer 1 bleibt unberührt» über der Preisberechnung",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Der Hinweis zu Zimmer 1 und rotem Bad steht bei der Buchung über der Preisberechnung statt im aufklappbaren Teil."
+      ]
+    },
+    {
       "v": "2.110.1.0",
       "datum": "2026-11-07",
       "titel": "Weihnachtstage: Warnung 370 Tage vorher",

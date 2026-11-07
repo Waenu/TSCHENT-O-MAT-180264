@@ -666,6 +666,10 @@
   .vh .arten { display: flex; flex-wrap: wrap; gap: 6px; margin: 2px 0 4px; }
   .vh .art { font-size: .72rem; font-weight: 700; padding: 1px 9px; border-radius: 999px; border: 1.5px solid currentColor; }
   .art-neu { color: #2E9E5B; } .art-fun { color: #3B7DC4; } .art-feh { color: #E07B1A; } .art-lay { color: #8E63C9; } .art-txt { color: #8A9490; }
+  .afr { position: fixed; inset: 0; z-index: 100000; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; padding: 16px; box-sizing: border-box; }
+  .afr-box { background: var(--surface); color: var(--fg); border: 2px solid var(--line); border-radius: 16px; padding: 18px; width: 100%; max-width: 420px; box-sizing: border-box; }
+  .afr-t { margin: 0 0 16px; font-size: 1.1rem; line-height: 1.4; }
+  .afr-b { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; } .afr-b .btn { min-height: 48px; min-width: 120px; }
   .ov { position: fixed; inset: 0; z-index: 100; background: var(--bg); color: var(--fg); overflow-y: auto; padding: 16px; box-sizing: border-box; }
   .ov[hidden] { display: none; }
   .todo-box { margin: 8px 0 2px; padding: 8px 10px; border: 2px solid var(--accent); border-radius: 6px; background: var(--note-bg); color: var(--fg); }
@@ -1262,7 +1266,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.110.1.0";
+let VERSION = "2.111.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2434,7 +2438,7 @@ document.addEventListener("click", async (ev) => {
   if (!bs && !bd) return;
   const msg = document.getElementById("gbMsg"), say = (t) => { if (msg) msg.textContent = t; };
   if (bestBusy) return;
-  if (bd) { const arr0 = bd.getAttribute("data-gbd"), x = GAESTE.find((y) => y.arr === arr0); if (!x || !confirm("Name «" + x.name + "» ab " + fmtTag(arr0) + " wirklich entfernen?")) return; }
+  if (bd) { const arr0 = bd.getAttribute("data-gbd"), x = GAESTE.find((y) => y.arr === arr0); if (!x || !(await appFrage("Name «" + x.name + "» ab " + fmtTag(arr0) + " wirklich entfernen?", "Ja, entfernen"))) return; }
   gastFormMerken();
   const f = GFORM || {}, arr = bs ? f.arr : bd.getAttribute("data-gbd"), alt = f.alt || "", name = bs ? (gastKurz(f.name) || (typNorm(f.typ) === "block" ? "blockiert" : "")) : "", typ = typNorm(f.typ);
   if (bs && !name) { say("Bitte einen Namen eingeben."); return; }
@@ -4222,12 +4226,27 @@ document.addEventListener("toggle", (e) => {
 })();
 document.getElementById("btnAnreise").addEventListener("click", () => { anreiseZeichnen(); ovOeffnen("ovAnreise", true); });
 document.getElementById("btnCheck").addEventListener("click", () => { checkZeichnen(); ovOeffnen("ovCheck", true); });
+// Eigenes Bestätigungsfenster statt des Browser-Fensters «Auf … wird Folgendes angezeigt»
+function appFrage(text, ok, abbr) {
+  return new Promise((res) => {
+    const alt = document.activeElement, w = document.createElement("div");
+    w.className = "afr"; w.setAttribute("role", "alertdialog"); w.setAttribute("aria-modal", "true");
+    w.innerHTML = '<div class="afr-box"><p class="afr-t"></p><div class="afr-b"><button type="button" class="btn" data-afr="0"></button><button type="button" class="btn main" data-afr="1"></button></div></div>';
+    w.querySelector(".afr-t").textContent = text;
+    w.querySelector('[data-afr="0"]').textContent = abbr || "Abbrechen"; w.querySelector('[data-afr="1"]').textContent = ok || "OK";
+    const zu = (v) => { document.removeEventListener("keydown", kd, true); w.remove(); try { if (alt && alt.focus) alt.focus(); } catch (e) {} res(v); };
+    const kd = (ev) => { if (ev.key === "Escape") { ev.preventDefault(); ev.stopPropagation(); zu(false); } };
+    w.addEventListener("click", (ev) => { ev.stopPropagation(); const b = ev.target.closest("[data-afr]"); if (b) zu(b.getAttribute("data-afr") === "1"); else if (ev.target === w) zu(false); });
+    document.addEventListener("keydown", kd, true);
+    document.body.appendChild(w); w.querySelector('[data-afr="0"]').focus();
+  });
+}
 function stornoGelesen() { try { const l = JSON.parse(localStorage.getItem("tm2_stornook")); return Array.isArray(l) ? l : []; } catch (e) { return []; } }
-function aufentWeg(e) {
+async function aufentWeg(e) {
   const so = e.target.closest("[data-stok]");
   if (so) { const l = stornoGelesen(); l.push(so.getAttribute("data-stok")); try { localStorage.setItem("tm2_stornook", JSON.stringify(l.slice(-50))); } catch (e2) {} aufentZeigen(); return true; }
   if (e.target.closest("[data-ok]")) { AUFENT = null; aufentSichern(); aufentZeigen(); return true; }
-  if (e.target.closest("[data-weg]") && confirm("Willst du den Aufenthalt wirklich entfernen?")) {
+  if (e.target.closest("[data-weg]") && (await appFrage("Willst du den Aufenthalt wirklich entfernen?", "Ja, entfernen"))) {
     AUFENT = null; aufentSichern(); aufentZeigen(); ovOeffnen("ovAnreise", false); ovOeffnen("ovCheck", false);
     return true;
   }
@@ -4592,7 +4611,12 @@ function rechnungHtml(r, bt) {
   zu();
   return h + (bt ? '<p class="hint">Bestätigt am ' + esc(fmtTag(bt.slice(0, 10))) + ", " + esc(bt.slice(11, 16)) + " Uhr.</p>" : "");
 }
-function rechDetails(r, bt) { return '<details class="rechd"><summary>🧾 Preisberechnung</summary><div class="rechin">' + rechnungHtml(r, bt) + "</div></details>"; }
+function rechDetails(r, bt) {
+  // Hinweis «Zimmer 1 und rotes Bad bleiben unberührt …» gehört zur Buchung: er steht über der Preisberechnung, nicht im aufklappbaren Teil
+  const isSp = (t) => /^Zimmer 1 und rotes Bad bleiben unber/.test(t.trim());
+  const zl = r ? r.split("\n") : [], sp = zl.filter(isSp).map((t) => '<p class="hint rech-sp">' + esc(t.trim()) + "</p>").join("");
+  return sp + '<details class="rechd"><summary>🧾 Preisberechnung</summary><div class="rechin">' + rechnungHtml(r ? zl.filter((t) => !isSp(t)).join("\n") : r, bt) + "</div></details>";
+}
 function vkKarte(x, cls, chips, status, acts) {
   return '<div class="vk' + (cls ? " " + cls : "") + '" data-vk="' + esc(bKey(x)) + '"><div class="vk-top"><span class="vk-name">' + esc(x.name) + '</span><button type="button" class="vk-datum" data-zk="' + esc(x.arr) + '" aria-label="Im Kalender zeigen">📅 ' + esc(fmtTag(x.arr)) + " bis " + esc(fmtTag(x.dep)) + " ›</button></div>" + chips + (status ? '<div class="vk-st hint">' + status + "</div>" : "") + (typeof x.rechnung === "string" ? rechDetails(x.rechnung, x.bestaetigt) : "") + '<div class="vk-acts">' + acts + "</div></div>";
 }
@@ -5188,9 +5212,9 @@ document.getElementById("bestKasten").addEventListener("click", async (e) => {
   if (er) { erinnertVermerken(er.getAttribute("data-erinnert")); return; }
   if (bestBusy) return;
   const wz = e.target.closest("[data-wz]");
-  if (wz) { const k1 = wz.getAttribute("data-wz"), b1 = BUCH.find((x) => bKey(x) === k1); if (b1 && confirm("Ist die Wäsche von " + b1.name + " (" + fmtTag(b1.arr) + " bis " + fmtTag(b1.dep) + ") zurück bei euch?")) waescheZurueck(k1); return; }
+  if (wz) { const k1 = wz.getAttribute("data-wz"), b1 = BUCH.find((x) => bKey(x) === k1); if (b1 && (await appFrage("Ist die Wäsche von " + b1.name + " (" + fmtTag(b1.arr) + " bis " + fmtTag(b1.dep) + ") zurück bei euch?", "Ja, ist zurück"))) waescheZurueck(k1); return; }
   const bz = e.target.closest("[data-bez]");
-  if (bz) { const k0 = bz.getAttribute("data-bez"), b0 = BUCH.find((x) => bKey(x) === k0); if (b0 && confirm("Zahlung von " + b0.name + " (CHF " + b0.betrag + ", " + fmtTag(b0.arr) + " bis " + fmtTag(b0.dep) + ") als eingegangen verbuchen?")) zahlungVerbuchen(k0); return; }
+  if (bz) { const k0 = bz.getAttribute("data-bez"), b0 = BUCH.find((x) => bKey(x) === k0); if (b0 && (await appFrage("Zahlung von " + b0.name + " (CHF " + b0.betrag + ", " + fmtTag(b0.arr) + " bis " + fmtTag(b0.dep) + ") als eingegangen verbuchen?", "Ja, verbuchen"))) zahlungVerbuchen(k0); return; }
   const f = (a) => { const el = e.target.closest("[" + a + "]"); return el ? el.getAttribute(a) : null; };
   const find = (l, key) => l.find((x) => bKey(x) === key);
   if (e.target.closest("[data-zu]")) { bestMsg = ""; bestFehler = ""; bestZeigen(); return; }
@@ -5199,7 +5223,7 @@ document.getElementById("bestKasten").addEventListener("click", async (e) => {
   if (lkc) { kopiere(lkText(lkc), e.target.closest("[data-lkcp]"), "Kopiert"); return; }
   if (lkn || e.target.closest("[data-lkalle]")) {
     const alle = !lkn, namen = alle ? ABS.slice() : [lkn];
-    if (alle && LK_HASH && Object.keys(LK_HASH).length && !confirm("Alle acht Links neu erzeugen? Bereits verschickte Links werden ungültig.")) return;
+    if (alle && LK_HASH && Object.keys(LK_HASH).length && !(await appFrage("Alle acht Links neu erzeugen? Bereits verschickte Links werden ungültig.", "Ja, neu erzeugen"))) return;
     bestBusy = true; bestFehler = "";
     lkErzeugen(namen).then(() => { bestMsg = alle ? "Alle acht Links sind erzeugt." : "Neuer Link für " + lkn + " ist erzeugt."; }).catch((er) => { bestFehler = er.message; }).then(() => { bestBusy = false; bestZeigen(); });
     return;
@@ -5218,7 +5242,7 @@ document.getElementById("bestKasten").addEventListener("click", async (e) => {
   const gd = f("data-gdel");
   if (gd) {
     const x = GAESTE.find((y) => y.arr === gd);
-    if (!x || !confirm("Name «" + x.name + "» ab " + fmtTag(gd) + " wirklich entfernen?")) return;
+    if (!x || !(await appFrage("Name «" + x.name + "» ab " + fmtTag(gd) + " wirklich entfernen?", "Ja, entfernen"))) return;
     bestBusy = true; bestFehler = "";
     try { const j = await ghGaeste((l) => l.filter((y) => y.arr !== gd)); gaesteAn(j); try { localStorage.setItem("tm2_gaeste", JSON.stringify(j)); } catch (e2) {} bestMsg = "Name entfernt."; }
     catch (err) { bestFehler = err && err.message ? err.message : "Das hat nicht geklappt."; }
@@ -5238,7 +5262,7 @@ document.getElementById("bestKasten").addEventListener("click", async (e) => {
   const nein = f("data-nein");
   if (nein) {
     const x = find(OFFEN, nein); if (!x) return;
-    if (!confirm("Anfrage von " + x.name + " (" + fmtTag(x.arr) + " bis " + fmtTag(x.dep) + ") wirklich ablehnen?")) return;
+    if (!(await appFrage("Anfrage von " + x.name + " (" + fmtTag(x.arr) + " bis " + fmtTag(x.dep) + ") wirklich ablehnen?", "Ja, ablehnen"))) return;
     bestBusy = true; bestFehler = "";
     const btn = e.target.closest("button"); btn.disabled = true; btn.textContent = "Speichere …";
     try {
@@ -5283,7 +5307,7 @@ document.getElementById("bestKasten").addEventListener("click", async (e) => {
       bestMsg = "✅ Bestätigt und gespeichert (" + esc(x.name) + "). In 1 bis 2 Minuten sehen es alle, dann erscheinen beim Kind die Listen." + (pv ? " <b>Mit Vorbehalt: nicht in Airbnb sperren.</b>" : (x.verb ? " <b>Verbindlich: bitte in Airbnb sperren.</b>" : "")) + bestWaLink(text, bKey(x)) + erledigenHtml(Object.assign({}, x, { prov: pv }));
     } else {
       const [name, arr, dep] = del.split("|");
-      if (!confirm("Aufenthalt von " + name + " (" + fmtTag(arr) + " bis " + fmtTag(dep) + ") wirklich entfernen?")) { bestBusy = false; bestZeigen(); return; }
+      if (!(await appFrage("Aufenthalt von " + name + " (" + fmtTag(arr) + " bis " + fmtTag(dep) + ") wirklich entfernen?", "Ja, entfernen"))) { bestBusy = false; bestZeigen(); return; }
       const j = await ghAendern((l, jj) => { logEintrag(jj, "Entfernt: " + keyText(del)); return l.map((y) => (bKey(y) === del ? (ABS.indexOf(String(y.name).trim()) >= 0 ? { name: y.name, arr: y.arr, dep: y.dep, status: "storniert" } : null) : y)).filter(Boolean); });
       buchungenAn(j); try { localStorage.setItem("tm2_buchungen", JSON.stringify(j)); } catch (e2) {}
       bestMsg = "Entfernt: " + esc(name) + ", " + esc(fmtTag(arr)) + " bis " + esc(fmtTag(dep)) + "." + (ABS.indexOf(String(name).trim()) >= 0 ? " Beim Öffnen der App sieht " + esc(name) + " die Meldung «Storniert»." : "");
