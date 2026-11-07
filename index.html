@@ -1261,7 +1261,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.108.0.5";
+let VERSION = "2.109.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -4598,11 +4598,14 @@ function vkKarte(x, cls, chips, status, acts) {
 const VK_OFFEN = new Set();   // geöffnete Abschnitte der Verwaltung (bleiben beim Neuzeichnen offen, nach dem Neuladen sind alle eingeklappt)
 function vkSek(titel, n, heiss) { return '<div class="vk-sec" role="button" tabindex="0" data-vksec="' + esc(titel) + '" aria-expanded="false"><span class="vk-pfeil" aria-hidden="true">▸</span><span class="vk-t">' + titel.replace("🔓", lockSvg(true)).replace("🔒", lockSvg(false)) + '</span> <span class="n' + (heiss && n ? " heiss" : "") + '">' + n + "</span></div>"; }
 function vkEinklappen(k) {   // jeden Abschnitt mit Titel samt Inhalt bis zum nächsten Titel einklappen
-  k.querySelectorAll(":scope > .vk-sec[data-vksec]").forEach((h) => {
-    const body = document.createElement("div"); body.className = "vk-body";
-    let nx = h.nextElementSibling;
-    while (nx && !nx.matches(".vk-sec, .vk-trenn, .vk-nav, details.papi-hinweis")) { const w = nx.nextElementSibling; body.appendChild(nx); nx = w; }
-    h.after(body);
+  k.querySelectorAll(".vk-sec[data-vksec]").forEach((h) => {
+    let body = h.nextElementSibling;
+    if (!body || !body.classList.contains("vk-body")) {
+      body = document.createElement("div"); body.className = "vk-body";
+      let nx = h.nextElementSibling;
+      while (nx && !nx.matches(".vk-sec, .vk-trenn, .vk-nav, details.papi-hinweis")) { const w = nx.nextElementSibling; body.appendChild(nx); nx = w; }
+      h.after(body);
+    }
     const auf = VK_OFFEN.has(h.getAttribute("data-vksec"));
     body.hidden = !auf; h.setAttribute("aria-expanded", auf ? "true" : "false");
     h.querySelector(".vk-pfeil").textContent = auf ? "▾" : "▸";
@@ -4769,7 +4772,7 @@ function bestZeigen() {
     const bp = bl.filter((x) => x.prov).sort(nachDatum), bf = bl.filter((x) => !x.prov).sort(nachDatum);
     s += vkSek("🔓 Mit Vorbehalt, noch nicht fest", bp.length) + (bp.length ? bp.map(festKarte).join("") : '<p class="hint">Keine Termine mit Vorbehalt.</p>');
     s += vkSek("🔒 Bestätigt, fest", bf.length) + (bf.length ? bf.map(festKarte).join("") : '<p class="hint">Keine festen Aufenthalte.</p>');
-    s += '<hr class="vk-trenn">' + vkSek("📚 Nachschlagen", "").replace(' <span class="n"></span>', "").replace(' data-vksec="', ' data-fest="');
+    s += '<hr class="vk-trenn">' + vkSek("📚 Nachschlagen", "").replace(' <span class="n"></span>', "") + '<div class="vk-body">';
     s += '<div class="vk-nav"><button type="button" class="btn" data-zeig="A">' + (zeigA ? "Abgelehnte ausblenden" : "Abgelehnte anzeigen (" + ABGEL.length + ")") + '</button><button type="button" class="btn" data-zeig="L">' + (zeigL ? "Logbuch ausblenden" : "Logbuch anzeigen (" + LOGBUCH.length + ")") + "</button></div>";
     s += '<div class="vk-nav"><button type="button" class="btn" style="grid-column:1/-1" data-zeig="G">' + (zeigG ? "Gäste ausblenden" : "👤 Gäste mit Namen (" + GAESTE.length + ")") + "</button></div>";
     if (zeigG) s += gaesteFormular();
@@ -4783,6 +4786,7 @@ function bestZeigen() {
     if (zeigL) s += "<b>📒 Logbuch</b>" + (LOGBUCH.length ? "<ul>" + LOGBUCH.slice().reverse().map((e) => "<li><span class=\"hint\">" + esc(fmtTag(e.t.slice(0, 10))) + ", " + esc(e.t.slice(11, 16)) + " Uhr</span> " + esc(e.text) + "</li>").join("") + "</ul>" : '<p class="hint">Noch keine Einträge.</p>');
     if (zeigA) s += vkSek("✖ Abgelehnt", ABGEL.length) + (ABGEL.length ? ABGEL.map((x) => { const z = BUCH_ABGEL.find((y) => bKey(y) === bKey(x)); const xx = Object.assign({}, x, { bescheid: z ? z.bescheid : "" }); return vkKarte(xx, xx.bescheid ? "" : "offen", '<div class="vk-chips"><span class="vk-chip">' + (xx.pers ? xx.pers + (xx.pers === 1 ? " Person" : " Personen") : "Absage") + "</span></div>", bescheidStatus(xx), bescheidKnopf(xx, true) + '<button type="button" class="btn" data-wieder="' + esc(bKey(x)) + '">↩️ wieder offen</button>'); }).join("") : '<p class="hint">Keine abgelehnten Anfragen.</p>');
     if (bestFehler && !zeigG) s += '<p class="hint">⚠️ ' + esc(bestFehler) + "</p>";
+    s += "</div>";   // Ende «Nachschlagen»
     const cpZ = cpZeile;
     s += '<details class="papi-hinweis"><summary>📋 Ablauf bei Buchungen</summary>' +
       '<p><b>' + lockSvg(false) + ' Richtig in Airbnb sperren</b></p>' +
