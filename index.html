@@ -1261,7 +1261,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.107.2.13";
+let VERSION = "2.107.2.14";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1897,15 +1897,15 @@ function blickHtml() {
     const teil = P.famAnteil > 0 && P.gastZimmer > 0, zimSum = chf(P.famAnteil + P.gastZimmer);   // geteiltes Zimmer: Familie + Freund = Zimmerpreis (bleibt bei 70)
     const fam = chf(P.famPausch), famSp = (P.sparEin > 0 ? "<small>" + chf(P.famPausch - P.sparEin) + " mit unberührtem Zimmer 1</small>" : "") + (teil ? "<small>" + chf(P.famAnteil) + " im Zimmer mit Freund (Zimmer bleibt bei " + zimSum + ")</small>" : "");
     const fr = chf(P.gast), frZ = P.gastZimmer > 0 && P.gastZimmer !== P.gast ? "<small>" + chf(P.gastZimmer) + " im Zimmer eines Familienmitglieds" + (teil ? " (Zimmer bleibt bei " + zimSum + ")" : "") + "</small>" : "";
-    const nacht = (n) => n + (n === 1 ? " Nacht" : " Nächte");
+    const nacht = (n) => n + (n === 1 ? " Nacht" : " Nächte"), erste = (n) => n === 1 ? "erste Woche" : "ersten " + n + " Wochen";
     const wo = (f, t) => '<td class="bz" style="border-left-color:var(' + f + ')">' + t + "</td>";
     const z = [];
     const nebM = [1,2,3,4,5,6,7,8,9,10,11,12].filter((m) => { const k = RUHE_JAHR + "-" + String(m).padStart(2, "0") + "-28"; return !istHoch(k) && !istRuhe(k); }).map(nm);   // Nebensaison = weder Hochsaison noch Staffel-Zeit
-    z.push({ f: "--accent", w: "<b>Nebensaison</b><small>" + liste(nebM) + ", Oktober (erste " + OKT_WOCHEN + " Wochen)</small>", a: fam + famSp, g: fr + frZ, m: nacht(P.minNaechte), t: "<b>fest</b><small>in Airbnb gesperrt</small>" });
-    z.push({ f: "--ruhe-line", w: "<b>Staffel-Zeit</b><small>März (nach " + MAERZ_WOCHEN + (MAERZ_WOCHEN === 1 ? " Woche" : " Wochen") + "), April, Oktober (nach " + OKT_WOCHEN + " Wochen), November, Dezember bis " + fmtMD(addDays(new Date().getFullYear() + "-" + SPERRE[0], -1).slice(5)) + "</small>", a: fam + famSp, g: fr + frZ + "<small>Selbst reinigen nur ohne Freunde</small>", m: nacht(P.minNaechte), t: "<b>fest</b><small>Familienstaffel möglich</small>" });
+    z.push({ f: "--accent", w: "<b>Nebensaison</b><small>" + liste(nebM) + ", Oktober (" + erste(OKT_WOCHEN) + ")</small>", a: fam + famSp, g: fr + frZ, m: nacht(P.minNaechte), t: "<b>fest</b><small>in Airbnb gesperrt</small>" });
+    z.push({ f: "--ruhe-line", w: "<b>Staffel-Zeit</b><small>März (ab der " + (MAERZ_WOCHEN + 1) + ". Woche), April, Oktober (ab der " + (OKT_WOCHEN + 1) + ". Woche), November, Dezember bis " + fmtMD(addDays(new Date().getFullYear() + "-" + SPERRE[0], -1).slice(5)) + "</small>", a: fam + famSp, g: fr + frZ + "<small>Selbst reinigen nur ohne Freunde</small>", m: nacht(P.minNaechte), t: "<b>fest</b><small>Familienstaffel möglich</small>" });
     if (hm.length) {
       const hmin = P.hochMinNaechte > 0 ? P.hochMinNaechte : P.minNaechte;
-      z.push({ f: "--hoch-line", w: "<b>Hochsaison</b><small>" + liste(hm.map(nm)) + ", März (erste " + MAERZ_WOCHEN + (MAERZ_WOCHEN === 1 ? " Woche" : " Wochen") + "), Dezember nach " + fmtMD(SPERRE[1]) + "</small>", a: fam + famSp, g: fr + frZ, m: nacht(hmin), t: "<b>mit Vorbehalt</b><small>Ein Airbnb-Gast hat Vorrang</small>" });
+      z.push({ f: "--hoch-line", w: "<b>Hochsaison</b><small>" + liste(hm.map(nm)) + ", März (" + erste(MAERZ_WOCHEN) + "), " + (() => { const k1 = addDays(RUHE_JAHR + "-" + SPERRE[1], 1); return nm(Number(k1.slice(5, 7))) + " ab dem " + Number(k1.slice(8)) + "."; })() + "</small>", a: fam + famSp, g: fr + frZ, m: nacht(hmin), t: "<b>mit Vorbehalt</b><small>Ein Airbnb-Gast hat Vorrang</small>" });
       if (P.hochNachtMin > 0) z.push({ f: "--hoch-line", w: "<b>Hochsaison</b><small>verbindlich</small>", a: chf(P.hochNachtMin) + "<small>pauschal pro Nacht, ganzes Chalet</small>", g: "keine Freunde", m: P.verbMin + " bis " + nacht(P.verbMax), t: "<b>fest</b><small>in Airbnb gesperrt</small>" });
     }
     fm.forEach((m) => {

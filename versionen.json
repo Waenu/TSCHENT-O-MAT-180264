@@ -2,6 +2,18 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.107.2.14",
+      "datum": "2026-11-07",
+      "titel": "Auf einen Blick: Wochenangaben in Klammern verständlicher",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Statt «März (nach 1 Woche)» steht «März (ab der 2. Woche)», statt «erste 1 Woche» steht «erste Woche» und «ersten 2 Wochen».",
+        "Hochsaison: «Dezember ab dem 25.» statt «Dezember nach 24. Dezember»."
+      ]
+    },
+    {
       "v": "2.107.2.13",
       "datum": "2026-11-07",
       "titel": "Texte: «gestrichelt» bei Symbolen ersetzt",
