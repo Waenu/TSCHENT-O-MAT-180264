@@ -2,6 +2,19 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.112.0.0",
+      "datum": "2026-11-08",
+      "titel": "Pimlical-Häkchen und Zahlung bei Vorbehalt",
+      "arten": [
+        "Funktion",
+        "Regel"
+      ],
+      "punkte": [
+        "Zahlung bei Termin mit Vorbehalt: Nach der Abreise zählt die Zahlung als offen (ohne Konflikt mit einem Airbnb-Gast), mit Aufgabe in der Verwaltung und roter Meldung beim Kind nach der Frist.",
+        "Neues Häkchen «In Pimlical eingetragen» in der Verwaltung. Solange es fehlt, zählt der Eintrag als offener Punkt (nur für Aufenthalte, die ab dem 8.11.2026 bestätigt werden)."
+      ]
+    },
+    {
       "v": "2.111.0.2",
       "datum": "2026-11-08",
       "titel": "Hinweis «Zimmer 1 …» in der Verwaltung über dem Status",
