@@ -548,7 +548,7 @@
   #btnBuch[hidden], #btnAnsichten[hidden] { display: none; }
   .bigbtn.blau { color: var(--marke); border-color: var(--marke); }
   .bigbtn.blau.on { background: var(--marke); color: var(--accent-fg); }
-  #bestKasten.note.h { border-width: 2px; border-radius: 6px; padding: 14px 16px; }
+  #bestKasten.note.h { border: 0; border-radius: 6px; padding: 14px 16px; }   /* seit 2.112.1.0 ohne blauen Rahmen wie die anderen Bereiche */
   #ver { user-select: none; -webkit-user-select: none; touch-action: manipulation; }
   .bigbtn.on { background: var(--accent); color: var(--accent-fg); }
   #hilfe { display: flex; flex-direction: column; gap: 12px; }
@@ -584,7 +584,7 @@
   .exb.gelb { background: var(--gelb); color: var(--gelb-fg); box-shadow: inset 0 0 0 1.5px var(--gelb-ol); }
   .exb .zk { margin-right: 4px; }
   .exb.konf { box-shadow: 0 0 0 2.5px #C0392B; margin: 3px 3px 0; }
-  .exb.stf { background: transparent; border: 2px dashed var(--gruen-ol); color: var(--fg); }
+  .exb.stf { background: transparent; border: 0; color: var(--fg); }
   .exb.occ { background: repeating-linear-gradient(45deg, transparent 0 4px, var(--line) 4px 6px); border: 1px solid var(--line); color: var(--muted); }
   .exb.gast { background: var(--fest-bg); color: var(--fg); border: 1px solid var(--fest-line); }
   .exb.fam { background: var(--accent); color: var(--accent-fg); }
@@ -875,6 +875,8 @@
   .leg-det { margin: 10px 0 0; }
   .bk-leg { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 8px 0 0; font-size: var(--t-small); }
   .bk-leg span { display: inline-flex; align-items: center; gap: 6px; }
+  #calHoch p { padding-left: 30px; text-indent: -30px; }   /* Umbruch bündig zum Text, nicht unter dem Farbfeld (22 px Feld + 8 px Abstand) */
+  #calHoch p.leg-h { padding-left: 0; text-indent: 0; }
   .bk-leg i { position: relative; overflow: hidden; flex: none; width: 64px; height: 28px; border-radius: 14px; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; font-style: normal; font-size: .7rem; }
   .bk-leg .k-gruen { background: var(--gruen); box-shadow: 0 0 0 1.5px var(--gruen-ol); }
   .bk-leg .k-gelb { background: var(--gelb); box-shadow: 0 0 0 1.5px var(--gelb-ol); }
@@ -933,7 +935,7 @@
   .exb.gelb { background: linear-gradient(rgba(95,111,108,.32), rgba(95,111,108,.32)), var(--bk-boden); color: var(--fg); border: 2px dashed var(--bk-ol); box-shadow: none; }
   .exb.gelb.ein { border-radius: 11px 0 0 11px; margin-left: -12px; padding-left: 16px; }
   .exb.konf { box-shadow: 0 0 0 2.5px #C0392B; }
-  .exb.stf { background: var(--bk-boden); border: 2px dashed var(--bk-ol); color: var(--fg); }
+  .exb.stf { background: rgba(95,111,108,.52); border: 0; color: var(--fg); }   /* Schweif der Staffel: leicht durchsichtige Fläche mit Pfeilen wie im Kalender, kein gestrichelter Rand */
   .exb .zk { height: 16px; min-width: 0; font-size: .65rem; }
   .exrow .exb.rkx { flex: none; width: 14px; min-width: 14px; padding: 0; border: 0; }
   .exrow .exb.rkx.e { background: var(--bk-rk); }
@@ -1266,7 +1268,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.112.0.0";
+let VERSION = "2.112.1.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2858,13 +2860,13 @@ function renderKalender() {
     const hm = HOCH_MONATE.filter((m) => FEST_MONATE.indexOf(m) < 0);
     if (hochOn) h += '<p><i class="sw sw-hoch"></i><b>Hochsaison</b>' + (hm.length ? " (" + hochTxt() + ")" : "") + "</p>";
     h += '<p><i class="sw sw-rosa"></i><b>Nebensaison</b> (' + nebenTxt() + ')</p>';
-    if (FEST_MONATE.length) h += '<p><i class="sw sw-fest"></i><b>Skisaison</b> ' + symBtn("b-februar", "⛷️") + "</p>";
-    if (RUHE.length) h += '<p><i class="sw sw-ruhe"></i><b>Tiefsaison: selbst reinigen möglich</b> (' + ruheTxt() + ") " + symBtn("b-ruhe", "🧹") + "</p>";
+    if (FEST_MONATE.length) h += '<p><i class="sw sw-fest"></i><b>Skisaison</b></p>';
+    if (RUHE.length) h += '<p><i class="sw sw-ruhe"></i><b>Tiefsaison: selbst reinigen möglich</b> (' + ruheTxt() + ")</p>";
     h += '<p><i class="sw sw-xmas"></i><b>Weihnachtstage</b> (' + fmtMD(SPERRE[0]) + ' bis ' + fmtMD(SPERRE[1]) + ', geschlossen)</p>';
     if (SPITZ.length) h += '<p><i class="sw sw-spitz"></i><b>Spitzenzeit</b> (Preis auf Anfrage)</p>';
-    if (uebrigVorhanden()) h += '<p><i class="sw sw-normal"></i><b>Übrige Zeiten:</b> Nur mit Endreinigung ' + symBtn("b-endrein", "🪣") + '</p>';
+    if (uebrigVorhanden()) h += '<p><i class="sw sw-normal"></i><b>Übrige Zeiten:</b> Nur mit Endreinigung</p>';
     h += '<p class="leg-h">Lücken-Hinweis</p>';
-    if (SICHT_AN || P.lueckeMax > 0) h += '<p><i class="sw sw-gap"></i><b>Lücke</b> ' + symBtn('b-luecke', '🧩') + '</p>';
+    if (SICHT_AN || P.lueckeMax > 0) h += '<p><i class="sw sw-gap"></i><b>Lücke</b></p>';
     h += '<p><i class="sw sw-occ"></i>nicht verfügbar</p>';
     if (kurzMap().size) h += '<p><i class="sw sw-kurz"></i><b>Buchung unmöglich:</b> Zwischen den Belegungen bleiben weniger als ' + P.minNaechte + ' Nächte</p>';
     el.innerHTML = h;
@@ -2889,26 +2891,26 @@ function terminBox() {
   const an = window._hilfeAn ? window._hilfeAn() : true;
   const arr = ARR, dep = DEP, W = [], I = [];
   const sp = spitzTermin();
-  if (sp) W.push(fld("spitz") + "<b>⚠️ Spitzenzeit" + (sp[2] ? " (" + esc(sp[2]) + ")" : "") + ":</b> Dafür gibt es keinen Familienpreis, die Eltern legen den Preis fest. Eine Anfrage ist möglich. " + symBtn("b-spitzenzeit", "🏷️"));
-  if (SICHT.size && inSicht(arr, dep)) I.push("<b>Lücke durch Vorlaufzeit:</b> Airbnb kann diese Nächte nicht mehr verkaufen. Normaler Familienpreis, ohne Vorbehalt. " + symBtn("b-sicht", "⏸️"));
+  if (sp) W.push(fld("spitz") + "<b>⚠️ Spitzenzeit" + (sp[2] ? " (" + esc(sp[2]) + ")" : "") + ":</b> " + symBtn("b-spitzenzeit", "🏷️") + " Dafür gibt es keinen Familienpreis, die Eltern legen den Preis fest. Eine Anfrage ist möglich.");
+  if (SICHT.size && inSicht(arr, dep)) I.push("<b>Lücke durch Vorlaufzeit:</b> " + symBtn("b-sicht", "⏸️") + " Airbnb kann diese Nächte nicht mehr verkaufen. Normaler Familienpreis, ohne Vorbehalt.");
   if (!festStay(arr, dep)) for (let k = arr; k < dep; k = addDays(k, 1)) if (istHoch(k) && !sichtNacht(k)) {
-    const sym = " " + symBtn("b-hochsaison", "🏔️");
-    if (P.hochNachtMin > 0 && !verbMoeglich(arr, dep)) W.push(fld("hoch") + "<b>⚠️ Hochsaison:</b> Verbindlich buchen geht nur mit " + P.verbMin + " bis " + P.verbMax + " Nächten, alle in der Hochsaison, ohne Freunde. Sonst nur mit Vorbehalt." + sym);
-    else I.push(fld("hoch") + "<b>Hochsaison:</b> " + (P.hochNachtMin > 0 ? "Verbindlich buchen geht (ohne Freunde, " + chf(P.hochNachtMin) + " pro Nacht plus Endreinigung). Mit Vorbehalt hat ein Airbnb-Gast Vorrang." : "Die Nächte sind bei Airbnb-Gästen gefragt. Eine Anfrage ist möglich.") + sym);
+    const sym = symBtn("b-hochsaison", "🏔️") + " ";
+    if (P.hochNachtMin > 0 && !verbMoeglich(arr, dep)) W.push(fld("hoch") + "<b>⚠️ Hochsaison:</b> " + sym + "Verbindlich buchen geht nur mit " + P.verbMin + " bis " + P.verbMax + " Nächten, alle in der Hochsaison, ohne Freunde. Sonst nur mit Vorbehalt.");
+    else I.push(fld("hoch") + "<b>Hochsaison:</b> " + sym + (P.hochNachtMin > 0 ? "Verbindlich buchen geht (ohne Freunde, " + chf(P.hochNachtMin) + " pro Nacht plus Endreinigung). Mit Vorbehalt hat ein Airbnb-Gast Vorrang." : "Die Nächte sind bei Airbnb-Gästen gefragt. Eine Anfrage ist möglich."));
     break;
   }
-  if (festStay(arr, dep)) I.push(fld("fest") + "<b>Skisaison:</b> Der Termin ist fest, ihr habt Buchungssicherheit." + (minFuer(arr, dep) > P.minNaechte ? " Mindestens " + minFuer(arr, dep) + " Nächte." : "") + (P.festMinGaeste > 0 ? " Mindestens " + P.festMinGaeste + " Gäste." : "") + (P.festBodenWoche > 0 ? " <b>Preis:</b> ab " + chf(P.festBodenWoche) + " pro 7 Nächte inklusive Endreinigung, mit Freunden sinkt dein Anteil." : P.mindestpreisWoche > 0 ? " <b>Mit Freunden sparst du:</b> Ab " + P.mindestpreisAbNaechte + " Nächten sinkt der Gesamtpreis nie unter " + chf(P.mindestpreisWoche) + " pro 7 Nächte, dein eigener Anteil entfällt, soweit es der Preis zulässt. " + symBtn("b-sparen", "💸") : "") + " " + symBtn("b-februar", "⛷️"));
-  else if (nebenFest(arr, dep) || (S.verbOK === true && S.art === ART_V)) I.push((nebenFest(arr, dep) ? fld("rosa") : "") + "<b>Fest gebucht:</b> Der Termin wird in Airbnb gesperrt, ihr habt Buchungssicherheit. " + symBtn("b-prov", "🔒"));
-  if (ruheStay() && !S.luecke && S.selbstOK !== true) W.push("<b>⚠️ Keine Staffel:</b> Nach eurer Abreise bleiben weniger als " + P.minNaechte + " freie Nächte bis zum nächsten Airbnb-Gast. Es gilt der normale Termin: Eltern reinigen, Freunde möglich. " + symBtn("b-ruhe", "🧹"));
-  if (ruheStay() && !S.luecke && S.selbstOK === true) I.push(fld("ruhe") + "<b>Tiefsaison:</b> Ohne Freunde reinigt ihr selbst und die Familienstaffel kann anschliessen. Mit Freunden reinigen die Eltern. " + symBtn("b-staffel", "🔗") + " " + symBtn("b-ruhe", "🧹"));
+  if (festStay(arr, dep)) I.push(fld("fest") + "<b>Skisaison:</b> " + symBtn("b-februar", "⛷️") + " Der Termin ist fest, ihr habt Buchungssicherheit." + (minFuer(arr, dep) > P.minNaechte ? " Mindestens " + minFuer(arr, dep) + " Nächte." : "") + (P.festMinGaeste > 0 ? " Mindestens " + P.festMinGaeste + " Gäste." : "") + (P.festBodenWoche > 0 ? " <b>Preis:</b> ab " + chf(P.festBodenWoche) + " pro 7 Nächte inklusive Endreinigung, mit Freunden sinkt dein Anteil." : P.mindestpreisWoche > 0 ? " <b>Mit Freunden sparst du:</b> Ab " + P.mindestpreisAbNaechte + " Nächten sinkt der Gesamtpreis nie unter " + chf(P.mindestpreisWoche) + " pro 7 Nächte, dein eigener Anteil entfällt, soweit es der Preis zulässt. " + symBtn("b-sparen", "💸") : "") + " " + symBtn("b-februar", "⛷️"));
+  else if (nebenFest(arr, dep) || (S.verbOK === true && S.art === ART_V)) I.push((nebenFest(arr, dep) ? fld("rosa") : "") + "<b>Fest gebucht:</b> " + symBtn("b-prov", "🔒") + " Der Termin wird in Airbnb gesperrt, ihr habt Buchungssicherheit.");
+  if (ruheStay() && !S.luecke && S.selbstOK !== true) W.push("<b>⚠️ Keine Staffel:</b> " + symBtn("b-staffel", "🔗") + " Nach eurer Abreise bleiben weniger als " + P.minNaechte + " freie Nächte bis zum nächsten Airbnb-Gast. Es gilt der normale Termin: Eltern reinigen, Freunde möglich.");
+  if (ruheStay() && !S.luecke && S.selbstOK === true) I.push(fld("ruhe") + "<b>Tiefsaison:</b> Ohne Freunde reinigt " + symBtn("b-ruhe", "🧹") + " ihr selbst und die Familienstaffel " + symBtn("b-staffel", "🔗") + " kann anschliessen. Mit Freunden reinigen die Eltern.");
   if (ruheStay() && !S.luecke && S.selbstOK === true && staffelUnterbruch(arr).length === 0) {
     const sv = schweifStop({ arr: arr, dep: dep }).stopper;
-    if (sv && sv.sb) { const weg = starterVerlieren(arr, dep); I.push("<b>Staffel vor einer bestehenden:</b> Direkt nach euch folgt die Staffel von " + esc(sv.name) + " (ab " + esc(fmtTag(sv.arr)) + "). Ihr beginnt die Kette, " + esc(sv.name) + " teilt die Endreinigung, ihr bezieht das gereinigte Chalet ohne eigene Wäsche." + (weg.length ? " " + esc(weg.join(" und ")) + " war bisher der Beginn und bringt dann eigene Wäsche mit." : "") + " " + symBtn("b-staffel", "🔗")); }
+    if (sv && sv.sb) { const weg = starterVerlieren(arr, dep); I.push("<b>Staffel vor einer bestehenden:</b> " + symBtn("b-staffel", "🔗") + " Direkt nach euch folgt die Staffel von " + esc(sv.name) + " (ab " + esc(fmtTag(sv.arr)) + "). Ihr beginnt die Kette, " + esc(sv.name) + " teilt die Endreinigung, ihr bezieht das gereinigte Chalet ohne eigene Wäsche." + (weg.length ? " " + esc(weg.join(" und ")) + " war bisher der Beginn und bringt dann eigene Wäsche mit." : "")); }
   }
-  if (!S.luecke && RUHE.length > 0 && !ruheStay()) { let teil = false; for (let k = arr; k < dep; k = addDays(k, 1)) if (istRuhe(k)) { teil = true; break; } if (teil) W.push(fld("ruhe") + "<b>⚠️ Teils Tiefsaison:</b> Selber reinigen geht nur, wenn der ganze Aufenthalt in der Tiefsaison liegt. " + symBtn("b-ruhe", "🧹")); }
-  if (provSel() && !(S.verbOK === true && S.art === "")) W.push("<b>⚠️ Mit Vorbehalt:</b> Der Termin ist nicht in Airbnb gesperrt. Meldet sich ein Airbnb-Gast, hat er Vorrang und ihr müsst weichen. Plant eine Alternative ein. " + symBtn("b-prov", "🔓") + " <b>Buchungssicherheit:</b> " + provSicherZeile(arr, dep));
-  if (S.inLuecke && !(SICHT.size && inSicht(arr, dep))) I.push("<b>Lücke:</b> Airbnb kann diese Nächte nicht verkaufen. Normaler Familienpreis, ohne Vorbehalt. " + (nz(S.nights) >= P.lueckeGastMinNaechte ? "Freunde sind möglich, schon ein Freund genügt. " : "Freunde gehen ab " + P.lueckeGastMinNaechte + " Nächten. ") + symBtn("b-luecke", "🧩"));
-  if (!S.inLuecke) { let n = 0, t = 0; for (let k = arr; k < dep; k = addDays(k, 1)) { t++; if (lueckenNacht(k) || SICHT.has(k)) n++; } if (n > 0) I.push("<b>Teil einer Lücke (" + n + " von " + t + " Nächten):</b> Dann gilt der normale Termin. Die Regeln der Lücke gelten nur, wenn der ganze Aufenthalt darin liegt. " + symBtn("b-luecke", "🧩")); }
+  if (!S.luecke && RUHE.length > 0 && !ruheStay()) { let teil = false; for (let k = arr; k < dep; k = addDays(k, 1)) if (istRuhe(k)) { teil = true; break; } if (teil) W.push(fld("ruhe") + "<b>⚠️ Teils Tiefsaison:</b> Selber reinigen " + symBtn("b-ruhe", "🧹") + " geht nur, wenn der ganze Aufenthalt in der Tiefsaison liegt."); }
+  if (provSel() && !(S.verbOK === true && S.art === "")) W.push("<b>⚠️ Mit Vorbehalt:</b> " + symBtn("b-prov", "🔓") + " Der Termin ist nicht in Airbnb gesperrt. Meldet sich ein Airbnb-Gast, hat er Vorrang und ihr müsst weichen. Plant eine Alternative ein. <b>Buchungssicherheit:</b> " + provSicherZeile(arr, dep));
+  if (S.inLuecke && !(SICHT.size && inSicht(arr, dep))) I.push("<b>Lücke:</b> " + symBtn("b-luecke", "🧩") + " Airbnb kann diese Nächte nicht verkaufen. Normaler Familienpreis, ohne Vorbehalt. " + (nz(S.nights) >= P.lueckeGastMinNaechte ? "Freunde sind möglich, schon ein Freund genügt." : "Freunde gehen ab " + P.lueckeGastMinNaechte + " Nächten."));
+  if (!S.inLuecke) { let n = 0, t = 0; for (let k = arr; k < dep; k = addDays(k, 1)) { t++; if (lueckenNacht(k) || SICHT.has(k)) n++; } if (n > 0) I.push("<b>Teil einer Lücke (" + n + " von " + t + " Nächten):</b> " + symBtn("b-luecke", "🧩") + " Dann gilt der normale Termin. Die Regeln der Lücke gelten nur, wenn der ganze Aufenthalt darin liegt."); }
   const zeilen = W.concat(an ? I : []);
   el.hidden = zeilen.length === 0;
   el.classList.toggle("mitw", W.length > 0);

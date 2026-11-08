@@ -2,6 +2,20 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.112.1.0",
+      "datum": "2026-11-08",
+      "titel": "Legende und Terminboxen aufgeräumt, Verwaltung ohne Rahmen",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Das Staffel-Beispielbild zeigt den Schweif statt gestrichelter Linien.",
+        "Legende: Umbruch bündig zum Text, keine Symbole mehr.",
+        "Terminboxen: Symbole stehen direkt hinter dem Wort, das sie erklären (Besen hinter «reinigt», Kette hinter «Staffel»), in allen Boxen gleich.",
+        "Verwaltung ohne blauen Rahmen."
+      ]
+    },
+    {
       "v": "2.112.0.0",
       "datum": "2026-11-08",
       "titel": "Pimlical-Häkchen und Zahlung bei Vorbehalt",
