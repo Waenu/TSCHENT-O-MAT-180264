@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.112.1.1",
+      "datum": "2026-11-08",
+      "titel": "Umbruch bündig zum Text bei Boxen mit Farbfeld",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Beginnt ein Absatz mit einem Farbfeld (Terminbox, Monats- und Tagesinfo), läuft der Umbruch bündig unter dem Text statt unter dem Feld."
+      ]
+    },
+    {
       "v": "2.112.1.0",
       "datum": "2026-11-08",
       "titel": "Legende und Terminboxen aufgeräumt, Verwaltung ohne Rahmen",
