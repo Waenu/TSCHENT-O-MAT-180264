@@ -16,7 +16,8 @@
       "betrag": 420,
       "rechnung": "Gesendet am Sa 7.11.2026, 21:53 Uhr. App-Version 2.109.0.0.\nAnreise\tMittwoch 18.11.2026\nAbreise\tSamstag 21.11.2026 (3 Nächte)\nFamilie\tIch, Partner/in und 2 Kinder\nFreunde\t0\nZimmer 1 unberührt\tJa\nTotal laut Rechner\tCHF 420.–\n#Preisberechnung\nFamilie pro Nacht\tCHF 60.–\nÜbernachtung (3 Nächte)\tCHF 180.–\nReinigung\tCHF 240.–\nZimmer 1 und rotes Bad bleiben unberührt: CHF 10.– weniger pro Nacht, die Familie zahlt CHF 60.– statt CHF 70.–.",
       "bestaetigt": "2026-11-07T22:56",
-      "bescheid": "2026-11-07T23:02"
+      "bescheid": "2026-11-07T23:02",
+      "pimlical": "2026-11-08T02:33"
     },
     {
       "name": "Deborah",
@@ -506,6 +507,10 @@
     {
       "t": "2026-11-08T02:02",
       "text": "Bestätigt: Deborah, Sa 3.07.2027 bis Sa 10.07.2027, CHF 660, mit Vorbehalt"
+    },
+    {
+      "t": "2026-11-08T02:33",
+      "text": "In Pimlical eingetragen: Miriam, Mi 18.11.2026 bis Sa 21.11.2026"
     }
   ]
 }
