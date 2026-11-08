@@ -877,7 +877,8 @@
   .bk-leg span { display: inline-flex; align-items: center; gap: 6px; }
   #calHoch p { padding-left: 30px; text-indent: -30px; }   /* Umbruch bündig zum Text, nicht unter dem Farbfeld (22 px Feld + 8 px Abstand) */
   #calHoch p.leg-h { padding-left: 0; text-indent: 0; }
-  p:has(> .sw-k:first-child), li:has(> .sw-k:first-child) { padding-left: calc(1.25em + 8px); text-indent: calc(-1.25em - 8px); }   /* Absatz beginnt mit Farbfeld: Umbruch bündig zum Text (Feld 1.25em + Ränder 5 px und 3 px), überall in der App */
+  p:has(> .sw-k:first-child), li:has(> .sw-k:first-child) { padding-left: calc(1.25em + 8px); text-indent: calc(-1.25em - 8px); }
+  p:has(> .sw-k:first-child) *, li:has(> .sw-k:first-child) * { text-indent: 0; }   /* der Einzug erbt sonst in Inline-Blöcke (gelbe Wahl-Felder, Symbole) und schneidet den Anfang ab */   /* Absatz beginnt mit Farbfeld: Umbruch bündig zum Text (Feld 1.25em + Ränder 5 px und 3 px), überall in der App */
   .bk-leg i { position: relative; overflow: hidden; flex: none; width: 64px; height: 28px; border-radius: 14px; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; font-style: normal; font-size: .7rem; }
   .bk-leg .k-gruen { background: var(--gruen); box-shadow: 0 0 0 1.5px var(--gruen-ol); }
   .bk-leg .k-gelb { background: var(--gelb); box-shadow: 0 0 0 1.5px var(--gelb-ol); }
@@ -1269,7 +1270,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.112.2.0";
+let VERSION = "2.112.2.1";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
