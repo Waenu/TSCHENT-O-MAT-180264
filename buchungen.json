@@ -11,12 +11,7 @@
       "name": "Deborah",
       "arr": "2027-07-03",
       "dep": "2027-07-10",
-      "selbst": false,
-      "pers": 4,
-      "prov": true,
-      "betrag": 660,
-      "rechnung": "Gesendet am So 8.11.2026, 02:01 Uhr. App-Version 2.111.0.1.\nAnreise\tSamstag 3.07.2027\nAbreise\tSamstag 10.07.2027 (7 Nächte)\nFamilie\tIch, Partner/in und 2 Kinder\nFreunde\t0\nZimmer 1 unberührt\tJa\nTotal laut Rechner\tCHF 660.–\nMit Vorbehalt\tDer Termin wird nicht in Airbnb gesperrt, ein Airbnb-Gast hat Vorrang. Das Risiko wurde vom Absender bestätigt. Praktisch sicher wird der Aufenthalt erst am Mi 7.07.2027 (3 Tage vor der Abreise). Bis dahin kann ein Airbnb-Gast Vorrang bekommen.\n#Preisberechnung\nFamilie pro Nacht\tCHF 60.–\nÜbernachtung (7 Nächte)\tCHF 420.–\nReinigung\tCHF 240.–\nZimmer 1 und rotes Bad bleiben unberührt: CHF 10.– weniger pro Nacht, die Familie zahlt CHF 60.– statt CHF 70.–.",
-      "bestaetigt": "2026-11-08T02:02"
+      "status": "storniert"
     },
     {
       "name": "Jerome",
@@ -527,6 +522,10 @@
     {
       "t": "2026-11-09T10:27",
       "text": "In Pimlical eingetragen: Jerome, Do 6.05.2027 bis So 9.05.2027"
+    },
+    {
+      "t": "2026-11-09T19:39",
+      "text": "Entfernt: Deborah, Sa 3.07.2027 bis Sa 10.07.2027"
     }
   ]
 }
