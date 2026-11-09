@@ -27,7 +27,8 @@
       "betrag": 450,
       "rechnung": "Gesendet am Mo 9.11.2026, 10:01 Uhr. App-Version 2.112.2.1.\nAnreise\tDonnerstag 6.05.2027\nAbreise\tSonntag 9.05.2027 (3 Nächte)\nFamilie\tIch, Partner/in und 2 Kinder\nFreunde\t0\nZimmer 1 unberührt\tNein\nTotal laut Rechner\tCHF 450.–\n#Preisberechnung\nFamilie pro Nacht\tCHF 70.–\nÜbernachtung (3 Nächte)\tCHF 210.–\nReinigung\tCHF 240.–",
       "bestaetigt": "2026-11-09T10:22",
-      "bescheid": "2026-11-09T10:22"
+      "bescheid": "2026-11-09T10:22",
+      "pimlical": "2026-11-09T10:27"
     }
   ],
   "logbuch": [
@@ -522,6 +523,10 @@
     {
       "t": "2026-11-09T10:22",
       "text": "Bescheid gegeben: Jerome, Do 6.05.2027 bis So 9.05.2027"
+    },
+    {
+      "t": "2026-11-09T10:27",
+      "text": "In Pimlical eingetragen: Jerome, Do 6.05.2027 bis So 9.05.2027"
     }
   ]
 }
