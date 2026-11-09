@@ -2,12 +2,6 @@
   "_hinweis": "Bestätigte Aufenthalte der Familie (Vorschau 2.0.0.0, getrennt von der gültigen Version). Pro Eintrag: name, arr = Anreise, dep = Abreise (JJJJ-MM-TT), selbst = true wenn die Kinder selbst reinigen, pers = Personen mit Bett. Eintrag löschen = Storno.",
   "buchungen": [
     {
-      "name": "Deborah",
-      "arr": "2026-11-06",
-      "dep": "2026-11-08",
-      "status": "abgelehnt"
-    },
-    {
       "name": "Miriam",
       "arr": "2026-11-18",
       "dep": "2026-11-21",
@@ -23,6 +17,16 @@
       "betrag": 660,
       "rechnung": "Gesendet am So 8.11.2026, 02:01 Uhr. App-Version 2.111.0.1.\nAnreise\tSamstag 3.07.2027\nAbreise\tSamstag 10.07.2027 (7 Nächte)\nFamilie\tIch, Partner/in und 2 Kinder\nFreunde\t0\nZimmer 1 unberührt\tJa\nTotal laut Rechner\tCHF 660.–\nMit Vorbehalt\tDer Termin wird nicht in Airbnb gesperrt, ein Airbnb-Gast hat Vorrang. Das Risiko wurde vom Absender bestätigt. Praktisch sicher wird der Aufenthalt erst am Mi 7.07.2027 (3 Tage vor der Abreise). Bis dahin kann ein Airbnb-Gast Vorrang bekommen.\n#Preisberechnung\nFamilie pro Nacht\tCHF 60.–\nÜbernachtung (7 Nächte)\tCHF 420.–\nReinigung\tCHF 240.–\nZimmer 1 und rotes Bad bleiben unberührt: CHF 10.– weniger pro Nacht, die Familie zahlt CHF 60.– statt CHF 70.–.",
       "bestaetigt": "2026-11-08T02:02"
+    },
+    {
+      "name": "Jerome",
+      "arr": "2027-05-06",
+      "dep": "2027-05-09",
+      "selbst": false,
+      "pers": 4,
+      "betrag": 450,
+      "rechnung": "Gesendet am Mo 9.11.2026, 10:01 Uhr. App-Version 2.112.2.1.\nAnreise\tDonnerstag 6.05.2027\nAbreise\tSonntag 9.05.2027 (3 Nächte)\nFamilie\tIch, Partner/in und 2 Kinder\nFreunde\t0\nZimmer 1 unberührt\tNein\nTotal laut Rechner\tCHF 450.–\n#Preisberechnung\nFamilie pro Nacht\tCHF 70.–\nÜbernachtung (3 Nächte)\tCHF 210.–\nReinigung\tCHF 240.–",
+      "bestaetigt": "2026-11-09T10:22"
     }
   ],
   "logbuch": [
@@ -509,6 +513,10 @@
     {
       "t": "2026-11-08T09:33",
       "text": "Entfernt: Miriam, Mi 18.11.2026 bis Sa 21.11.2026"
+    },
+    {
+      "t": "2026-11-09T10:22",
+      "text": "Bestätigt: Jerome, Do 6.05.2027 bis So 9.05.2027, CHF 450"
     }
   ]
 }
