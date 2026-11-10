@@ -140,6 +140,8 @@
   }
   .themeRow { display: flex; justify-content: flex-end; }
   .themeRow { gap: 8px; }
+  .themeRow { position: sticky; top: 0; z-index: 50; background: var(--bg); padding: 6px 0; margin: -6px 0; }   /* Symbole oben (Schrift, Bewegung, Info, Suche, Hell/Dunkel) bleiben beim Scrollen stehen */
+  body.kind-an .themeRow { top: 38px; }
   #fsBtn { height: 44px; min-width: 66px; padding: 0 10px; background: var(--surface); color: var(--fg); border: 2px solid var(--line); border-radius: 22px; cursor: pointer; font: inherit; display: inline-flex; align-items: baseline; justify-content: center; gap: 3px; line-height: 44px; }
   #fsBtn span { color: var(--muted); font-weight: 400; line-height: 1; align-self: center; }
   #fsBtn span.on { color: var(--fg); font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
@@ -1319,7 +1321,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.116.0.0";
+let VERSION = "2.116.1.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -4775,7 +4777,8 @@ function festKarte(x, direkt) {   // direkt: nur die Karte (neue Verwaltung pro 
   const ende = alarmListe().some((a) => a.typ === "ende" && a.x === x);
   if (ende) st += '<span><b class="bs-fehlt">🔗 Staffel beendet: ' + esc(x.name) + " noch informieren (" + esc(staffelEndeGrund(x)) + ")</b></span>";
   const eik = ende ? ' <a class="btn" data-endinfo="' + key + '" href="https://wa.me/?text=' + encodeURIComponent(endeInfoText(x)) + '" target="_blank" rel="noopener">' + WA_SVG + "Staffel-Ende-Info senden</a>" : "";
-  const acts = eik + wik + wzk + (prov && !hochVorbehalt(x) ? '<button type="button" class="btn main" data-fest="' + key + '">' + lockSvg(true) + '→' + lockSvg(false) + ' In Airbnb gesperrt</button>' : "") + bescheidKnopf(x, false) +
+  const gmk = gmFehlt(x) ? ' <a class="btn" href="https://wa.me/?text=' + encodeURIComponent(gmErinnerText(x)) + '" target="_blank" rel="noopener">' + WA_SVG + "An die Liste erinnern</a>" : "";
+  const acts = gmk + eik + wik + wzk + (prov && !hochVorbehalt(x) ? '<button type="button" class="btn main" data-fest="' + key + '">' + lockSvg(true) + '→' + lockSvg(false) + ' In Airbnb gesperrt</button>' : "") + bescheidKnopf(x, false) +
     '<button type="button" class="btn quiet' + (prov ? " full" : "") + '" data-bdel="' + key + '" aria-label="Aufenthalt entfernen">🗑️ ' + (prov ? "Termin entfernen" : "Entfernen") + "</button>";
   if (x.dep >= heuteKey()) st += '<details class="todo-d"' + (ng || (direkt && pimOffen(x)) ? " open" : "") + '><summary>📌 Sperren und Pimlical</summary>' + erledigenHtml(x) + "</details>";
   const karte = vkKarte(x, konf || ng || ag ? "rot" : (prov ? (!x.bescheid ? "offen" : "warn") : "ok"), vkChips(x), st, acts);   // fest = grün, offen/Vorbehalt ohne Bescheid = orange
@@ -4905,9 +4908,10 @@ document.getElementById("infoBtn").addEventListener("click", () => {
 // ===== Gästemeldung der Freunde (Kurtaxe Adelboden), seit 2.116.0.0 =====
 // Der Buchende füllt pro Freund Name, Vorname, Geburtsdatum, Geschlecht und Nationalität aus (höchstens 5).
 // Die Liste geht an einen Briefkasten (Google-Apps-Script im Konto der Eltern, scripts/gaestemeldung.gs), nicht ins Repo.
-const GM_URL = "";   // Adresse der Web-App des Briefkastens; leer = Funktion noch nicht eingerichtet
+const GM_URL = "https://script.google.com/macros/s/AKfycbwHIFROA_Eiyl2nufeTUiM3blx59uTe7-obr3z9ZqEzSISvm5E_dtXHiXltBd-Z747S/exec";   // Adresse der Web-App des Briefkastens; leer = Funktion noch nicht eingerichtet
 const GM_MAX = 5;
 const gmAktiv = () => !!GM_URL;
+function gmErinnerText(x) { const p = PARTNER_ABS.indexOf(x.name) >= 0; return "Hoi " + x.name + ", für euren Aufenthalt vom " + fmtTagV(x.arr) + " bis " + fmtTagV(x.dep) + " fehlt mir noch die Liste deiner Freunde für die Kurtaxe. Bitte fülle sie im TSCHENT-O-MAT aus, sie steht zuoberst auf der Startseite (Name, Geburtsdatum, Nationalität). Ich brauche sie, damit ich die Reservation abschliessen kann. Danke dir! Gruss, " + (p ? "Silvan" : "Papi"); }
 function gmFehlt(x) { return gmAktiv() && x.dep >= heuteKey() && freundeVon(x) > 0 && GM_LISTEN !== null && !GM_LISTEN[bKey(x)]; }   // erst wenn die Listen geladen sind
 function freundeVon(x) { const m = /^Freunde\t(\d+)/m.exec(String((x && x.rechnung) || "")); return m ? Math.min(Number(m[1]), GM_MAX) : 0; }
 async function gmPost(daten) {

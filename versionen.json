@@ -2,6 +2,29 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.116.1.0",
+      "datum": "2026-11-10",
+      "titel": "Gästemeldung eingeschaltet",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Der Briefkasten für die Liste der Freunde ist eingerichtet. Ab jetzt sehen die Kinder bei Buchungen mit Freunden die Liste zum Ausfüllen."
+      ]
+    },
+    {
+      "v": "2.116.0.1",
+      "datum": "2026-11-10",
+      "titel": "Symbole oben bleiben stehen, Erinnerung an die Liste",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Die Symbole oben (Schrift, Weltkugel, 💡, Lupe, Hell/Dunkel) bleiben beim Scrollen zuoberst stehen, in jeder Ansicht.",
+        "Fehlt die Liste der Freunde noch, gibt es in der Verwaltung den Knopf «An die Liste erinnern» mit einer fertigen WhatsApp-Nachricht."
+      ]
+    },
+    {
       "v": "2.116.0.0",
       "datum": "2026-11-10",
       "titel": "Gästemeldung der Freunde",
