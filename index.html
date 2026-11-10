@@ -1379,7 +1379,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.120.6.0";
+let VERSION = "2.120.7.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -5352,7 +5352,8 @@ function bestZeigen() {
   kn.hidden = false; kn.classList.toggle("on", zeigAns); kn.setAttribute("aria-expanded", zeigAns ? "true" : "false");
   k.hidden = !zeigAns;
   let s = "";
-  if (bestMsg && !(TOKEN && ABSENDER)) s += '<p>' + bestMsg + ' <button type="button" class="ov-back" data-zu="1">Schliessen</button></p>';
+  if (bestMsg && !(TOKEN && ABSENDER)) s += '<p class="best-msg">' + bestMsg + "</p>";   // ohne «Schliessen»: reine Meldungen verschwinden nach 10 Sekunden, solche mit Knopf beim nächsten Tipp (seit 2.120.7.0)
+  clearTimeout(BM_T); if (TOKEN && bestMsg && !/<(a|button)\b/.test(bestMsg)) { const m = bestMsg; BM_T = setTimeout(() => { if (bestMsg === m) { bestMsg = ""; bestZeigen(); } }, 10000); }
   if (TOKEN) {
     s += '<div class="field"><label for="ansichtAls">👁️ Ansicht als</label><select id="ansichtAls"><option value="">Eltern</option>' + absOpt(ABSENDER) + '</select></div><p class="hint">Zeigt dir die Startseite so, wie dieses Kind sie sieht. Nur auf diesem Handy. Die Verwaltung bleibt dabei ausgeblendet, denn die Kinder sehen sie nicht.</p>';
     if (ABSENDER) { k.innerHTML = s; return; }
@@ -5439,7 +5440,8 @@ function zahlZeile(x) {
 // Hochsaison: Buchungssicherheit gibt es nur zum Preis für «verbindlich». Darum kein Knopf, der einen Termin mit Vorbehalt (Familienpreis) nachträglich sperrt
 const hochVorbehalt = (x) => P.hochNachtMin > 0 && hochNaechte(x.arr, x.dep) > 0;
 function bestNeuZeichnen() { aufentZeigen(); renderKalender(); bestZeigen(); }
-function bestMsgZeigen() { const b = document.querySelector("#bestKasten [data-zu]"), p = b && b.closest("p"); if (p) p.scrollIntoView({ behavior: "auto", block: "start" }); }   // die Meldung (mit Knopf «Absage schicken» usw.) steht oben, nach dem Klick soll sie sichtbar sein
+let BM_T = 0;
+function bestMsgZeigen() { const p = document.querySelector("#bestKasten .best-msg"); if (p) p.scrollIntoView({ behavior: "auto", block: "start" }); }   // die Meldung (mit Knopf «Absage schicken» usw.) steht oben, nach dem Klick soll sie sichtbar sein
 function bestWaLink(text, key, label) { return ' <a class="btn" data-bescheid="' + esc(key) + '" href="https://wa.me/?text=' + encodeURIComponent(text) + '" target="_blank" rel="noopener">' + WA_SVG + (label || "Dem Kind Bescheid geben") + "</a>"; }
 function bestText(x, abgelehnt) {
   return abgelehnt
@@ -5794,6 +5796,7 @@ document.getElementById("bestKasten").addEventListener("click", async (e) => {
   const f = (a) => { const el = e.target.closest("[" + a + "]"); return el ? el.getAttribute(a) : null; };
   const find = (l, key) => l.find((x) => bKey(x) === key);
   if (e.target.closest("[data-zu]")) { bestMsg = ""; bestFehler = ""; bestZeigen(); return; }
+  if (bestMsg && /<(a|button)\b/.test(bestMsg) && !e.target.closest(".best-msg") && e.target.closest("#bestKasten")) { const m = bestMsg; setTimeout(() => { if (bestMsg === m) { bestMsg = ""; bestZeigen(); } }, 0); }
   const ej = f("data-ejahr"); if (ej) { EJAHR = (EJAHR || Number(heuteKey().slice(0, 4))) + Number(ej); bestZeigen(); return; }
   const lkn = f("data-lkneu"), lkc = f("data-lkcp");
   if (lkc) { kopiere(lkText(lkc), e.target.closest("[data-lkcp]"), "Kopiert"); return; }

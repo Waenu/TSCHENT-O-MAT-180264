@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.120.7.0",
+      "datum": "2026-11-10",
+      "titel": "Meldungen in der Verwaltung ohne «Schliessen»",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Meldungen oben in der Verwaltung (z. B. «Entfernt: …») haben keinen Knopf «Schliessen» mehr. Reine Meldungen verschwinden nach 10 Sekunden, solche mit einem Knopf (z. B. Absage per WhatsApp) beim nächsten Tipp in der Verwaltung."
+      ]
+    },
+    {
       "v": "2.120.6.0",
       "datum": "2026-11-10",
       "titel": "Staffelbeginn abgesagt: Wäsche-Info an den Nächsten",
