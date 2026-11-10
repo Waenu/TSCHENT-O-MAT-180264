@@ -1377,7 +1377,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.120.3.0";
+let VERSION = "2.120.4.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -3332,7 +3332,7 @@ function anfrageText(r) {
   z.push(ABSENDER);
   z.push("");
   if (x.LG) { z.push(""); z.push("Wir bitten euch, eigene Bettwäsche, Frottee- und Küchentücher mitzubringen, so wie im Tschent-O-Mat beschrieben. Die Reinigung übernehmen die Eltern."); }
-  z.push("Zum Bestätigen durch Papi: " + bestLink(ABSENDER, ARR, DEP, x.SB === true, x.FP, x.LG === true, spA ? 0 : r.TOT, x.VERB === true, b64u(schnappText(z)), S.waesche));
+  z.push("Zum Bestätigen durch " + (PARTNER_ABS.indexOf(ABSENDER) >= 0 ? "Silvan" : "Papi") + ": " + bestLink(ABSENDER, ARR, DEP, x.SB === true, x.FP, x.LG === true, spA ? 0 : r.TOT, x.VERB === true, b64u(schnappText(z)), S.waesche));
   return z.join("\n");
 }
 
@@ -3851,8 +3851,12 @@ function aufent() {
   else if (AUFENT && !l.some((x) => x.arr === AUFENT.arr && x.dep === AUFENT.dep)) l.push({ arr: AUFENT.arr, dep: AUFENT.dep, sb: AUFENT.sb, lg: AUFENT.lg, pers: AUFENT.pers, ok: false, start: !!AUFENT.sb && istStaffelStart(AUFENT.arr) });
   else if (AUFENT) { AUFENT = null; aufentSichern(); }   // inzwischen bestätigt
   l.sort((p, q) => (p.arr < q.arr ? -1 : 1));
+  AUF_LISTE = l;
   return l[0] || null;
 }
+let AUF_LISTE = [];   // alle kommenden eigenen Aufenthalte (aufent() füllt sie)
+const brauchtWaesche = (a) => !!(a && a.ok && ((a.sb && !a.start) || a.lg));
+function aufentW() { aufent(); return AUF_LISTE.find(brauchtWaesche) || null; }   // Anreise-Wäsche: der nächste Aufenthalt, für den Wäsche mitkommt, auch wenn vorher ein anderer liegt (seit 2.120.4.0)
 const hk = (a) => HAKEN[a.arr + "|" + a.dep] || (HAKEN[a.arr + "|" + a.dep] = {});
 function aufentSpeichern() {
   if (!(ARR && DEP)) return;
@@ -3869,13 +3873,13 @@ function aufHinweisZeigen() {
   el.innerHTML = a.ok ? '<b>✅ Bestätigt.</b> Deine Knöpfe ' + (((a.sb && !a.start) || a.lg) ? '«Anreise-Wäsche» und ' : '') + '«Reinigungs-Checkliste» findest du oben auf der Startseite. <button type="button" class="ov-back" id="zuKnoepfe">👆 Zu den Knöpfen</button><p>🕓 ' + esc(zeitenKurz()) + '.</p>' + (a.ok && !a.start && a.sb && a.waesche ? '<p><b>🧺 Neu:</b> Vor dir ist inzwischen eine Staffel eingetragen. Du bringst jetzt eigene Wäsche mit, siehe «Anreise-Wäsche».</p>' : '') + (a.start ? '<p><b>🧺 Du beginnst die Staffel:</b> Das Chalet ist gereinigt und bezogen, du bringst keine Wäsche mit. Dafür nimmst du die benutzte Wäsche beim Abreisen mit und ' + (a.waesche === "senden" ? "sendest sie" : "bringst sie den Eltern") + ' bis spätestens ' + esc(fmtTag(addDays(a.dep, WAESCHE_TAGE))) + '.</p>' : '') : '<b>📨 Anfrage gemerkt.</b> Sobald Papi bestätigt hat, erscheinen auf der Startseite deine Knöpfe ' + (((a.sb && !a.start) || a.lg) ? '«Anreise-Wäsche» und ' : '') + '«Reinigungs-Checkliste». Lade die Seite dann neu (1 bis 2 Minuten nach der Bestätigung).';
 }
 function aufentZeigen() {
-  const a = aufent();
-  document.getElementById("btnAnreise").hidden = !(a && a.ok && ((a.sb && !a.start) || a.lg));   // Listen erst nach der Bestätigung durch Papi
+  const a = aufent(), aw = aufentW();
+  document.getElementById("btnAnreise").hidden = !aw;   // Listen erst nach der Bestätigung durch Papi
   document.getElementById("btnCheck").hidden = !(a && a.ok);
   document.getElementById("aufStatus").hidden = !AUFENT || (!!TOKEN && !ABSENDER);   // Papi-Zugang in der Eltern-Ansicht: keine Kinder-Meldung «Anfrage gesendet»
   if (a) {
     const von = fmtTag(a.arr) + " bis " + fmtTag(a.dep);
-    document.getElementById("btnAnreiseSub").textContent = "Bestätigt: " + von;
+    if (aw) document.getElementById("btnAnreiseSub").textContent = "Bestätigt: " + fmtTag(aw.arr) + " bis " + fmtTag(aw.dep);
     document.getElementById("btnCheckSub").textContent = "Bestätigt. Abreise: " + fmtTag(a.dep);
   }
   document.getElementById("aufStatus").innerHTML = AUFENT && aufAbgelehnt() ? '<div class="note h"><b>❌ Abgelehnt:</b> Deine Anfrage vom ' + esc(fmtTag(AUFENT.arr)) + ' bis ' + esc(fmtTag(AUFENT.dep)) + ' haben die Eltern abgelehnt. Melde dich bei ihnen. <button type="button" class="ov-back" data-ok="1">OK, gelesen</button></div>' : AUFENT ? '<div class="note h"><b>📨 Anfrage gesendet:</b> ' + esc(fmtTag(AUFENT.arr)) + ' bis ' + esc(fmtTag(AUFENT.dep)) + '. Sobald Papi sie bestätigt hat, erscheinen hier deine Knöpfe. Lade die Seite dann neu.</div><button type="button" class="ov-weg" data-weg="1">Anfrage ' + fmtTag(AUFENT.arr) + ' bis ' + fmtTag(AUFENT.dep) + ' nicht bestätigt? Entfernen</button>' : "";
@@ -4244,7 +4248,7 @@ function ovWeg(a) {
     '<p class="hint">Die Knöpfe verschwinden am Tag nach der Abreise von selbst (am ' + fmtTagV(addDays(a.dep, 1)) + ').</p>';
 }
 function anreiseZeichnen() {
-  const a = aufent(); if (!a) return;
+  const a = aufentW(); if (!a) return;
   const n = a.pers, h = hk(a);
   const key = (w) => "w:" + w[0];
   const WL = waescheListe(n);
@@ -4311,7 +4315,7 @@ document.addEventListener("toggle", (e) => {
     v.textContent = nachricht();
     a.setAttribute("aria-disabled", ok ? "false" : "true");
     a.href = ok ? "https://wa.me/?text=" + encodeURIComponent(nachricht()) : "#";
-    document.getElementById("meldHinweis").textContent = ok ? "WhatsApp öffnet sich mit dem fertigen Text. Wähle Papi und tippe auf Senden. Ein Bild fügst du in WhatsApp selbst an." : "Beantworte die Fragen oben, dann wird der Knopf aktiv.";
+    document.getElementById("meldHinweis").textContent = ok ? "WhatsApp öffnet sich mit dem fertigen Text. Wähle " + (PARTNER_ABS.indexOf(ABSENDER) >= 0 ? "Silvan" : "Papi") + " und tippe auf Senden. Ein Bild fügst du in WhatsApp selbst an." : "Beantworte die Fragen oben, dann wird der Knopf aktiv.";
   }
   const GRT = { fehler: "🐞 Fehler", wunsch: "🙏 Wünsche", idee: "💡 Ideen" }, RANG = { arbeit: 0, geplant: 1, neu: 2, idee: 2, fertig: 3 };
   const artVon = (x) => (ART[x.art] ? x.art : "idee");
@@ -4522,7 +4526,8 @@ document.getElementById("aufStatus").addEventListener("click", aufentWeg);
   const k = e.target.closest("[data-chk]");
   if (k && a) { const i = checkListe(a)[Number(k.dataset.chk)]; if (i !== undefined) { const h = hk(a); h[i] = !h[i]; aufentSichern(); checkZeichnen(); } return; }
   const wk = e.target.closest("[data-wa]");
-  if (wk && a) { const w = waescheListe(a.pers)[Number(wk.dataset.wa)]; if (w) { const h = hk(a); h["w:" + w[0]] = !h["w:" + w[0]]; aufentSichern(); anreiseZeichnen(); } return; }
+  const aw = aufentW();
+  if (wk && aw) { const w = waescheListe(aw.pers)[Number(wk.dataset.wa)]; if (w) { const h = hk(aw); h["w:" + w[0]] = !h["w:" + w[0]]; aufentSichern(); anreiseZeichnen(); } return; }
   aufentWeg(e);
 }));
 // ===== Bestätigen durch die Eltern: Link aus der Anfrage, Eintrag in buchungen.json über die GitHub-Schnittstelle =====
