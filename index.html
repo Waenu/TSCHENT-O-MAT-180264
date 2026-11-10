@@ -1289,7 +1289,7 @@
   <div id="notice" class="notice" role="status" hidden></div>
 
   <section id="cal" class="card cal" aria-label="Wunschtermin">
-    <h2>Wunschtermin finden <button type="button" class="sym" id="jahrBtn" aria-label="Jahresübersicht zeigen">🗓️</button><button type="button" class="sym" data-info="b-blick" aria-label="Regeln auf einen Blick">📊</button></h2>
+    <h2>Wunschtermin finden <button type="button" class="sym" id="jahrBtn" aria-label="Jahresübersicht zeigen">🗓️</button><button type="button" class="sym" data-info="b-blick" aria-label="Regeln auf einen Blick">📊</button><button type="button" class="sym" data-film="saison" aria-label="Kurzfilm: Gleicher Wunsch, andere Regeln (die Saisons)">🎬</button></h2>
     <div class="cal-nav">
       <div class="cal-links"><button type="button" id="calPrev" aria-label="Vorheriger Monat">‹</button><button type="button" id="calHeute" class="cal-heute" aria-label="Zum aktuellen Monat">Heute</button></div>
       <strong id="calTitle"></strong>
@@ -1377,7 +1377,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.120.0.0";
+let VERSION = "2.120.0.1";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -3541,7 +3541,7 @@ function render() {
     const hEl = document.getElementById("h-" + f.id);
     if (f.id === "selbst") { hEl.textContent = ""; const r = document.createElement("span"); r.className = "rot"; r.textContent = "Selbst reinigen geht nur ohne Freunde (für euch Kinder mit Partner/in und Kindern). Mit Freunden reinigen immer die Eltern."; hEl.appendChild(r); hEl.appendChild(document.createTextNode(" " + f.hint(d))); }
     else if (vorab) hEl.textContent = "Wähle zuerst Anreise und Abreise im Kalender. Dann siehst du, was möglich ist.";
-    else hEl.innerHTML = esc(f.hint(d)).replace(/\{\{(.+?)\}\}/g, (m, w) => '<span class="hl">' + w + "</span>" + (f.id === "art" && w === "Mit Vorbehalt" ? filmKnopf() : "")) + (f.id === "art" ? " Saisons im Überblick: " + filmKnopf("saison") : "");   // {{Wort}} im Hinweis = hervorgehoben, hinter «Mit Vorbehalt» das Film-Symbol
+    else hEl.innerHTML = esc(f.hint(d)).replace(/\{\{(.+?)\}\}/g, (m, w) => '<span class="hl">' + w + "</span>" + (f.id === "art" && w === "Mit Vorbehalt" ? filmKnopf() : ""));   // {{Wort}} im Hinweis = hervorgehoben, hinter «Mit Vorbehalt» das Film-Symbol
     if (f.id === (d.SM ? "art" : (d.frei > 0 ? "gaeste" : "wer"))) { const w = staffelWarnung(d); if (w) { const sp = document.createElement("span"); sp.className = "note h gelb-warn"; sp.style.display = "block"; sp.style.marginTop = "8px"; sp.innerHTML = WA + esc(w); hEl.appendChild(sp); } }
   });
   FIELDS.forEach((f) => {   // Meldungen erst nach dem Ein-/Ausblenden aller Felder setzen
