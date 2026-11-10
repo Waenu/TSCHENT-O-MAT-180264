@@ -33,6 +33,16 @@
       "betrag": 1500,
       "rechnung": "Gesendet am Di 10.11.2026, 10:14 Uhr. App-Version 2.113.0.1.\nAnreise\tMittwoch 18.11.2026\nAbreise\tSamstag 21.11.2026 (3 Nächte)\nFamilie\tNur ich\nFreunde\t5\nDavon Kinder von 6 bis 15 Jahren\t3\nFreund im selben Zimmer\tNein\nZimmer 1 unberührt\tNein\nReinigung\tNach Personen: ab 2½ Jahren zählt jede Person gleich\nTotal laut Rechner\tCHF 1’500.–\nDazu Kurtaxe Adelboden für die Freunde: CHF 50.10\n#Preisberechnung\nDu pro Nacht\tCHF 70.–\nFreund 1 pro Nacht\tCHF 70.–\nFreund 2 pro Nacht\tCHF 70.–\nFreund 3 pro Nacht\tCHF 70.–\nFreund 4 pro Nacht\tCHF 70.–\nFreund 5 pro Nacht\tCHF 70.–\nÜbernachtung (3 Nächte)\tCHF 1’260.–\nReinigung\tCHF 240.–\nReinigung: dein Anteil\tCHF 40.–\nReinigung: Anteil pro Freund\tCHF 40.–\nKurtaxe Adelboden (dazu) 2 Freunde ab 16 Jahren zu CHF 5.20 pro Nacht, 3 Kinder von 6 bis 15 Jahren zu CHF 2.10 pro Nacht, 3 Nächte\tCHF 50.10\nTotal mit Kurtaxe\tCHF 1’550.10\n#Aufteilung unter den Freunden\nDu zahlst\tCHF 250.–\nFreund 1 zahlt davon Kurtaxe CHF 15.60 (ab 16 Jahren)\tCHF 265.60\nFreund 2 zahlt davon Kurtaxe CHF 15.60 (ab 16 Jahren)\tCHF 265.60\nFreund 3 zahlt davon Kurtaxe CHF 6.30 (Kind von 6 bis 15 Jahren)\tCHF 256.30\nFreund 4 zahlt davon Kurtaxe CHF 6.30 (Kind von 6 bis 15 Jahren)\tCHF 256.30\nFreund 5 zahlt davon Kurtaxe CHF 6.30 (Kind von 6 bis 15 Jahren)\tCHF 256.30\nReinigung aufgeteilt: Nach Personen: ab 2½ Jahren zählt jede Person gleich.",
       "bestaetigt": "2026-11-10T10:14"
+    },
+    {
+      "name": "Miriam",
+      "arr": "2026-11-25",
+      "dep": "2026-11-28",
+      "selbst": false,
+      "pers": 1,
+      "betrag": 870,
+      "rechnung": "Gesendet am Di 10.11.2026, 11:39 Uhr. App-Version 2.116.1.0.\nAnreise\tMittwoch 25.11.2026\nAbreise\tSamstag 28.11.2026 (3 Nächte)\nFamilie\tNur ich\nFreunde\t3\nDavon Kinder von 6 bis 15 Jahren\t1\nFreund im selben Zimmer\tJa\nZimmer 1 unberührt\tJa\nReinigung\tNach Personen: ab 2½ Jahren zählt jede Person gleich\nTotal laut Rechner\tCHF 870.–\nDazu Kurtaxe Adelboden für die Freunde: CHF 37.50\n#Preisberechnung\nDu pro Nacht\tCHF 30.–\nFreund 1 pro Nacht\tCHF 40.–\nFreund 2 pro Nacht\tCHF 70.–\nFreund 3 pro Nacht\tCHF 70.–\nÜbernachtung (3 Nächte)\tCHF 630.–\nReinigung\tCHF 240.–\nReinigung: dein Anteil\tCHF 60.–\nReinigung: Anteil pro Freund\tCHF 60.–\nKurtaxe Adelboden (dazu) 2 Freunde ab 16 Jahren zu CHF 5.20 pro Nacht, 1 Kind von 6 bis 15 Jahren zu CHF 2.10 pro Nacht, 3 Nächte\tCHF 37.50\nTotal mit Kurtaxe\tCHF 907.50\n#Aufteilung unter den Freunden\nDu zahlst\tCHF 150.–\nFreund 1 zahlt davon Kurtaxe CHF 15.60 (ab 16 Jahren)\tCHF 195.60\nFreund 2 zahlt davon Kurtaxe CHF 15.60 (ab 16 Jahren)\tCHF 285.60\nFreund 3 zahlt davon Kurtaxe CHF 6.30 (Kind von 6 bis 15 Jahren)\tCHF 276.30\nReinigung aufgeteilt: Nach Personen: ab 2½ Jahren zählt jede Person gleich.",
+      "bestaetigt": "2026-11-10T11:41"
     }
   ],
   "logbuch": [
@@ -551,6 +561,10 @@
     {
       "t": "2026-11-10T10:14",
       "text": "Bestätigt: Deborah, Mi 18.11.2026 bis Sa 21.11.2026, CHF 1500"
+    },
+    {
+      "t": "2026-11-10T11:41",
+      "text": "Bestätigt: Miriam, Mi 25.11.2026 bis Sa 28.11.2026, CHF 870"
     }
   ]
 }
