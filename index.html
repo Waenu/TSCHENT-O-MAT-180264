@@ -159,6 +159,11 @@
   .gm-k .gm-kal { position: absolute; right: 0; bottom: 0; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
   .gm-k .gm-gs { display: flex; gap: 18px; } .gm-k .gm-gs label { display: flex; align-items: center; gap: 6px; min-height: 40px; }
   .gm-k.gm-ok { border-left: 4px solid var(--gruen); }
+  .gm-zu > summary { cursor: pointer; list-style: none; display: block; background: none; color: inherit; padding: 0; margin: 0; border: 0; font-weight: 400; white-space: normal; }
+  .gm-zu > summary::-webkit-details-marker { display: none; }
+  .gm-zu > summary::after { content: " ▾"; color: var(--akzent, inherit); }
+  .gm-zu[open] > summary::after { content: " ▴"; }
+  .gm-knoepfe { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
   #bestKasten .gm-p { border-top: 1px solid rgba(127,127,127,0.35); padding-top: 8px; display: flex; flex-direction: column; gap: 6px; }
   #bestKasten .gm-fr { display: flex; flex-direction: column; gap: 2px; padding: 4px 0 6px; border-bottom: 1px dashed rgba(127,127,127,0.35); }
   #bestKasten .gm-z { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; min-height: 36px; }
@@ -1348,7 +1353,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.119.1.0";
+let VERSION = "2.119.2.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -4718,7 +4723,7 @@ function listeSichern(k, l) { try { localStorage.setItem(k, JSON.stringify(l)); 
 const bKey = (x) => x.name + "|" + x.arr + "|" + x.dep;
 let OFFEN = listeLaden("tm2_offen"), ABGEL = listeLaden("tm2_abgelehnt");
 let zeigG = false, zeigE = false, zeigW = false, EJAHR = 0;   // Einnahmen-Übersicht in der Verwaltung
-let PERS_ZIEL = "";   // Person, die nach dem Zeichnen der Verwaltung angesprungen wird
+let PERS_ZIEL = "", PERS_OK = null;   // Person, die nach dem Zeichnen der Verwaltung angesprungen wird
 let bestMsg = "", bestFehler = "", zeigB = false, zeigA = false, zeigL = false, bestBusy = false, zeigAns = false;
 function bestBeschr(b) { return fmtTag(b.arr) + " bis " + fmtTag(b.dep) + ", " + ((b.selbst || b.sb) ? "reinigt selbst" : "Reinigung durch Eltern") + ((b.luecke || b.lg) ? ", ganze Lücke" : "") + ", " + b.pers + (b.pers === 1 ? " Person" : " Personen") + (provVon(b) ? ", mit Vorbehalt" : "") + (b.verb ? ", verbindlich" : "") + (b.waesche === "bringen" ? ", bringt die Wäsche zurück" : b.waesche === "senden" ? ", sendet die Wäsche zurück" : ""); }
 function vkChips(x, anfrage) {
@@ -4920,6 +4925,7 @@ function persBlock(name) {
   let inh = "";   // was offen ist, steht in der Liste «Zu tun» jeder Karte
   if (gmAktiv() && GM_LISTEN === null) inh += '<div class="gm-z ps-mail"><span class="gm-l">✉️ Mailadresse</span><span class="gm-v hint" style="font-weight:400">' + (GM_KEY ? (GM_STATUS ? "nicht geladen: " + esc(GM_STATUS) : "wird geladen …") : "Schlüssel der Gästemeldung fehlt auf diesem Gerät (versteckte Menüs, fünfmal auf die Versionszeile tippen)") + "</span></div>";
   if (gmAktiv() && GM_LISTEN !== null) { const ml = GM_MAILS[name]; inh += '<div class="gm-z ps-mail"><span class="gm-l">✉️ Mailadresse</span>' + (ml ? '<span class="gm-v">' + esc(ml.mail) + '</span><button type="button" class="gm-cp" data-cp="' + esc(ml.mail) + '" aria-label="Mailadresse kopieren">📋</button>' : '<span class="gm-v hint" style="font-weight:400">noch nicht eingegeben</span>') + "</div>"; }
+  if (PERS_OK && PERS_OK.name === name && Date.now() - PERS_OK.t < 120000) inh += '<p class="note ps-ok">' + PERS_OK.html + "</p>";   // kurze Bestätigung, 2 Minuten lang
   inh += anf.map(anfrageKarte).join("");
   inh += kommend.map((x) => festKarte(x, true)).join("");
   inh += vorbei.filter((x) => zahlOffen(x) || waescheOffen(x)).map((x) => (zahlOffen(x) ? zahlZeile(x) : "") + (waescheOffen(x) ? waescheZeile(x) : "")).join("");
@@ -5060,10 +5066,11 @@ function mailPruefen() {
     w.hidden = true;
   });
 }
+function gmWeg() { try { const w = JSON.parse(localStorage.getItem("tm2_gmWeg") || "[]"); return Array.isArray(w) ? w : []; } catch (e) { return []; } }   // vom Kind ausgeblendete, gesendete Freundeslisten
 function gmKindZeigen() {
   const box = document.getElementById("gmBox");
-  const l = gmAktiv() && ABSENDER ? BUCH.filter((b) => eigenN(b.name) && b.dep >= heuteKey() && freundeVon(b) > 0) : [];
-  const lok = gmLokal();
+  const lok = gmLokal(), weg = gmWeg();
+  const l = gmAktiv() && ABSENDER ? BUCH.filter((b) => eigenN(b.name) && b.dep >= heuteKey() && freundeVon(b) > 0 && !((lok[bKey(b)] || {}).gesendet && !GM_AUF.has(bKey(b)) && (weg.indexOf(bKey(b)) >= 0 || heuteKey() >= addDays(b.dep, -2)))) : [];   // gesendete Liste: weg, wenn ausgeblendet oder ab dem zweitletzten Tag vor der Abreise
   const sig = JSON.stringify([l.map(bKey), l.map((b) => (lok[bKey(b)] || {}).gesendet || ""), [...GM_AUF], GM_MSG]);
   if (sig === GM_SIG) return;   // nicht neu zeichnen, sonst gehen Eingaben verloren
   GM_SIG = sig;
@@ -5074,7 +5081,7 @@ function gmKindZeigen() {
       ? '<b>✅ Liste deiner Freunde gesendet</b> am ' + esc(fmtTag(alt.gesendet.slice(0, 10))) + ", " + esc(alt.gesendet.slice(11, 16)) + " Uhr. Danke!"
       : "<b>👥 Wichtig: Bitte fülle die Liste deiner Freunde aus</b>";
     let h = '<div class="note h gm-k' + (alt.gesendet ? " gm-ok" : "") + '" data-gmk="' + esc(key) + '"><p>' + kopf + '</p><p class="hint">Aufenthalt vom ' + esc(fmtTag(b.arr)) + " bis " + esc(fmtTag(b.dep)) + ", " + n + " " + gastWort(n) + ". Die Eltern brauchen die Liste, damit sie die Reservation abschliessen und deine Freunde für die Kurtaxe in Adelboden anmelden können. Die Angaben gehen direkt an die Eltern und sind nicht öffentlich.</p>";
-    if (!auf) return h + '<button type="button" class="btn" data-gmauf="' + esc(key) + '">✏️ Liste ändern</button>' + (msg ? '<p class="hint">' + msg + "</p>" : "") + "</div>";
+    if (!auf) return '<details class="note h gm-k gm-ok gm-zu" data-gmk="' + esc(key) + '"><summary><span>' + kopf + '</span></summary><p class="hint">Aufenthalt vom ' + esc(fmtTag(b.arr)) + " bis " + esc(fmtTag(b.dep)) + ", " + n + " " + gastWort(n) + '. Die Liste ist bei den Eltern. Ändern kannst du sie bis zwei Tage vor der Abreise, dann verschwindet dieser Kasten.</p><div class="gm-knoepfe"><button type="button" class="btn" data-gmauf="' + esc(key) + '">✏️ Liste ändern</button><button type="button" class="btn" data-gmweg="' + esc(key) + '">🙈 Ausblenden</button></div>' + (msg ? '<p class="hint">' + msg + "</p>" : "") + "</details>";
     for (let i = 0; i < n; i++) {
       const f = fr[i] || {};
       h += '<fieldset class="gm-f"><legend>Freund/in ' + (i + 1) + "</legend>" +
@@ -5103,6 +5110,8 @@ document.getElementById("gmBox").addEventListener("click", async (e) => {
   if (kal) { const k = kal.parentNode.querySelector(".gm-kal"), t = kal.parentNode.querySelector('[data-gf="geb"]'); const iso = gmIso(t.value); k.value = iso || "1990-01-01"; try { k.showPicker(); } catch (er) { k.focus(); k.click(); } return; }
   const au = e.target.closest("[data-gmauf]");
   if (au) { GM_AUF.add(au.getAttribute("data-gmauf")); gmKindZeigen(); return; }
+  const gw = e.target.closest("[data-gmweg]");
+  if (gw) { const key = gw.getAttribute("data-gmweg"); if (!(await appFrage("Den Kasten «Liste deiner Freunde gesendet» ausblenden? Die Liste bleibt bei den Eltern. Ändern kannst du sie danach nicht mehr selbst, dann melde dich bei den Eltern.", "Ja, ausblenden"))) return; const w = gmWeg(); if (w.indexOf(key) < 0) w.push(key); try { localStorage.setItem("tm2_gmWeg", JSON.stringify(w.slice(-20))); } catch (er) {} gmKindZeigen(); return; }
   const sd = e.target.closest("[data-gmsend]");
   if (!sd) return;
   const key = sd.getAttribute("data-gmsend"), div = sd.closest(".gm-k"), fr = gmFormLesen(div);
@@ -5735,8 +5744,8 @@ document.getElementById("bestKasten").addEventListener("click", async (e) => {
       const j = await ghAendern((l, jj) => { logEintrag(jj, "Bestätigt: " + keyText(ja) + (eintrag.betrag ? ", CHF " + eintrag.betrag : "") + (pv ? ", mit Vorbehalt" : "") + (x.verb ? ", verbindlich" : "") + (eintrag.waesche ? ", Wäsche: " + (eintrag.waesche === "senden" ? "per Post senden" : "persönlich bringen") + " bis " + fmtTag(waescheBis(eintrag)) : "")); return l.filter((y) => bKey(y) !== ja).concat([eintrag]); });
       buchungenAn(j); try { localStorage.setItem("tm2_buchungen", JSON.stringify(j)); } catch (e2) {}
       OFFEN = OFFEN.filter((y) => bKey(y) !== ja); listeSichern("tm2_offen", OFFEN);
-      const text = bestText({ name: x.name, arr: x.arr, dep: x.dep, selbst: x.selbst, luecke: x.luecke, prov: pv, rechnung: x.rechnung });
-      bestMsg = "✅ Bestätigt und gespeichert (" + esc(x.name) + "). In 1 bis 2 Minuten sehen es alle, dann erscheinen beim Kind die Listen." + (pv ? " <b>Mit Vorbehalt: nicht in Airbnb sperren.</b>" : (x.verb ? " <b>Verbindlich: bitte in Airbnb sperren.</b>" : "")) + bestWaLink(text, bKey(x)) + erledigenHtml(Object.assign({}, x, { prov: pv }));
+      bestMsg = ""; PERS_ZIEL = x.name; PERS_STAND.set(x.name, true);
+      PERS_OK = { name: x.name, t: Date.now(), html: "✅ Bestätigt und gespeichert. In 1 bis 2 Minuten sehen es alle. Was noch zu tun ist, steht unten unter «Zu tun»." + (pv ? " <b>Mit Vorbehalt: nicht in Airbnb sperren.</b>" : "") };
     } else {
       const [name, arr, dep] = del.split("|");
       if (!(await appFrage("Aufenthalt von " + name + " (" + fmtTag(arr) + " bis " + fmtTag(dep) + ") wirklich entfernen?", "Ja, entfernen"))) { bestBusy = false; bestZeigen(); return; }
