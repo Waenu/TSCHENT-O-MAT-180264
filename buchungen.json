@@ -45,11 +45,7 @@
       "name": "Manuel",
       "arr": "2027-03-01",
       "dep": "2027-03-04",
-      "selbst": false,
-      "pers": 1,
-      "betrag": 1032,
-      "rechnung": "Gesendet am Di 10.11.2026, 18:02 Uhr. App-Version 2.120.0.1.\nAnreise\tMontag 1.03.2027\nAbreise\tDonnerstag 4.03.2027 (3 Nächte)\nFamilie\tNur ich\nFreunde\t4\nDavon Kinder von 6 bis 15 Jahren\t0\nFreund im selben Zimmer\tNein\nMit den Bedingungen einverstanden: ja\nZimmer 1 unberührt\tNein\nLücke\tdie ganze Lücke, ohne Vorbehalt.\nReinigung\tNach Personen: ab 2½ Jahren zählt jede Person gleich\nTotal laut Rechner\tCHF 1’032.–\nDazu Kurtaxe Adelboden für die Freunde: CHF 62.40\n#Preisberechnung\nDu pro Nacht\tCHF 70.–\nFreund 1 pro Nacht\tCHF 70.–\nFreund 2 pro Nacht\tCHF 70.–\nFreund 3 pro Nacht\tCHF 70.–\nFreund 4 pro Nacht\tCHF 70.–\nÜbernachtung (3 Nächte)\tCHF 1’050.–\nReinigung\tCHF 240.–\nReinigung: dein Anteil\tCHF 48.–\nReinigung: Anteil pro Freund\tCHF 48.–\nGesamtpreis vorher: CHF 1’290.–. Entlastung Familie\t−CHF 258.–\nKurtaxe Adelboden (dazu) 4 Freunde ab 16 Jahren zu CHF 5.20 pro Nacht, 3 Nächte\tCHF 62.40\nTotal mit Kurtaxe\tCHF 1’094.40\n#Aufteilung unter den Freunden\nDu zahlst\tCHF 0.–\nFreund 1 zahlt davon Kurtaxe CHF 15.60 (ab 16 Jahren)\tCHF 273.60\nFreund 2 zahlt davon Kurtaxe CHF 15.60 (ab 16 Jahren)\tCHF 273.60\nFreund 3 zahlt davon Kurtaxe CHF 15.60 (ab 16 Jahren)\tCHF 273.60\nFreund 4 zahlt davon Kurtaxe CHF 15.60 (ab 16 Jahren)\tCHF 273.60\nMindestpreis: Du zahlst deinen eigenen Anteil (CHF 258.–) nicht. Der Gesamtpreis sinkt nie unter CHF 840.– (CHF 200.– pro Nacht für die Übernachtungen plus Endreinigung). Die Freunde zahlen ihre Anteile wie berechnet.\nReinigung aufgeteilt: Nach Personen: ab 2½ Jahren zählt jede Person gleich.",
-      "bestaetigt": "2026-11-10T18:03"
+      "status": "storniert"
     },
     {
       "name": "David",
@@ -775,6 +771,10 @@
     {
       "t": "2026-11-10T20:46",
       "text": "In Airbnb gesperrt: Miriam, Do 10.12.2026 bis So 13.12.2026"
+    },
+    {
+      "t": "2026-11-10T20:47",
+      "text": "Entfernt: Manuel, Mo 1.03.2027 bis Do 4.03.2027"
     }
   ]
 }
