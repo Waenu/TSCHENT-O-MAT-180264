@@ -166,12 +166,12 @@
   #animBtn { position: relative; width: 44px; height: 44px; font-size: 1.3rem; line-height: 1; background: var(--surface); color: var(--fg); border: 2px solid var(--line); border-radius: 50%; cursor: pointer; padding: 0; }
   #animBtn[data-st="0"] { opacity: .75; }
   /* Bewegung in drei Stufen (Erde): 2 = alles (Erde dreht schnell), 1 = nur Wichtiges (Erde dreht langsam), 0 = aus (Erde steht still, nichts bewegt sich) */
-  .aus *:not(.stern):not(.filmik):not(.filmik *):not(.blitz-go):not(.rv-blitz), .aus *::before, .aus *::after { animation: none !important; }   /* der Stern beim Spartipp (.stern) bleibt immer in Bewegung */
+  .aus *:not(.stern):not(.filmik):not(.filmik *):not(.blitz-go):not(.rv-blitz):not(.bahn-auto):not(.bahn-haus):not(.prost):not(.prost *):not(.atmet):not(.flocke), .aus *::before, .aus *::after { animation: none !important; }   /* der Stern beim Spartipp (.stern) bleibt immer in Bewegung */
   #bewHinweis { position: fixed; left: 50%; bottom: 84px; transform: translateX(-50%); z-index: 60; max-width: 86vw; padding: 10px 16px; border-radius: 999px; background: var(--fg); color: var(--bg); font-weight: 700; font-size: .95rem; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,.35); opacity: 0; pointer-events: none; transition: opacity .25s; }
   #bewHinweis.da { opacity: 1; }
   /* Bewegung aus (Schalter oben oder «Bewegung reduzieren» im Handy): alle kleinen Animationen stehen still */
   /* Wichtig, daher immer in Bewegung (auch bei «Bewegung aus»): Redner (.rd), Ameisenpfade (.sym, .ant) und Staffel-Läufer (.laeufer, .rn) */
-  .ruhig *:not(.stern):not(.eigen):not(.rd):not(.rd *):not(.sym):not(.pf *):not(.filmik):not(.filmik *):not(.ant):not(.ant *):not(.laeufer):not(.laeufer *):not(.rn):not(.rn *):not(.glb-land):not(.blitz-go):not(.rv-blitz), .ruhig *:not(.rd *):not(.sym):not(.filmik *)::before, .ruhig *:not(.rd *):not(.sym):not(.symz):not(.filmik *)::after { animation: none !important; }
+  .ruhig *:not(.stern):not(.eigen):not(.rd):not(.rd *):not(.sym):not(.pf *):not(.filmik):not(.filmik *):not(.ant):not(.ant *):not(.laeufer):not(.laeufer *):not(.rn):not(.rn *):not(.glb-land):not(.blitz-go):not(.rv-blitz):not(.bahn-auto):not(.bahn-haus):not(.prost):not(.prost *):not(.atmet):not(.flocke), .ruhig *:not(.rd *):not(.sym):not(.filmik *)::before, .ruhig *:not(.rd *):not(.sym):not(.symz):not(.filmik *)::after { animation: none !important; }
   #animBtn .glb { width: 28px; height: 28px; display: block; margin: auto; overflow: visible; }
   .glb-land { animation: glbDreh 9s linear infinite; }
   html:not(.ruhig) .glb-land { animation-duration: 2.4s; }
@@ -292,7 +292,7 @@
   .marke span[data-e] { display: inline-block; padding: 10px 3px; }
   .marke-text { text-align: center; color: var(--marke); font-size: var(--t-small); min-height: 1.4em; margin: 0 0 18px; }
   @keyframes atmen { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.22); } }
-  .atmet { animation: atmen 8s ease-in-out 1; }
+  .atmet { animation: atmen 8s ease-in-out 1; }   /* ankommen · durchatmen · geniessen: antippen bewegt immer, auch wenn die Weltkugel still steht */
   @keyframes fallen { to { transform: translateY(110vh) rotate(200deg); } }
   .flocke { position: fixed; top: -2.5rem; font-size: 1.4rem; pointer-events: none; z-index: 60; animation: fallen linear 1 forwards; }
   @media (prefers-reduced-motion: reduce) { #hilfeKnopf.neu { animation: none; } .atmet { animation: none; } .flocke { display: none; } .bahn-auto { animation: none; left: 20%; } .bahn-haus { animation: none; } .prost { animation: none; } }
@@ -1300,7 +1300,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.115.0.0";
+let VERSION = "2.115.0.1";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
