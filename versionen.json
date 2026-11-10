@@ -2,6 +2,30 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.120.0.0",
+      "datum": "2026-11-10",
+      "titel": "Kurzfilm: Gleicher Wunsch, andere Regeln",
+      "arten": [
+        "Neu"
+      ],
+      "punkte": [
+        "Neuer Kurzfilm im Glossar bei «Auf einen Blick»: Manuel möchte 3 Nächte, sein Termin wandert durch das Jahr. Bei jeder Saison zeigt eine Karte, welche Buchungsarten es dort gibt (Tiefsaison, Nebensaison, Hochsaison, Skisaison, Weihnachtstage, Lücke). Die Nächte erscheinen in der Farbe der Saison.",
+        "Der Film lässt sich auch im Rechner öffnen: beim Feld «Wie möchtest du buchen?» unter dem Hinweis («Saisons im Überblick: 🎬»).",
+        "Verwaltung: Der Titel einer Person wird rot, wenn nach der Abreise die Zahlungsfrist oder die Frist für die Wäsche-Rückgabe vorbei ist und noch nichts verbucht ist."
+      ]
+    },
+    {
+      "v": "2.119.3.1",
+      "datum": "2026-11-10",
+      "titel": "Glossar: wozu die Beherbergungsabgabe dient",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Im Glossar bei «Kurtaxe und Gästekarte» steht unter «Mehr erfahren», wofür der Kanton Bern die Beherbergungsabgabe von CHF 1.– pro Nacht verwendet."
+      ]
+    },
+    {
       "v": "2.119.3.0",
       "datum": "2026-11-10",
       "titel": "Kein falsches «Storniert», keine veraltete Buchungsliste",

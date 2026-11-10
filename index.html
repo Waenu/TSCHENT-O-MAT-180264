@@ -1139,6 +1139,30 @@
   :root[data-theme="dark"] .fv-heute { border-color: #FF6FC0; color: #FF6FC0; }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .fv-heute { border-color: #FF6FC0; color: #FF6FC0; } }
   .fv-grid { position: relative; }
+  .fs-jahr { position: relative; padding-top: 34px; }
+  .fs-band { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px; }
+  .fs-m { text-align: center; font-size: .68rem; color: var(--muted); transition: opacity .4s; }
+  .fs-m i { display: block; height: 30px; border-radius: 3px; margin-bottom: 2px; }
+  .fs-m.zu { opacity: 0; }
+  .fs-mann { position: absolute; top: 0; transform: translateX(-50%); white-space: nowrap; font-size: .78rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: #8A8F98; color: #fff; transition: left 1.1s ease; }
+  .fs-mann::after { content: ""; position: absolute; left: calc(50% + var(--pfeil, 0px)); bottom: -6px; margin-left: -6px; transition: left 1.1s ease; border: 6px solid transparent; border-bottom: 0; border-top-color: #8A8F98; }
+  .fs-mann.prall { background: var(--xmas-line); } .fs-mann.prall::after { border-top-color: var(--xmas-line); }
+  .fs-karte { margin-top: 12px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); min-height: 112px; transition: opacity .3s; }
+  .fs-karte.leer { opacity: .35; }
+  .fs-frage { font-size: .8rem; color: var(--muted); font-weight: 700; margin-bottom: 6px; }
+  .fs-opt { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; min-height: 30px; }
+  .fs-p { padding: 4px 10px; border: 2px solid var(--line); border-radius: 6px; font-size: .9rem; }
+  .fs-p.an { border-color: var(--accent); background: var(--accent); color: var(--accent-fg); font-weight: 700; }
+  .fs-kw { font-size: .82rem; color: var(--muted); }
+  .fs-p.rot { border-color: var(--xmas-line); background: var(--xmas-line); color: #fff; }
+  .fs-streifen { display: grid; grid-template-columns: repeat(14, 1fr); gap: 3px; margin-top: 10px; min-height: 18px; }
+  .fs-n { height: 18px; border-radius: 2px; background: var(--line); opacity: .5; transition: background .4s, opacity .4s; }
+  .fs-n.an { background: var(--fs-f, var(--accent)); opacity: 1; }
+  .fs-n.selbst { background: transparent; opacity: 1; box-shadow: inset 0 0 0 3px var(--fs-f, var(--accent)); }
+  .fs-n.vb { background: transparent; opacity: 1; border: 2px dashed var(--fs-f, var(--accent)); }
+  .fs-n.bnb { background: #5B6170; opacity: 1; }
+  .fs-n.gap { background: transparent; opacity: 1; border: 2px dashed var(--sperr-line); }
+  .fs-info { font-size: .88rem; margin-top: 6px; min-height: 1.2em; }
   .fv-grid { gap: 3px; }
   .fv-grid .cal-d { min-height: 70px; cursor: default; }
   .fv-grid .cal-wd { padding: 0; font-size: .75rem; }
@@ -1353,7 +1377,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.119.3.0";
+let VERSION = "2.120.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2278,10 +2302,11 @@ function begriffeFuellen() {
       "<li><b>Mit Vorbehalt:</b> Ab " + P.hochMinNaechte + " Nächten, auch mit Freunden. Der normale Familienpreis wie in den anderen Monaten (" + chf(P.famPausch) + " pro Nacht für die Familie, dazu Endreinigung), mit Freunden gerechnet wie sonst " + symBtn("b-rechnen", "🧮") + "." + " Dafür trägt ihr das Risiko: Der Termin ist in Airbnb nicht gesperrt, kommt ein Airbnb-Gast, müsst ihr weichen. Wie das funktioniert, steht unter «Termin mit Vorbehalt» " + symBtn("b-prov", "🔓") + "." + "</li></ul>" +
       "<p>Wie die Preise entstehen, steht unter «Wie wird gerechnet» " + symBtn("b-rechnen", "🧮") + "." + "</p>");
   })();
-  set("bc-blick", blickHtml());
+  set("bc-blick", "<p>" + filmGlossar("saison") + "</p>" + blickHtml());
   { const bsp = kurtaxeRechnen(3, 1, 3);   // Beispiel: 3 Freunde, davon 1 Kind, 3 Nächte
     set("bc-kurtaxe", '<p class="wt">Das Wichtigste</p><p>Für die Familie ist die Kurtaxe mit der Jahrespauschale der Eltern bezahlt. Für Freunde kommt sie pro Nacht zum Preis dazu, die Gästekarte von Adelboden ist inbegriffen.</p><details class="mehr"><summary>Mehr erfahren</summary>' +
       "<ul><li>Ab 16 Jahren: " + chf2(P.kurtaxe) + " Kurtaxe plus " + chf2(P.kurtaxeBeherb) + " Beherbergungsabgabe, zusammen <b>" + chf2(bsp.sE) + "</b> pro Nacht.</li><li>Kinder von 6 bis 15 Jahren: <b>" + chf2(bsp.sK) + "</b> pro Nacht.</li><li>Kinder unter 6 Jahren: nichts.</li><li>Es zählt das Alter am Anreisetag.</li></ul>" +
+      "<p><b>Wozu die Beherbergungsabgabe dient:</b> Der Kanton Bern erhebt sie in allen Unterkünften, ob Hotel, Ferienwohnung oder Gruppenhaus, " + chf2(P.kurtaxeBeherb) + " pro Nacht für jeden Gast ab 16 Jahren. Mit dem Geld stärken die Berner Tourismusregionen zum Beispiel ihre Werbung. Geregelt ist das im kantonalen Tourismusentwicklungsgesetz und in der dazugehörigen Verordnung.</p>" +
       "<p>Beispiel: 3 Freunde, davon 1 Kind, 3 Nächte: 2 × " + chf2(bsp.sE) + " × 3 + 1 × " + chf2(bsp.sK) + " × 3 = <b>" + chf2(bsp.summe) + "</b>.</p>" +
       "<p>Im Rechner fragt die App, wie viele deiner Freunde Kinder von 6 bis 15 Jahren sind, und zeigt die Kurtaxe unter dem Preis an.</p>" +
       (gmAktiv() ? "<p>Nach der Bestätigung füllst du in der App die Liste deiner Freunde aus (Name, Geburtsdatum, Nationalität). Die Eltern brauchen sie, um deine Freunde in Adelboden anzumelden und die Reservation abzuschliessen.</p>" : "") + "</details>"); }
@@ -3516,7 +3541,7 @@ function render() {
     const hEl = document.getElementById("h-" + f.id);
     if (f.id === "selbst") { hEl.textContent = ""; const r = document.createElement("span"); r.className = "rot"; r.textContent = "Selbst reinigen geht nur ohne Freunde (für euch Kinder mit Partner/in und Kindern). Mit Freunden reinigen immer die Eltern."; hEl.appendChild(r); hEl.appendChild(document.createTextNode(" " + f.hint(d))); }
     else if (vorab) hEl.textContent = "Wähle zuerst Anreise und Abreise im Kalender. Dann siehst du, was möglich ist.";
-    else hEl.innerHTML = esc(f.hint(d)).replace(/\{\{(.+?)\}\}/g, (m, w) => '<span class="hl">' + w + "</span>" + (f.id === "art" && w === "Mit Vorbehalt" ? filmKnopf() : ""));   // {{Wort}} im Hinweis = hervorgehoben, hinter «Mit Vorbehalt» das Film-Symbol
+    else hEl.innerHTML = esc(f.hint(d)).replace(/\{\{(.+?)\}\}/g, (m, w) => '<span class="hl">' + w + "</span>" + (f.id === "art" && w === "Mit Vorbehalt" ? filmKnopf() : "")) + (f.id === "art" ? " Saisons im Überblick: " + filmKnopf("saison") : "");   // {{Wort}} im Hinweis = hervorgehoben, hinter «Mit Vorbehalt» das Film-Symbol
     if (f.id === (d.SM ? "art" : (d.frei > 0 ? "gaeste" : "wer"))) { const w = staffelWarnung(d); if (w) { const sp = document.createElement("span"); sp.className = "note h gelb-warn"; sp.style.display = "block"; sp.style.marginTop = "8px"; sp.innerHTML = WA + esc(w); hEl.appendChild(sp); } }
   });
   FIELDS.forEach((f) => {   // Meldungen erst nach dem Ein-/Ausblenden aller Felder setzen
@@ -3874,7 +3899,7 @@ function ovOeffnen(id, an) {
 // ===== Kurzfilm «Termin mit Vorbehalt» (2.96.0.0): läuft nur auf Wunsch, ohne Ton, Zeitleiste zum Spulen =====
 let FILM_RUN = 0;
 function filmGlossar(typ) { return filmKnopf(typ).replace("🎬</button>", "🎬 Erklärvideo ansehen</button>"); }   // im Glossar mit Text hinter dem Clip
-function filmKnopf(typ) { return '<button type="button" class="filmik" data-film="' + (typ || "1") + '" aria-label="Kurzfilm ansehen: ' + (typ === "luecke" ? "So funktionieren Lücken" : typ === "staffel" ? "So funktioniert die Familienstaffel" : "So funktioniert Mit Vorbehalt") + '" title="Kurzfilm">🎬</button>'; }
+function filmKnopf(typ) { return '<button type="button" class="filmik" data-film="' + (typ || "1") + '" aria-label="Kurzfilm ansehen: ' + (typ === "saison" ? "Gleicher Wunsch, andere Regeln: die Saisons" : typ === "luecke" ? "So funktionieren Lücken" : typ === "staffel" ? "So funktioniert die Familienstaffel" : "So funktioniert Mit Vorbehalt") + '" title="Kurzfilm">🎬</button>'; }
 function filmVorbehalt() {
   const run = ++FILM_RUN, ziel = document.getElementById("ovFilmIn"), TOTAL = 36500;
   ziel.innerHTML = '<div class="cal-grid fv-grid" id="fvGrid"></div>' +
@@ -4029,6 +4054,92 @@ function filmLuecke() {
   requestAnimationFrame(tick);
 }
 
+function filmSaison() {   // Kurzfilm «Gleicher Wunsch, andere Regeln»: die Saison bestimmt die Buchungsart (seit 2.120.0.0)
+  const run = ++FILM_RUN, ziel = document.getElementById("ovFilmIn"), TOTAL = 78000, Y = 2027;
+  const MN = ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"];
+  ziel.innerHTML = '<div class="fs-jahr" id="fsJahr"><div class="fs-mann" id="fsMann"><b class="zk zl">Fam.</b> Manuel</div><div class="fs-band" id="fsBand"></div></div>' +
+    '<div class="fs-karte" id="fsKarte"><div class="fs-frage">Wie möchtest du buchen?</div><div class="fs-opt" id="fsOpt"></div><div class="fs-streifen" id="fsStr"></div><div class="fs-info" id="fsInfo"></div></div>' +
+    '<div class="fv-cap" aria-live="polite"><div class="fv-szene" id="fvSzene"></div><div class="fv-titel" id="fvTitel"></div><p class="fv-text" id="fvText"></p></div>' +
+    '<div class="fv-fuss"><input type="range" class="fv-seek" id="fvSeek" min="0" max="' + TOTAL + '" step="50" value="0" aria-label="Zeitleiste: mit dem Finger ziehen zum Zurück- oder Vorspulen"><div class="fv-ctl"><button type="button" class="ov-back" id="fvPause">Pause</button><button type="button" class="ov-back" id="fvNochmal">Nochmal</button><button type="button" class="ov-back" data-ov="ovFilm">← Zurück</button></div></div>';
+  ovOeffnen("ovFilm", true);
+  const band = document.getElementById("fsBand"), mann = document.getElementById("fsMann"), d2 = (n) => (n < 10 ? "0" : "") + n;
+  const art = (k) => (istSperre(k) ? "xmas" : FEST_MONATE.indexOf(monatVon(k)) >= 0 ? "fest" : istHoch(k) ? "hoch" : istRuhe(k) ? "ruhe" : "rosa");   // Saison eines Tages wie im Kalender
+  const mon = [];
+  for (let m = 1; m <= 12; m++) {   // jeder Monat ein Feld, Tag für Tag in der Saisonfarbe (Grenzen in März, Oktober und Dezember sichtbar)
+    const tage = new Date(Date.UTC(Y, m, 0)).getUTCDate(), st = [];
+    let von = 1, a = art(Y + "-" + d2(m) + "-01");
+    for (let t = 2; t <= tage + 1; t++) { const b = t <= tage ? art(Y + "-" + d2(m) + "-" + d2(t)) : null; if (b !== a) { st.push("var(--" + a + "-line) " + ((von - 1) / tage * 100).toFixed(1) + "% " + ((t - 1) / tage * 100).toFixed(1) + "%"); von = t; a = b; } }
+    const c = document.createElement("div"); c.className = "fs-m"; c.innerHTML = '<i style="background:linear-gradient(90deg,' + st.join(",") + ')"></i><span>' + MN[m - 1] + "</span>";
+    band.appendChild(c); mon.push(c);
+  }
+  const posX = (m, t) => { const c = mon[m - 1], tage = new Date(Date.UTC(Y, m, 0)).getUTCDate(); return c.offsetLeft + c.offsetWidth * (t - .5) / tage; };
+  const minFeb = MIN_MONATE[FEST_MONATE[0] || 2] || P.minNaechte, minHoch = Math.max(P.minNaechte, P.hochMinNaechte), WUNSCH = Math.max(3, P.minNaechte);
+  const xm = SPERRE && SPERRE.length === 2 ? [Number(SPERRE[0].slice(3)), Number(SPERRE[1].slice(3))] : [21, 24];
+  const pill = (t, an) => '<span class="fs-p' + (an ? " an" : "") + (t === "gesperrt" ? " rot" : "") + '">' + t + "</span>";
+  let S = {};
+  const draw = () => {
+    mon.forEach((c, i) => c.classList.toggle("zu", i >= S.band));
+    mann.hidden = !S.m; if (S.m) { const bw = band.offsetWidth, hw = mann.offsetWidth / 2 + 2; const x = posX(S.m[0], S.m[1]), l = Math.max(hw, Math.min(bw - hw, x)); mann.style.left = l + "px"; mann.style.setProperty("--pfeil", (x - l) + "px"); mann.classList.toggle("prall", !!S.prall); }   // Schild bleibt im Bild, der Pfeil zeigt auf den Tag
+    document.getElementById("fsKarte").classList.toggle("leer", !S.opt);
+    document.getElementById("fsOpt").innerHTML = S.opt ? S.opt.map((o, i) => pill(o, S.wahl === i || S.opt.length === 1)).join("") + (S.opt.length === 1 && S.opt[0] !== "gesperrt" ? '<span class="fs-kw">keine Wahl nötig</span>' : "") : "";
+    let h = "";
+    for (let i = 0; i < 14; i++) { const z = S.str && S.str[i]; h += '<i class="fs-n' + (z ? " " + z : "") + '"' + (z === "an" || z === "vb" || z === "selbst" ? ' style="--fs-f:var(--' + (S.farbe || "accent") + ')"' : "") + "></i>"; }   // Nächte in der Farbe der Saison
+    document.getElementById("fsStr").innerHTML = S.str ? h : "";
+    document.getElementById("fsInfo").innerHTML = S.info || "";
+  };
+  const naechte = (n, cls, vor) => { const a = []; for (let i = 0; i < 14; i++) a.push(i < (vor || 0) ? "" : i < (vor || 0) + n ? cls : ""); return a; };
+  const TXT = [
+    ["Szene 1 von 8", "Gleicher Wunsch …", "Manuel möchte <b>" + WUNSCH + " Nächte</b> ins Chalet. Ob und wie das geht, hängt davon ab, <b>wann</b> er kommt."],
+    ["Szene 2 von 8", "… andere Regeln", "Das Jahr hat fünf Zeiten: <b style=\"color:var(--ruhe-line)\">Tiefsaison</b>, <b style=\"color:var(--rosa-line)\">Nebensaison</b>, <b style=\"color:var(--hoch-line)\">Hochsaison</b>, <b style=\"color:var(--fest-line)\">Skisaison</b> und die <b style=\"color:var(--xmas-line)\">Weihnachtstage</b>. Die Farben sind dieselben wie im Kalender."],
+    ["Szene 3 von 8", "November: Tiefsaison", "Zwei Möglichkeiten: in der <b>Staffel</b> reinigt ihr selbst und zahlt keine Endreinigung beim Aufenthalt, wenn eine weitere Familie anschliessen kann. Oder <b>normal</b>: die Eltern reinigen, Freunde sind möglich."],
+    ["Szene 4 von 8", "Mai: Nebensaison", "Hier gibt es nur eine Art: <b>fest</b>, in Airbnb gesperrt, ab " + P.minNaechte + " Nächten. Manuel muss nichts wählen, seine " + WUNSCH + " Nächte gehen."],
+    ["Szene 5 von 8", "Juli: Hochsaison", "Airbnb-Zeit. <b>Mit Vorbehalt</b> zum normalen Familienpreis, ab " + minHoch + " Nächten: Kommt ein Airbnb-Gast, hat er Vorrang (gestrichelt). Oder <b>verbindlich</b>: " + P.verbMin + " bis " + P.verbMax + " Nächte, " + chf(P.hochNachtMin) + " pro Nacht, dafür fest."],
+    ["Szene 6 von 8", "Februar: Skisaison", "Begehrt und teuer. Immer <b>fest</b>, mindestens <b>" + minFeb + " Nächte</b>, Mindestpreis " + chf(P.festBodenWoche) + " pro Woche inklusive Reinigung. Mit Freunden wird es für dich günstiger. Liegt auch nur <b>eine Nacht</b> deiner Buchung im Februar, gelten für die ganze Buchung die Regeln der Skisaison."],
+    ["Szene 7 von 8", xm[0] + ". bis " + xm[1] + ". Dezember", "Die <b>Weihnachtstage</b> sind gesperrt, dann wird nicht gereinigt. Abreisen geht am " + xm[0] + ". Dezember, anreisen ab dem " + (xm[1] + 1) + "."],
+    ["Szene 8 von 8", "Und die Lücke?", "Bleiben zwischen zwei Airbnb-Gästen nur wenige Nächte frei, ist das eine <b>Lücke</b>: fest, ohne Vorbehalt, ab " + P.minNaechte + " Nächten, in jeder Saison ausser an den Weihnachtstagen. <b>Du musst dir nichts merken:</b> Der Rechner zeigt dir nur, was an deinem Datum geht. Alles auf einen Blick: 📊 im Glossar."]
+  ];
+  const szene = (i) => { const t = TXT[i]; document.getElementById("fvSzene").textContent = t[0]; document.getElementById("fvTitel").textContent = t[1]; document.getElementById("fvText").innerHTML = t[2]; };
+  const step = (p) => { Object.assign(S, p); draw(); };
+  const OS = [ART_S.split(":")[0] + ": ihr reinigt selbst", ART_N.split(":")[0] + ": die Eltern reinigen"], OH = ["Mit Vorbehalt", "Verbindlich"];
+  const EV = [
+    [0, () => { S = { band: 0, m: null, opt: null, str: null, info: "" }; szene(0); draw(); }],
+    [5000, () => { szene(1); step({ band: 1 }); }]
+  ].concat([2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((n, i) => [5500 + i * 400, () => step({ band: n })])).concat([
+    [14000, () => { szene(2); step({ farbe: "ruhe-line", m: [11, 10], prall: false, opt: OS, wahl: -1, str: naechte(WUNSCH, "an"), info: WUNSCH + " Nächte" }); }],
+    [17500, () => step({ wahl: 0, str: naechte(WUNSCH, "selbst"), info: "Staffel: ihr reinigt selbst, ohne Freunde" })],
+    [21000, () => step({ wahl: 1, str: naechte(WUNSCH, "an"), info: "Normal: Endreinigung " + chf(P.reinigung) + ", Freunde möglich" })],
+    [24500, () => { szene(3); step({ farbe: "rosa-line", m: [5, 12], opt: ["Fest"], wahl: 0, str: naechte(WUNSCH, "an"), info: WUNSCH + " Nächte, fest" }); }],
+    [32000, () => { szene(4); step({ farbe: "hoch-line", m: [7, 14], opt: OH, wahl: -1, str: naechte(WUNSCH, "an"), info: WUNSCH + " Nächte reichen hier nicht" }); }],
+    [35500, () => step({ wahl: 0, str: naechte(minHoch, "vb"), info: "Mit Vorbehalt: mindestens " + minHoch + " Nächte" })],
+    [39500, () => step({ wahl: 1, str: naechte(P.verbMin, "an"), info: "Verbindlich: " + P.verbMin + " Nächte × " + chf(P.hochNachtMin) })],
+    [44000, () => { szene(5); step({ farbe: "fest-line", m: [2, 10], opt: ["Fest"], wahl: 0, str: naechte(WUNSCH, "an"), info: WUNSCH + " Nächte reichen hier nicht" }); }],
+    [47000, () => step({ str: naechte(minFeb, "an"), info: "Fest: mindestens " + minFeb + " Nächte" })],
+    [54000, () => { szene(6); step({ m: [12, xm[0] - 3], opt: null, str: null, info: "" }); }],
+    [55500, () => step({ m: [12, xm[0] + 1], prall: true, opt: ["gesperrt"], wahl: 0, info: "keine Buchung möglich" })],
+    [56700, () => step({ m: [12, xm[0] - 3], prall: false })],
+    [62000, () => { szene(7); step({ farbe: "sperr-line", m: [9, 20], opt: ["Fest"], wahl: 0, str: ["bnb", "bnb", "bnb", "bnb", "gap", "gap", "gap", "bnb", "bnb", "bnb", "bnb", "", "", ""], info: "Lücke zwischen zwei Airbnb-Gästen" }); }],
+    [65500, () => step({ str: ["bnb", "bnb", "bnb", "bnb", "an", "an", "an", "bnb", "bnb", "bnb", "bnb", "", "", ""], info: "Manuel nimmt die Lücke" })],
+    [TOTAL, () => {}]
+  ]);
+  const seek = document.getElementById("fvSeek"), pb = document.getElementById("fvPause");
+  let t0 = 0, idx = 0, laeuft = true, last = performance.now(), ziehen = false, warLaufend = false;
+  const springe = (ms) => { t0 = ms; idx = 0; while (idx < EV.length && EV[idx][0] <= ms) { EV[idx][1](); idx++; } };
+  const tick = (now) => {
+    if (run !== FILM_RUN || document.getElementById("ovFilm").hidden) return;
+    if (laeuft) t0 += now - last; last = now;
+    while (idx < EV.length && t0 >= EV[idx][0]) { EV[idx][1](); idx++; }
+    if (!ziehen) seek.value = Math.min(TOTAL, t0);
+    if (t0 >= TOTAL && laeuft) { laeuft = false; pb.textContent = "Fertig"; }
+    requestAnimationFrame(tick);
+  };
+  pb.onclick = () => { if (t0 >= TOTAL) return; laeuft = !laeuft; pb.textContent = laeuft ? "Pause" : "Weiter"; };
+  document.getElementById("fvNochmal").onclick = () => { t0 = 0; idx = 0; laeuft = true; last = performance.now(); pb.textContent = "Pause"; };
+  seek.addEventListener("input", () => { if (!ziehen) { ziehen = true; warLaufend = laeuft; laeuft = false; } springe(Number(seek.value)); pb.textContent = "Weiter"; });
+  seek.addEventListener("change", () => { ziehen = false; if (warLaufend && t0 < TOTAL) { laeuft = true; last = performance.now(); pb.textContent = "Pause"; } });
+  window.addEventListener("resize", () => { if (run === FILM_RUN && !document.getElementById("ovFilm").hidden) draw(); });
+  requestAnimationFrame(tick);
+}
+
 function filmStaffel() {
   const run = ++FILM_RUN, ziel = document.getElementById("ovFilmIn"), TOTAL = 64000;
   ziel.innerHTML = '<div class="cal-grid fv-grid" id="fvGrid"></div>' +
@@ -4116,7 +4227,7 @@ function filmStaffel() {
 }
 
 
-document.addEventListener("click", (e) => { const f = e.target.closest("[data-film]"); if (f) { e.preventDefault(); if (f.dataset.film === "luecke") filmLuecke(); else if (f.dataset.film === "staffel") filmStaffel(); else filmVorbehalt(); } });
+document.addEventListener("click", (e) => { const f = e.target.closest("[data-film]"); if (f) { e.preventDefault(); if (f.dataset.film === "luecke") filmLuecke(); else if (f.dataset.film === "staffel") filmStaffel(); else if (f.dataset.film === "saison") filmSaison(); else filmVorbehalt(); } });
 document.getElementById("ovFilm").addEventListener("click", (e) => { if (e.target.closest("[data-ov]")) { FILM_RUN++; ovOeffnen("ovFilm", false); } });
 
 function ovWeg(a) {
@@ -4921,7 +5032,7 @@ function persBlock(name) {
   const vorbei = alle.filter((x) => x.dep < h).sort((p, q) => (p.arr < q.arr ? 1 : -1));   // die letzte zuoberst
   const anf = OFFEN.filter((x) => x.name === name).sort((p, q) => (p.arr < q.arr ? -1 : p.arr > q.arr ? 1 : 0));   // offene Anfragen: hier bestätigen oder ablehnen
   const n = alle.reduce((s, x) => s + aufgZahl(x), 0) + anf.length;
-  const rot = kommend.some((x) => provKonflikt(x) || sperreFehlt(x) || (!x.prov && abreiseGesperrt(x)));
+  const rot = kommend.some((x) => provKonflikt(x) || sperreFehlt(x) || (!x.prov && abreiseGesperrt(x))) || vorbei.some((x) => (zahlOffen(x) && h > zahlFrist(x)) || (waescheOffen(x) && h > waescheBis(x)));   // rot auch, wenn Zahlungs- oder Wäschefrist vorbei ist (seit 2.120.0.0)
   const nx = kommend[0], na = anf[0];
   const zeile = na && (!nx || na.arr < nx.arr) ? "📨 Anfrage: " + nw(esc(fmtTag(na.arr))) + " bis " + nw(esc(fmtTag(na.dep))) + " · " + nw(naechteTxt(na)) + (kommend.length + anf.length > 1 ? " · " + nw("+" + (kommend.length + anf.length - 1) + " weitere") : "")
     : nx ? (nx.arr <= h ? "jetzt da: " : "") + nw(esc(fmtTag(nx.arr))) + " bis " + nw(esc(fmtTag(nx.dep))) + " · " + nw(naechteTxt(nx)) + (kommend.length + anf.length > 1 ? " · " + nw("+" + (kommend.length + anf.length - 1) + " weitere") : "")
