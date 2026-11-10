@@ -50,6 +50,16 @@
       "betrag": 1032,
       "rechnung": "Gesendet am Di 10.11.2026, 18:02 Uhr. App-Version 2.120.0.1.\nAnreise\tMontag 1.03.2027\nAbreise\tDonnerstag 4.03.2027 (3 Nächte)\nFamilie\tNur ich\nFreunde\t4\nDavon Kinder von 6 bis 15 Jahren\t0\nFreund im selben Zimmer\tNein\nMit den Bedingungen einverstanden: ja\nZimmer 1 unberührt\tNein\nLücke\tdie ganze Lücke, ohne Vorbehalt.\nReinigung\tNach Personen: ab 2½ Jahren zählt jede Person gleich\nTotal laut Rechner\tCHF 1’032.–\nDazu Kurtaxe Adelboden für die Freunde: CHF 62.40\n#Preisberechnung\nDu pro Nacht\tCHF 70.–\nFreund 1 pro Nacht\tCHF 70.–\nFreund 2 pro Nacht\tCHF 70.–\nFreund 3 pro Nacht\tCHF 70.–\nFreund 4 pro Nacht\tCHF 70.–\nÜbernachtung (3 Nächte)\tCHF 1’050.–\nReinigung\tCHF 240.–\nReinigung: dein Anteil\tCHF 48.–\nReinigung: Anteil pro Freund\tCHF 48.–\nGesamtpreis vorher: CHF 1’290.–. Entlastung Familie\t−CHF 258.–\nKurtaxe Adelboden (dazu) 4 Freunde ab 16 Jahren zu CHF 5.20 pro Nacht, 3 Nächte\tCHF 62.40\nTotal mit Kurtaxe\tCHF 1’094.40\n#Aufteilung unter den Freunden\nDu zahlst\tCHF 0.–\nFreund 1 zahlt davon Kurtaxe CHF 15.60 (ab 16 Jahren)\tCHF 273.60\nFreund 2 zahlt davon Kurtaxe CHF 15.60 (ab 16 Jahren)\tCHF 273.60\nFreund 3 zahlt davon Kurtaxe CHF 15.60 (ab 16 Jahren)\tCHF 273.60\nFreund 4 zahlt davon Kurtaxe CHF 15.60 (ab 16 Jahren)\tCHF 273.60\nMindestpreis: Du zahlst deinen eigenen Anteil (CHF 258.–) nicht. Der Gesamtpreis sinkt nie unter CHF 840.– (CHF 200.– pro Nacht für die Übernachtungen plus Endreinigung). Die Freunde zahlen ihre Anteile wie berechnet.\nReinigung aufgeteilt: Nach Personen: ab 2½ Jahren zählt jede Person gleich.",
       "bestaetigt": "2026-11-10T18:03"
+    },
+    {
+      "name": "David",
+      "arr": "2026-12-15",
+      "dep": "2026-12-17",
+      "selbst": true,
+      "pers": 2,
+      "betrag": 120,
+      "rechnung": "Gesendet am Di 10.11.2026, 20:14 Uhr. App-Version 2.120.3.0.\nAnreise\tDienstag 15.12.2026\nAbreise\tDonnerstag 17.12.2026 (2 Nächte)\nFamilie\tIch und Partner/in\nFreunde\t0\nMit den Bedingungen einverstanden: ja\nZimmer 1 unberührt\tJa\nSelbstreinigung\tJa\nTotal laut Rechner\tCHF 120.–\nReinigungskosten sind erst nach Ablauf der Familienstaffel bekannt und werden nachbelastet.\n#Preisberechnung\nFamilie pro Nacht\tCHF 60.–\nÜbernachtung (2 Nächte)\tCHF 120.–\nReinigung\tCHF 0.–\nZimmer 1 und rotes Bad bleiben unberührt: CHF 10.– weniger pro Nacht, die Familie zahlt CHF 60.– statt CHF 70.–.",
+      "bestaetigt": "2026-11-10T20:16"
     }
   ],
   "logbuch": [
@@ -724,6 +734,10 @@
     {
       "t": "2026-11-10T18:03",
       "text": "Bestätigt: Manuel, Mo 1.03.2027 bis Do 4.03.2027, CHF 1032"
+    },
+    {
+      "t": "2026-11-10T20:16",
+      "text": "Bestätigt: David, Di 15.12.2026 bis Do 17.12.2026, CHF 120"
     }
   ]
 }
