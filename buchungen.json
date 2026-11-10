@@ -55,12 +55,7 @@
       "name": "David",
       "arr": "2026-12-15",
       "dep": "2026-12-17",
-      "selbst": true,
-      "pers": 2,
-      "betrag": 120,
-      "rechnung": "Gesendet am Di 10.11.2026, 20:14 Uhr. App-Version 2.120.3.0.\nAnreise\tDienstag 15.12.2026\nAbreise\tDonnerstag 17.12.2026 (2 Nächte)\nFamilie\tIch und Partner/in\nFreunde\t0\nMit den Bedingungen einverstanden: ja\nZimmer 1 unberührt\tJa\nSelbstreinigung\tJa\nTotal laut Rechner\tCHF 120.–\nReinigungskosten sind erst nach Ablauf der Familienstaffel bekannt und werden nachbelastet.\n#Preisberechnung\nFamilie pro Nacht\tCHF 60.–\nÜbernachtung (2 Nächte)\tCHF 120.–\nReinigung\tCHF 0.–\nZimmer 1 und rotes Bad bleiben unberührt: CHF 10.– weniger pro Nacht, die Familie zahlt CHF 60.– statt CHF 70.–.",
-      "bestaetigt": "2026-11-10T20:16",
-      "bescheid": "2026-11-10T20:17"
+      "status": "storniert"
     }
   ],
   "logbuch": [
@@ -743,6 +738,10 @@
     {
       "t": "2026-11-10T20:17",
       "text": "Bescheid gegeben: David, Di 15.12.2026 bis Do 17.12.2026"
+    },
+    {
+      "t": "2026-11-10T20:20",
+      "text": "Entfernt: David, Di 15.12.2026 bis Do 17.12.2026"
     }
   ]
 }
