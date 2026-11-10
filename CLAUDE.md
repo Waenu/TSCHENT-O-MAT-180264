@@ -20,7 +20,7 @@ Dieses Dokument fasst Projekt, Regeln und Arbeitsweise zusammen. Es ersetzt den 
 2. Stelle: neue Funktion (zählt ohne Obergrenze hoch, also 2.99, 2.100, 2.101).
 3. Stelle: funktionelle Änderung oder Regeländerung.
 4. Stelle: Layout, Text oder Fehlerkorrektur.
-Stand beim Schreiben: 2.114.0.0.
+Stand beim Schreiben: 2.116.0.0.
 
 ## Versionsänderung (Ablauf)
 1. In `index.html` genau eine Stelle `let VERSION = "…"` ändern (vorher prüfen, dass sie genau einmal vorkommt).
@@ -59,18 +59,18 @@ Anschliessend prüfen, dass `origin/main:einstellungen.json` die neue Version tr
 - Texte in der App: positiv und einladend. Kinder nennen die Eltern «Papi» und «Mami». Mehr Wortregeln stehen in den Texten der App selbst.
 
 ## Offene Themen (Stand 10.11.2026)
-1. Verwaltung neu: Schritt A (pro Person ein Titel mit Marke und Zähler) ist erledigt (2.114.0.0). Offen: Schritt B (Bereich «Anleitung & Infos, Ruhe geniessen, Cheminée» über ein Icon oben rechts aus- und einblenden, Zustand merken) und Schritt C (Rückweg vom Kalenderbalken in die Verwaltung verbessern). Wänu prüft, ob zuoberst wieder eine rote Zeile für Dringendes nötig ist.
-2. Mailadresse beim ersten Öffnen (zweimal eingeben, ohne Kopieren) für den Versand der Gästekarten, Ablage in der Verwaltung.
-3. Gästemeldung der Freunde: Der Buchende füllt pro Freund aus (Name, Vorname, Geburtsdatum, Geschlecht nur weiblich/männlich, Nationalität mit Vorgabe Schweiz), maximal 5. Daten gehen an einen eigenen Briefkasten (Google-Apps-Script im Konto des Besitzers mit privater Tabelle), keine Personendaten im Repo. Mail an Wänu, Liste in der Verwaltung unter dem Buchenden, jedes Feld mit Kopiersymbol, Knopf «Alles entfernen» (löscht auch in der Tabelle). Nur Meldungen mit gültiger Buchungsnummer.
-4. Haftung/Handlauf: Häkchen bei Buchungen mit Freunden. Wortlaut prüft Wänu selbst.
-5. Stornierung 30 Tage für externe Gäste in Februar und Hochsaison. Regel nach den 30 Tagen noch offen.
-6. Hilfeknopf: nur beim ersten Öffnen zeigen, Knopf «Verstanden», immer sichtbar, in Gelb.
-7. Punkt nach dem Symbol (🧹, 🔗) in einigen Texten.
-8. Erklärclip zum Buchungsablauf (nur Text, 60 bis 90 Sekunden).
-9. Hinweis zur Airbnb-Verzögerung bei der Sperrung.
-10. Termin kürzen bei Konflikt.
-11. Fehler bei «Einnahmen»: «Cannot read properties of undefined (reading 'split')».
-12. Backup der GitHub-Repos auf OneDrive.
-13. Reinigungsliste.
+1. Mailadresse beim ersten Öffnen (zweimal eingeben, ohne Kopieren) für den Versand der Gästekarten, Ablage in der Verwaltung.
+2. Gästemeldung der Freunde (App gebaut in 2.116.0.0, Script `scripts/gaestemeldung.gs`; offen: Wänu richtet den Briefkasten ein, danach `GM_URL` in index.html setzen und echt testen): Der Buchende füllt pro Freund aus (Name, Vorname, Geburtsdatum, Geschlecht nur weiblich/männlich, Nationalität mit Vorgabe Schweiz), maximal 5. Daten gehen an einen eigenen Briefkasten (Google-Apps-Script im Konto des Besitzers mit privater Tabelle), keine Personendaten im Repo. Mail an Wänu, Liste in der Verwaltung unter dem Buchenden, jedes Feld mit Kopiersymbol, Knopf «Alles entfernen» (löscht auch in der Tabelle). Nur Meldungen mit gültiger Buchungsnummer.
+3. Haftung/Handlauf: Häkchen bei Buchungen mit Freunden. Wortlaut prüft Wänu selbst.
+4. Stornierung 30 Tage für externe Gäste in Februar und Hochsaison. Regel nach den 30 Tagen noch offen.
+5. Hilfeknopf: nur beim ersten Öffnen zeigen, Knopf «Verstanden», immer sichtbar, in Gelb.
+6. Punkt nach dem Symbol (🧹, 🔗) in einigen Texten.
+7. Erklärclip zum Buchungsablauf (nur Text, 60 bis 90 Sekunden): eine Buchung durchspielen und die Legende zeigen, damit man schnell sieht, dass es verschiedene Saisons mit verschiedenen Möglichkeiten gibt (Jerome hat das nicht verstanden). Kommt später.
+8. Hinweis zur Airbnb-Verzögerung bei der Sperrung.
+9. Termin kürzen bei Konflikt.
+10. Fehler bei «Einnahmen»: «Cannot read properties of undefined (reading 'split')».
+11. Backup der GitHub-Repos auf OneDrive.
+12. Reinigungsliste.
+13. Wofür die Beherbergungsabgabe von CHF 1.00 verwendet wird, klärt Wänu noch ab (dann im Kapitel «Kurtaxe und Gästekarte» ergänzen).
 
-Erledigt: Kurtaxe für Freunde (2.113.0.0 und 2.113.0.1). Beträge fix im Code (P.kurtaxe, kurtaxeBeherb, kurtaxeKind), nicht aus der aktuellen Verordnung.
+Erledigt: Verwaltung neu, Schritte A bis C (2.114.0.0 bis 2.115.1.0). Kurtaxe für Freunde (2.113.0.0 und 2.113.0.1). Beträge fix im Code (P.kurtaxe, kurtaxeBeherb, kurtaxeKind), nicht aus der aktuellen Verordnung.

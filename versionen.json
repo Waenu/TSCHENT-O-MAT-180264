@@ -2,6 +2,23 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.116.0.0",
+      "datum": "2026-11-10",
+      "titel": "Gästemeldung der Freunde",
+      "arten": [
+        "Neu"
+      ],
+      "punkte": [
+        "Wer mit Freunden gebucht hat, füllt nach der Bestätigung in der App pro Freund Name, Vorname, Geburtsdatum, Geschlecht und Nationalität aus (höchstens 5). Das Geburtsdatum lässt sich eintippen oder im Kalender wählen, die Nationalität ist mit «Schweiz» vorausgefüllt.",
+        "Die Liste geht an einen privaten Briefkasten im Google-Konto der Eltern, nicht ins öffentliche Repo. Papi bekommt eine Mail.",
+        "In der Verwaltung steht die Liste bei der Buchung, jedes Feld mit Kopierknopf, dazu «Alles entfernen» (löscht auch in der Google-Tabelle).",
+        "Die WhatsApp-Bestätigung erinnert daran, die Liste auszufüllen: Papi braucht sie, um die Reservation abzuschliessen.",
+        "Fehlt die Liste noch, steht in der Verwaltung «Liste der Freunde noch nicht gesendet», und sie zählt als offener Punkt.",
+        "Neues Kapitel «Kurtaxe und Gästekarte» unter «Anleitung & Infos».",
+        "Die Funktion ist erst sichtbar, wenn der Briefkasten eingerichtet ist."
+      ]
+    },
+    {
       "v": "2.115.1.0",
       "datum": "2026-11-10",
       "titel": "Vom Kalender direkt in die Verwaltung",
