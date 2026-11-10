@@ -2,6 +2,31 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.120.2.0",
+      "datum": "2026-11-10",
+      "titel": "Wäsche: alles aus Stoff, ungewaschen zurück",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Anreise-Wäsche: neu pro Aufenthalt 4 Waschlappen für die Küche und 4 Geschirrtücher (statt 1 Küchentuch pro Person). Die Liste sagt, dass ihr alles aus Stoff selbst mitbringt.",
+        "Wäsche-Rückgabe: In der Reinigungs-Checkliste, beim Feld «Wie kommt die benutzte Wäsche zurück?» und im Glossar steht, dass die Wäsche ungewaschen zurückkommt und nie selbst gewaschen wird.",
+        "Rechner: Ist bei den Freunden mindestens ein Kind von 6 bis 15 Jahren angegeben, erscheint der Hinweis, dass Minderjährige dabei sind und geklärt werden muss, wer für sie zahlt."
+      ]
+    },
+    {
+      "v": "2.120.1.0",
+      "datum": "2026-11-10",
+      "titel": "Reinigung nach Personen: ab 18 Jahren",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Bei der Aufteilung «Nach Personen» zählen alle ab 18 Jahren gleich (vorher ab 2½). Enkel zählen nicht mit, ihren Anteil tragen die Erwachsenen der Familie.",
+        "Verwaltung: In der Freundesliste für die Kurtaxe erscheint eine Warnung, wenn ein Freund am Anreisetag jünger als 18 ist, damit Papi nachfragen kann, wer für ihn zahlt."
+      ]
+    },
+    {
       "v": "2.120.0.1",
       "datum": "2026-11-10",
       "titel": "Kurzfilm Saisons beim Kalender",

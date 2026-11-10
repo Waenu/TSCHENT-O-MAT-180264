@@ -1377,7 +1377,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.120.0.1";
+let VERSION = "2.120.2.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1446,7 +1446,7 @@ const WERL = ["Nur ich", "Ich und Partner/in", "Ich und 1 Kind", "Ich und 2 Kind
 const LWERL = ["Nur ich", "Ich und 1 Familienmitglied", "Ich und Kleinkind", "Ich, Familienmitglied, Kleinkind"];
 const W_BR = "Ich bringe sie persönlich zu den Eltern", W_SE = "Ich sende sie per Post", W_OPTS = [W_BR, W_SE];
 const REINIG = [
-  "Nach Personen: ab 2½ Jahren zählt jede Person gleich",
+  "Nach Personen: ab 18 Jahren zählt jede Person gleich",
   "Nach Parteien: Familie und jeder Freund zahlen gleich viel",
   "Freunde zahlen die ganze Reinigung",
   "Familie zahlt die ganze Reinigung"
@@ -1506,17 +1506,18 @@ function derive(s) {
   const SM = s.selbstOK === true && GE === 0 && !LG && !LUE;
   const SB = SM && s.selbst === "Ja";
   const RE = SB ? P.reinigungSelbst : P.reinigung;
+  const ER = wer === MFG ? FP : (/Partner|Familienmitglied/.test(wer) ? 2 : 1);   // Erwachsene der Familie für «Nach Personen»; bei «Meine Familie und Geschwister» kennt die App die Enkel nicht, dort zählen alle ausser den Kleinkindern
   const ri = REINIG.indexOf(s.reinig);
   let FA = RE;
   if (GE > 0) {
-    if (ri === 0) FA = RE * FP / (FP + GE);
+    if (ri === 0) FA = RE * ER / (ER + GE);   // nach Personen: nur Erwachsene ab 18, Enkel zählen nicht (seit 2.120.1.0)
     else if (ri === 1) FA = RE / (1 + GE);   // Parteien: die Familie zählt als eine, jeder Freund als eine weitere Partei
     else if (ri === 2) FA = 0;
     else if (ri === 3) FA = RE;
-    else FA = RE * FP / (FP + GE);
+    else FA = RE * ER / (ER + GE);
   }
   const GS = GE > 0 ? (RE - FA) / GE : 0;
-  return { VERB, LG, LUE, lock, voll, base, kkMax, kkMin, kkFix, KK, sp, sparLock, sparGrund, FP, frei, GE, PT, ZE, SO, SM, SB, LR, FN0, FN, GN, HN, WN, PN, nights, UE, AF, AG, RE, FA, GS };
+  return { VERB, LG, LUE, lock, voll, base, kkMax, kkMin, kkFix, KK, sp, sparLock, sparGrund, FP, ER, frei, GE, PT, ZE, SO, SM, SB, LR, FN0, FN, GN, HN, WN, PN, nights, UE, AF, AG, RE, FA, GS };
 }
 
 // Lücke mit Freunden: kleinste Zahl Freunde, bei der die Übernachtungen den Mindestbetrag erreichen (zu Normalpreisen: Freund 70, Zimmer 1 gebucht)
@@ -1660,7 +1661,7 @@ const FIELDS = [
     hint: (d) => (d.frei === 0 ? "Es ist kein Platz mehr frei." : (d.frei === 1 ? "Es ist noch 1 Platz frei." : "Noch " + d.frei + " Plätze frei.") + " Maximal " + P.maxPersonen + " Personen mit Bett.") + ((d.LUE && P.lueckeGastNacht > 0) ? (d.nights >= P.lueckeGastMinNaechte ? " In der Lücke sind Freunde möglich, schon ein Freund genügt." : " In der Lücke gehen Freunde ab " + P.lueckeGastMinNaechte + " Nächten. Bitte mehr Nächte wählen oder ohne Freunde buchen.") : "") + (S.festMin ? " Im " + festTxt() + " sind mindestens " + P.festMinGaeste + " Freunde nötig" + (d.frei < P.festMinGaeste ? ", mit dieser Familiengrösse ist das nicht möglich." : ", damit sich die Woche für alle lohnt (Gesamtpreis mindestens " + chf(P.mindestpreisWoche) + " pro 7 Nächte).") : ""),
     visible: (d) => d.frei > 0 && !(d.LUE && P.lueckeGastNacht > 0 && d.nights < P.lueckeGastMinNaechte), opts: (d) => (S.staffelOffen && S.art === ART_N && !S.festMin && !(d.LUE && P.lueckeGastNacht > 0)) ? range(1, d.frei) : (S.festMin && d.frei >= P.festMinGaeste) ? range(P.festMinGaeste, d.frei) : (d.LUE && P.lueckeGastNacht > 0 ? [0].concat(range(lueckeGaesteMin(d), d.frei)) : range(0, d.frei)) },
   { id: "kinder", label: "🎟️ Wie viele deiner Freunde sind Kinder von 6 bis 15 Jahren?", type: "num",
-    hint: () => "Für Freunde fällt in Adelboden die Kurtaxe an, die Gästekarte ist inbegriffen: " + chf2(P.kurtaxe + P.kurtaxeBeherb) + " pro Nacht ab 16 Jahren, " + chf2(P.kurtaxeKind) + " für Kinder von 6 bis 15 Jahren, Kinder unter 6 Jahren zahlen nichts. Es zählt das Alter am Anreisetag. Die Kurtaxe kommt am Schluss zum Preis dazu. Für die Familie ist sie mit der Jahrespauschale der Eltern abgegolten.",
+    hint: () => "Für Freunde fällt in Adelboden die Kurtaxe an, die Gästekarte ist inbegriffen: " + chf2(P.kurtaxe + P.kurtaxeBeherb) + " pro Nacht ab 16 Jahren, " + chf2(P.kurtaxeKind) + " für Kinder von 6 bis 15 Jahren, Kinder unter 6 Jahren zahlen nichts. Es zählt das Alter am Anreisetag. Die Kurtaxe kommt am Schluss zum Preis dazu. Für die Familie ist sie mit der Jahrespauschale der Eltern abgegolten." + (nz(S.kinder) > 0 ? " ⚠️ {{Minderjährig}}: Freunde unter 18 sind minderjährig. Kläre mit ihren Eltern, wer für sie zahlt. Bei der Reinigung «nach Personen» zählen sie voll." : ""),
     visible: (d) => d.GE > 0, opts: (d) => range(0, d.GE) },
   { id: "zimmer", label: "💤 Schläft ein Freund oder eine Freundin im selben Zimmer wie ich?", type: "str",
     hint: (d) => (S.wer === "Nur ich" && d.base + d.GE <= P.sparMaxPers)
@@ -1674,10 +1675,10 @@ const FIELDS = [
     hint: () => S.selbst === "Nein" ? "Nein: Es gilt die normale Reinigung (" + chf(P.reinigung) + ")." : "Ja: Ihr bringt frische Wäsche mit und reinigt selbst. Die Reinigung kostet dann " + chf(P.reinigungSelbst) + ". Regeln siehe «🧹 Selbstreinigung» im Kalender." + (S.selbst === "Ja" ? "" : " Nein: Es gilt die normale Reinigung (" + chf(P.reinigung) + ")."),
     visible: () => false, opts: () => ["Ja", "Nein"] },
   { id: "waesche", label: "🧺 Wie kommt die benutzte Wäsche zurück zu den Eltern?", type: "str",
-    hint: () => "Ihr beginnt die Staffel: Ihr findet das Chalet gereinigt und bezogen vor und bringt keine Wäsche mit. Dafür besorgt ihr, dass die benutzte Wäsche zurückkommt. Beim Abreisen zieht ihr die Betten ab (die Moltons bleiben) und nehmt die Wäsche mit. Spätestens " + WAESCHE_TAGE + " Tage nach eurer Rückreise bringt oder sendet ihr sie den Eltern. Das Porto zahlt, wer sendet. Mit der Wahl bestätigt ihr diese Bedingung.",
+    hint: () => "Ihr beginnt die Staffel: Ihr findet das Chalet gereinigt und bezogen vor und bringt keine Wäsche mit. Dafür besorgt ihr, dass die benutzte Wäsche zurückkommt. Beim Abreisen zieht ihr die Betten ab (die Moltons bleiben) und nehmt die Wäsche mit. Spätestens " + WAESCHE_TAGE + " Tage nach eurer Rückreise bringt oder sendet ihr sie den Eltern, {{ungewaschen}}: Wascht sie nie selbst. Das Porto zahlt, wer sendet. Mit der Wahl bestätigt ihr diese Bedingung.",
     visible: (d) => d.SM && S.selbst === "Ja" && !!ARR && istStaffelStart(ARR), opts: () => W_OPTS },
   { id: "reinig", label: "🍰 Wie werden die Reinigungskosten (" + chf(P.reinigung) + ") aufgeteilt?", type: "str",
-    hint: () => "Das entscheidet ihr selbst. Das Total ändert sich nicht, nur wer wie viel zahlt. Die Familie gilt immer als ein Block. Bei «Nach Personen» zählen Kinder ab 2½ Jahren wie Erwachsene, Kinder unter 2½ Jahren zählen nicht. Bei «Nach Parteien» ist die Familie eine Partei und jeder Freund eine weitere: bei 3 Freunden zahlt die Familie ¼, bei 4 Freunden ⅕. Das ist nur fair, wenn alle Parteien gleich gross sind. Sonst teilt nach Personen.",
+    hint: () => "Das entscheidet ihr selbst. Das Total ändert sich nicht, nur wer wie viel zahlt. Die Familie gilt immer als ein Block. Bei «Nach Personen» zählen alle ab 18 Jahren gleich. Kinder und Enkel unter 18 zählen nicht mit, ihren Anteil tragen die Erwachsenen. Bei «Nach Parteien» ist die Familie eine Partei und jeder Freund eine weitere: bei 3 Freunden zahlt die Familie ¼, bei 4 Freunden ⅕. Das ist nur fair, wenn alle Parteien gleich gross sind. Sonst teilt nach Personen.",
     visible: (d) => d.GE > 0, opts: () => REINIG }
 ];
 {   // Lücke mit Freunden: Hinweis, wie viele Freunde «Ja» braucht
@@ -2317,8 +2318,8 @@ function begriffeFuellen() {
   { const bs = document.getElementById("bc-staffel"); if (!bs.querySelector(".filmik")) bs.querySelector(".wt").insertAdjacentHTML("afterend", "<p>" + filmGlossar("staffel") + "</p>"); }   // nur einmal, sonst stapeln sich die Knöpfe bei jedem Neuaufbau
   set("bc-ruhe", RUHE.length ? "<p>" + filmGlossar("staffel") + "</p>" + bildRuhe() + "<ul><li>Möglich " + ruhe + ".</li>" +
     "<li>Selbst reinigt ihr in der Familienstaffel, ohne Freunde. Mit Freunden reinigen die Eltern. Wie die Staffel funktioniert, steht unter «Familienstaffel» " + symBtn("b-staffel", "🔗") + "." + " Gewählt wird im Feld «Wie möchtest du buchen?» " + symBtn("b-auswahl", "🔽") + "</li>" +
-    "<li>Frische Bettwäsche, Handtücher und Küchentücher mitbringen und selbst beziehen. Bettdecken und Kissen nie ohne frischen Duvet- und Kissenbezug benutzen. Alles nehmt ihr wieder mit. Nur die Moltons bleiben nach dem Benutzen auf der Matratze. Die Liste mit den Mengen für eure Personenzahl findet ihr nach der Bestätigung im Knopf «🧳 Anreise-Wäsche» auf der Startseite, zum Abhaken.</li>" +
-    "<li><b>Wer die Staffel beginnt:</b> Die Wohnung ist gereinigt und bezogen, ihr bringt keine Wäsche. Beim Abreisen zieht ihr die Betten ab (die Moltons bleiben) und nehmt die Wäsche mit. Ihr bringt sie den Eltern oder sendet sie per Post, spätestens " + WAESCHE_TAGE + " Tage nach der Rückreise. Das Porto zahlt, wer sendet. Beim Buchen wählt ihr, ob ihr bringt oder sendet. Wie ihr die Duvets und Kissen für die Wäsche vorbereitet, steht in der Reinigungs-Checkliste, die ihr nach der Bestätigung bekommt.</li>" +
+    "<li>Alles aus Stoff bringt ihr selbst mit: frische Bettwäsche, Frottiertücher und Waschlappen, dazu " + WAESCHE_FIX.map((w) => w[1] + " " + (w[0] === "Geschirrtuch" ? "Geschirrtücher" : w[0])).join(" und ") + " (pro Aufenthalt). Die Betten bezieht ihr selbst. Bettdecken und Kissen nie ohne frischen Duvet- und Kissenbezug benutzen. Alles nehmt ihr wieder mit. Nur die Moltons bleiben nach dem Benutzen auf der Matratze. Die Liste mit den Mengen für eure Personenzahl findet ihr nach der Bestätigung im Knopf «🧳 Anreise-Wäsche» auf der Startseite, zum Abhaken.</li>" +
+    "<li><b>Wer die Staffel beginnt:</b> Die Wohnung ist gereinigt und bezogen, ihr bringt keine Wäsche. Beim Abreisen zieht ihr die Betten ab (die Moltons bleiben) und nehmt die Wäsche mit. Ihr bringt sie den Eltern oder sendet sie per Post, spätestens " + WAESCHE_TAGE + " Tage nach der Rückreise, <b>ungewaschen</b>: Wascht sie nie selbst. Das Porto zahlt, wer sendet. Beim Buchen wählt ihr, ob ihr bringt oder sendet. Wie ihr die Duvets und Kissen für die Wäsche vorbereitet, steht in der Reinigungs-Checkliste, die ihr nach der Bestätigung bekommt.</li>" +
     "<li>Wer geht, reinigt: WC putzen, staubsaugen, Küche sauber, Abfall entsorgen, alles picobello.</li>" +
     "<li>Ihr zahlt den Eltern noch keine Reinigung (" + chf(P.reinigungSelbst) + "). Die Endreinigung durch die Eltern ist trotzdem Pflicht, weil sie ihren Standard wahren wollen.</li></ul>" : "<p>Zurzeit gibt es keine Zeiten, in denen ihr selbst reinigen könnt.</p>");
   set("bc-endrein", "<p><b>Aufwand</b></p><ul>" +
@@ -3773,12 +3774,15 @@ async function ladeEinstellungen() {
 // Noch nicht bestätigt: die Anfrage, die dieses Handy gerade gesendet oder kopiert hat (nur lokal gemerkt).
 let CHECK_SELBST = ["🛏️ Betten abziehen (draussen wegen Staub), die Moltons bleiben", "🪶 Mit dem Staubwedel alles abstauben", "🧹 Alle benutzten Räume staubsaugen, auch den grossen Teppich im Wohnzimmer", "🚽 Toilette reinigen", "🚿 Duschkabine reinigen", "🧽 Badezimmer nass aufnehmen (keine Haare dürfen bleiben)", "🍳 Küche sauber machen, auch den leeren Kühlschrank", "🪑 Draussen: Tisch hochklappen, Stühle stapeln", "🧺 Draussen: Teppiche vor den Eingängen zum Haus ausklopfen", "🌳 Die Umgebung ums Haus muss sauber sein", "🧴 Glanzspüler, Putzessig oder Staubsaugersäcke aufgebraucht oder fast leer? Bitte melden"];   // nur bei Selbstreinigung
 let CHECK_ALLE = ["🧊 Kühlschrank ganz leer machen. Keine angefangenen Packungen (Müesli etc.) in der Küche lassen. Alles muss weg.", "🍽️ Geschirrspüler ausräumen, ausschalten, Tür offen lassen", "🗑️ Kehricht entsorgen (Sack mit grüner Marke)", "♻️ Glas, Papier, Weissblech und Aluminium zur Sammelstelle bringen", "🪟 Alle Fenster schliessen", "💡 Alle Lichter ausschalten", "🌡️ Alle Heizungsregler auf Stufe 5 stellen", "🔐 Schlüssel und Fernbedienung in die Schlüsselbox legen"];   // bei jedem Aufenthalt
+const WAESCHE_FIX = [["Waschlappen für die Küche", 4], ["Geschirrtuch", 4]];   // pro Aufenthalt, nicht pro Person (seit 2.120.2.0)
+const waescheListe = (n) => WAESCHE.filter((w) => !/^Küchentuch/.test(w[0])).map((w) => [w[0], w[1] * n]).concat(WAESCHE_FIX);   // Küchentücher (Geschirrtücher) gibt es pro Aufenthalt statt pro Person
 let WAESCHE = [["Duvetbezug", 1], ["Kissenbezug", 1], ["Spannleintuch", 1], ["Frottiertuch gross", 2], ["Frottiertuch klein", 2], ["Küchentuch", 1], ["Waschlappen", 1]];
 // Wäsche zurückgeben (nur wer die Staffel beginnt und die Wäsche bringt oder sendet): Untermenü mit den Einzelschritten
 const WR_TITEL = "🧺 Duvets und Kissen für die Wäsche vorbereiten";
 const WR_SCHRITTE = ["Auf der Terrasse ausschütteln", "Umstülpen und nochmals ausschütteln", "Reissverschluss zumachen (sonst geht es nicht in die Waschmaschine)", "Zusammenlegen"];
 const wrMit = (a) => (a.waesche === "senden" ? "📮 Wäsche per Post senden, spätestens " : "🚗 Wäsche den Eltern bringen, spätestens ") + WAESCHE_TAGE + " Tage nach der Rückreise";
-const wrListe = (a) => (a && a.sb && (a.waesche === "bringen" || a.waesche === "senden") ? WR_SCHRITTE.concat([wrMit(a)]) : []);
+const WR_NIE = "🚫 Nicht selbst waschen: Die Wäsche kommt ungewaschen zu den Eltern zurück";
+const wrListe = (a) => (a && a.sb && (a.waesche === "bringen" || a.waesche === "senden") ? WR_SCHRITTE.concat([WR_NIE, wrMit(a)]) : []);
 const checkListe = (a) => (a && a.sb ? CHECK_SELBST : []).concat(wrListe(a), CHECK_ALLE);
 let AUFENT = null;      // lokal gemerkte Anfrage {arr, dep, sb, pers}
 let HAKEN = {};         // Haken je Aufenthalt: { "arr|dep": { Text: true } }
@@ -4241,16 +4245,17 @@ function anreiseZeichnen() {
   const a = aufent(); if (!a) return;
   const n = a.pers, h = hk(a);
   const key = (w) => "w:" + w[0];
-  const done = WAESCHE.filter((w) => h[key(w)]).length;
-  const alle = WAESCHE.length > 0 && done === WAESCHE.length;
+  const WL = waescheListe(n);
+  const done = WL.filter((w) => h[key(w)]).length;
+  const alle = WL.length > 0 && done === WL.length;
   document.getElementById("ovAnreiseIn").innerHTML =
     '<button type="button" class="ov-back" data-ov="ovAnreise">← Zurück</button>' +
     '<h2>🧳 Nimm am Anreisetag, ' + fmtTagV(a.arr) + ', folgende Wäsche mit:</h2>' +
     '<p class="chk-stand">' + (a.ok ? "Bestätigt: " : "Noch nicht bestätigt: ") + 'Aufenthalt von ' + fmtTag(a.arr) + ' bis ' + fmtTag(a.dep) + ', für ' + n + (n === 1 ? ' Person' : ' Personen') + '.</p>' +
-    (alle ? '<div class="chk-danke">🎉 Danke, du hast alles eingepackt.</div>' : '<p class="chk-stand">' + done + ' von ' + WAESCHE.length + ' eingepackt. Tippe jeden Punkt an, wenn er eingepackt ist.</p>') +
-    '<div class="chk-liste' + (alle ? ' chk-alle' : '') + '">' + WAESCHE.map((w, k) =>
-      '<button type="button" class="chk-item' + (h[key(w)] ? ' erledigt' : '') + '" data-wa="' + k + '" aria-pressed="' + (h[key(w)] ? 'true' : 'false') + '"><span class="box">' + (h[key(w)] ? '✓' : '') + '</span><span><b>' + (w[1] * n) + '×</b> ' + esc(w[0]) + '</span></button>').join("") + '</div>' +
-    '<p class="hint">Bettdecken und Kissen nie ohne frischen Bezug benutzen. Alles nehmt ihr wieder mit. Nur die Moltons bleiben nach dem Benutzen auf der Matratze.</p>' + ovWeg(a);
+    (alle ? '<div class="chk-danke">🎉 Danke, du hast alles eingepackt.</div>' : '<p class="chk-stand">' + done + ' von ' + WL.length + ' eingepackt. Tippe jeden Punkt an, wenn er eingepackt ist.</p>') +
+    '<div class="chk-liste' + (alle ? ' chk-alle' : '') + '">' + WL.map((w, k) =>
+      '<button type="button" class="chk-item' + (h[key(w)] ? ' erledigt' : '') + '" data-wa="' + k + '" aria-pressed="' + (h[key(w)] ? 'true' : 'false') + '"><span class="box">' + (h[key(w)] ? '✓' : '') + '</span><span><b>' + w[1] + '×</b> ' + esc(w[0]) + '</span></button>').join("") + '</div>' +
+    '<p class="hint">Alles aus Stoff, das ihr im Chalet braucht, bringt ihr selbst mit: Bettwäsche, Frottiertücher, Waschlappen, Geschirrtücher und Waschlappen für die Küche. Bettdecken und Kissen nie ohne frischen Bezug benutzen. Alles nehmt ihr wieder mit. Nur die Moltons bleiben nach dem Benutzen auf der Matratze.</p>' + ovWeg(a);
 }
 function checkZeichnen() {
   const a = aufent(); if (!a) return;
@@ -4515,7 +4520,7 @@ document.getElementById("aufStatus").addEventListener("click", aufentWeg);
   const k = e.target.closest("[data-chk]");
   if (k && a) { const i = checkListe(a)[Number(k.dataset.chk)]; if (i !== undefined) { const h = hk(a); h[i] = !h[i]; aufentSichern(); checkZeichnen(); } return; }
   const wk = e.target.closest("[data-wa]");
-  if (wk && a) { const w = WAESCHE[Number(wk.dataset.wa)]; if (w) { const h = hk(a); h["w:" + w[0]] = !h["w:" + w[0]]; aufentSichern(); anreiseZeichnen(); } return; }
+  if (wk && a) { const w = waescheListe(a.pers)[Number(wk.dataset.wa)]; if (w) { const h = hk(a); h["w:" + w[0]] = !h["w:" + w[0]]; aufentSichern(); anreiseZeichnen(); } return; }
   aufentWeg(e);
 }));
 // ===== Bestätigen durch die Eltern: Link aus der Anfrage, Eintrag in buchungen.json über die GitHub-Schnittstelle =====
@@ -5272,6 +5277,9 @@ function gmPapiHtml(x, ohneTitel) {   // Abschnitt in der Karte der Buchung (nur
   const e = GM_LISTEN[key];
   if (!e || !Array.isArray(e.freunde) || !e.freunde.length) return h + '<p class="hint">' + esc(x.name) + ' hat die Liste noch nicht gesendet. <button type="button" class="btn" data-gmneu="1">🔄 Neu laden</button></p></div>';
   h += '<p class="hint"><button type="button" class="btn" data-gmneu="1">🔄 Neu laden</button></p><p class="hint">Gesendet am ' + esc(fmtTag(String(e.gesendet).slice(0, 10))) + ", " + esc(String(e.gesendet).slice(11, 16)) + " Uhr.</p>";
+  const alter = (geb) => { const g = /^\d{4}-\d{2}-\d{2}$/.test(String(geb)) ? String(geb) : gmIso(gmDatum(geb)); if (!g) return null; let a = Number(x.arr.slice(0, 4)) - Number(g.slice(0, 4)); if (x.arr.slice(5) < g.slice(5)) a--; return a; };   // Alter am Anreisetag
+  const mj = e.freunde.map((f) => ({ f: f, a: alter(f.geb) })).filter((o) => o.a !== null && o.a < 18);
+  if (mj.length) h += '<p class="note h rot-warn"><b>⚠️ Minderjährig:</b> ' + mj.map((o) => esc(o.f.vorname + " " + o.f.name) + ", " + o.a + " Jahre am Anreisetag").join("; ") + ". Mit wem " + (mj.length > 1 ? "kommen sie" : "kommt sie oder er") + ", und wer zahlt? Bitte bei " + esc(x.name) + " nachfragen. Bei der Reinigung «nach Personen» zählen alle Freunde voll.</p>";
   h += e.freunde.map((f, i) => {
     const z = (lab, v) => '<div class="gm-z"><span class="gm-l">' + lab + '</span><span class="gm-v">' + esc(v) + "</span>" + cp(v) + "</div>";
     return '<div class="gm-fr"><b>' + (i + 1) + ". " + esc(f.vorname + " " + f.name) + "</b>" + z("Name", f.name) + z("Vorname", f.vorname) + z("Geburtsdatum", gmDatum(f.geb)) + z("Geschlecht", f.geschlecht === "w" ? "weiblich" : "männlich") + z("Nationalität", f.nat) + "</div>";
