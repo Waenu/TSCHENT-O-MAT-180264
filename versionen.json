@@ -2,6 +2,19 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.119.0.0",
+      "datum": "2026-11-10",
+      "titel": "Mailadresse beim ersten Öffnen",
+      "arten": [
+        "Neu"
+      ],
+      "punkte": [
+        "Kinder und Partner geben beim ersten Öffnen ihre Mailadresse zweimal ein (Einfügen ist gesperrt). Ohne Eingabe geht es nicht weiter.",
+        "Die Adresse geht an den Briefkasten im Google-Konto der Eltern, nicht ins öffentliche Repo. Klappt das Senden nicht, sendet die App sie beim nächsten Öffnen.",
+        "In der Verwaltung steht die Mailadresse zuoberst bei der Person, mit Kopierknopf."
+      ]
+    },
+    {
       "v": "2.118.1.0",
       "datum": "2026-11-10",
       "titel": "Bedingungen und gelber Hilfeknopf",

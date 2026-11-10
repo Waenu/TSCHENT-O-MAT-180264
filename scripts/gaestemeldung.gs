@@ -13,10 +13,14 @@
  *   { a: "senden",   buchung: "Name|JJJJ-MM-TT|JJJJ-MM-TT", freunde: [ {name, vorname, geb, geschlecht, nat}, ... ] }
  *   { a: "liste",    k: SCHLUESSEL }                      -> alle Listen
  *   { a: "loeschen", k: SCHLUESSEL, buchung: "…" }        -> Liste dieser Buchung entfernen
+ *   { a: "mail",     name: "Jerome", mail: "…" }            -> Mailadresse eines Kindes oder Partners speichern
+ *   (a: "liste" liefert zusätzlich die gespeicherten Mailadressen)
  */
 const REPO_BUCHUNGEN = "https://raw.githubusercontent.com/Waenu/TSCHENT-O-MAT-180264/main/buchungen.json";
 const MAX_FREUNDE = 5;
 const BLATT = "Gaestemeldung";
+const BLATT_MAIL = "Mailadressen";
+const NAMEN = ["Jerome", "Deborah", "Miriam", "Manuel", "David", "Rahel", "Andreas", "Sarah"];
 
 function doPost(e) {
   let a = {};
@@ -25,7 +29,8 @@ function doPost(e) {
   lock.waitLock(20000);
   try {
     if (a.a === "senden") return antwort(senden(a));
-    if (a.a === "liste") return antwort(schluesselOk(a.k) ? { ok: true, listen: alleListen() } : { ok: false, fehler: "Schlüssel falsch." });
+    if (a.a === "liste") return antwort(schluesselOk(a.k) ? { ok: true, listen: alleListen(), mails: alleMails() } : { ok: false, fehler: "Schlüssel falsch." });
+    if (a.a === "mail") return antwort(mailSpeichern(a));
     if (a.a === "loeschen") return antwort(schluesselOk(a.k) ? loeschen(String(a.buchung || "")) : { ok: false, fehler: "Schlüssel falsch." });
     return antwort({ ok: false, fehler: "Unbekannter Aufruf." });
   } catch (err) {
@@ -96,4 +101,23 @@ function loeschen(key) {
   const b = blatt(), werte = b.getDataRange().getValues();
   for (let i = werte.length - 1; i > 0; i--) if (werte[i][0] === key) b.deleteRow(i + 1);
   return { ok: true };
+}
+
+function mailBlatt() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let b = ss.getSheetByName(BLATT_MAIL);
+  if (!b) { b = ss.insertSheet(BLATT_MAIL); b.appendRow(["Name", "Mail", "Gespeichert"]); b.setFrozenRows(1); }
+  return b;
+}
+function mailSpeichern(a) {
+  const name = txt(a.name, 30), mail = txt(a.mail, 120).toLowerCase();
+  if (NAMEN.indexOf(name) < 0) return { ok: false, fehler: "Name unbekannt." };
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(mail)) return { ok: false, fehler: "Mailadresse ungültig." };
+  const jetzt = Utilities.formatDate(new Date(), "Europe/Zurich", "yyyy-MM-dd'T'HH:mm");
+  const b = mailBlatt(), werte = b.getDataRange().getValues(), i = werte.findIndex((r, n) => n > 0 && r[0] === name);
+  if (i > 0) b.getRange(i + 1, 1, 1, 3).setValues([[name, mail, jetzt]]); else b.appendRow([name, mail, jetzt]);
+  return { ok: true };
+}
+function alleMails() {
+  return mailBlatt().getDataRange().getValues().slice(1).filter((r) => r[0]).map((r) => ({ name: String(r[0]), mail: String(r[1]), datum: r[2] instanceof Date ? Utilities.formatDate(r[2], "Europe/Zurich", "yyyy-MM-dd'T'HH:mm") : String(r[2]) }));
 }

@@ -1092,6 +1092,12 @@
 
   #nameWahl { position: fixed; inset: 0; z-index: 99999; background: var(--bg); color: var(--fg); display: flex; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 24px 16px; }
   #nameWahl .nw-box { width: 100%; max-width: 420px; margin-top: 8vh; }
+  #mailWahl { position: fixed; inset: 0; z-index: 99998; background: var(--bg); color: var(--fg); display: flex; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 24px 16px; box-sizing: border-box; }
+  #mailWahl[hidden] { display: none; }
+  #mailWahl .mw-box { width: 100%; max-width: 420px; margin-top: 8vh; display: flex; flex-direction: column; gap: 12px; }
+  #mailWahl h2 { margin: 0; font-size: 1.35rem; } #mailWahl p { margin: 0; }
+  #mailWahl input { width: 100%; box-sizing: border-box; font-size: 1.1rem; padding: 10px; }
+  #mailWahl .mw-f { color: #E5534B; font-weight: 700; min-height: 1.2em; }
   #nameWahl h2 { margin: 0 0 10px; font-size: 1.35rem; text-align: left; }
   #nameWahl p { text-align: left; margin: 0 0 16px; }
   #nameWahl .nw-liste { display: flex; flex-direction: column; gap: 10px; }
@@ -1341,7 +1347,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.118.1.0";
+let VERSION = "2.119.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -3839,6 +3845,7 @@ function aufentZeigen() {
     if (sl.length) { st.hidden = false; st.innerHTML += sl.map((b) => '<div class="note h"><b>❌ Storniert:</b> ' + (b.name === ABSENDER ? "Dein Aufenthalt" : "Der Aufenthalt von " + esc(b.name)) + ' vom ' + esc(fmtTag(b.arr)) + ' bis ' + esc(fmtTag(b.dep)) + ' wurde von den Eltern gelöscht. Die Knöpfe dazu sind weg. <button type="button" class="ov-back" data-stok="' + esc(bKey(b)) + '">OK, gelesen</button></div>').join(""); }
   }
   gmKindZeigen();
+  mailPruefen();
   {   // rote Zahlungsmeldung: bleibt, bis Papi die Zahlung verbucht hat (kein Schliessen-Knopf)
     const zb = document.getElementById("zahlBox"), zl = ABSENDER ? BUCH.filter((b) => eigenN(b.name) && zahlFaellig(b)) : [];
     zb.hidden = zl.length === 0;
@@ -4908,6 +4915,7 @@ function persBlock(name) {
   const gr = anf.map((x) => ({ x: x, t: ["Anfrage bestätigen oder ablehnen"] })).concat(kommend.concat(vorbei).map((x) => ({ x: x, t: x.dep >= h ? aufgabenVon(x) : [].concat(zahlOffen(x) ? ["Zahlung offen"] : [], waescheOffen(x) ? ["Wäsche zurück quittieren"] : []) }))).filter((g) => g.t.length);
   const kt = (k) => Number(k.slice(8, 10)) + "." + Number(k.slice(5, 7)) + ".";
   let inh = "";   // was offen ist, steht in der Liste «Zu tun» jeder Karte
+  if (gmAktiv() && GM_LISTEN !== null) { const ml = GM_MAILS[name]; inh += '<div class="gm-z ps-mail"><span class="gm-l">✉️ Mailadresse</span>' + (ml ? '<span class="gm-v">' + esc(ml.mail) + '</span><button type="button" class="gm-cp" data-cp="' + esc(ml.mail) + '" aria-label="Mailadresse kopieren">📋</button>' : '<span class="gm-v hint" style="font-weight:400">noch nicht eingegeben</span>') + "</div>"; }
   inh += anf.map(anfrageKarte).join("");
   inh += kommend.map((x) => festKarte(x, true)).join("");
   inh += vorbei.filter((x) => zahlOffen(x) || waescheOffen(x)).map((x) => (zahlOffen(x) ? zahlZeile(x) : "") + (waescheOffen(x) ? waescheZeile(x) : "")).join("");
@@ -5020,6 +5028,34 @@ function gmLokal() { try { const o = JSON.parse(localStorage.getItem("tm2_gm") |
 function gmLokalSetzen(key, v) { const o = gmLokal(); o[key] = v; try { localStorage.setItem("tm2_gm", JSON.stringify(o)); } catch (e) {} }
 const GM_AUF = new Set();   // Formulare, die das Kind nach dem Senden zum Ändern wieder geöffnet hat
 let GM_SIG = "", GM_MSG = {};
+// Mailadresse beim ersten Öffnen (Kinder und Partner, nicht Papi in der Kind-Ansicht): zweimal eintippen, Einfügen gesperrt. Ohne Eingabe geht es nicht weiter.
+// Gespeichert im Briefkasten (Google-Tabelle der Eltern), nicht im Repo. Klappt das Senden nicht, merkt sich die App die Adresse und sendet sie beim nächsten Öffnen.
+const mailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+function mailLokal() { try { return JSON.parse(localStorage.getItem("tm2_mail") || "null"); } catch (e) { return null; } }
+async function mailSenden(m) { try { await gmPost({ a: "mail", name: m.name, mail: m.mail }); m.gesendet = true; } catch (e) { m.gesendet = false; } try { localStorage.setItem("tm2_mail", JSON.stringify(m)); } catch (e) {} }
+function mailPruefen() {
+  if (!gmAktiv() || TOKEN || !ABSENDER) return;
+  const nw = document.getElementById("nameWahl"); if (nw && nw.offsetParent !== null) return;   // erst den Namen wählen
+  const m = mailLokal();
+  if (m && m.name === ABSENDER && mailRe.test(m.mail || "")) { if (!m.gesendet && !mailPruefen.lauf) { mailPruefen.lauf = true; mailSenden(m); } return; }
+  let w = document.getElementById("mailWahl");
+  if (w && !w.hidden) return;
+  if (!w) { w = document.createElement("div"); w.id = "mailWahl"; w.setAttribute("role", "dialog"); w.setAttribute("aria-label", "Mailadresse"); document.body.appendChild(w); }
+  w.innerHTML = '<div class="mw-box"><h2>📧 Deine Mailadresse</h2><p>Hoi ' + esc(ABSENDER) + "! Bitte gib einmal deine Mailadresse ein. Die Eltern schicken dir damit zum Beispiel die Gästekarten für Adelboden. Sie ist nicht öffentlich.</p>" +
+    '<label for="mw1">Mailadresse</label><input id="mw1" type="email" inputmode="email" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="name@beispiel.ch">' +
+    '<label for="mw2">Nochmals eintippen</label><input id="mw2" type="email" inputmode="email" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="name@beispiel.ch">' +
+    '<p class="mw-f" id="mwF" role="alert"></p><button type="button" class="btn main full" id="mwOk">Speichern und weiter</button></div>';
+  w.hidden = false;
+  ["mw1", "mw2"].forEach((id) => { const f = document.getElementById(id); ["paste", "drop"].forEach((ev) => f.addEventListener(ev, (e) => { e.preventDefault(); document.getElementById("mwF").textContent = "Bitte von Hand eintippen, nicht einfügen."; })); });
+  document.getElementById("mwOk").addEventListener("click", async () => {
+    const a = document.getElementById("mw1").value.trim().toLowerCase(), b = document.getElementById("mw2").value.trim().toLowerCase(), f = document.getElementById("mwF");
+    if (!mailRe.test(a)) { f.textContent = "Das sieht nicht wie eine Mailadresse aus."; return; }
+    if (a !== b) { f.textContent = "Die beiden Eingaben stimmen nicht überein."; return; }
+    const bt = document.getElementById("mwOk"); bt.disabled = true; bt.textContent = "Speichere …";
+    await mailSenden({ name: ABSENDER, mail: a });
+    w.hidden = true;
+  });
+}
 function gmKindZeigen() {
   const box = document.getElementById("gmBox");
   const l = gmAktiv() && ABSENDER ? BUCH.filter((b) => eigenN(b.name) && b.dep >= heuteKey() && freundeVon(b) > 0) : [];
@@ -5086,12 +5122,12 @@ document.getElementById("gmBox").addEventListener("click", async (e) => {
   GM_SIG = ""; gmKindZeigen();
 });
 // --- bei Papi: Listen laden, anzeigen (jedes Feld kopierbar) und entfernen ---
-let GM_KEY = "", GM_LISTEN = null, GM_STATUS = "", GM_LAEDT = false;
+let GM_KEY = "", GM_LISTEN = null, GM_STATUS = "", GM_LAEDT = false, GM_MAILS = {};
 try { GM_KEY = localStorage.getItem("tm2_gmKey") || ""; } catch (e) {}
 async function gmLaden() {
   if (!gmAktiv() || !GM_KEY || GM_LAEDT) return;
   GM_LAEDT = true; GM_STATUS = "";
-  try { const j = await gmPost({ a: "liste", k: GM_KEY }); GM_LISTEN = {}; (j.listen || []).forEach((x) => { GM_LISTEN[x.buchung] = x; }); }
+  try { const j = await gmPost({ a: "liste", k: GM_KEY }); GM_LISTEN = {}; (j.listen || []).forEach((x) => { GM_LISTEN[x.buchung] = x; }); GM_MAILS = {}; (j.mails || []).forEach((x) => { if (x && x.name) GM_MAILS[x.name] = x; }); }
   catch (err) { GM_STATUS = err && err.message ? err.message : "Fehler"; }
   GM_LAEDT = false; bestZeigen(); try { renderKalender(); } catch (e) {}
 }
