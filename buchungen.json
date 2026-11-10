@@ -61,7 +61,8 @@
       "betrag": 120,
       "rechnung": "Gesendet am Di 10.11.2026, 15:56 Uhr. App-Version 2.119.0.2.\nAnreise\tMittwoch 25.11.2026\nAbreise\tFreitag 27.11.2026 (2 Nächte)\nFamilie\tNur ich\nFreunde\t0\nMit den Bedingungen einverstanden: ja\nZimmer 1 unberührt\tJa\nSelbstreinigung\tJa\nTotal laut Rechner\tCHF 120.–\nReinigungskosten sind erst nach Ablauf der Familienstaffel bekannt und werden nachbelastet.\n#Preisberechnung\nDu pro Nacht\tCHF 60.–\nÜbernachtung (2 Nächte)\tCHF 120.–\nReinigung\tCHF 0.–\nZimmer 1 und rotes Bad bleiben unberührt: CHF 10.– weniger pro Nacht, du zahlst CHF 60.– statt CHF 70.–.",
       "bestaetigt": "2026-11-10T15:57",
-      "bescheid": "2026-11-10T15:59"
+      "bescheid": "2026-11-10T15:59",
+      "gesperrt": "2026-11-10T16:00"
     }
   ],
   "logbuch": [
@@ -680,6 +681,10 @@
     {
       "t": "2026-11-10T15:59",
       "text": "Bescheid gegeben: Miriam, Mi 25.11.2026 bis Fr 27.11.2026"
+    },
+    {
+      "t": "2026-11-10T16:00",
+      "text": "In Airbnb gesperrt: Miriam, Mi 25.11.2026 bis Fr 27.11.2026"
     }
   ]
 }
