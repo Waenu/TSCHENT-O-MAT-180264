@@ -1274,7 +1274,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.112.2.3";
+let VERSION = "2.113.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1327,6 +1327,9 @@ const P = {
   hochNachtMin: 0,     // Hochsaison (ausserhalb der festMonate): Mindestpreis pro Nacht ohne Reinigung (CHF, 0 = aus). Boden = Nächte x dieser Betrag + Reinigung; sonst gleiche Rechnung wie im Februar. Gilt nur, wenn alle Nächte in der Hochsaison liegen
   mindestpreisWoche: 0, // Boden pro 7 Nächte (CHF, 0 = aus), nur mit Freunden: Übersteigt der Gesamtpreis den Boden (anteilig nach Nächten), entfällt der Anteil der Familie, aber der Gesamtpreis sinkt nie unter den Boden
   lueckeRabatt: 0,      // Prozent Ermässigung auf die Übernachtungen, wenn der Aufenthalt in einer Lücke zwischen zwei Airbnb-Buchungen liegt (Reinigung bleibt gleich)
+  kurtaxe: 4.2,         // Kurtaxe Adelboden pro Nacht und Person ab 16 Jahren (CHF, Wert hier im Code; Stand Reglement 1.5.2026, Ansatz laut Wänu)
+  kurtaxeBeherb: 1,     // Kantonale Beherbergungsabgabe pro Nacht und Person ab 16 Jahren (CHF)
+  kurtaxeKind: 2.1,     // Kurtaxe pro Nacht für Kinder von 6 bis 15 Jahren (CHF); Kinder unter 6 Jahren zahlen nichts
   sichtMinNaechte: 2    // «Kurzfristig frei» (Zeit, die Airbnb nicht mehr verkaufen kann): Mindestnächte für einen Aufenthalt darin
 };
 const MFG = "Meine Familie und Geschwister";
@@ -1437,6 +1440,7 @@ function check(s, d) {
   if (s.gaeste > d.frei && d.frei === 0) return "Kein Platz mehr für Freunde. Bitte Freunde neu wählen.";
   if (s.gaeste > d.frei) return "Nur noch " + d.frei + " Freund frei. Bitte Freunde neu wählen.";
   if (d.SM && s.selbst === "Ja" && ARR && istStaffelStart(ARR) && W_OPTS.indexOf(s.waesche) < 0) return "Bitte wählen: Wie kommt die benutzte Wäsche zurück";
+  if (d.GE > 0 && s.kinderPflicht === true && typeof s.kinder !== "number") return "Bitte wählen: Kinder von 6 bis 15 Jahren unter den Freunden";
   if (d.GE > 0 && !d.lock && !d.voll && !isYN(s.zimmer)) return "Bitte wählen: Freund oder Freundin im selben Zimmer";
   if (!d.sparLock && !isYN(s.spar)) return "Bitte wählen: Bleibt Zimmer 1 unberührt";
   if (d.GE > 0 && REINIG.indexOf(s.reinig) < 0) return "Bitte wählen: Aufteilung der Reinigung";
@@ -1500,13 +1504,21 @@ function calc(s) {
 // CALC-END
 
 /* ============ Oberfläche ============ */
-const EMPTY = { art: "", luecke: false, lueckeDyn: false, selbstOK: false, selbst: "", nights: null, wer: "", fam: null, gaeste: null, zimmer: "", kk: null, spar: "", sparAuto: false, reinig: "", waesche: "" };
+const EMPTY = { art: "", luecke: false, lueckeDyn: false, selbstOK: false, selbst: "", nights: null, wer: "", fam: null, gaeste: null, kinder: null, zimmer: "", kk: null, spar: "", sparAuto: false, reinig: "", waesche: "" };
 let S = Object.assign({}, EMPTY);
 let NOTICES = {};   // Meldungen nach Feld: erscheinen direkt unter dem betroffenen Feld (seit 2.94.3.0, vorher ein Feld ganz oben)
 const meld = (id, text) => { NOTICES[id] = text; };
 
 const range = (a, b) => { const r = []; for (let i = a; i <= b; i++) r.push(i); return r; };
 const chf = (n) => "CHF " + Math.round(n).toLocaleString("de-CH").replace(/[’']/g, "’") + ".–";
+const chf2 = (n) => "CHF " + (Math.round(n * 100) / 100).toLocaleString("de-CH", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).replace(/[’']/g, "’");
+// Kurtaxe Adelboden nur für Freunde (die Familie ist über die Jahrespauschale der Eltern abgedeckt); verändert keine Preisregel und nicht den Gesamtpreis
+function kurtaxeRechnen(GE, kinder, nights) {
+  const kd = Math.max(0, Math.min(nz(kinder), nz(GE))), er = Math.max(0, nz(GE) - kd), n = Math.max(0, nz(nights));
+  const sE = Math.round((P.kurtaxe + P.kurtaxeBeherb) * 100) / 100, sK = P.kurtaxeKind;
+  const bE = Math.round(er * sE * n * 100) / 100, bK = Math.round(kd * sK * n * 100) / 100;
+  return { er, kd, sE, sK, bE, bK, summe: Math.round((bE + bK) * 100) / 100 };
+}
 const gastWort = (n) => n === 1 ? "Freund" : "Freunde";
 
 // Ersparnis für die Familie, wenn Zimmer 1 unberührt bleibt (echte Rechnung: Unterschied zwischen «Ja» und «Nein»); nur wenn Zimmer 1 in Gebrauch ist
@@ -1544,6 +1556,9 @@ const FIELDS = [
   { id: "gaeste", label: "🧑‍🤝‍🧑 Freunde (ausserhalb der Familie)", type: "num",
     hint: (d) => (d.frei === 0 ? "Es ist kein Platz mehr frei." : (d.frei === 1 ? "Es ist noch 1 Platz frei." : "Noch " + d.frei + " Plätze frei.") + " Maximal " + P.maxPersonen + " Personen mit Bett.") + ((d.LUE && P.lueckeGastNacht > 0) ? (d.nights >= P.lueckeGastMinNaechte ? " In der Lücke sind Freunde möglich, schon ein Freund genügt." : " In der Lücke gehen Freunde ab " + P.lueckeGastMinNaechte + " Nächten. Bitte mehr Nächte wählen oder ohne Freunde buchen.") : "") + (S.festMin ? " Im " + festTxt() + " sind mindestens " + P.festMinGaeste + " Freunde nötig" + (d.frei < P.festMinGaeste ? ", mit dieser Familiengrösse ist das nicht möglich." : ", damit sich die Woche für alle lohnt (Gesamtpreis mindestens " + chf(P.mindestpreisWoche) + " pro 7 Nächte).") : ""),
     visible: (d) => d.frei > 0 && !(d.LUE && P.lueckeGastNacht > 0 && d.nights < P.lueckeGastMinNaechte), opts: (d) => (S.staffelOffen && S.art === ART_N && !S.festMin && !(d.LUE && P.lueckeGastNacht > 0)) ? range(1, d.frei) : (S.festMin && d.frei >= P.festMinGaeste) ? range(P.festMinGaeste, d.frei) : (d.LUE && P.lueckeGastNacht > 0 ? [0].concat(range(lueckeGaesteMin(d), d.frei)) : range(0, d.frei)) },
+  { id: "kinder", label: "🎟️ Wie viele deiner Freunde sind Kinder von 6 bis 15 Jahren?", type: "num",
+    hint: () => "Für Freunde fällt in Adelboden die Kurtaxe an, die Gästekarte ist inbegriffen: " + chf2(P.kurtaxe + P.kurtaxeBeherb) + " pro Nacht ab 16 Jahren, " + chf2(P.kurtaxeKind) + " für Kinder von 6 bis 15 Jahren, Kinder unter 6 Jahren zahlen nichts. Es zählt das Alter am Anreisetag. Die Kurtaxe kommt am Schluss zum Preis dazu. Für die Familie ist sie mit der Jahrespauschale der Eltern abgegolten.",
+    visible: (d) => d.GE > 0, opts: (d) => range(0, d.GE) },
   { id: "zimmer", label: "💤 Schläft ein Freund oder eine Freundin im selben Zimmer wie ich?", type: "str",
     hint: (d) => (S.wer === "Nur ich" && d.base + d.GE <= P.sparMaxPers)
       ? "Ein Freund oder eine Freundin im selben Zimmer zahlt " + chf(P.gastZimmer) + " statt " + chf(P.gast) + " pro Nacht, du dann nur " + chf(P.famAnteil) + " statt " + chf(P.famPausch) + ". Ihr teilt dann Zimmer 2 und das blaue Bad, Zimmer 1 und das rote Bad bleiben unberührt. Es sind ein Zimmer und ein Doppelbett weniger zu beziehen und zu reinigen."
@@ -1597,6 +1612,8 @@ function normalize() {
   if (d.frei === 0 && d.FP <= P.maxPersonen && typeof S.wer === "string" && S.wer && (S.wer !== MFG || typeof S.fam === "number")) { S.gaeste = 0; d = derive(S); }
   if (d.GE === 0) { if (!(d.LUE && S.gaeste === null)) S.zimmer = ""; S.reinig = ""; }   // in der Lücke bleibt «Ja» stehen, wenn die Freunde neu gewählt werden müssen
   if (d.voll) S.zimmer = "";
+  if (d.GE === 0) S.kinder = null;
+  else if (typeof S.kinder === "number" && S.kinder > d.GE) { S.kinder = null; meld("kinder", "Es sind weniger Freunde, bitte die Kinder von 6 bis 15 Jahren neu wählen."); }
   if (!d.SM) S.selbst = "";
   if (!(d.SM && S.selbst === "Ja" && ARR && istStaffelStart(ARR))) S.waesche = "";
   if (d.kkMax === 0) S.kk = null;
@@ -3178,6 +3195,7 @@ function anfrageText(r) {
   z.push("");
   z.push("Familie: " + S.wer + (S.wer === MFG ? " (" + S.fam + " Personen)" : "") + (x.KK > 0 ? ", davon " + x.KK + " im Kinderbettchen oder bei den eigenen Eltern" : ""));
   z.push("Freunde: " + x.GE);
+  if (x.GE > 0 && typeof S.kinder === "number") z.push("Davon Kinder von 6 bis 15 Jahren: " + S.kinder);
   if (x.GE > 0 && !x.lock) z.push("Freund im selben Zimmer: " + x.ZE);
   if (!x.VERB) z.push("Zimmer 1 unberührt: " + (S.spar === "Ja" ? "Ja" : "Nein"));
   if (S.inLuecke) { const lv = lueckeVon(ARR); z.push("Lücke: " + (!lv ? "Lücke wegen Vorlaufzeit" : (lv[0] === ARR && lv[1] === DEP ? "die ganze Lücke" : "ein Teil der Lücke vom " + fmtTagV(lv[0]) + " bis " + fmtTagV(lv[1]))) + ", ohne Vorbehalt."); }
@@ -3188,7 +3206,7 @@ function anfrageText(r) {
   if (x.LR > 0 && !spitzTermin()) z.push("Lückenpreis (" + x.LR + " % auf die Übernachtungen)");
   const spA = spitzTermin();
   if (spA) z.push("Spitzenzeit" + (spA[2] ? " (" + spA[2] + ")" : "") + ": Preis auf Anfrage");
-  else z.push("Total laut Rechner: " + chf(r.TOT));
+  else { z.push("Total laut Rechner: " + chf(r.TOT)); const ktA = kurtaxeRechnen(x.GE, S.kinder, x.nights); if (ktA.summe > 0) z.push("Dazu Kurtaxe Adelboden für die Freunde: " + chf2(ktA.summe)); }
   if (x.SB) z.push("Reinigungskosten sind erst nach Ablauf der Familienstaffel bekannt und werden nachbelastet.");
   if (x.SM && S.selbst === "Nein") { const u = staffelUnterbruch(ARR); if (u.length) z.push("Achtung: Unterbricht die Familienstaffel von " + u.join(", ") + ".") ; }
   if (festStay(ARR, DEP)) z.push("Fester Termin (" + festTxt() + "): bitte in Airbnb sperren.");
@@ -3418,7 +3436,7 @@ function render() {
   const uebrig = Object.keys(NOTICES).filter((id) => !meldOrt(id)).map((id) => NOTICES[id]).join(" ");
   nb.hidden = !uebrig; nb.textContent = uebrig;
 
-  const r = calc(S);
+  const r = calc(Object.assign({}, S, { kinderPflicht: true }));
   const tip = Math.max(0, parseInt(TRINK, 10) || 0);
   const res = document.getElementById("result");
   const bar = document.getElementById("bar");
@@ -3445,6 +3463,7 @@ function render() {
   const sb = sparBetrag(r.d);
   if (sb > 0) lab.innerHTML += '<br><small class="spar"><span class="stern s1" aria-hidden="true">⭐</span>Bleibt Zimmer 1 zu, sparst du ' + chf(sb) + '<span class="stern s2" aria-hidden="true">⭐</span></small>';
   const x = r.d;
+  const kt = kurtaxeRechnen(x.GE, S.kinder, x.nights), ktS = kt.summe > 0 ? chf2(kt.summe) : "";   // Kurtaxe nur für Freunde, kommt am Schluss zum Preis dazu
   const spR = spitzTermin();
   if (spR) {
     SNAP_BER = [];
@@ -3459,6 +3478,8 @@ function render() {
   who += '<tr><td>' + (S.wer === "Nur ich" ? "Du zahlst" : "Familie zahlt") + '</td><td>' + chf(r.FZ) + '</td></tr>';
   if (x.GE >= 1) who += '<tr><td>Freund 1 zahlt</td><td>' + chf(r.HZ) + '</td></tr>';
   for (let g = 2; g <= x.GE; g++) who += '<tr><td>Freund ' + g + ' zahlt</td><td>' + chf(r.WZ / (x.GE - 1)) + '</td></tr>';
+  if (kt.er > 0) who += '<tr><td>Kurtaxe pro Freund ab 16 Jahren (dazu)</td><td>' + chf2(kt.sE * x.nights) + '</td></tr>';
+  if (kt.kd > 0) who += '<tr><td>Kurtaxe pro Kind von 6 bis 15 Jahren (dazu)</td><td>' + chf2(kt.sK * x.nights) + '</td></tr>';
   let det = "";
   const row = (a, b) => '<tr><td>' + a + '</td><td>' + b + '</td></tr>';
   if (!r.VERB) det += row(S.wer === "Nur ich" ? "Du pro Nacht" : "Familie pro Nacht", chf(x.FN));
@@ -3471,6 +3492,12 @@ function render() {
   if (r.AUF) det += row("Aufschlag bis zum Mindestpreis " + (r.HOCH ? "in der Hochsaison" : (r.LUEB ? "in der Lücke" : "im " + esc(festTxt()))), "+" + chf(r.AUF));
   if (r.GRATIS) det += row("Gesamtpreis vorher: " + chf(r.TOT0) + ". Entlastung Familie", "−" + chf(r.D));
   if (tip > 0) det += row("Trinkgeld für Mami (freiwillig)", chf(tip));
+  if (kt.summe > 0) {
+    if (kt.er > 0) det += row("Kurtaxe: " + kt.er + (kt.er === 1 ? " Freund" : " Freunde") + " ab 16 Jahren zu " + chf2(kt.sE) + " pro Nacht", chf2(kt.bE));
+    if (kt.kd > 0) det += row("Kurtaxe: " + kt.kd + (kt.kd === 1 ? " Kind" : " Kinder") + " von 6 bis 15 Jahren zu " + chf2(kt.sK) + " pro Nacht", chf2(kt.bK));
+    det += row("Kurtaxe Adelboden (dazu)", ktS);
+    det += row("Total mit Kurtaxe", chf2(r.TOT + tip + kt.summe));
+  }
   let notes = "";
   if (x.sp) notes += '<p class="note">Zimmer 1 und rotes Bad bleiben unberührt: ' + chf(P.sparEin) + ' weniger pro Nacht, ' + (S.wer === "Nur ich" ? "du zahlst" : "die Familie zahlt") + ' ' + chf(x.FN0) + ' statt ' + chf(P.famPausch) + '.</p>';
   if (x.LR > 0) notes += '<p class="note">Lückenpreis: Alle Nachtpreise sind ' + x.LR + ' Prozent günstiger, auf ganze Franken gerundet.</p>';
@@ -3478,20 +3505,21 @@ function render() {
   if (r.GRATIS) notes += '<p class="note"><b>Mindestpreis:</b> ' + (r.FZ === 0 ? (S.wer === "Nur ich" ? "Du zahlst deinen" : "Die Familie zahlt ihren") + ' eigenen Anteil (' + chf(r.FZ0) + ') nicht. ' : (S.wer === "Nur ich" ? "Du zahlst" : "Die Familie zahlt") + ' noch ' + chf(r.FZ) + ' statt ' + chf(r.FZ0) + '. ') + 'Der Gesamtpreis sinkt nie unter ' + chf(r.BODEN) + ' (' + (r.HOCH ? chf(P.hochNachtMin) + ' pro Nacht plus Endreinigung' : (r.LUEB ? chf(P.lueckeGastNacht) + ' pro Nacht für die Übernachtungen plus Endreinigung' : chf(r.FEST ? P.festBodenWoche : (x.LUE && P.lueckeMindestpreisWoche > 0 ? P.lueckeMindestpreisWoche : P.mindestpreisWoche)) + ' pro 7 Nächte')) + '). Die Freunde zahlen ihre Anteile wie berechnet.</p>';
   if (r.AUF) notes += '<p class="note"><b>Mindestpreis ' + (r.HOCH ? "in der Hochsaison" : (r.LUEB ? "in der Lücke" : "im " + esc(festTxt()))) + ':</b> Das Total beträgt mindestens ' + chf(r.BODEN) + ' (' + (r.HOCH ? chf(P.hochNachtMin) + ' pro Nacht plus Endreinigung' : (r.LUEB ? chf(P.lueckeGastNacht) + ' pro Nacht für die Übernachtungen plus Endreinigung' : chf(P.festBodenWoche) + ' pro 7 Nächte, inklusive Endreinigung')) + '). ' + (x.GE >= 1 ? 'Der fehlende Betrag von ' + chf(r.AUF) + ' wird gleichmässig auf alle Personen verteilt, dich und die Freunde. Mit mehr Freunden sinkt dein Anteil.' : 'Du zahlst den Mindestpreis. Mit Freunden sinkt dein Anteil.') + '</p>';
   if (x.GE >= 1) notes += '<p class="note">Reinigung aufgeteilt: ' + S.reinig + '.</p>';
-  const zahlung = '<div class="pay"><strong>Die Familie überweist den ganzen Betrag: ' + chf(r.TOT + tip) + '</strong>' +
+  const zahlung = '<div class="pay"><strong>Die Familie überweist den ganzen Betrag: ' + (kt.summe > 0 ? chf2(r.TOT + tip + kt.summe) : chf(r.TOT + tip)) + '</strong>' +
+      (kt.summe > 0 ? '<span>davon Kurtaxe für Adelboden: ' + ktS + '</span>' : '') +
       (tip > 0 ? '<span>davon Trinkgeld für Mami: ' + chf(tip) + ' (freiwillig)</span>' : '') +
       '<span class="rot-txt">Spätestens ' + ZAHL_TAGE + ' Tage nach dem letzten Ferientag, ohne Aufforderung.</span>' +
       '<span class="iban">IBAN: ' + esc(IBAN) + '</span>' +
       '<button type="button" id="copyIban">📋 IBAN kopieren</button></div>';
   const aufteilung = x.GE >= 1 ? '<h3 class="split-h">💸 Aufteilung unter euch</h3>' +
-    '<p class="hint">Das Geld bei den Freunden einsammeln ist eure Sache. Die Tabelle zeigt, wie viel jeder schuldet.</p>' +
+    '<p class="hint">Das Geld bei den Freunden einsammeln ist eure Sache. Die Tabelle zeigt, wie viel jeder schuldet.' + (kt.summe > 0 ? ' Die Kurtaxe kommt bei jedem Freund zum Betrag dazu.' : '') + '</p>' +
     '<table><tbody>' + who + '</tbody></table>' : '';
   SNAP_BER = schnappBer(who, det, notes, x.GE >= 1);
   res.innerHTML =
     '<div class="acc">' + symBtn('b-rechnen', '🧮') + '<button type="button" class="acc-t" id="rechTgl" data-body="rechBody" aria-expanded="' + (RECH_OFFEN ? 'true' : 'false') + '" aria-controls="rechBody">Buchungsübersicht</button></div>' +
     '<div class="total"><span class="small">für ' + x.nights + ' ' + (x.nights === 1 ? "Nacht" : "Nächte") + ', ' + x.PT + ' ' + (x.PT === 1 ? "Person" : "Personen") + ' mit Bett' + (x.KK > 0 ? ', ' + x.KK + (x.KK === 1 ? ' Kind' : ' Kinder') + ' im Kinderbettchen oder bei den eigenen Eltern' : '') + '</span>' +
     (ARR && DEP ? '<span class="small">vom ' + esc(fmtTag(ARR)) + ' bis ' + esc(fmtTag(DEP)) + '</span><span class="small">' + esc(zeitenKurz()) + '</span>' : '') +
-    '<span class="big">' + chf(r.TOT) + '</span></div>' +
+    '<span class="big">' + chf(r.TOT) + '</span>' + (kt.summe > 0 ? '<span class="small">dazu Kurtaxe Adelboden ' + ktS + ' für die Freunde</span>' : '') + '</div>' +
     (zh && !zh.frei && zh.zeilen.length ? '<div class="zielbox">' + zh.zeilen.map((z) => '<p' + (z.frei ? ' class="frei"' : '') + '>' + esc(z.t) + '</p>').join("") + '</div>' : '') +
     (x.LR > 0 ? '<p class="note"><b>Lückenpreis:</b> ' + x.LR + ' % günstiger auf die Übernachtungen, die Reinigung bleibt gleich.</p>' : '') +
     '<div id="rechBody" class="rows"' + (RECH_OFFEN ? '' : ' hidden') + '><table><tbody>' + det + '</tbody></table>' + notes + (x.SB ? endreinigungInfo(r) : '') + '</div>' +

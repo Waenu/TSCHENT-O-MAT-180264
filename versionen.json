@@ -2,6 +2,19 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.113.0.0",
+      "datum": "2026-11-10",
+      "titel": "Kurtaxe Adelboden für Freunde",
+      "arten": [
+        "Neu"
+      ],
+      "punkte": [
+        "Mit Freunden fragt die App, wie viele davon Kinder von 6 bis 15 Jahren sind.",
+        "Die Kurtaxe von Adelboden (Gästekarte inbegriffen) kommt am Schluss zum Preis dazu: pro Nacht und Person.",
+        "Sie steht als eigene Zeile in der Preisberechnung, in der Aufteilung unter den Freunden und in der Anfrage."
+      ]
+    },
+    {
       "v": "2.112.2.3",
       "datum": "2026-11-09",
       "titel": "Rahmen auch bei belegten Ruhetagen",
