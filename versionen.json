@@ -2,6 +2,22 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.118.1.0",
+      "datum": "2026-11-10",
+      "titel": "Bedingungen und gelber Hilfeknopf",
+      "arten": [
+        "Funktion",
+        "Text"
+      ],
+      "punkte": [
+        "Neues Kapitel «📜 Bedingungen» mit Links zu Stornierung, Zahlung, Ein- und Auschecken, Endreinigung, Wäsche, Kurtaxe und Haftung. Vor dem Senden einer Anfrage das Häkchen «Ich bin mit den Bedingungen einverstanden».",
+        "In den neuen Kapiteln steht «die Eltern» statt «Papi und Mami».",
+        "Der Hilfeknopf «?» im Kalender ist gelb. Klickt man die Hilfe weg, bleibt sie aus, auch nach dem Neuladen. Beim ersten Mal erscheint der Hinweis, dass man sie mit dem gelben «?» jederzeit wieder einschalten kann.",
+        "Die Zahlung steht als Zeile in «Zu tun», schon vor der Abreise mit dem Knopf «Zahlung eingegangen». Als offen zählt sie erst nach der Abreise.",
+        "In der Box zur Liste der Freunde steht «die Eltern» statt «Papi»."
+      ]
+    },
+    {
       "v": "2.118.0.0",
       "datum": "2026-11-10",
       "titel": "Haftung und Stornierung",
@@ -11,7 +27,7 @@
       ],
       "punkte": [
         "Neue Kapitel unter «Anleitung & Infos»: «🛡️ Haftung» und «📅 Absagen und Stornierung».",
-        "Bei einer Anfrage mit Freunden lässt sich erst senden, wenn das Häkchen «Haftung gelesen» gesetzt ist. In der Anfrage steht «Haftung gelesen: ja».",
+        "Statt eines eigenen Häkchens für die Haftung bestätigt man bei jeder Anfrage nur noch: «Ich bin mit den Bedingungen einverstanden». In der Anfrage steht «Mit den Bedingungen einverstanden: ja».",
         "In vielen Texten steht der Punkt jetzt nach dem Symbol, z. B. «… wird geteilt 🔗.» statt «… wird geteilt. 🔗»."
       ]
     },

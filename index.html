@@ -829,7 +829,8 @@
   .note.h.gelb-warn { background: var(--gelb); border: 3px solid var(--gelb-ol); color: var(--gelb-fg); }
   .note.h.gelb-warn b { color: var(--gelb-fg); }
   #hilfeKnopf { position: fixed; right: 16px; bottom: calc(140px + env(safe-area-inset-bottom, 0px)); z-index: 6; width: 48px; height: 48px; padding: 0; border-radius: 50%; border: 3px solid var(--accent); background: var(--surface); color: var(--accent); font: inherit; font-size: 1.5rem; font-weight: 800; line-height: 1; box-shadow: 0 2px 8px rgba(0,0,0,.35); cursor: pointer; }
-  #hilfeKnopf[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); }
+  #hilfeKnopf { border-color: #F5C518; color: #F5C518; }
+  #hilfeKnopf[aria-pressed="true"] { background: #F5C518; color: #2B2100; }
   #hilfeKnopf[aria-pressed="false"]::after { content: ""; position: absolute; left: 7px; right: 7px; top: 50%; border-top: 3px solid currentColor; transform: rotate(-45deg); }
   #hilfeKnopf.neu { animation: puls 1s ease-in-out 3; }
   @keyframes puls { 0%,100% { transform: scale(1); } 50% { transform: scale(1.25); } }
@@ -1225,8 +1226,9 @@
         <p class="gl-thema">Geld</p>
         <details class="sub" id="b-rechnen"><summary>🧮 Wie wird gerechnet</summary><div class="bc" id="bc-rechnen"></div></details>
         <details class="sub" id="b-kurtaxe"><summary>🎟️ Kurtaxe und Gästekarte</summary><div class="bc" id="bc-kurtaxe"></div></details>
-        <details class="sub" id="b-haftung"><summary>🛡️ Haftung</summary><div class="bc"><p class="wt">Das Wichtigste</p><p>Geht bei deinem Aufenthalt etwas kaputt, sag es Papi und Mami. Schäden, die Gäste verursachen, bezahlt ihre Privathaftpflichtversicherung.</p><details class="mehr"><summary>Mehr erfahren</summary><p>Das gilt auch für deine Freunde: Wer etwas beschädigt, meldet den Schaden der eigenen Haftpflichtversicherung.</p><p>Buchst du mit Freunden, bestätigst du vor dem Senden der Anfrage, dass du das gelesen hast und deinen Freunden weitergibst.</p></details></div></details>
-        <details class="sub" id="b-storno"><summary>📅 Absagen und Stornierung</summary><div class="bc"><p class="wt">Das Wichtigste</p><p>Wir sind kulant. Kommt etwas dazwischen, sag so früh wie möglich ab. In der Hochsaison erwarten wir eine verbindliche Buchung: Absagen bitte mindestens 2 Wochen vor der Anreise.</p><details class="mehr"><summary>Mehr erfahren</summary><p>In der Hochsaison sind die Nächte bei Gästen gefragt. Wird ein Termin kurzfristig frei, lässt er sich kaum noch vermieten.</p><p>Absagen kannst du per WhatsApp bei Papi und Mami.</p></details></div></details>
+        <details class="sub" id="b-bedingungen"><summary>📜 Bedingungen</summary><div class="bc"><p class="wt">Das Wichtigste</p><p>Mit deiner Anfrage bist du mit diesen Punkten einverstanden. Sie sind einfach und fair, damit es für alle schön bleibt.</p><ul><li>Absagen und Stornierung <button type="button" class="sym" data-info="b-storno" aria-label="Zur Erklärung springen">📅</button></li><li>Zahlung <button type="button" class="sym" data-info="b-zahlung" aria-label="Zur Erklärung springen">💰</button></li><li>Ein- und Auschecken <button type="button" class="sym" data-info="b-zeiten" aria-label="Zur Erklärung springen">🕓</button></li><li>Endreinigung <button type="button" class="sym" data-info="b-endrein" aria-label="Zur Erklärung springen">🪣</button></li><li>Wäsche zurückgeben, siehe Checkliste für die Abreise</li><li>Kurtaxe für Freunde <button type="button" class="sym" data-info="b-kurtaxe" aria-label="Zur Erklärung springen">🎟️</button></li><li>Haftung <button type="button" class="sym" data-info="b-haftung" aria-label="Zur Erklärung springen">🛡️</button></li></ul></div></details>
+        <details class="sub" id="b-haftung"><summary>🛡️ Haftung</summary><div class="bc"><p class="wt">Das Wichtigste</p><p>Geht bei deinem Aufenthalt etwas kaputt, sag es den Eltern. Schäden, die Gäste verursachen, bezahlt ihre Privathaftpflichtversicherung.</p><details class="mehr"><summary>Mehr erfahren</summary><p>Das gilt auch für deine Freunde: Wer etwas beschädigt, meldet den Schaden der eigenen Haftpflichtversicherung.</p><p>Buchst du mit Freunden, gib das bitte deinen Freunden weiter.</p></details></div></details>
+        <details class="sub" id="b-storno"><summary>📅 Absagen und Stornierung</summary><div class="bc"><p class="wt">Das Wichtigste</p><p>Wir sind kulant. Kommt etwas dazwischen, sag so früh wie möglich ab. In der Hochsaison erwarten wir eine verbindliche Buchung: Absagen bitte mindestens 2 Wochen vor der Anreise.</p><details class="mehr"><summary>Mehr erfahren</summary><p>In der Hochsaison sind die Nächte bei Gästen gefragt. Wird ein Termin kurzfristig frei, lässt er sich kaum noch vermieten.</p><p>Absagen kannst du per WhatsApp bei den Eltern.</p></details></div></details>
         <details class="sub" id="b-sparen"><summary>💸 So sparst du Geld</summary><div class="bc" id="bc-sparen"></div></details>
         <details class="sub" id="b-zahlung"><summary><span class="an-geld" aria-hidden="true"><span class="gb">💰</span><i class="mz m1"></i><i class="mz m2"></i><i class="mz m3"></i></span> Zahlung</summary><div class="bc" id="bc-zahlung"></div></details>
         <details class="sub" id="b-trinkgeld"><summary><span class="an-schwein" aria-hidden="true">🐖</span> Trinkgeld</summary><div class="bc" id="bc-trinkgeld"></div></details>
@@ -1339,7 +1341,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.118.0.0";
+let VERSION = "2.118.1.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2270,7 +2272,7 @@ function begriffeFuellen() {
       "<ul><li>Ab 16 Jahren: " + chf2(P.kurtaxe) + " Kurtaxe plus " + chf2(P.kurtaxeBeherb) + " Beherbergungsabgabe, zusammen <b>" + chf2(bsp.sE) + "</b> pro Nacht.</li><li>Kinder von 6 bis 15 Jahren: <b>" + chf2(bsp.sK) + "</b> pro Nacht.</li><li>Kinder unter 6 Jahren: nichts.</li><li>Es zählt das Alter am Anreisetag.</li></ul>" +
       "<p>Beispiel: 3 Freunde, davon 1 Kind, 3 Nächte: 2 × " + chf2(bsp.sE) + " × 3 + 1 × " + chf2(bsp.sK) + " × 3 = <b>" + chf2(bsp.summe) + "</b>.</p>" +
       "<p>Im Rechner fragt die App, wie viele deiner Freunde Kinder von 6 bis 15 Jahren sind, und zeigt die Kurtaxe unter dem Preis an.</p>" +
-      (gmAktiv() ? "<p>Nach der Bestätigung füllst du in der App die Liste deiner Freunde aus (Name, Geburtsdatum, Nationalität). Papi braucht sie, um deine Freunde in Adelboden anzumelden und die Reservation abzuschliessen.</p>" : "") + "</details>"); }
+      (gmAktiv() ? "<p>Nach der Bestätigung füllst du in der App die Liste deiner Freunde aus (Name, Geburtsdatum, Nationalität). Die Eltern brauchen sie, um deine Freunde in Adelboden anzumelden und die Reservation abzuschliessen.</p>" : "") + "</details>"); }
   set("bc-prov", "<p>" + filmGlossar() + "</p><p><b>Mit Vorbehalt</b> heisst: Der Termin ist in Airbnb nicht gesperrt. Meldet sich ein Airbnb-Gast für dieselben Tage, hat er Vorrang und ihr weicht.</p><p>Habt ihr noch nicht begonnen, fällt nichts an. Seid ihr schon im Chalet, bleibt ihr bis zum Anreisetag des Gastes und seid um " + ZEIT_AB + " draussen. Ihr zahlt die normalen Kosten für die Tage, die ihr dort wart, und die Reinigung. Plant deshalb eine Alternative ein.</p><p><b>Gesichert:</b> Ein Airbnb-Gast braucht " + VORLAUF + " Tage Vorlauf. Der Teil bis dahin ist gesichert (Balken voll), der Rest noch offen (gestrichelt). Der volle Teil wächst jeden Tag.</p>" + festUndVorbehaltTxt() + bildVorbehalt());
   set("bc-sicht", "<p>" + filmGlossar("luecke") + "</p><p><b>Lücke wegen Vorlaufzeit ⏸️</b> Airbnb kann diese Nächte nicht mehr verkaufen: Ein Gast braucht " + VORLAUF + " Tage Vorlauf, bleibt mindestens " + AIRBNB_MIN + " Nächte, und sonntags gibt es keinen Check-in. Darum steht diese Zeit euch offen: zum normalen Familienpreis, <b>ohne Vorbehalt</b>, auch in der Hochsaison. Mindestens " + Math.max(P.minNaechte, P.sichtMinNaechte) + " Nächte" + (P.hochMinNaechte > Math.max(P.minNaechte, P.sichtMinNaechte) ? ", in der Hochsaison mindestens " + P.hochMinNaechte : "") + ".</p><p>Im Kalender ist diese Zeit <b>gelb</b> und wandert täglich mit: Mit jedem Tag kann Airbnb weniger verkaufen, es kommen Nächte dazu, die vergangenen fallen weg. Das gilt auch bei nur 2 oder 3 Nächten, solange Airbnb dahinter noch verkaufen kann.</p>");
   set("bc-luecke", "<p>" + filmGlossar("luecke") + "</p><p><b>Lücken 🧩</b> Eine Lücke ist freie Zeit zwischen zwei Airbnb-Gästen von höchstens " + LUECKE_MAX + " Nächten. Ihr bucht sie zum normalen Familienpreis, <b>fest und ohne Vorbehalt</b>: ganz oder teilweise, ab " + P.minNaechte + " Nächten, an jedem Tag der Lücke. Auch <b>Freunde</b> sind willkommen, ab <b>3 Nächten</b>, bis " + P.maxPersonen + " Personen, alle Zimmer. Die Eltern reinigen und stellen die Wäsche, ihr bringt keine mit und reinigt nicht selber.</p><p><b>Wann buchbar:</b> Bis " + (AIRBNB_MIN - 1) + " Nächte sofort, Airbnb kann sie nie verkaufen. " + AIRBNB_MIN + " Nächte sind <b>gesperrt</b>, solange der Vorlauf (" + VORLAUF + " Tage) es Airbnb erlaubt, danach gelb und buchbar. Das Datum steht in der Info-Box. In der Tiefsaison ist sie sofort buchbar. Längere freie Zeit bleibt normal buchbar. Lücken bis " + (AIRBNB_MIN - 1) + " Nächte könnt ihr schon lange im Voraus buchen. Storniert ein Airbnb-Gast, bleibt euer Termin. Das Risiko tragen die Eltern.</p><p><b>Sonntag:</b> Endet ein Gast am Samstag, kann Airbnb den Sonntag nicht vergeben. Ihr reist schon am Sonntag an, die Lücke hat eine Nacht mehr.</p><p><b>Später entstandene Lücke:</b> Auch Zeit, die erst durch den Vorlauf und den Mindestaufenthalt von Airbnb übrig bleibt, wird zur Lücke, sobald höchstens " + LUECKE_MAX + " Nächte bleiben (siehe «Lücke wegen Vorlaufzeit» " + symBtn("b-sicht", "⏸️") + "). Es gelten dieselben Regeln und derselbe Preis.</p>" + (P.lueckeGastNacht > 0 ? "<p><b>Freunde in der Lücke:</b> Ohne Freunde buchst du die Lücke ganz oder teilweise, ab " + P.minNaechte + " Nächten. Mit Freunden geht sie ab <b>" + P.lueckeGastMinNaechte + " Nächten</b>, schon mit 1 Freund. Bei weniger Nächten erscheint das Feld für Freunde nicht. Ein Freund zahlt " + chf(P.gast) + " pro Nacht, die Familie " + chf(P.famPausch) + ". Bringen die Freunde mehr, sinkt der Anteil der Familie bis auf 0, das Total aber nie unter " + chf(P.lueckeGastNacht) + " pro Nacht plus Endreinigung (" + chf(P.reinigung) + "), bei " + P.lueckeGastMinNaechte + " Nächten also " + chf(lueckeMin(P.lueckeGastMinNaechte) + P.reinigung) + ".</p>" + lueckenBeispiel() : ""));
@@ -3271,7 +3273,7 @@ function anfrageText(r) {
   z.push("Freunde: " + x.GE);
   if (x.GE > 0 && typeof S.kinder === "number") z.push("Davon Kinder von 6 bis 15 Jahren: " + S.kinder);
   if (x.GE > 0 && !x.lock) z.push("Freund im selben Zimmer: " + x.ZE);
-  if (x.GE > 0) z.push("Haftung gelesen: ja");
+  z.push("Mit den Bedingungen einverstanden: ja");
   if (!x.VERB) z.push("Zimmer 1 unberührt: " + (S.spar === "Ja" ? "Ja" : "Nein"));
   if (S.inLuecke) { const lv = lueckeVon(ARR); z.push("Lücke: " + (!lv ? "Lücke wegen Vorlaufzeit" : (lv[0] === ARR && lv[1] === DEP ? "die ganze Lücke" : "ein Teil der Lücke vom " + fmtTagV(lv[0]) + " bis " + fmtTagV(lv[1]))) + ", ohne Vorbehalt."); }
   if (x.LG) { z.push("Ganze Lücke: nur Zimmer 2 mit blauem Bad" + (x.KK > 0 ? ", das Kleinkind im Kinderbettchen in Zimmer 3 oder bei den Erwachsenen in Zimmer 2" : "") + ", ohne Freunde, eigene Bettwäsche, Handtücher und Küchentücher, Reinigung durch die Eltern " + chf(P.reinigung)); }
@@ -3409,20 +3411,20 @@ function elternKasten() {
 const WA_SVG = '<svg class="wa" viewBox="0 0 32 32" width="22" height="22" aria-hidden="true"><path fill="#25D366" d="M16 2.5A13.4 13.4 0 0 0 4.4 22.6L2.5 29.5l7.1-1.9A13.4 13.4 0 1 0 16 2.5z"/><path fill="#fff" d="M22.6 19.4c-.3-.2-2-1-2.3-1.1-.3-.1-.5-.2-.8.2l-1 1.2c-.2.2-.4.3-.7.1a9 9 0 0 1-4.5-3.9c-.3-.6.3-.6.9-1.8.1-.2.1-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.8-.5h-.6a1.2 1.2 0 0 0-.9.4 3.800 3.800 0 0 0-1.2 2.800c0 1.600 1.200 3.200 1.400 3.400.2.200 2.300 3.500 5.600 4.900 2.100.9 2.900 1 4 .8.600-.1 2-.8 2.300-1.600.3-.8.3-1.400.2-1.600l-.6-.3z"/></svg>';
 let LETZTE_EINLADUNG = "";
 let RISIKO_OK = "";   // Aufenthalt (arr_dep), für den das Risiko bestätigt wurde
-let HAFT_OK = "";   // Aufenthalt (arr_dep), für den bei Buchungen mit Freunden die Haftung bestätigt wurde
+let BED_OK = "";   // Aufenthalt (arr_dep), für den «mit den Bedingungen einverstanden» bestätigt wurde
 const risikoKey = () => ARR + "_" + DEP;
 function anfrageKasten(r) {
   if (!(ARR && DEP)) return "";
   const t = anfrageText(r);
   LETZTE_ANFRAGE = t;
-  const prov = provSel(), rok = !prov || RISIKO_OK === risikoKey(), mitFr = r.d.GE > 0, hok = !mitFr || HAFT_OK === risikoKey();
+  const prov = provSel(), rok = !prov || RISIKO_OK === risikoKey(), hok = BED_OK === risikoKey();
   const ok = ABSENDER !== "" && rok && hok;
   let h = '<div class="pay"><strong>💬 Anfrage an die Eltern senden</strong>' +
     '<span class="hint">Das ist nur eine Anfrage und noch keine Buchung. Die Eltern bestätigen den Termin. WhatsApp öffnet sich mit dem fertigen Text. Wähle dort den <b>«Adelboden Airbnb Chat»</b>, nicht den Familien-Chat.</span>' + (provStay(ARR, DEP) ? '<span class="hint"><b>Mit Vorbehalt:</b> Der Termin wird nicht in Airbnb gesperrt. Ein Airbnb-Gast hat Vorrang. ' + symBtn('b-prov', '⏳') + '</span>' : '') +
     (NAME_FIX && !TOKEN && ABSENDER ? '<div class="field"><label>Wer schickt die Anfrage?</label><p class="namefest">' + esc(ABSENDER) + ' ' + lockSvg(false) + '</p></div>' : '<div class="field"><label for="absender">Wer schickt die Anfrage?</label><select id="absender" class="' + (ok ? "done" : "missing") + '"><option value="">– wählen –</option>' +
     absOpt(ABSENDER) +
     '</select>' + (ABSENDER !== "" ? "" : '<p class="hint">Erst den Namen wählen, dann sind die Knöpfe aktiv.</p>') + '</div>') +
-    (mitFr ? '<label class="risiko"><input type="checkbox" id="haftOk"' + (hok ? " checked" : "") + '> <span><b>Haftung gelesen:</b> Schäden, die meine Freunde verursachen, bezahlt ihre Privathaftpflichtversicherung. Ich gebe das meinen Freunden weiter. ' + symBtn("b-haftung", "🛡️") + "</span></label>" : "") +
+    '<label class="risiko"><input type="checkbox" id="bedOk"' + (hok ? " checked" : "") + '> <span>Ich bin mit den <b>Bedingungen</b> einverstanden ' + symBtn("b-bedingungen", "📜") + ".</span></label>" +
     (prov ? '<label class="risiko"><input type="checkbox" id="risikoOk"' + (rok ? " checked" : "") + '> <span><b>Ich habe das Risiko verstanden:</b> Für diesen Termin gilt ein Vorbehalt. Kommt eine Airbnb-Buchung, muss ich weichen oder gar nicht erst reisen. Das Risiko trage ich selbst.</span></label>' + (rok ? "" : '<p class="hint">Erst das Risiko bestätigen, dann sind die Knöpfe aktiv.</p>') : "") + '<div class="btns">';
   h += ok ? '<a class="btn" id="waReq" href="https://wa.me/?text=' + encodeURIComponent(t) + '" target="_blank" rel="noopener">' + WA_SVG + 'Per WhatsApp an den «Adelboden Airbnb Chat» senden</a>' : '<span class="btn off" aria-disabled="true">' + WA_SVG + 'Per WhatsApp an den «Adelboden Airbnb Chat» senden</span>';
   h += '<button type="button" class="btn" id="copyReq"' + (ok ? "" : " disabled") + '>📋 Anfrage kopieren</button></div><div class="note h" id="aufHinweis" hidden></div>';
@@ -3669,7 +3671,7 @@ let LETZTE_ANFRAGE = "";
 let LETZTE_FAMILIE = "";
 document.getElementById("result").addEventListener("change", (e) => {
   if (e.target && e.target.id === "risikoOk") { RISIKO_OK = e.target.checked ? risikoKey() : ""; render(); return; }
-  if (e.target && e.target.id === "haftOk") { HAFT_OK = e.target.checked ? risikoKey() : ""; render(); return; }
+  if (e.target && e.target.id === "bedOk") { BED_OK = e.target.checked ? risikoKey() : ""; render(); return; }
   if (e.target && e.target.id === "absender") {
     ABSENDER = ABS.indexOf(e.target.value) >= 0 ? e.target.value : "";
     try { localStorage.setItem("tm2_absender", ABSENDER); } catch (e2) {}
@@ -4846,12 +4848,13 @@ function zuTunKarte(x) {
   if (x.sb && x.waesche && !istStaffelStart(x.arr, x)) z.push(ztZeile({ feld: "waescheInfo", key: key, done: !!x.waescheInfo, titel: "🧺 Wäsche-Info: " + esc(x.name) + " bringt jetzt eigene Wäsche", doneTxt: "Wäsche-Info gegeben am " + ztAm(x.waescheInfo), knoepfe: '<a class="btn" data-wainfo="' + key + '" href="https://wa.me/?text=' + encodeURIComponent(waescheInfoText(x)) + '" target="_blank" rel="noopener">' + WA_SVG + "Wäsche-Info senden</a>" }));
   if (alarmListe().some((a) => a.typ === "ende" && a.x === x)) z.push(ztZeile({ ohneBox: true, titel: "🔗 Staffel beendet: " + esc(x.name) + " informieren", detail: esc(staffelEndeGrund(x)), knoepfe: '<a class="btn" data-endinfo="' + key + '" href="https://wa.me/?text=' + encodeURIComponent(endeInfoText(x)) + '" target="_blank" rel="noopener">' + WA_SVG + "Staffel-Ende-Info senden</a>" }));
   if (x.waesche === "bringen" || x.waesche === "senden") z.push(ztZeile({ feld: "waescheZurueck", key: key, done: !!x.waescheZurueck, titel: "🧺 Wäsche zurück", doneTxt: "Wäsche zurück am " + ztAm(x.waescheZurueck), knoepfe: '<button type="button" class="btn" data-wz="' + key + '">✓ Wäsche ist zurück</button>' }));
-  const offen = z.some((t) => !/zt-z done/.test(t)), rot = /zt-z( done)? rot|zt-z rot/.test(z.join(""));
+  if (x.betrag > 0 && !(prov && !x.bezahlt && konf)) z.push(ztZeile({ feld: "bezahlt", key: key, done: !!x.bezahlt, titel: "💳 Zahlung " + esc(chf(x.betrag)) + (x.bezahlt ? "" : kommt ? " (fällig nach der Abreise)" : " offen"), doneTxt: "Zahlung eingegangen am " + ztAm(x.bezahlt), knoepfe: '<button type="button" class="btn" data-bez="' + key + '">✓ Zahlung eingegangen</button>' }));
+  const offen = z.some((t) => !/zt-z done/.test(t) && !/fällig nach der Abreise/.test(t)), rot = /zt-z( done)? rot|zt-z rot/.test(z.join(""));
   const liste = '<div class="zt"><div class="zt-h">' + (offen ? "📌 Zu tun" : "✅ Alles erledigt") + "</div>" + z.join("") + "</div>";
   const acts = '<button type="button" class="btn quiet' + (prov ? " full" : "") + '" data-bdel="' + key + '" aria-label="Aufenthalt entfernen">🗑️ ' + (prov ? "Termin entfernen" : "Entfernen") + "</button>";
   return vkKarte(x, rot ? "rot" : offen ? "offen" : "ok", vkChips(x), "", acts).replace('<div class="vk-acts">', liste + '<div class="vk-acts">');
 }
-const ZT_TXT = { bescheid: "Bescheid gegeben", gesperrt: "In Airbnb gesperrt", pimlical: "In Pimlical eingetragen", kurtaxeAm: "Freunde für die Kurtaxe angemeldet", waescheInfo: "Wäsche-Info gegeben", waescheZurueck: "Wäsche zurück" };
+const ZT_TXT = { bezahlt: "Zahlung eingegangen", bescheid: "Bescheid gegeben", gesperrt: "In Airbnb gesperrt", pimlical: "In Pimlical eingetragen", kurtaxeAm: "Freunde für die Kurtaxe angemeldet", waescheInfo: "Wäsche-Info gegeben", waescheZurueck: "Wäsche zurück" };
 async function ztSetzen(key, feld, an) {   // Aufgabe abhaken (an) oder wieder öffnen
   bestBusy = true; bestFehler = "";
   try {
@@ -4869,6 +4872,7 @@ document.getElementById("bestKasten").addEventListener("click", async (e) => {
   const key = bx.getAttribute("data-ztk"), feld = bx.getAttribute("data-zt"), done = bx.getAttribute("data-ztd") === "1", b = BUCH.find((x) => bKey(x) === key);
   if (!b || !ZT_TXT[feld]) return;
   if (done) { if (!(await appFrage("«" + ZT_TXT[feld] + "» bei " + b.name + " (" + fmtTag(b.arr) + " bis " + fmtTag(b.dep) + ") wieder als offen markieren?", "Ja, wieder offen"))) return; }
+  else if (feld === "bezahlt") { if (!(await appFrage("Zahlung von " + b.name + " (" + chf(b.betrag) + ", " + fmtTag(b.arr) + " bis " + fmtTag(b.dep) + ") als eingegangen verbuchen?", "Ja, verbuchen"))) return; }
   else if (feld === "waescheZurueck") { if (!(await appFrage("Ist die Wäsche von " + b.name + " (" + fmtTag(b.arr) + " bis " + fmtTag(b.dep) + ") zurück bei euch?", "Ja, ist zurück"))) return; }
   ztSetzen(key, feld, !done);
 });
@@ -5029,7 +5033,7 @@ function gmKindZeigen() {
     const kopf = alt.gesendet
       ? '<b>✅ Liste deiner Freunde gesendet</b> am ' + esc(fmtTag(alt.gesendet.slice(0, 10))) + ", " + esc(alt.gesendet.slice(11, 16)) + " Uhr. Danke!"
       : "<b>👥 Wichtig: Bitte fülle die Liste deiner Freunde aus</b>";
-    let h = '<div class="note h gm-k' + (alt.gesendet ? " gm-ok" : "") + '" data-gmk="' + esc(key) + '"><p>' + kopf + '</p><p class="hint">Aufenthalt vom ' + esc(fmtTag(b.arr)) + " bis " + esc(fmtTag(b.dep)) + ", " + n + " " + gastWort(n) + ". Papi braucht die Liste, damit er die Reservation abschliessen und deine Freunde für die Kurtaxe in Adelboden anmelden kann. Die Angaben gehen direkt an Papi und sind nicht öffentlich.</p>";
+    let h = '<div class="note h gm-k' + (alt.gesendet ? " gm-ok" : "") + '" data-gmk="' + esc(key) + '"><p>' + kopf + '</p><p class="hint">Aufenthalt vom ' + esc(fmtTag(b.arr)) + " bis " + esc(fmtTag(b.dep)) + ", " + n + " " + gastWort(n) + ". Die Eltern brauchen die Liste, damit sie die Reservation abschliessen und deine Freunde für die Kurtaxe in Adelboden anmelden können. Die Angaben gehen direkt an die Eltern und sind nicht öffentlich.</p>";
     if (!auf) return h + '<button type="button" class="btn" data-gmauf="' + esc(key) + '">✏️ Liste ändern</button>' + (msg ? '<p class="hint">' + msg + "</p>" : "") + "</div>";
     for (let i = 0; i < n; i++) {
       const f = fr[i] || {};
@@ -5040,7 +5044,7 @@ function gmKindZeigen() {
         '<div class="gm-gs" role="radiogroup" aria-label="Geschlecht"><label><input type="radio" name="gs' + esc(key) + i + '" data-gf="geschlecht" value="w"' + (f.geschlecht === "w" ? " checked" : "") + '> weiblich</label><label><input type="radio" name="gs' + esc(key) + i + '" data-gf="geschlecht" value="m"' + (f.geschlecht === "m" ? " checked" : "") + "> männlich</label></div>" +
         '<input type="text" data-gf="nat" maxlength="40" autocomplete="off" placeholder="Nationalität" aria-label="Nationalität" value="' + esc(f.nat || "Schweiz") + '"></fieldset>';
     }
-    return h + '<button type="button" class="btn main full" data-gmsend="' + esc(key) + '">📨 Liste an Papi senden</button>' + (msg ? '<p class="hint gm-msg">' + msg + "</p>" : "") + "</div>";
+    return h + '<button type="button" class="btn main full" data-gmsend="' + esc(key) + '">📨 Liste an die Eltern senden</button>' + (msg ? '<p class="hint gm-msg">' + msg + "</p>" : "") + "</div>";
   }).join("");
 }
 function gmFormLesen(div) {
@@ -5808,8 +5812,10 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
   if (!knopf || !blase || !grid || !cal) return;
   let letzteMon = "";   // Zeit-Kategorie des gezeigten Tags: bestimmt die Rahmenfarbe der Box
   let lastK = "";   // zuletzt gezeigter Tag (für «↩ zurück» aus der Verwaltung)
-  let an = true, erst = false, zu = false;   // Hilfe ist bei jedem Öffnen der Seite an; nach «✕» bleibt die Startbox für den Rest des Besuchs zu
-  try { if (localStorage.getItem("tm2_hilfe") === null) erst = true; } catch (e) {}
+  let an = true, erst = false, zu = false;   // Hilfe ist an, bis man sie wegklickt; dann bleibt sie aus (auch nach dem Neuladen), bis man das gelbe «?» antippt
+  try { const h0 = localStorage.getItem("tm2_hilfe"); if (h0 === null) erst = true; else an = h0 !== "0"; } catch (e) {}
+  const AUS_INFO = '<b>💡 Die Hilfe ist jetzt aus.</b> Du kannst sie jederzeit mit dem gelben «?» unten rechts wieder einschalten.<div class="btns"><button type="button" class="btn" id="hilfeVerstanden">Verstanden</button></div>';
+  const ausHinweis = () => { let schon = false; try { schon = localStorage.getItem("tm2_hilfe_info") === "1"; localStorage.setItem("tm2_hilfe_info", "1"); } catch (e) {} if (schon) return; blase.innerHTML = '<div class="txt">' + AUS_INFO + "</div>"; blase.style.border = ""; blase.style.background = ""; blase.hidden = false; };
   const speichern = () => { try { localStorage.setItem("tm2_hilfe", an ? "1" : "0"); } catch (e) {} };
   window._hilfeAn = () => an;
   const START = "<b>💡 Hilfe ist an.</b> Tippe einen Tag an, dann erklärt er sich. Zum Wechseln des Monats wischst du im Kalender nach links oder rechts. Mit unterstrichenen Symbolen wie " + symBtn("b-luecke", "🧩") + " springst du zur ausführlichen Erklärung. Mehr dazu unter «Benutzung» " + symBtn("b-benutzung", "📖") + ". Mit dem Knopf <span class='zei hilfe'>?</span> unten rechts schaltest du die Hilfe aus.";
@@ -6018,7 +6024,7 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
     an = neu;
     knopf.setAttribute("aria-pressed", an ? "true" : "false");
     grid.classList.toggle("hilfe", an);
-    if (an) { zu = false; zeigen(START); } else blase.hidden = true;
+    if (an) { zu = false; zeigen(START); } else { blase.hidden = true; ausHinweis(); }
     speichern();
     try { terminBox(); } catch (e) {}   // Erklärungen in der Termin-Box folgen dem Knopf «?», Warnungen bleiben
     if (an && ARR && DEP) blase.hidden = true;
@@ -6026,7 +6032,7 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
   let arrAlt = "";
   grid.addEventListener("click", () => { arrAlt = ARR; }, true);   // Anreise vor dem Klick merken: wird sie abgewählt, geht die Box zurück zum Monat
   grid.addEventListener("click", (e) => { if (GFORM && (GFORM.mode || GFORM.justSet)) { if (GFORM.mode) { const c0 = zelle(e); if (c0 && c0.dataset.k) gastTagWahl(c0.dataset.k); } return; } const c = zelle(e); if (ARR && DEP && c && c.dataset.k === DEP) { blase.hidden = true; return; } if (!an && !(c && c.dataset.k && (c.classList.contains("occ") || c.classList.contains("provtag") || BUCH.some((b) => b.arr <= c.dataset.k && c.dataset.k <= b.dep)))) return; if (c && c.dataset.k && !ARR && arrAlt && arrAlt === c.dataset.k) { zeigen(monatText(), null, true); return; } if (c && c.dataset.k) { zeigen(text(c.dataset.k), grid.querySelector('[data-k="' + c.dataset.k + '"]')); eigenMerken(c.dataset.k); } });
-  blase.addEventListener("click", (e) => { if (e.target.closest("#calBlaseZu")) { blase.hidden = true; zu = true; return; } const vw = e.target.closest("[data-vw]"); if (vw && TOKEN && !ABSENDER) { window._zurVerwaltung(vw.getAttribute("data-vw"), lastK); return; } const ip = e.target.closest("[data-ip]"); if (ip) { const auf = ip.getAttribute("aria-expanded") !== "true"; blase.querySelectorAll("[data-ip]").forEach((x) => { x.setAttribute("aria-expanded", "false"); x.classList.remove("on"); }); blase.querySelectorAll("[data-ipan]").forEach((x) => { x.hidden = true; }); if (auf) { ip.setAttribute("aria-expanded", "true"); ip.classList.add("on"); const pn = blase.querySelector('[data-ipan="' + ip.dataset.ip + '"]'); if (pn) pn.hidden = false; } } });
+  blase.addEventListener("click", (e) => { if (e.target.closest("#hilfeVerstanden")) { blase.hidden = true; return; } if (e.target.closest("#calBlaseZu")) { blase.hidden = true; zu = true; if (an) setze(false); return; } const vw = e.target.closest("[data-vw]"); if (vw && TOKEN && !ABSENDER) { window._zurVerwaltung(vw.getAttribute("data-vw"), lastK); return; } const ip = e.target.closest("[data-ip]"); if (ip) { const auf = ip.getAttribute("aria-expanded") !== "true"; blase.querySelectorAll("[data-ip]").forEach((x) => { x.setAttribute("aria-expanded", "false"); x.classList.remove("on"); }); blase.querySelectorAll("[data-ipan]").forEach((x) => { x.hidden = true; }); if (auf) { ip.setAttribute("aria-expanded", "true"); ip.classList.add("on"); const pn = blase.querySelector('[data-ipan="' + ip.dataset.ip + '"]'); if (pn) pn.hidden = false; } } });
   window._monatWechsel = () => { if (ARR && DEP) { TERMIN_AUS = true; try { terminBox(); } catch (e) {} }   // Blättern: immer die Monatserklärung, nie die eingefrorene Termin-Box eines anderen Monats
     if (an && (!zu || !blase.hidden)) zeigen(monatText(), null, true); };
   document.querySelector("#cal .cal-nav").addEventListener("click", () => window._monatWechsel());
