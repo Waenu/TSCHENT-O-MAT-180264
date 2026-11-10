@@ -161,8 +161,8 @@
   .gm-k.gm-ok { border-left: 4px solid var(--gruen); }
   #bestKasten .gm-p { border-top: 1px solid rgba(127,127,127,0.35); padding-top: 8px; display: flex; flex-direction: column; gap: 6px; }
   #bestKasten .gm-fr { display: flex; flex-direction: column; gap: 2px; padding: 4px 0 6px; border-bottom: 1px dashed rgba(127,127,127,0.35); }
-  #bestKasten .gm-z { display: flex; align-items: center; gap: 8px; min-height: 36px; }
-  #bestKasten .gm-l { width: 7.5em; flex: none; font-size: .85em; opacity: .8; }
+  #bestKasten .gm-z { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; min-height: 36px; }
+  #bestKasten .gm-l { width: 100%; font-size: .8em; opacity: .8; }
   #bestKasten .gm-v { flex: 1; min-width: 0; overflow-wrap: break-word; font-weight: 700; }
   #bestKasten .gm-cp { flex: none; min-width: 40px; padding: 0 6px; white-space: nowrap; height: 36px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: inherit; cursor: pointer; font-size: 1rem; }
   #bestKasten .gm-key { display: flex; gap: 6px; } #bestKasten .gm-key input { flex: 1; min-width: 0; }
@@ -766,6 +766,7 @@
   #bestKasten .zt-ok { font-size: .9em; color: var(--gruen); margin-top: 2px; }
   #bestKasten .zt-k { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; align-items: center; }
   #bestKasten .zt-k .cp-zeile { width: 100%; }
+  #bestKasten .zt-k .gm-p, #bestKasten .zt-liste .gm-p { width: 100%; min-width: 0; box-sizing: border-box; }
   #bestKasten .zt-ok .zt-liste { color: var(--fg); margin-top: 6px; }
   #bestKasten .ps-offen { margin: 0 0 4px; padding: 8px 12px; border-left: 4px solid #E5A100; background: var(--surface); border-radius: 6px; }
   #bestKasten .ps-offen.rot { border-left-color: #E5534B; }
@@ -1336,7 +1337,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.117.0.1";
+let VERSION = "2.117.0.2";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2371,7 +2372,7 @@ function schweifStop(b) {
 const istStaffelStart = (arr, self) => !!arr && !BUCH.some((x) => x.sb && x !== self && x.dep <= arr && arr <= schweifStop(x).k);
 const ZEIT_AN = "16 Uhr", ZEIT_AB = "10 Uhr";   // gilt für jede Buchung
 const zeitenKurz = () => "Einchecken ab " + ZEIT_AN + ", Auschecken bis " + ZEIT_AB;
-const zeitenSatz = () => "Du kannst ab " + ZEIT_AN + " in die Wohnung, am Abreisetag musst du bis " + ZEIT_AB + " draussen sein.";
+const zeitenSatz = () => "Du kannst ab " + ZEIT_AN + " anreisen. Am Abreisetag bitte ich dich, die Wohnung bis " + ZEIT_AB + " zu übergeben. Danke dir!";
 const WAESCHE_TAGE = 3;   // spätestens so viele Tage nach der Rückreise bringen oder senden
 const waescheBis = (b) => addDays(b.dep, WAESCHE_TAGE);
 // Aufenthalte, die mit einem neuen Staffel-Aufenthalt von arr bis dep kein Starter mehr wären (sie müssen dann eigene Wäsche mitbringen)
@@ -5161,7 +5162,7 @@ function bestZeigen() {
     let w = "";
     if (xo.length) w += '<div class="note h rot-warn"><b>⚠️ Weihnachtstage in Airbnb noch nicht gesperrt:</b> Es fehlen die Nächte ' + xo.map((k) => esc(fmtTag(k))).join(", ") + '. Bitte in Airbnb sperren (Check-in ab dem ' + (parseInt(SPERRE[1].slice(3), 10) + 1) + '. ' + MONATE[parseInt(SPERRE[1].slice(0, 2), 10) - 1] + '). Die Airbnb-Daten kommen mit Verzögerung, kurz nach dem Sperren kann der Hinweis noch stehen.</div>';
     if (fremd.length) w += vkSek("❔ Andere Buchungen", fremd.length) + fremd.map((x) => x.dep >= h ? festKarte(x, true) : histZeile(x)).join("");
-    w += '<hr class="vk-trenn">' + vkSek("📚 Nachschlagen", "").replace(' <span class="n"></span>', "") + '<div class="vk-body">';
+    w += '<div>';
     w += '<div class="vk-nav"><button type="button" class="btn" data-zeig="A">' + (zeigA ? "Abgelehnte ausblenden" : "Abgelehnte anzeigen (" + ABGEL.length + ")") + '</button><button type="button" class="btn" data-zeig="L">' + (zeigL ? "Logbuch ausblenden" : "Logbuch anzeigen (" + LOGBUCH.length + ")") + "</button></div>";
     w += '<div class="vk-nav"><button type="button" class="btn" style="grid-column:1/-1" data-zeig="G">' + (zeigG ? "Gäste ausblenden" : "👤 Gäste mit Namen (" + GAESTE.length + ")") + "</button></div>";
     if (zeigG) w += gaesteFormular();
@@ -5194,11 +5195,11 @@ function bestZeigen() {
       '<details class="papi-hinweis"><summary>🔧 Versteckte Menüs</summary><ul>' +
       '<li><b>Zugriff (Token), Schlüssel Gästemeldung und Buchhaltung:</b> fünfmal schnell auf die Versionszeile ganz unten tippen («Vorschau …»). Es erscheinen die Felder für das Token und den Schlüssel der Gästemeldung und der Buchhaltungs-Link, bis zum Neuladen.</li>' +
       '<li><b>Testmodus:</b> dreimal schnell links oben in den Kopf tippen (unsichtbare Stelle über dem Titel). Rote Leiste mit frei wählbarem «heute». Gleich wieder ausschalten: nochmals dreimal tippen oder «Echt».</li>' +
-      '<li><b>Verwaltung:</b> der blaue Knopf «Verwaltung» erscheint nur mit eingerichtetem Token. Abgelehnte, Logbuch und Gäste klappst du unter «Weiteres» bei «Nachschlagen» auf.</li>' +
+      '<li><b>Verwaltung:</b> der blaue Knopf «Verwaltung» erscheint nur mit eingerichtetem Token. Abgelehnte, Logbuch und Gäste findest du ganz unten unter «Nachschlagen».</li>' +
       '<li><b>Kinder-Ansicht:</b> «Ansicht als» wählen. Zurück mit «Zurück zu Eltern» im blauen Streifen.</li>' +
       '<li><b>Kinder sehen davon nichts:</b> ohne Token fehlen Verwaltung, Logbuch und Gäste ganz.</li></ul></details>';
     w += "</div>";   // Ende «Nachschlagen» (mit Ablauf bei Buchungen und Versteckte Menüs)
-    s += '<div class="ps-abst"></div>' + persTitel("__weiteres", "📂 Weiteres", "Weihnachtstage, Gäste, Einnahmen, Nachschlagen", nW, !!xo.length, true, PERS_STAND.get("__weiteres") === true, w);
+    s += '<div class="ps-abst"></div>' + persTitel("__weiteres", "📚 Nachschlagen", "Gäste, Einnahmen, Logbuch, Weihnachtstage", nW, !!xo.length, true, PERS_STAND.get("__weiteres") === true, w);
   }
   k.innerHTML = s;
   vkEinklappen(k);
@@ -5240,7 +5241,7 @@ function bestWaLink(text, key, label) { return ' <a class="btn" data-bescheid="'
 function bestText(x, abgelehnt) {
   return abgelehnt
     ? "Hoi " + x.name + ", deine Anfrage vom " + fmtTagV(x.arr) + " bis " + fmtTagV(x.dep) + " können wir leider nicht bestätigen. Melde dich bei uns, dann suchen wir zusammen eine Lösung."
-    : "Hoi " + x.name + ", dein Aufenthalt vom " + fmtTagV(x.arr) + " bis " + fmtTagV(x.dep) + " ist bestätigt. 🎉" + (gmAktiv() && freundeVon(x) > 0 ? " Wichtig: Bitte fülle im TSCHENT-O-MAT noch die Liste deiner Freunde für die Kurtaxe aus (Name, Geburtsdatum, Nationalität). Ich brauche sie, damit ich die Reservation abschliessen kann. Das dauert nur kurz." : "") + " Im TSCHENT-O-MAT findest du jetzt " + (((x.sb || x.selbst) && !istStaffelStart(x.arr, x)) || x.luecke ? "die Wäsche-Liste für die Anreise und " : "") + "die Checkliste für die Abreise. " + zeitenSatz() + (provVon(x) ? " Achtung: Der Termin steht mit Vorbehalt und ist nicht in Airbnb gesperrt. Kommt ein Airbnb-Gast, hat er Vorrang, dann müsst ihr ausweichen." : "") + ((x.sb || x.selbst) && istStaffelStart(x.arr, x) ? " Du beginnst die Staffel: Das Chalet ist gereinigt und bezogen, du bringst keine Wäsche mit. Dafür nimmst du die benutzte Wäsche mit und " + (x.waesche === "senden" ? "sendest sie uns" : "bringst sie uns") + " bis spätestens " + fmtTagV(addDays(x.dep, WAESCHE_TAGE)) + "." : "");
+    : "Hoi " + x.name + ", danke für deine Buchung! Dein Aufenthalt vom " + fmtTagV(x.arr) + " bis " + fmtTagV(x.dep) + " ist bestätigt. 🎉" + (gmAktiv() && freundeVon(x) > 0 ? " Wichtig: Bitte fülle im TSCHENT-O-MAT noch die Liste deiner Freunde für die Kurtaxe aus (Name, Geburtsdatum, Nationalität). Ich brauche sie, damit ich die Reservation abschliessen kann. Das dauert nur kurz." : "") + " Im TSCHENT-O-MAT findest du jetzt " + (((x.sb || x.selbst) && !istStaffelStart(x.arr, x)) || x.luecke ? "die Wäsche-Liste für die Anreise und " : "") + "die Checkliste für die Abreise. " + zeitenSatz() + (provVon(x) ? " Achtung: Der Termin steht mit Vorbehalt und ist nicht in Airbnb gesperrt. Kommt ein Airbnb-Gast, hat er Vorrang, dann müsst ihr ausweichen." : "") + ((x.sb || x.selbst) && istStaffelStart(x.arr, x) ? " Du beginnst die Staffel: Das Chalet ist gereinigt und bezogen, du bringst keine Wäsche mit. Dafür nimmst du die benutzte Wäsche mit und " + (x.waesche === "senden" ? "sendest sie uns" : "bringst sie uns") + " bis spätestens " + fmtTagV(addDays(x.dep, WAESCHE_TAGE)) + "." : "");
 }
 // Hinweis an eine Familie, deren Aufenthalt nicht mehr der Beginn der Staffel ist (vor ihr wurde eine Staffel eingetragen)
 // Staffel endet bei dieser Buchung, weil die Eltern reinigen müssen: Grund als Text (nur für Aufenthalte mit Selbstreinigung)
