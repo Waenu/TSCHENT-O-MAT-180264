@@ -26,12 +26,6 @@
       "bescheid": "2026-11-10T14:57"
     },
     {
-      "name": "Deborah",
-      "arr": "2026-11-18",
-      "dep": "2026-11-21",
-      "status": "storniert"
-    },
-    {
       "name": "Miriam",
       "arr": "2026-11-25",
       "dep": "2026-11-28",
@@ -42,6 +36,16 @@
       "arr": "2026-12-10",
       "dep": "2026-12-12",
       "status": "storniert"
+    },
+    {
+      "name": "Deborah",
+      "arr": "2026-11-18",
+      "dep": "2026-11-21",
+      "selbst": false,
+      "pers": 1,
+      "betrag": 660,
+      "rechnung": "Gesendet am Di 10.11.2026, 15:40 Uhr. App-Version 2.119.0.2.\nAnreise\tMittwoch 18.11.2026\nAbreise\tSamstag 21.11.2026 (3 Nächte)\nFamilie\tNur ich\nFreunde\t2\nDavon Kinder von 6 bis 15 Jahren\t1\nFreund im selben Zimmer\tJa\nMit den Bedingungen einverstanden: ja\nZimmer 1 unberührt\tJa\nReinigung\tNach Personen: ab 2½ Jahren zählt jede Person gleich\nTotal laut Rechner\tCHF 660.–\nDazu Kurtaxe Adelboden für die Freunde: CHF 21.90\n#Preisberechnung\nDu pro Nacht\tCHF 30.–\nFreund 1 pro Nacht\tCHF 40.–\nFreund 2 pro Nacht\tCHF 70.–\nÜbernachtung (3 Nächte)\tCHF 420.–\nReinigung\tCHF 240.–\nReinigung: dein Anteil\tCHF 80.–\nReinigung: Anteil pro Freund\tCHF 80.–\nKurtaxe Adelboden (dazu) 1 Freund ab 16 Jahren zu CHF 5.20 pro Nacht, 1 Kind von 6 bis 15 Jahren zu CHF 2.10 pro Nacht, 3 Nächte\tCHF 21.90\nTotal mit Kurtaxe\tCHF 681.90\n#Aufteilung unter den Freunden\nDu zahlst\tCHF 170.–\nFreund 1 zahlt davon Kurtaxe CHF 15.60 (ab 16 Jahren)\tCHF 215.60\nFreund 2 zahlt davon Kurtaxe CHF 6.30 (Kind von 6 bis 15 Jahren)\tCHF 296.30\nReinigung aufgeteilt: Nach Personen: ab 2½ Jahren zählt jede Person gleich.",
+      "bestaetigt": "2026-11-10T15:42"
     }
   ],
   "logbuch": [
@@ -632,6 +636,10 @@
     {
       "t": "2026-11-10T15:34",
       "text": "Entfernt: Deborah, Mi 18.11.2026 bis Sa 21.11.2026"
+    },
+    {
+      "t": "2026-11-10T15:42",
+      "text": "Bestätigt: Deborah, Mi 18.11.2026 bis Sa 21.11.2026, CHF 660"
     }
   ]
 }
