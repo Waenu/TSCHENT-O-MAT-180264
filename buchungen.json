@@ -38,7 +38,8 @@
       "rechnung": "Gesendet am Di 10.11.2026, 16:44 Uhr. App-Version 2.119.3.0.\nAnreise\tDonnerstag 10.12.2026\nAbreise\tSonntag 13.12.2026 (3 Nächte)\nFamilie\tIch und Partner/in\nFreunde\t0\nMit den Bedingungen einverstanden: ja\nZimmer 1 unberührt\tJa\nSelbstreinigung\tJa\nTotal laut Rechner\tCHF 180.–\nReinigungskosten sind erst nach Ablauf der Familienstaffel bekannt und werden nachbelastet.\n#Preisberechnung\nFamilie pro Nacht\tCHF 60.–\nÜbernachtung (3 Nächte)\tCHF 180.–\nReinigung\tCHF 0.–\nZimmer 1 und rotes Bad bleiben unberührt: CHF 10.– weniger pro Nacht, die Familie zahlt CHF 60.– statt CHF 70.–.",
       "bestaetigt": "2026-11-10T16:45",
       "bescheid": "2026-11-10T16:46",
-      "gesperrt": "2026-11-10T16:47"
+      "gesperrt": "2026-11-10T16:47",
+      "pimlical": "2026-11-10T16:47"
     }
   ],
   "logbuch": [
@@ -689,6 +690,10 @@
     {
       "t": "2026-11-10T16:47",
       "text": "In Airbnb gesperrt: Miriam, Do 10.12.2026 bis So 13.12.2026"
+    },
+    {
+      "t": "2026-11-10T16:47",
+      "text": "In Pimlical eingetragen: Miriam, Do 10.12.2026 bis So 13.12.2026"
     }
   ]
 }
