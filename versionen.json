@@ -2,6 +2,21 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.114.0.1",
+      "datum": "2026-11-10",
+      "titel": "Verwaltung: Dringendes zuoberst, Umbrüche",
+      "arten": [
+        "Layout",
+        "Fehler"
+      ],
+      "punkte": [
+        "Zuoberst in der Verwaltung steht eine rote Zeile «Dringend» (Konflikt, Airbnb-Sperre, Weihnachtstage). Ein Tipp öffnet die Person und springt zur Karte.",
+        "Aufgeklappt steht bei jeder Person zuoberst, wofür die Zahl steht, z. B. «3 offen: in Airbnb sperren, Bescheid geben, in Pimlical eintragen».",
+        "In der Preisberechnung werden Beträge nicht mehr mitten im Wort getrennt («CH / F 7 / 0.–»).",
+        "Im Titel einer Person bleiben Datum und Anzahl Nächte beim Umbruch zusammen."
+      ]
+    },
+    {
       "v": "2.114.0.0",
       "datum": "2026-11-10",
       "titel": "Verwaltung pro Person",
