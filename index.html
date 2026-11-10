@@ -684,6 +684,7 @@
   @keyframes rd-nick { 0%, 12%, 92%, 100% { transform: rotate(0deg); } 38%, 70% { transform: rotate(3deg); } }
   @keyframes rd-sprech { 0% { transform: scaleY(0.12); } 10% { transform: scaleY(1); } 20% { transform: scaleY(0.3); } 32% { transform: scaleY(0.85); } 44% { transform: scaleY(0.1); } 56% { transform: scaleY(1); } 68% { transform: scaleY(0.45); } 80% { transform: scaleY(0.9); } 90% { transform: scaleY(0.2); } 100% { transform: scaleY(0.12); } }
   details[id^="b-"] > summary { scroll-margin-top: 8px; }
+  details.pers { scroll-margin-top: 76px; }   /* angesprungene Person nicht unter der Symbolleiste */
   .verlink { font: inherit; font-size: .85rem; color: inherit; background: none; border: 0; text-decoration: underline; opacity: .85; padding: 8px 12px; min-height: 36px; cursor: pointer; }
   .vh { border: 1px solid var(--line, #8886); border-radius: 6px; padding: 10px 14px; background: var(--surface); }
   .vh h3 { margin: 0 0 4px; font-size: 1.05rem; }
@@ -1347,7 +1348,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.119.0.2";
+let VERSION = "2.119.1.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -4717,6 +4718,7 @@ function listeSichern(k, l) { try { localStorage.setItem(k, JSON.stringify(l)); 
 const bKey = (x) => x.name + "|" + x.arr + "|" + x.dep;
 let OFFEN = listeLaden("tm2_offen"), ABGEL = listeLaden("tm2_abgelehnt");
 let zeigG = false, zeigE = false, zeigW = false, EJAHR = 0;   // Einnahmen-Übersicht in der Verwaltung
+let PERS_ZIEL = "";   // Person, die nach dem Zeichnen der Verwaltung angesprungen wird
 let bestMsg = "", bestFehler = "", zeigB = false, zeigA = false, zeigL = false, bestBusy = false, zeigAns = false;
 function bestBeschr(b) { return fmtTag(b.arr) + " bis " + fmtTag(b.dep) + ", " + ((b.selbst || b.sb) ? "reinigt selbst" : "Reinigung durch Eltern") + ((b.luecke || b.lg) ? ", ganze Lücke" : "") + ", " + b.pers + (b.pers === 1 ? " Person" : " Personen") + (provVon(b) ? ", mit Vorbehalt" : "") + (b.verb ? ", verbindlich" : "") + (b.waesche === "bringen" ? ", bringt die Wäsche zurück" : b.waesche === "senden" ? ", sendet die Wäsche zurück" : ""); }
 function vkChips(x, anfrage) {
@@ -5178,7 +5180,7 @@ function bestZeigen() {
       ABGEL = ABGEL.filter((x) => bKey(x) !== key);
       if (!OFFEN.some((x) => bKey(x) === key)) OFFEN.push(link);
       listeSichern("tm2_offen", OFFEN); listeSichern("tm2_abgelehnt", ABGEL);
-      bestMsg = "📨 Neue Anfrage von " + esc(link.name) + ": Sie steht unten bei " + esc(link.name) + ", dort bestätigen oder ablehnen.";
+      bestMsg = ""; PERS_ZIEL = link.name;   // keine Meldung: die Person mit der Anfrage wird geöffnet und angesprungen
       PERS_STAND.set(link.name, true);
     }
     try { history.replaceState(null, "", location.pathname); } catch (e) {}
@@ -5251,6 +5253,7 @@ function bestZeigen() {
   }
   k.innerHTML = s;
   vkEinklappen(k);
+  if (PERS_ZIEL) { const el = k.querySelector('details.pers[data-pers="' + CSS.escape(PERS_ZIEL) + '"]'); PERS_ZIEL = ""; if (el) setTimeout(() => el.scrollIntoView({ behavior: "auto", block: "start" }), 0); }
 }
 function zahlText(x) {
   return "Hoi " + x.name + ", dein Aufenthalt vom " + fmtTagV(x.arr) + " bis " + fmtTagV(x.dep) + " war hoffentlich schön. 😊 Die Zahlung von " + chf(x.betrag) + " ist bei uns noch nicht eingegangen (Frist war der " + fmtTagV(zahlFrist(x)) + "). Bitte überweise den Betrag in den nächsten Tagen. Die Bankverbindung findest du im TSCHENT-O-MAT unter «Zahlung». Danke dir! Gruss, Papi";
