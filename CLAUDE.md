@@ -58,16 +58,16 @@ Anschliessend prüfen, dass `origin/main:einstellungen.json` die neue Version tr
 - Keine Hinweise, etwas auf dem Galaxy S10 zu testen.
 - Texte in der App: positiv und einladend. Kinder nennen die Eltern «Papi» und «Mami». Mehr Wortregeln stehen in den Texten der App selbst.
 
-## Offene Themen (Stand 10.11.2026)
-1. Mailadresse beim ersten Öffnen: Kinder und Partner (nicht Papi in der Kind-Ansicht) geben sie zweimal ein, ohne Kopieren; ohne Eingabe geht es nicht weiter. Ablage über den Briefkasten (Apps Script erweitern, Wänu stellt neu bereit), in der Verwaltung bei der Person sichtbar. Für den Versand der Gästekarten.
-2. Termin kürzen bei Konflikt (Vorbehalt kollidiert teilweise mit Airbnb-Gast): von Hand in der Verwaltung als weitere Zeile in «Zu tun», Kind bekommt WhatsApp mit den neuen Daten, die gekürzte Fassung bleibt bei den früheren Aufenthalten sichtbar. Der Kalenderbalken zeigt schon die tatsächliche Lage.
-3. Fehler bei «Einnahmen» («Cannot read properties of undefined (reading 'split')»): nicht nachstellbar, Wänu meldet sich, wenn er wieder auftritt.
-4. Zahlung: Knopf «Zahlung eingegangen» erscheint heute erst nach der Abreise; Wänu fragt, ob er früher nötig ist.
-5. Stornierung 30 Tage für externe Gäste in Februar und Hochsaison. Regel nach den 30 Tagen noch offen.
-6. Erklärclip (nur Text, 60 bis 90 Sekunden): eine Buchung durchspielen und die Legende zeigen, damit man sieht, dass es verschiedene Saisons mit verschiedenen Möglichkeiten gibt (Jerome hat das nicht verstanden).
-7. Reinigungsliste: nur Erinnerung, dass Marianne noch ihre Meinung dazu gibt. Später nachfragen.
-8. Backup der GitHub-Repos auf OneDrive: Skript github_backup.ps1 (nicht im Repo) an Wänu gegeben, Einrichtung läuft.
-9. Wofür die Beherbergungsabgabe von CHF 1.00 verwendet wird, klärt Wänu noch ab (dann im Kapitel «Kurtaxe und Gästekarte» ergänzen).
-10. Gästemeldung: echter Test erfolgreich (10.11.2026); Testtermine Deborah 18.–21.11. und Miriam 25.–28.11.2026 entfernen.
+## Offene Themen (Stand 10.11.2026, abends, Version 2.120.6.0)
+1. Mailadresse beim ersten Öffnen: Kinder und Partner geben sie zweimal ein, ohne Kopieren; ohne Eingabe geht es nicht weiter. Ablage über den Briefkasten, in der Verwaltung bei der Person sichtbar. Für den Versand der Gästekarten.
+2. Termin kürzen bei Konflikt (Vorbehalt kollidiert teilweise mit Airbnb-Gast): von Hand in der Verwaltung als weitere Zeile in «Zu tun», Kind bekommt WhatsApp mit den neuen Daten.
+3. Fehler bei «Einnahmen» («reading 'split'»): nicht nachstellbar, Wänu meldet sich.
+4. Zahlung: Knopf «Zahlung eingegangen» erscheint erst nach der Abreise; Wänu fragt, ob früher nötig.
+5. Stornierung 30 Tage für externe Gäste in Februar und Hochsaison, Regel danach offen.
+6. Reinigungsliste: Marianne gibt noch ihre Meinung (später nachfragen). Gartenkissen und Liegestühle stehen seit 2.120.3.0 in allen Listen (Annahme, Wänu prüft).
+7. Testdaten: Deborah 18.–21.11.2026, Miriam 10.–13.12.2026, Manuel 1.–4.3.2027, David 24.–27.3.2027 sind Tests; vor Version 3 entfernen (nur auf Wänus Ja). Davids persönlichen Link nach dem Test erneuern.
+8. Wänu testet am 11.11.2026 ausgiebig: Kurzfilm Saisons, Reinigung ab 18, Minderjährige, Wäsche (Geschirrtücher, ungewaschen zurück), Checkliste in einem Stück, Trennung Partner/Kind, Anreise-Wäsche für späteren Aufenthalt, Staffelbeginn abgesagt (Wäsche-Info an den Nächsten).
+9. Bei «Meine Familie und Geschwister» kennt die App die Zahl der Enkel nicht; bei der Reinigung «nach Personen» zählen dort alle ausser Kleinkindern.
 
+Erledigt 10.11.2026 abends: Kurzfilm Saisons (2.120.0.x), Beherbergungsabgabe im Glossar, Backup eingerichtet, Gästemeldung getestet, Test-Stornos entfernt.
 Erledigt: Haftung, Bedingungen, Stornierung als Kapitel, gelber Hilfeknopf (2.118.x). Liste «Zu tun» pro Buchung (2.117.0.0). Gästemeldung (2.116.x). Verwaltung neu, Schritte A bis C (2.114.0.0 bis 2.115.1.0). Kurtaxe für Freunde (2.113.0.0 und 2.113.0.1). Beträge fix im Code (P.kurtaxe, kurtaxeBeherb, kurtaxeKind), nicht aus der aktuellen Verordnung.
