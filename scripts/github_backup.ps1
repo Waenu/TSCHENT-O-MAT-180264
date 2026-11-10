@@ -1,6 +1,6 @@
 # GitHub-Backup für Wänu: holt alle Repos und legt pro Repo eine Sicherungsdatei (.bundle) in OneDrive ab.
 # Ablage:  D:\KI CLAUDE\Backup\git-mirror   (Arbeitskopien, nicht in OneDrive)
-#          <OneDrive>\Backup\GitHub          (Sicherungsdateien, die letzten 10 pro Repo)
+#          <OneDrive>\Backup\GitHub          (Sicherungsdateien, die letzten 30 pro Repo)
 # Wiederherstellen: git clone "<Datei>.bundle" "<Zielordner>"
 
 $Repos = @(
@@ -12,7 +12,7 @@ $Repos = @(
 $Mirror  = "D:\KI CLAUDE\Backup\git-mirror"
 $OneDrv  = if ($env:OneDrive) { $env:OneDrive } else { Join-Path $env:USERPROFILE "OneDrive" }
 $Ziel    = Join-Path $OneDrv "Backup\GitHub"
-$Behalten = 10
+$Behalten = 30
 $Log     = Join-Path $Ziel "backup-log.txt"
 
 New-Item -ItemType Directory -Force -Path $Mirror, $Ziel | Out-Null
