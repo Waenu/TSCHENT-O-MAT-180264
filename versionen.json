@@ -2,6 +2,18 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.120.3.0",
+      "datum": "2026-11-10",
+      "titel": "Reinigungs-Checkliste in einem Stück",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Wer selbst reinigt (Staffel), hat eine einzige Liste «Wohnung reinigen und abreisen» mit allem, was am Abreisetag zu tun ist. Darunter folgt «Wäsche zurückgeben».",
+        "Neu in jeder Checkliste: Wohnung besenrein und aufgeräumt verlassen, Kissen der Gartenstühle versorgen, Liegestühle versorgen."
+      ]
+    },
+    {
       "v": "2.120.2.0",
       "datum": "2026-11-10",
       "titel": "Wäsche: alles aus Stoff, ungewaschen zurück",

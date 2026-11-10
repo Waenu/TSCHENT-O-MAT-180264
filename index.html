@@ -1377,7 +1377,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.120.2.0";
+let VERSION = "2.120.3.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -3783,7 +3783,9 @@ const WR_SCHRITTE = ["Auf der Terrasse ausschütteln", "Umstülpen und nochmals 
 const wrMit = (a) => (a.waesche === "senden" ? "📮 Wäsche per Post senden, spätestens " : "🚗 Wäsche den Eltern bringen, spätestens ") + WAESCHE_TAGE + " Tage nach der Rückreise";
 const WR_NIE = "🚫 Nicht selbst waschen: Die Wäsche kommt ungewaschen zu den Eltern zurück";
 const wrListe = (a) => (a && a.sb && (a.waesche === "bringen" || a.waesche === "senden") ? WR_SCHRITTE.concat([WR_NIE, wrMit(a)]) : []);
-const checkListe = (a) => (a && a.sb ? CHECK_SELBST : []).concat(wrListe(a), CHECK_ALLE);
+const CHECK_PLUS = ["🧹 Wohnung besenrein und aufgeräumt verlassen", "🪑 Kissen der Gartenstühle versorgen", "🏖️ Liegestühle versorgen"];   // für alle Abreisen, vor dem Schlüssel (seit 2.120.3.0)
+const alleListe = () => { const l = CHECK_ALLE.filter((i) => CHECK_PLUS.indexOf(i) < 0), k = l.findIndex((i) => /Schlüssel/.test(i)); return k < 0 ? l.concat(CHECK_PLUS) : l.slice(0, k).concat(CHECK_PLUS, l.slice(k)); };
+const checkListe = (a) => (a && a.sb ? CHECK_SELBST : []).concat(alleListe(), wrListe(a));   // Reihenfolge wie angezeigt: reinigen und gehen, danach Wäsche zurück
 let AUFENT = null;      // lokal gemerkte Anfrage {arr, dep, sb, pers}
 let HAKEN = {};         // Haken je Aufenthalt: { "arr|dep": { Text: true } }
 let BUCH_STORNO = [];   // von den Eltern gelöschte (stornierte) Aufenthalte, nur für die Meldung an das Kind
@@ -4265,13 +4267,13 @@ function checkZeichnen() {
   const alle = liste.length > 0 && done === liste.length;
   const btn = (i) => '<button type="button" class="chk-item' + (h[i] ? ' erledigt' : '') + '" data-chk="' + liste.indexOf(i) + '" aria-pressed="' + (h[i] ? 'true' : 'false') + '"><span class="box">' + (h[i] ? '✓' : '') + '</span><span>' + esc(i) + '</span></button>';
   const teil = (titel, arr) => arr.length ? '<h3 class="chk-teil">' + titel + '</h3>' + arr.map(btn).join("") : "";
-  const wr = wrListe(a), wrTeil = wr.length ? '<h3 class="chk-teil">🧺 Wäsche zurückgeben</h3><p class="chk-unter">' + WR_TITEL + '</p><div class="chk-einr">' + WR_SCHRITTE.map(btn).join("") + '</div>' + btn(wr[wr.length - 1]) : "";
+  const wr = wrListe(a), wrTeil = wr.length ? '<h3 class="chk-teil">🧺 Wäsche zurückgeben</h3><p class="chk-unter">' + WR_TITEL + '</p><div class="chk-einr">' + WR_SCHRITTE.map(btn).join("") + '</div>' + wr.slice(WR_SCHRITTE.length).map(btn).join("") : "";   // danach «nicht selbst waschen» und «senden/bringen»
   document.getElementById("ovCheckIn").innerHTML =
     '<button type="button" class="ov-back" data-ov="ovCheck">← Zurück</button>' +
     '<h2>✅ Reinigungs-Checkliste</h2>' +
     '<p class="chk-stand">' + (a.ok ? "Bestätigt. " : "Noch nicht bestätigt. ") + 'Erledigt am Abreisetag, ' + fmtTagV(a.dep) + '.</p>' +
     (alle ? '<div class="chk-danke">🎉 Danke, du hast all diese Sachen erledigt.</div>' : '<p class="chk-stand">' + done + ' von ' + liste.length + ' erledigt. Tippe jeden Punkt an, wenn er erledigt ist.</p>') +
-    '<div class="chk-liste' + (alle ? ' chk-alle' : '') + '">' + (a.sb ? teil("🧹 Wohnung reinigen", CHECK_SELBST) : "") + wrTeil + teil("🚪 Vor dem Gehen", CHECK_ALLE) + '</div>' + ovWeg(a);
+    '<div class="chk-liste' + (alle ? ' chk-alle' : '') + '">' + (a.sb ? teil("🧹 Wohnung reinigen und abreisen", CHECK_SELBST.concat(alleListe())) : teil("🚪 Vor dem Gehen", alleListe())) + wrTeil + '</div>' + ovWeg(a);
 }
 // Aufgeklapptes Thema der Anleitung: Überschrift an den oberen Rand
 document.addEventListener("toggle", (e) => {
