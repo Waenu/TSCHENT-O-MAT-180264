@@ -2,6 +2,19 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.120.6.0",
+      "datum": "2026-11-10",
+      "titel": "Staffelbeginn abgesagt: Wäsche-Info an den Nächsten",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Wird der Staffelbeginn abgesagt, beginnt der nächste Aufenthalt die Staffel. In der Verwaltung erscheint unter «Zu tun» die Zeile «Wäsche-Info: … beginnt jetzt die Staffel» mit fertiger WhatsApp.",
+        "Auf dem Handy des Kindes erscheint ein Hinweis, und in der Reinigungs-Checkliste steht «Wäsche zurückgeben» mit «bringen oder per Post senden».",
+        "Wer nicht mehr die Staffel beginnt (jemand hat davor gebucht), hat «Wäsche zurückgeben» nicht mehr in der Checkliste."
+      ]
+    },
+    {
       "v": "2.120.5.0",
       "datum": "2026-11-10",
       "titel": "Partner und Kind strikt getrennt",
