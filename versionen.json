@@ -2,6 +2,18 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.113.0.1",
+      "datum": "2026-11-10",
+      "titel": "Kurtaxe übersichtlicher",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Der Preis pro Freund steht jetzt samt Kurtaxe, die Kurtaxe steht klein darunter.",
+        "In der Buchungsübersicht steht die Kurtaxe nur noch in einer Zeile mit kurzer Erklärung."
+      ]
+    },
+    {
       "v": "2.113.0.0",
       "datum": "2026-11-10",
       "titel": "Kurtaxe Adelboden für Freunde",
