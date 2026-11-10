@@ -2,6 +2,32 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.116.2.1",
+      "datum": "2026-11-10",
+      "titel": "Schlüssel speichern",
+      "arten": [
+        "Fehler"
+      ],
+      "punkte": [
+        "«Speichern» beim Schlüssel des Briefkastens tat nichts, wenn mehr als eine Buchung mit Freunden in der Verwaltung stand. Behoben.",
+        "Ist der Schlüssel falsch, erscheint das Eingabefeld wieder.",
+        "Der Schlüssel der Gästemeldung lässt sich auch im versteckten Menü beim Token speichern, ändern oder entfernen (fünfmal auf die Versionszeile tippen)."
+      ]
+    },
+    {
+      "v": "2.116.2.0",
+      "datum": "2026-11-10",
+      "titel": "Anfragen bei der Person",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Offene Anfragen stehen jetzt bei der betreffenden Person, mit «Bestätigen» und «Ablehnen». Sie zählen in deren Marke mit, im Titel steht «📨 Anfrage: … bis …».",
+        "Beim Öffnen der Verwaltung sind alle Titel zugeklappt.",
+        "«Weiteres» enthält nur noch Weihnachtstage, Gäste, Einnahmen und das Nachschlagen."
+      ]
+    },
+    {
       "v": "2.116.1.0",
       "datum": "2026-11-10",
       "titel": "Gästemeldung eingeschaltet",
