@@ -35,7 +35,8 @@
       "bestaetigt": "2026-11-10T10:14",
       "bescheid": "2026-11-10T13:48",
       "gesperrt": "2026-11-10T13:48",
-      "pimlical": "2026-11-10T13:48"
+      "pimlical": "2026-11-10T13:48",
+      "kurtaxeAm": "2026-11-10T13:48"
     },
     {
       "name": "Miriam",
@@ -588,6 +589,10 @@
     {
       "t": "2026-11-10T13:48",
       "text": "In Pimlical eingetragen: Deborah, Mi 18.11.2026 bis Sa 21.11.2026"
+    },
+    {
+      "t": "2026-11-10T13:48",
+      "text": "Freunde für die Kurtaxe angemeldet: Deborah, Mi 18.11.2026 bis Sa 21.11.2026"
     }
   ]
 }
