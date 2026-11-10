@@ -1353,7 +1353,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.119.2.0";
+let VERSION = "2.119.3.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -3790,6 +3790,11 @@ function buchungenAn(j) {
   belegtMischen();
   return true;
 }
+function buchStand(j) {   // Stand einer buchungen.json: Zeit des letzten Logbuch-Eintrags, dazu wie viele Einträge in dieser Minute
+  const l = j && Array.isArray(j.logbuch) ? j.logbuch : [], t = l.length && l[l.length - 1] && typeof l[l.length - 1].t === "string" ? l[l.length - 1].t : "";
+  let n = 0; for (let i = l.length - 1; i >= 0 && l[i] && l[i].t === t; i--) n++;
+  return t ? t + "|" + String(n).padStart(3, "0") : "";
+}
 async function ladeBuchungen() {
   try {
     const ctl = new AbortController();
@@ -3797,7 +3802,8 @@ async function ladeBuchungen() {
     const r = await fetch("buchungen.json?v=" + Date.now(), { cache: "no-store", signal: ctl.signal });
     clearTimeout(to);
     if (!r.ok) throw new Error("http " + r.status);
-    const j = await r.json();
+    let j = await r.json();
+    try { const c = JSON.parse(localStorage.getItem("tm2_buchungen") || "null"); if (c && buchStand(c) > buchStand(j)) j = c; } catch (e) {}   // die Webseite liefert nach dem Speichern 1 bis 2 Minuten lang noch die alte Datei: dann gilt die neuere auf diesem Gerät
     if (buchungenAn(j)) { try { localStorage.setItem("tm2_buchungen", JSON.stringify(j)); } catch (e) {} }
   } catch (e) {
     try { const c = localStorage.getItem("tm2_buchungen"); if (c) buchungenAn(JSON.parse(c)); } catch (e2) {}
@@ -3848,7 +3854,8 @@ function aufentZeigen() {
   }
   {   // von den Eltern gelöschter (stornierter) Aufenthalt: Meldung, bis das Kind sie wegklickt oder die Abreise vorbei ist
     const st = document.getElementById("aufStatus"), ok = stornoGelesen();
-    const sl = ABSENDER ? BUCH_STORNO.filter((b) => eigenN(b.name) && b.dep >= heuteKey() && ok.indexOf(bKey(b)) < 0) : [];
+    const ueb = (a, b) => a.arr < b.dep && b.arr < a.dep;   // Überschneidung zweier Aufenthalte
+    const sl = ABSENDER ? BUCH_STORNO.filter((b) => eigenN(b.name) && b.dep >= heuteKey() && ok.indexOf(bKey(b)) < 0 && !BUCH.some((a) => a.name === b.name && ueb(a, b)) && !(AUFENT && b.name === ABSENDER && ueb(AUFENT, b))) : [];   // keine Meldung, wenn für diese Tage eine neue Buchung oder Anfrage besteht (seit 2.119.3.0)
     if (sl.length) { st.hidden = false; st.innerHTML += sl.map((b) => '<div class="note h"><b>❌ Storniert:</b> ' + (b.name === ABSENDER ? "Dein Aufenthalt" : "Der Aufenthalt von " + esc(b.name)) + ' vom ' + esc(fmtTag(b.arr)) + ' bis ' + esc(fmtTag(b.dep)) + ' wurde von den Eltern gelöscht. Die Knöpfe dazu sind weg. <button type="button" class="ov-back" data-stok="' + esc(bKey(b)) + '">OK, gelesen</button></div>').join(""); }
   }
   gmKindZeigen();

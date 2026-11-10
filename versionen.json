@@ -2,6 +2,18 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.119.3.0",
+      "datum": "2026-11-10",
+      "titel": "Kein falsches «Storniert», keine veraltete Buchungsliste",
+      "arten": [
+        "Fehler"
+      ],
+      "punkte": [
+        "Beim Kind erscheint «Storniert» nicht mehr, wenn für dieselben Tage eine neue Buchung oder Anfrage besteht.",
+        "Nach dem Speichern liefert die Webseite 1 bis 2 Minuten lang noch die alte Buchungsliste. Die App behält jetzt die neuere Fassung auf dem Gerät, statt sie damit zu überschreiben."
+      ]
+    },
+    {
       "v": "2.119.2.0",
       "datum": "2026-11-10",
       "titel": "Bestätigen ohne Doppeltes, Freundesliste zuklappbar",

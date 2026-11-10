@@ -2,12 +2,6 @@
   "_hinweis": "Bestätigte Aufenthalte der Familie (Vorschau 2.0.0.0, getrennt von der gültigen Version). Pro Eintrag: name, arr = Anreise, dep = Abreise (JJJJ-MM-TT), selbst = true wenn die Kinder selbst reinigen, pers = Personen mit Bett. Eintrag löschen = Storno.",
   "buchungen": [
     {
-      "name": "Miriam",
-      "arr": "2026-11-18",
-      "dep": "2026-11-21",
-      "status": "storniert"
-    },
-    {
       "name": "Deborah",
       "arr": "2027-07-03",
       "dep": "2027-07-10",
@@ -24,12 +18,6 @@
       "bestaetigt": "2026-11-09T21:37",
       "pimlical": "2026-11-09T21:44",
       "bescheid": "2026-11-10T14:57"
-    },
-    {
-      "name": "Miriam",
-      "arr": "2026-11-25",
-      "dep": "2026-11-28",
-      "status": "storniert"
     },
     {
       "name": "Manuel",
@@ -50,12 +38,6 @@
       "gesperrt": "2026-11-10T15:50",
       "pimlical": "2026-11-10T15:52",
       "kurtaxeAm": "2026-11-10T15:52"
-    },
-    {
-      "name": "Miriam",
-      "arr": "2026-11-25",
-      "dep": "2026-11-27",
-      "status": "storniert"
     }
   ],
   "logbuch": [
@@ -686,6 +668,10 @@
     {
       "t": "2026-11-10T16:20",
       "text": "Entfernt: Miriam, Mi 25.11.2026 bis Fr 27.11.2026"
+    },
+    {
+      "t": "2026-11-10T16:40",
+      "text": "Aufgeräumt: alte Test-Stornos von Miriam entfernt (18.–21.11., 25.–28.11., 25.–27.11.2026)"
     }
   ]
 }
