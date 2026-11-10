@@ -39,7 +39,7 @@
       "bestaetigt": "2026-11-10T16:45",
       "bescheid": "2026-11-10T16:46",
       "pimlical": "2026-11-10T16:47",
-      "gesperrt": "2026-11-10T17:20"
+      "gesperrt": "2026-11-10T20:46"
     },
     {
       "name": "Manuel",
@@ -771,6 +771,10 @@
     {
       "t": "2026-11-10T20:29",
       "text": "Bestätigt: David, Mi 24.03.2027 bis Sa 27.03.2027, CHF 180, Wäsche: persönlich bringen bis Di 30.03.2027"
+    },
+    {
+      "t": "2026-11-10T20:46",
+      "text": "In Airbnb gesperrt: Miriam, Do 10.12.2026 bis So 13.12.2026"
     }
   ]
 }
