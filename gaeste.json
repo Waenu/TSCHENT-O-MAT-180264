@@ -66,9 +66,7 @@
       "arr": "2027-02-20",
       "dep": "2027-02-27",
       "name": "Leo van den Berg",
-      "typ": "extern",
-      "quelle": "kalender",
-      "kal": "Leo van den Berg"
+      "typ": "extern"
     },
     {
       "arr": "2027-03-04",
