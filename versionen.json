@@ -2,6 +2,21 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.114.0.0",
+      "datum": "2026-11-10",
+      "titel": "Verwaltung pro Person",
+      "arten": [
+        "Neu"
+      ],
+      "punkte": [
+        "Die Verwaltung zeigt pro Kind und Partner einen eigenen Titel: Jerome, Deborah, Miriam, Manuel, danach David, Rahel, Andreas, Sarah.",
+        "Im Titel stehen die nächste Buchung mit Anreise, Abreise und Anzahl Nächte und eine Marke mit der Zahl der offenen Punkte. ✓ heisst: alles erledigt, dann bleibt der Titel zu.",
+        "Aufgeklappt stehen die kommenden Buchungen mit allem, was zu tun ist, offene Zahlungen und Wäsche sowie alle früheren Aufenthalte als schmale Zeilen, der letzte zuoberst.",
+        "Offene Anfragen, Weihnachtssperre, Gäste mit Namen, Einnahmen und das Nachschlagen stehen neu im Block «Weiteres».",
+        "Bei Terminen mit Vorbehalt ist das Sperren in Airbnb ausgegraut, der nächste Schritt ist Pimlical."
+      ]
+    },
+    {
       "v": "2.113.0.1",
       "datum": "2026-11-10",
       "titel": "Kurtaxe übersichtlicher",

@@ -717,6 +717,21 @@
   #bestKasten .vk.warn { border-color: #C9A227; }
   #bestKasten .vk.rot { border-color: #C62828; }
   #bestKasten .vkd { margin: 6px 0; }
+  #bestKasten details.pers { margin: 6px 0; }
+  #bestKasten details.pers > summary { white-space: normal; min-height: 54px; padding: 6px 12px; gap: 6px; text-align: left; }
+  #bestKasten details.pers.fehlt:not([open]) > summary { border-color: #E5A100; }
+  #bestKasten details.pers.rot:not([open]) > summary { border-color: #C62828; }
+  #bestKasten .ps-l { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.25; }
+  #bestKasten .ps-b { font-weight: 400; font-size: .85rem; opacity: .85; }
+  #bestKasten details.pers > summary .alarm-n { margin-left: 0; }
+  #bestKasten .alarm-n.rot { background: #E5534B; color: #fff; }
+  #bestKasten .ps-abst { height: 14px; }
+  #bestKasten .ps-in { padding-bottom: 6px; }
+  #bestKasten .ps-hist { margin-top: 10px; display: flex; flex-direction: column; }
+  #bestKasten .ps-hist > b { font-size: .9rem; margin-bottom: 2px; }
+  #bestKasten .ps-z { display: flex; align-items: center; gap: 8px; width: 100%; min-height: 36px; padding: 4px 6px; background: none; border: 0; border-bottom: 1px solid rgba(127,127,127,0.3); color: inherit; font: inherit; font-size: .9rem; text-align: left; cursor: pointer; }
+  #bestKasten .ps-h { color: var(--gruen); font-weight: 700; width: 1.4em; text-align: center; }
+  #bestKasten .todo-grau { opacity: .55; }
   #bestKasten .vkd > summary { min-height: 44px; border: 2px solid var(--gruen); border-radius: 6px; padding: 8px 12px; background: var(--surface); color: inherit; white-space: normal; font-size: 1rem; justify-content: space-between; text-align: left; }
   #bestKasten .vkd.prov > summary { border-color: #C9A227; }
   #bestKasten .vkd.rot > summary { border-color: #C62828; }
@@ -1275,7 +1290,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.113.0.1";
+let VERSION = "2.114.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -4702,28 +4717,32 @@ function pimTitel(name, typ) {
 // Was nach einer Buchung zu tun ist: in Airbnb die Nächte sperren (Abreisetag frei lassen) und den Pimlical-Eintrag machen
 function erledigenHtml(x) {
   const n = diffDays(x.arr, x.dep), letzte = addDays(x.dep, -1), zu = !x.prov && !nichtGesperrt(x) && BELEGT_AIR && BELEGT_AIR.has(x.arr);
-  const sp = x.prov ? "<p>" + lockSvg(true) + " <b>Mit Vorbehalt:</b> Nicht in Airbnb sperren.</p>"
+  const sp = x.prov ? '<p class="todo-grau">' + lockSvg(true) + " <b>Mit Vorbehalt:</b> Nicht in Airbnb sperren. Der nächste Schritt ist Pimlical.</p>"
     : "<p>" + (zu ? "✅ In Airbnb schon gesperrt: " : lockSvg(false) + " <b>In Airbnb sperren:</b> ") + "<b>" + esc(fmtTag(x.arr)) + " bis " + esc(fmtTag(letzte)) + "</b> (" + n + (n === 1 ? " Nacht" : " Nächte") + "). Den Abreisetag <b>" + esc(fmtTag(x.dep)) + "</b> frei lassen.</p>";
   return '<div class="todo-box"><b>📌 Jetzt erledigen</b>' + sp + "<p>🗓️ <b>In Pimlical eintragen:</b> <b>" + esc(fmtTag(x.arr)) + " bis und mit " + esc(fmtTag(x.dep)) + "</b> (den Abreisetag mit eintragen). Zeile kopieren:</p>" + cpZeile(pimTitel(x.name, "fam")) + (x.pimlical ? "<p>✅ Als in Pimlical eingetragen markiert am " + esc(fmtTag(x.pimlical.slice(0, 10))) + ".</p>" : '<button type="button" class="btn main" data-pim="' + esc(bKey(x)) + '">✅ In Pimlical eingetragen</button>') + "</div>";
 }
-function festKarte(x) {
+function festKarte(x, direkt) {   // direkt: nur die Karte (neue Verwaltung pro Person), sonst wie früher in einem aufklappbaren Titel
   const key = esc(bKey(x)), prov = !!x.prov, konf = prov && provKonflikt(x);
   let st = "";
   if (prov) st += "<span>" + (konf ? "⚠️ Konflikt mit Airbnb-Gast" : "Nicht in Airbnb gesperrt" + (provSicher(x) ? " · praktisch sicher ✓" : "")) + "</span>";
   st += bescheidStatus(x);
   if (x.pimlical) st += "<span>🗓️ In Pimlical eingetragen am " + esc(fmtTag(x.pimlical.slice(0, 10))) + "</span>"; else if (pimOffen(x)) st += '<span><b class="bs-fehlt">🗓️ Noch nicht in Pimlical eingetragen</b></span>';
   const ng = !prov && nichtGesperrt(x);   // bestätigt (nicht Vorbehalt), aber in Airbnb noch nicht gesperrt
-  if (ng) st = "<span><b class=\"bs-fehlt rotb\">📌 Aufgabe offen: in Airbnb sperren</b></span>" + st;
+  if (ng) st = "<span><b class=\"bs-fehlt rotb\">📌 Aufgabe offen: in Airbnb sperren</b> <span class=\"hint\">Die Airbnb-Daten kommen mit Verzögerung, kurz nach dem Sperren kann der Hinweis noch stehen.</span></span>" + st;
   const ag = !prov && abreiseGesperrt(x);   // Abreisetag in Airbnb fälschlich mitgesperrt
   if (ag) st = "<span><b class=\"bs-fehlt rotb\">⚠️ " + esc(abreiseWarnTxt(x)) + "</b></span>" + st;
   const wInfo = !!(x.sb && x.waesche && !istStaffelStart(x.arr, x));
   if (wInfo) st += "<span>" + (x.waescheInfo ? "🧺 Wäsche-Info gegeben am " + esc(fmtTag(x.waescheInfo.slice(0, 10))) : '<b class="bs-fehlt">🧺 Noch nicht informiert: ' + esc(x.name) + " bringt jetzt eigene Wäsche</b>") + "</span>";
   const wik = wInfo ? ' <a class="btn" data-wainfo="' + key + '" href="https://wa.me/?text=' + encodeURIComponent(waescheInfoText(x)) + '" target="_blank" rel="noopener">' + WA_SVG + (x.waescheInfo ? "Nochmals Wäsche-Info" : "Wäsche-Info senden") + "</a>" : "";
   const wzk = (x.waesche === "bringen" || x.waesche === "senden") && !x.waescheZurueck ? '<button type="button" class="btn main" data-wz="' + key + '">🧺 Wäsche ist zurück</button>' : "";
-  const acts = wik + wzk + (prov && !hochVorbehalt(x) ? '<button type="button" class="btn main" data-fest="' + key + '">' + lockSvg(true) + '→' + lockSvg(false) + ' In Airbnb gesperrt</button>' : "") + bescheidKnopf(x, false) +
+  const ende = alarmListe().some((a) => a.typ === "ende" && a.x === x);
+  if (ende) st += '<span><b class="bs-fehlt">🔗 Staffel beendet: ' + esc(x.name) + " noch informieren (" + esc(staffelEndeGrund(x)) + ")</b></span>";
+  const eik = ende ? ' <a class="btn" data-endinfo="' + key + '" href="https://wa.me/?text=' + encodeURIComponent(endeInfoText(x)) + '" target="_blank" rel="noopener">' + WA_SVG + "Staffel-Ende-Info senden</a>" : "";
+  const acts = eik + wik + wzk + (prov && !hochVorbehalt(x) ? '<button type="button" class="btn main" data-fest="' + key + '">' + lockSvg(true) + '→' + lockSvg(false) + ' In Airbnb gesperrt</button>' : "") + bescheidKnopf(x, false) +
     '<button type="button" class="btn quiet' + (prov ? " full" : "") + '" data-bdel="' + key + '" aria-label="Aufenthalt entfernen">🗑️ ' + (prov ? "Termin entfernen" : "Entfernen") + "</button>";
-  if (x.dep >= heuteKey()) st += '<details class="todo-d"' + (ng ? " open" : "") + '><summary>📌 Sperren und Pimlical</summary>' + erledigenHtml(x) + "</details>";
+  if (x.dep >= heuteKey()) st += '<details class="todo-d"' + (ng || (direkt && pimOffen(x)) ? " open" : "") + '><summary>📌 Sperren und Pimlical</summary>' + erledigenHtml(x) + "</details>";
   const karte = vkKarte(x, konf || ng || ag ? "rot" : (prov ? (!x.bescheid ? "offen" : "warn") : "ok"), vkChips(x), st, acts);   // fest = grün, offen/Vorbehalt ohne Bescheid = orange
+  if (direkt) return karte;
   // Zugeklappt, wenn nichts mehr zu tun ist; offen, solange etwas fehlt (Konflikt, kein Bescheid, Vorbehalt noch nicht gesperrt oder praktisch sicher). Offene Zahlungen stehen nach der Abreise oben unter «Zahlungen offen».
   const fehlt = konf || ng || ag || !x.bescheid || pimOffen(x) || (prov && !hochVorbehalt(x) && !provSicher(x));
   const ov = VK_STAND.get(bKey(x)), offen = fehlt || ov === true;
@@ -4732,6 +4751,37 @@ function festKarte(x) {
 }
 const VK_STAND = new Map();   // vom Nutzer aufgeklappte/zugeklappte Karten in der Verwaltung (bis zum Neuladen)
 document.addEventListener("click", (e) => { const sm = e.target.closest && e.target.closest(".vkd > summary"); if (!sm) return; const d = sm.parentNode; VK_STAND.set(d.getAttribute("data-vkd"), !d.open); });
+// Neue Verwaltung: pro Kind und Partner ein aufklappbarer Titel mit Zähler (gleiche Fälle wie der blaue Knopf «Verwaltung»)
+const PERS_STAND = new Map();   // vom Nutzer auf- oder zugeklappte Personen (bis zum Neuladen)
+document.addEventListener("click", (e) => { const sm = e.target.closest && e.target.closest("details.pers > summary"); if (!sm) return; const d = sm.parentNode; PERS_STAND.set(d.getAttribute("data-pers"), !d.open); });
+const waescheOffen = (x) => (x.waesche === "bringen" || x.waesche === "senden") && !x.waescheZurueck;
+function aufgZahl(x) { return x.dep >= heuteKey() ? aufgabenVon(x).length : (zahlOffen(x) ? 1 : 0) + (waescheOffen(x) ? 1 : 0); }   // wie punkteOffen
+const naechteTxt = (x) => { const n = diffDays(x.arr, x.dep); return n + (n === 1 ? " Nacht" : " Nächte"); };
+function persTitel(key, name, zeile, n, rot, mitMarke, offen, inhalt) {
+  const marke = mitMarke ? '<span class="alarm-n' + (n ? (rot ? " rot" : "") : " ok") + '" title="' + (n ? n + (n === 1 ? " offener Punkt" : " offene Punkte") : "Alles erledigt") + '">' + (n || "✓") + "</span>" : "";
+  return '<details class="pers' + (rot ? " rot" : n ? " fehlt" : "") + '" data-pers="' + esc(key) + '"' + (offen ? " open" : "") + '><summary><span class="ps-l"><span class="ps-n">' + name + '</span><span class="ps-b">' + zeile + "</span></span>" + marke + '</summary><div class="ps-in">' + inhalt + "</div></details>";
+}
+function histZeile(x) {   // frühere Buchung als schmale Zeile, die letzte zuoberst
+  const off = zahlOffen(x) || waescheOffen(x);
+  return '<button type="button" class="ps-z" data-vk="' + esc(bKey(x)) + '" data-zk="' + esc(x.arr) + '" aria-label="Im Kalender zeigen"><span class="ps-h' + (off ? " off" : "") + '">' + (off ? "🟧" : "✓") + "</span><span>" + esc(fmtTag(x.arr)) + " bis " + esc(fmtTag(x.dep)) + " · " + naechteTxt(x) + (x.betrag > 0 ? " · " + esc(chf(x.betrag)) : "") + "</span></button>";
+}
+function persBlock(name) {
+  const h = heuteKey(), alle = BUCH.filter((x) => x.name === name);
+  const kommend = alle.filter((x) => x.dep >= h).sort((p, q) => (p.arr < q.arr ? -1 : p.arr > q.arr ? 1 : 0));   // die nähere zuoberst
+  const vorbei = alle.filter((x) => x.dep < h).sort((p, q) => (p.arr < q.arr ? 1 : -1));   // die letzte zuoberst
+  const n = alle.reduce((s, x) => s + aufgZahl(x), 0);
+  const rot = kommend.some((x) => provKonflikt(x) || (!x.prov && (nichtGesperrt(x) || abreiseGesperrt(x))));
+  const nx = kommend[0];
+  const zeile = nx ? (nx.arr <= h ? "jetzt da: " : "") + esc(fmtTag(nx.arr)) + " bis " + esc(fmtTag(nx.dep)) + " · " + naechteTxt(nx) + (kommend.length > 1 ? " · +" + (kommend.length - 1) + " weitere" : "")
+    : vorbei.length ? "keine kommende Buchung" : "noch keine Buchung";
+  let inh = kommend.map((x) => festKarte(x, true)).join("");
+  inh += vorbei.filter((x) => zahlOffen(x) || waescheOffen(x)).map((x) => (zahlOffen(x) ? zahlZeile(x) : "") + (waescheOffen(x) ? waescheZeile(x) : "")).join("");
+  if (vorbei.length) inh += '<div class="ps-hist"><b>Frühere Aufenthalte</b>' + vorbei.map(histZeile).join("") + "</div>";
+  if (!alle.length) inh = '<p class="hint">' + esc(name) + " hat noch nichts gebucht.</p>";
+  const st = PERS_STAND.get(name), offen = st === undefined ? n > 0 : st;   // alles erledigt: zu, sonst offen
+  return persTitel(name, esc(name), zeile, n, rot, alle.length > 0, offen, inh);
+}
+function persListe() { return KINDER_ABS.map(persBlock).join("") + '<div class="ps-abst"></div>' + PARTNER_ABS.map(persBlock).join(""); }
 function gaesteFormular() {
   const h = heuteKey(), starts = [];
   if (BELEGT_AIR) Array.from(BELEGT_AIR).sort().forEach((k) => { if (!BELEGT_AIR.has(addDays(k, -1)) && belegtEnde(k) >= h) starts.push(k); });
@@ -4809,7 +4859,8 @@ function bestZeigen() {
       ABGEL = ABGEL.filter((x) => bKey(x) !== key);
       if (!OFFEN.some((x) => bKey(x) === key)) OFFEN.push(link);
       listeSichern("tm2_offen", OFFEN); listeSichern("tm2_abgelehnt", ABGEL);
-      bestMsg = "📨 Neue Anfrage von " + esc(link.name) + " ist unten bei «Offene Anfragen».";
+      bestMsg = "📨 Neue Anfrage von " + esc(link.name) + " ist unten bei «Weiteres» unter «Offene Anfragen».";
+      PERS_STAND.set("__weiteres", true); VK_OFFEN.add("📨 Offene Anfragen");
     }
     try { history.replaceState(null, "", location.pathname); } catch (e) {}
   }
@@ -4828,48 +4879,36 @@ function bestZeigen() {
   let s = "";
   if (bestMsg && !(TOKEN && ABSENDER)) s += '<p>' + bestMsg + ' <button type="button" class="ov-back" data-zu="1">Schliessen</button></p>';
   if (TOKEN) {
-    const bl = BUCH.filter((x) => x.dep >= h);
     s += '<div class="field"><label for="ansichtAls">👁️ Ansicht als</label><select id="ansichtAls"><option value="">Eltern</option>' + absOpt(ABSENDER) + '</select></div><p class="hint">Zeigt dir die Startseite so, wie dieses Kind sie sieht. Nur auf diesem Handy. Die Verwaltung bleibt dabei ausgeblendet, denn die Kinder sehen sie nicht.</p>';
     if (ABSENDER) { k.innerHTML = s; return; }
-    s += '<p class="hint">🟧 Orange Rahmen: offene Anfrage, hier musst du noch etwas tun (bestätigen oder ablehnen). 🟩 Grün: bestätigter, fester Aufenthalt; ein orangefarbenes «Noch kein Bescheid gegeben» heisst, dass du dem Kind noch Bescheid geben musst.</p>';
-    const kf = bl.filter(provKonflikt);
-    if (kf.length) s += '<div class="note h rot-warn"><b>⚠️ Konflikt mit Airbnb-Gast:</b> ' + kf.map((x) => esc(x.name) + " (" + esc(fmtTag(x.arr)) + " bis " + esc(fmtTag(x.dep)) + ")").join(", ") + '. Auf dem Termin mit Vorbehalt liegt eine Airbnb-Belegung. Gib dem Kind Bescheid. Hast du den Termin selbst in Airbnb gesperrt, tippe bei «Mit Vorbehalt» auf «In Airbnb gesperrt».</div>';
-    const agl = bl.filter(abreiseGesperrt).sort((p, q) => (p.dep < q.dep ? -1 : 1));
-    if (agl.length) s += '<div class="note h rot-warn"><b>⚠️ Abreisetag fälschlicherweise gesperrt:</b> ' + agl.map((x) => esc(x.name) + " (Abreise " + esc(fmtTag(x.dep)) + ")").join(", ") + '. Folge: Diese Nacht kann kein Airbnb-Gast buchen, die Einnahme geht verloren. Bitte in Airbnb entsperren.</div>';
-    const ng = bl.filter(nichtGesperrt).sort((p, q) => (p.arr < q.arr ? -1 : 1));
-    if (ng.length) s += '<div class="note h"><b>' + lockSvg(true) + ' ' + ng.length + (ng.length === 1 ? " bestätigter Termin ist" : " bestätigte Termine sind") + ' in Airbnb noch nicht gesperrt:</b> ' + "Bitte in Airbnb sperren. Die Airbnb-Daten kommen mit Verzögerung, kurz nach dem Sperren kann der Hinweis noch stehen." + '<div class="vk-nav">' + ng.map((x) => '<button type="button" class="btn" data-zk="' + esc(x.arr) + '">📅 ' + esc(x.name) + ", " + esc(fmtTag(x.arr)) + " bis " + esc(fmtTag(x.dep)) + " ›</button>").join("") + "</div></div>";
-    const xo = xmasOffen();
-    if (xo.length) s += '<div class="note h rot-warn"><b>⚠️ Weihnachtstage in Airbnb noch nicht gesperrt:</b> Es fehlen die Nächte ' + xo.map((k) => esc(fmtTag(k))).join(", ") + '. Bitte in Airbnb sperren (Check-in ab dem ' + (parseInt(SPERRE[1].slice(3), 10) + 1) + '. ' + MONATE[parseInt(SPERRE[1].slice(0, 2), 10) - 1] + '). Die Airbnb-Daten kommen mit Verzögerung, kurz nach dem Sperren kann der Hinweis noch stehen.</div>';
-    const alm = alarmListe();
-    if (alm.length) s += vkSek("🔔 Alarme: Mitteilung fällig", alm.length, true) + alm.map((a) => '<div class="note h"><p>' + a.text + '</p><a class="btn" ' + (a.typ === "ende" ? "data-endinfo" : "data-wainfo") + '="' + esc(bKey(a.x)) + '" href="https://wa.me/?text=' + encodeURIComponent(a.typ === "ende" ? endeInfoText(a.x) : waescheInfoText(a.x)) + '" target="_blank" rel="noopener">' + WA_SVG + (a.typ === "ende" ? "Staffel-Ende-Info senden" : "Wäsche-Info senden") + "</a></div>").join("");
-    const zl = BUCH.filter((x) => zahlOffen(x) && x.dep < h).sort((p, q) => (p.dep < q.dep ? -1 : 1));
-    if (zl.length) s += vkSek("💳 Zahlungen offen", zl.length, true) + zl.map((x) => zahlZeile(x)).join("");
-    const wl = BUCH.filter((x) => (x.waesche === "bringen" || x.waesche === "senden") && !x.waescheZurueck && x.dep < h).sort((p, q) => (waescheBis(p) < waescheBis(q) ? -1 : 1));   // Wäsche bleibt gemeldet, bis Papi den Eingang quittiert
-    if (wl.length) s += vkSek("🧺 Wäsche noch nicht zurück", wl.length, true) + wl.map((x) => waescheZeile(x)).join("");
-    s += vkSek("📨 Offene Anfragen", OFFEN.length, true);
-    s += OFFEN.length ? OFFEN.slice().sort((a, b) => (a.arr < b.arr ? -1 : a.arr > b.arr ? 1 : (a.dep < b.dep ? -1 : a.dep > b.dep ? 1 : 0))).map((x) => vkKarte(x, "offen", vkChips(x, true), "",
+    s += '<p class="hint">Pro Person ein Titel mit der nächsten Buchung. Die Zahl zeigt, wie viel dort noch zu tun ist, orange oder rot bei Dringendem (Konflikt, Airbnb-Sperre). ✓ heisst: alles erledigt. Darunter stehen die früheren Aufenthalte.</p>';
+    s += persListe();
+    // Block «Weiteres»: offene Anfragen, Weihnachtssperre und alles zum Nachschlagen
+    const xo = xmasOffen(), fremd = BUCH.filter((x) => ABS.indexOf(x.name) < 0).sort((p, q) => (p.arr < q.arr ? -1 : 1));   // fremd: Buchung ohne bekannten Namen (sollte nicht vorkommen)
+    const nW = OFFEN.length + (xo.length ? 1 : 0) + fremd.reduce((n, x) => n + aufgZahl(x), 0);
+    let w = "";
+    if (xo.length) w += '<div class="note h rot-warn"><b>⚠️ Weihnachtstage in Airbnb noch nicht gesperrt:</b> Es fehlen die Nächte ' + xo.map((k) => esc(fmtTag(k))).join(", ") + '. Bitte in Airbnb sperren (Check-in ab dem ' + (parseInt(SPERRE[1].slice(3), 10) + 1) + '. ' + MONATE[parseInt(SPERRE[1].slice(0, 2), 10) - 1] + '). Die Airbnb-Daten kommen mit Verzögerung, kurz nach dem Sperren kann der Hinweis noch stehen.</div>';
+    w += vkSek("📨 Offene Anfragen", OFFEN.length, true);
+    w += OFFEN.length ? OFFEN.slice().sort((a, b) => (a.arr < b.arr ? -1 : a.arr > b.arr ? 1 : (a.dep < b.dep ? -1 : a.dep > b.dep ? 1 : 0))).map((x) => vkKarte(x, "offen", vkChips(x, true), "",
       '<button type="button" class="btn main" data-ja="' + esc(bKey(x)) + '">✅ Bestätigen</button><button type="button" class="btn" data-nein="' + esc(bKey(x)) + '">✖ Ablehnen</button>')).join("")
       : '<p class="hint">Keine offenen Anfragen. Tippe in einer Anfrage auf den Bestätigungs-Link, dann erscheint sie hier.</p>';
-    const nachDatum = (a, b) => (a.arr < b.arr ? -1 : a.arr > b.arr ? 1 : (a.dep < b.dep ? -1 : a.dep > b.dep ? 1 : 0));   // früheste Anreise zuoberst
-    const bp = bl.filter((x) => x.prov).sort(nachDatum), bf = bl.filter((x) => !x.prov).sort(nachDatum);
-    s += vkSek("🔓 Mit Vorbehalt, noch nicht fest", bp.length) + (bp.length ? bp.map(festKarte).join("") : '<p class="hint">Keine Termine mit Vorbehalt.</p>');
-    s += vkSek("🔒 Bestätigt, fest", bf.length) + (bf.length ? bf.map(festKarte).join("") : '<p class="hint">Keine festen Aufenthalte.</p>');
-    s += '<hr class="vk-trenn">' + vkSek("📚 Nachschlagen", "").replace(' <span class="n"></span>', "") + '<div class="vk-body">';
-    s += '<div class="vk-nav"><button type="button" class="btn" data-zeig="A">' + (zeigA ? "Abgelehnte ausblenden" : "Abgelehnte anzeigen (" + ABGEL.length + ")") + '</button><button type="button" class="btn" data-zeig="L">' + (zeigL ? "Logbuch ausblenden" : "Logbuch anzeigen (" + LOGBUCH.length + ")") + "</button></div>";
-    s += '<div class="vk-nav"><button type="button" class="btn" style="grid-column:1/-1" data-zeig="G">' + (zeigG ? "Gäste ausblenden" : "👤 Gäste mit Namen (" + GAESTE.length + ")") + "</button></div>";
-    if (zeigG) s += gaesteFormular();
+    if (fremd.length) w += vkSek("❔ Andere Buchungen", fremd.length) + fremd.map((x) => x.dep >= h ? festKarte(x, true) : histZeile(x)).join("");
+    w += '<hr class="vk-trenn">' + vkSek("📚 Nachschlagen", "").replace(' <span class="n"></span>', "") + '<div class="vk-body">';
+    w += '<div class="vk-nav"><button type="button" class="btn" data-zeig="A">' + (zeigA ? "Abgelehnte ausblenden" : "Abgelehnte anzeigen (" + ABGEL.length + ")") + '</button><button type="button" class="btn" data-zeig="L">' + (zeigL ? "Logbuch ausblenden" : "Logbuch anzeigen (" + LOGBUCH.length + ")") + "</button></div>";
+    w += '<div class="vk-nav"><button type="button" class="btn" style="grid-column:1/-1" data-zeig="G">' + (zeigG ? "Gäste ausblenden" : "👤 Gäste mit Namen (" + GAESTE.length + ")") + "</button></div>";
+    if (zeigG) w += gaesteFormular();
     const wp = BUCH.filter((x) => x.waesche === "bringen" || x.waesche === "senden").sort((p, q) => (p.dep < q.dep ? 1 : -1));
-    s += '<div class="vk-nav"><button type="button" class="btn" style="grid-column:1/-1" data-zeig="W">' + (zeigW ? "Wäsche-Protokoll ausblenden" : "🧺 Wäsche-Protokoll (" + wp.length + ")") + "</button></div>";
-    if (zeigW) s += waescheProtokoll(wp);
-    s += '<div class="vk-nav"><button type="button" class="btn" style="grid-column:1/-1" data-zeig="K">' + (zeigLk ? "Persönliche Links ausblenden" : "🔗 Persönliche Links") + "</button></div>";
-    if (zeigLk) s += lkHtml();
-    s += '<div class="vk-nav"><button type="button" class="btn" style="grid-column:1/-1" data-zeig="E">' + (zeigE ? "Einnahmen ausblenden" : "💰 Einnahmen") + "</button></div>";
-    if (zeigE) s += einnahmenHtml();
-    if (zeigL) s += "<b>📒 Logbuch</b>" + (LOGBUCH.length ? "<ul>" + LOGBUCH.slice().reverse().map((e) => "<li><span class=\"hint\">" + esc(fmtTag(e.t.slice(0, 10))) + ", " + esc(e.t.slice(11, 16)) + " Uhr</span> " + esc(e.text) + "</li>").join("") + "</ul>" : '<p class="hint">Noch keine Einträge.</p>');
-    if (zeigA) s += vkSek("✖ Abgelehnt", ABGEL.length) + (ABGEL.length ? ABGEL.map((x) => { const z = BUCH_ABGEL.find((y) => bKey(y) === bKey(x)); const xx = Object.assign({}, x, { bescheid: z ? z.bescheid : "" }); return vkKarte(xx, xx.bescheid ? "" : "offen", '<div class="vk-chips"><span class="vk-chip">' + (xx.pers ? xx.pers + (xx.pers === 1 ? " Person" : " Personen") : "Absage") + "</span></div>", bescheidStatus(xx), bescheidKnopf(xx, true) + '<button type="button" class="btn" data-wieder="' + esc(bKey(x)) + '">↩️ wieder offen</button>'); }).join("") : '<p class="hint">Keine abgelehnten Anfragen.</p>');
-    if (bestFehler && !zeigG) s += '<p class="hint">⚠️ ' + esc(bestFehler) + "</p>";
+    w += '<div class="vk-nav"><button type="button" class="btn" style="grid-column:1/-1" data-zeig="W">' + (zeigW ? "Wäsche-Protokoll ausblenden" : "🧺 Wäsche-Protokoll (" + wp.length + ")") + "</button></div>";
+    if (zeigW) w += waescheProtokoll(wp);
+    w += '<div class="vk-nav"><button type="button" class="btn" style="grid-column:1/-1" data-zeig="K">' + (zeigLk ? "Persönliche Links ausblenden" : "🔗 Persönliche Links") + "</button></div>";
+    if (zeigLk) w += lkHtml();
+    w += '<div class="vk-nav"><button type="button" class="btn" style="grid-column:1/-1" data-zeig="E">' + (zeigE ? "Einnahmen ausblenden" : "💰 Einnahmen") + "</button></div>";
+    if (zeigE) w += einnahmenHtml();
+    if (zeigL) w += "<b>📒 Logbuch</b>" + (LOGBUCH.length ? "<ul>" + LOGBUCH.slice().reverse().map((e) => "<li><span class=\"hint\">" + esc(fmtTag(e.t.slice(0, 10))) + ", " + esc(e.t.slice(11, 16)) + " Uhr</span> " + esc(e.text) + "</li>").join("") + "</ul>" : '<p class="hint">Noch keine Einträge.</p>');
+    if (zeigA) w += vkSek("✖ Abgelehnt", ABGEL.length) + (ABGEL.length ? ABGEL.map((x) => { const z = BUCH_ABGEL.find((y) => bKey(y) === bKey(x)); const xx = Object.assign({}, x, { bescheid: z ? z.bescheid : "" }); return vkKarte(xx, xx.bescheid ? "" : "offen", '<div class="vk-chips"><span class="vk-chip">' + (xx.pers ? xx.pers + (xx.pers === 1 ? " Person" : " Personen") : "Absage") + "</span></div>", bescheidStatus(xx), bescheidKnopf(xx, true) + '<button type="button" class="btn" data-wieder="' + esc(bKey(x)) + '">↩️ wieder offen</button>'); }).join("") : '<p class="hint">Keine abgelehnten Anfragen.</p>');
+    if (bestFehler && !zeigG) w += '<p class="hint">⚠️ ' + esc(bestFehler) + "</p>";
     const cpZ = cpZeile;
-    s += '<details class="papi-hinweis"><summary>📋 Ablauf bei Buchungen</summary>' +
+    w += '<details class="papi-hinweis"><summary>📋 Ablauf bei Buchungen</summary>' +
       '<p><b>' + lockSvg(false) + ' Richtig in Airbnb sperren</b></p>' +
       '<p>Du sperrst die <b>Nächte</b>: den <b>Anreisetag ja</b>, den <b>Abreisetag nein</b>. Am Abreisetag muss die Nacht frei bleiben, sonst kann niemand anreisen und keine Staffel anschliessen. Beispiel Deborah, Do 26. bis So 29.11. (3 Nächte): 26., 27. und 28. sperren, den 29. frei lassen. Bei mehreren Terminen in Folge sperrst du jeden bis zum Vortag seiner Abreise.</p>' +
       '<svg viewBox="0 0 300 244" width="100%" role="img" aria-label="Airbnb-Kalender: Anreisetag und die Nächte sperren, Abreisetag frei lassen" style="max-width:340px;display:block;margin:.4rem 0"><defs><pattern id="sperrH" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="currentColor" fill-opacity=".12"/><line x1="0" y1="0" x2="0" y2="6" stroke="currentColor" stroke-opacity=".45" stroke-width="2"/></pattern></defs><text x="4" y="14" font-size="13" font-weight="700" fill="#2e9d5b">✓ Richtig: Deborah Do 26. bis So 29.</text><rect x="4" y="22" width="44" height="30" rx="6" fill="none" stroke="currentColor" stroke-opacity=".5"/><text x="26" y="42" text-anchor="middle" font-size="13" fill="currentColor">25</text><rect x="53" y="22" width="44" height="30" rx="6" fill="url(#sperrH)" stroke="currentColor" stroke-opacity=".5"/><text x="75" y="42" text-anchor="middle" font-size="13" fill="currentColor" text-decoration="line-through">26</text><rect x="102" y="22" width="44" height="30" rx="6" fill="url(#sperrH)" stroke="currentColor" stroke-opacity=".5"/><text x="124" y="42" text-anchor="middle" font-size="13" fill="currentColor" text-decoration="line-through">27</text><rect x="151" y="22" width="44" height="30" rx="6" fill="url(#sperrH)" stroke="currentColor" stroke-opacity=".5"/><text x="173" y="42" text-anchor="middle" font-size="13" fill="currentColor" text-decoration="line-through">28</text><rect x="200" y="22" width="44" height="30" rx="6" fill="none" stroke="currentColor" stroke-opacity=".5"/><text x="222" y="42" text-anchor="middle" font-size="13" fill="currentColor">29</text><rect x="249" y="22" width="44" height="30" rx="6" fill="none" stroke="currentColor" stroke-opacity=".5"/><text x="271" y="42" text-anchor="middle" font-size="13" fill="currentColor">30</text><rect x="50" y="19" width="198" height="36" rx="9" fill="none" stroke="#2e9d5b" stroke-width="2.5" stroke-dasharray="6 3"/><text x="124" y="70" text-anchor="middle" font-size="11" fill="currentColor">Grüner Rahmen: Termin Do 26. bis So 29.</text><text x="124" y="83" text-anchor="middle" font-size="11" fill="currentColor">Gesperrt: 26., 27., 28. = 3 Nächte</text><text x="224" y="97" text-anchor="middle" font-size="11" font-weight="700" fill="#2e9d5b">29. frei lassen</text><text x="4" y="128" font-size="13" font-weight="700" fill="#d9822b">✗ Falsch: den 29. mitgesperrt</text><rect x="4" y="136" width="44" height="30" rx="6" fill="none" stroke="currentColor" stroke-opacity=".5"/><text x="26" y="156" text-anchor="middle" font-size="13" fill="currentColor">25</text><rect x="53" y="136" width="44" height="30" rx="6" fill="url(#sperrH)" stroke="currentColor" stroke-opacity=".5"/><text x="75" y="156" text-anchor="middle" font-size="13" fill="currentColor" text-decoration="line-through">26</text><rect x="102" y="136" width="44" height="30" rx="6" fill="url(#sperrH)" stroke="currentColor" stroke-opacity=".5"/><text x="124" y="156" text-anchor="middle" font-size="13" fill="currentColor" text-decoration="line-through">27</text><rect x="151" y="136" width="44" height="30" rx="6" fill="url(#sperrH)" stroke="currentColor" stroke-opacity=".5"/><text x="173" y="156" text-anchor="middle" font-size="13" fill="currentColor" text-decoration="line-through">28</text><rect x="200" y="136" width="44" height="30" rx="6" fill="url(#sperrH)" stroke="currentColor" stroke-opacity=".5"/><text x="222" y="156" text-anchor="middle" font-size="13" fill="currentColor" text-decoration="line-through">29</text><rect x="249" y="136" width="44" height="30" rx="6" fill="none" stroke="currentColor" stroke-opacity=".5"/><text x="271" y="156" text-anchor="middle" font-size="13" fill="currentColor">30</text><rect x="50" y="133" width="198" height="36" rx="9" fill="none" stroke="#2e9d5b" stroke-width="2.5" stroke-dasharray="6 3"/><text x="150" y="182" text-anchor="middle" font-size="11" fill="#d9822b">Der 29. ist gesperrt: niemand kann am 29.</text><text x="150" y="195" text-anchor="middle" font-size="11" fill="#d9822b">anreisen, keine Staffel schliesst an.</text><text x="4" y="224" font-size="11" fill="currentColor">Gesperrt wird jede Nacht vom Anreisetag</text><text x="4" y="237" font-size="11" fill="currentColor">bis zum Vortag der Abreise.</text></svg>' +
@@ -4887,10 +4926,11 @@ function bestZeigen() {
       '<details class="papi-hinweis"><summary>🔧 Versteckte Menüs</summary><ul>' +
       '<li><b>Zugriff (Token) und Buchhaltung:</b> fünfmal schnell auf die Versionszeile ganz unten tippen («Vorschau …»). Es erscheinen das Feld für das Token und der Buchhaltungs-Link, bis zum Neuladen.</li>' +
       '<li><b>Testmodus:</b> dreimal schnell links oben in den Kopf tippen (unsichtbare Stelle über dem Titel). Rote Leiste mit frei wählbarem «heute». Gleich wieder ausschalten: nochmals dreimal tippen oder «Echt».</li>' +
-      '<li><b>Verwaltung:</b> der blaue Knopf «Verwaltung» erscheint nur mit eingerichtetem Token. Abgelehnte, Logbuch und Gäste klappst du unter «Nachschlagen» auf.</li>' +
+      '<li><b>Verwaltung:</b> der blaue Knopf «Verwaltung» erscheint nur mit eingerichtetem Token. Abgelehnte, Logbuch und Gäste klappst du unter «Weiteres» bei «Nachschlagen» auf.</li>' +
       '<li><b>Kinder-Ansicht:</b> «Ansicht als» wählen. Zurück mit «Zurück zu Eltern» im blauen Streifen.</li>' +
       '<li><b>Kinder sehen davon nichts:</b> ohne Token fehlen Verwaltung, Logbuch und Gäste ganz.</li></ul></details>';
-    s += "</div>";   // Ende «Nachschlagen» (mit Ablauf bei Buchungen und Versteckte Menüs)
+    w += "</div>";   // Ende «Nachschlagen» (mit Ablauf bei Buchungen und Versteckte Menüs)
+    { const st = PERS_STAND.get("__weiteres"); s += '<div class="ps-abst"></div>' + persTitel("__weiteres", "📂 Weiteres", "Anfragen, Gäste, Einnahmen, Nachschlagen", nW, !!xo.length, true, st === undefined ? nW > 0 : st, w); }
   }
   k.innerHTML = s;
   vkEinklappen(k);
@@ -5236,6 +5276,7 @@ window._zurVerwaltung = (key, tag) => {   // Auge im Kalender-Hinweis (nur Papi)
   requestAnimationFrame(() => {
     const k = document.getElementById("bestKasten"), c = [...k.querySelectorAll("[data-vk]")].find((el) => el.getAttribute("data-vk") === key);
     if (!c) { bestMsg = "Dieser Aufenthalt ist vorbei und steht nicht mehr in der Verwaltung."; bestZeigen(); k.scrollIntoView({ behavior: "auto", block: "start" }); return; }
+    const pd = c.closest("details.pers"); if (pd && !pd.open) { pd.open = true; PERS_STAND.set(pd.getAttribute("data-pers"), true); }   // Titel der Person öffnen
     const vb = c.closest(".vk-body"); if (vb && vb.hidden) { vkUmschalten(vb.previousElementSibling); }   // eingeklappten Abschnitt öffnen, damit die Karte sichtbar ist
     c.scrollIntoView({ behavior: "auto", block: "center" });
     c.classList.add("spring"); setTimeout(() => c.classList.remove("spring"), 3500);
