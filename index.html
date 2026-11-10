@@ -146,6 +146,12 @@
   #fsBtn .s1 { font-size: 0.8rem; } #fsBtn .s2 { font-size: 1rem; } #fsBtn .s3 { font-size: 1.3rem; }
   #themeBtn { width: 44px; height: 44px; font-size: 1.3rem; line-height: 1; background: var(--surface); color: var(--fg); border: 2px solid var(--line); border-radius: 50%; cursor: pointer; padding: 0; }
   #suchBtn { width: 44px; height: 44px; font-size: 1.2rem; line-height: 1; background: var(--surface); color: var(--fg); border: 2px solid var(--line); border-radius: 50%; cursor: pointer; padding: 0; }
+  #infoBtn { position: relative; width: 44px; height: 44px; font-size: 1.2rem; line-height: 1; background: var(--surface); color: var(--fg); border: 2px solid var(--line); border-radius: 50%; cursor: pointer; padding: 0; }
+  #infoBtn[hidden] { display: none; }
+  #infoBtn.aus { opacity: .5; }
+  #infoBtn.aus::after { content: ""; position: absolute; left: 8px; right: 8px; top: 50%; border-top: 3px solid var(--fg); transform: rotate(-45deg); }   /* durchgestrichen: Bereich ist ausgeblendet */
+  /* Infobereich (nur Papi): Anleitung & Infos, Buchen-Knopf mit Saisontitel und Cheminée ausblenden */
+  body.info-aus #btnHilfe, body.info-aus #hilfe, body.info-aus #btnReserv, body.info-aus #angebote, body.info-aus #btnAnreise, body.info-aus #btnCheck, body.info-aus nav.start2 { display: none !important; }
   /* Suche: Treffer rosa (gelb ist schon vergeben) */
   mark.such { background: #F6A5C8; color: #1a1a1a; border-radius: 4px; padding: 0 2px; font-weight: 700; }
   #suchFeld { font: inherit; font-size: 1.1rem; padding: 12px 14px; border: 2px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--fg); width: 100%; box-sizing: border-box; }
@@ -1109,7 +1115,7 @@
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="lkGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFD54F"/><stop offset="1" stop-color="#F29100"/></linearGradient><symbol id="lk-zu" viewBox="0 0 24 24"><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="#C9CED1" stroke-width="2.4" stroke-linecap="round"/><rect x="4.5" y="11" width="15" height="10.5" rx="2.2" fill="url(#lkGrad)" stroke="#B26A00" stroke-width="1"/><circle cx="12" cy="15.4" r="1.5" fill="#6B3E00"/><rect x="11.3" y="15.8" width="1.4" height="3" rx=".7" fill="#6B3E00"/></symbol><symbol id="lk-auf" viewBox="0 0 24 24"><path d="M16 11V4.4a3 3 0 0 1 6 0v4.2" fill="none" stroke="#C9CED1" stroke-width="2.4" stroke-linecap="round"/><rect x="4.5" y="11" width="15" height="10.5" rx="2.2" fill="url(#lkGrad)" stroke="#B26A00" stroke-width="1"/><circle cx="12" cy="15.4" r="1.5" fill="#6B3E00"/><rect x="11.3" y="15.8" width="1.4" height="3" rx=".7" fill="#6B3E00"/></symbol></defs></svg>
 <div class="wrap">
-  <div class="themeRow"><button type="button" id="fsBtn" aria-label="Schriftgrösse ändern"><span class="s1">A</span><span class="s2">A</span><span class="s3">A</span></button><button type="button" id="animBtn" aria-label="Bewegung ändern" data-st="1" title="Bewegung ändern"><svg class="glb" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><defs><clipPath id="glbK"><circle cx="16" cy="16" r="13"/></clipPath></defs><circle cx="16" cy="16" r="13" fill="#2F7FD0"/><g clip-path="url(#glbK)"><g class="glb-land" fill="#4CAF6A"><path id="glbL" d="M3 11 q4-5 9-2 q3 3 -1 6 q-3 3 -6 1 z M17 18 q5-3 8 1 q1 5 -4 6 q-4 -1 -4 -7 z M22 8 q3-2 6 1 q0 3 -4 3 z"/><use href="#glbL" x="32"/></g></g><circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 8 q3-3 7-3" stroke="#fff" stroke-opacity=".55" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg></button><button type="button" id="suchBtn" aria-label="Suchen" title="Suchen">🔍</button><button type="button" id="themeBtn" aria-label="Hell- oder Dunkelmodus umschalten"></button></div>
+  <div class="themeRow"><button type="button" id="fsBtn" aria-label="Schriftgrösse ändern"><span class="s1">A</span><span class="s2">A</span><span class="s3">A</span></button><button type="button" id="animBtn" aria-label="Bewegung ändern" data-st="1" title="Bewegung ändern"><svg class="glb" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><defs><clipPath id="glbK"><circle cx="16" cy="16" r="13"/></clipPath></defs><circle cx="16" cy="16" r="13" fill="#2F7FD0"/><g clip-path="url(#glbK)"><g class="glb-land" fill="#4CAF6A"><path id="glbL" d="M3 11 q4-5 9-2 q3 3 -1 6 q-3 3 -6 1 z M17 18 q5-3 8 1 q1 5 -4 6 q-4 -1 -4 -7 z M22 8 q3-2 6 1 q0 3 -4 3 z"/><use href="#glbL" x="32"/></g></g><circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 8 q3-3 7-3" stroke="#fff" stroke-opacity=".55" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg></button><button type="button" id="infoBtn" aria-pressed="false" aria-label="Infobereich ausblenden" title="Infobereich ausblenden" hidden>💡</button><button type="button" id="suchBtn" aria-label="Suchen" title="Suchen">🔍</button><button type="button" id="themeBtn" aria-label="Hell- oder Dunkelmodus umschalten"></button></div>
   <header class="sign">
     <h1>TSCHENT-O-MAT</h1>
     <div class="sub"><p>Preisrechner Chalet Tschenten<span class="bg" aria-hidden="true">🎰</span></p></div>
@@ -1294,7 +1300,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.114.0.1";
+let VERSION = "2.115.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -4852,6 +4858,21 @@ function punkteOffen() {   // Zahl am Knopf «Verwaltung»: offene Anfragen plus
   });
   return n;
 }
+// Schritt B: Papi blendet den Infobereich über das 💡 oben rechts aus und ein; die App merkt sich den Zustand. Kinder und die Kind-Ansicht sehen immer alles.
+let INFO_AUS = false;
+try { INFO_AUS = localStorage.getItem("tm2_infoAus") === "1"; } catch (e) {}
+function infoAnwenden() {
+  const papi = !!(TOKEN && !ABSENDER), b = document.getElementById("infoBtn");
+  b.hidden = !papi;
+  const aus = papi && INFO_AUS;
+  document.body.classList.toggle("info-aus", aus);
+  b.classList.toggle("aus", aus); b.setAttribute("aria-pressed", aus ? "true" : "false");
+  const t = aus ? "Infobereich einblenden" : "Infobereich ausblenden"; b.setAttribute("aria-label", t); b.title = t;
+}
+document.getElementById("infoBtn").addEventListener("click", () => {
+  INFO_AUS = !INFO_AUS; try { localStorage.setItem("tm2_infoAus", INFO_AUS ? "1" : "0"); } catch (e) {}
+  infoAnwenden();
+});
 function bestZeigen() {
   const k = document.getElementById("bestKasten"), kn = document.getElementById("btnAnsichten"), h = heuteKey(), link = bestLesen();
   if (link) {
@@ -4876,6 +4897,7 @@ function bestZeigen() {
   OFFEN = OFFEN.filter((x) => x.dep >= h && !BUCH.some((y) => bKey(y) === bKey(x)));
   listeSichern("tm2_offen", OFFEN);
   { document.getElementById("mamiStreifen").hidden = !mamiAn(); }
+  infoAnwenden();
   { const ks = document.getElementById("kindStreifen"); ks.hidden = !(TOKEN && ABSENDER); document.body.classList.toggle("kind-an", !ks.hidden); if (!ks.hidden) document.getElementById("kindStreifenTxt").textContent = "👁️ Ansicht als " + ABSENDER; }
   if (!TOKEN && !bestMsg) { k.hidden = true; k.innerHTML = ""; kn.hidden = true; return; }
   kn.classList.toggle("warn", !!(TOKEN && !ABSENDER && xmasOffen().length));

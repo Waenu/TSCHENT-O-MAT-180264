@@ -2,6 +2,18 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.115.0.0",
+      "datum": "2026-11-10",
+      "titel": "Infobereich ausblenden",
+      "arten": [
+        "Neu"
+      ],
+      "punkte": [
+        "Papi kann über das 💡 oben rechts den Bereich mit «Anleitung & Infos», dem Buchen-Knopf und der Cheminée-Anleitung aus- und wieder einblenden.",
+        "Die App merkt sich den Zustand auf diesem Handy. Die Kinder und die Kind-Ansicht sehen immer alles."
+      ]
+    },
+    {
       "v": "2.114.0.1",
       "datum": "2026-11-10",
       "titel": "Verwaltung: Dringendes zuoberst, Umbrüche",
