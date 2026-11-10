@@ -2,6 +2,21 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.117.0.0",
+      "datum": "2026-11-10",
+      "titel": "Verwaltung: eine Liste «Zu tun» pro Buchung",
+      "arten": [
+        "Neu"
+      ],
+      "punkte": [
+        "Jede Buchung hat nur noch eine Liste «Zu tun»: jede Aufgabe eine Zeile mit Kästchen und nur den Knöpfen, die sie braucht. Die doppelten Statuszeilen, die Zeile «X offen» und die Box «Sperren und Pimlical» fallen weg.",
+        "Airbnb: Mit «Gesperrt» bestätigst du die Sperre sofort. Zeigen die Airbnb-Daten nach 3 Stunden noch keine Sperre, wird die Zeile rot.",
+        "Pimlical mit Kopierknopf und «Erledigt». Kurtaxe: Erinnern, solange die Liste fehlt; danach die Liste und «Erledigt, Freunde angemeldet».",
+        "Erledigte Zeilen bleiben grau mit Datum stehen. Ein Tipp aufs Kästchen markiert sie nach einer Rückfrage wieder als offen.",
+        "Wäsche-Info, Staffel-Ende und «Wäsche ist zurück» erscheinen nur, wenn sie nötig sind."
+      ]
+    },
+    {
       "v": "2.116.2.1",
       "datum": "2026-11-10",
       "titel": "Schlüssel speichern",
