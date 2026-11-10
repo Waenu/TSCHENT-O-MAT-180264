@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.117.0.1",
+      "datum": "2026-11-10",
+      "titel": "Ohne Sammelzeile «Dringend»",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Die rote Zeile «Dringend» zuoberst fällt weg. Dringendes zeigt die rote Marke im Titel der Person, die Aufgabe steht rot in ihrer Liste «Zu tun»."
+      ]
+    },
+    {
       "v": "2.117.0.0",
       "datum": "2026-11-10",
       "titel": "Verwaltung: eine Liste «Zu tun» pro Buchung",
