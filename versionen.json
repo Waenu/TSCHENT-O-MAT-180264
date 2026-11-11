@@ -2,6 +2,34 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.122.4.1",
+      "datum": "2026-11-11",
+      "titel": "Staffel: «Keine Sorge, ihr werdet geführt»",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Glossar «Familienstaffel» beginnt mit dem Hinweis, dass App und WhatsApp jeweils sagen, was zu tun ist.",
+        "Der Staffel-Clip hat eine 8. Szene «Keine Sorge» mit derselben Botschaft."
+      ]
+    },
+    {
+      "v": "2.122.4.0",
+      "datum": "2026-11-11",
+      "titel": "Mailabfrage mit richtigem Namen, Zeichen in der Anleitung, Zahlung mit IBAN",
+      "arten": [
+        "Fehler",
+        "Layout",
+        "Text"
+      ],
+      "punkte": [
+        "Die Abfrage der Mailadresse erscheint erst, wenn klar ist, wer das Handy benutzt. Vorher konnte nach dem Öffnen eines persönlichen Links kurz der Name stehen, der früher auf dem Handy gespeichert war.",
+        "Die Zeichen «↩ zurück», «↑ Menü» und «?» in der Anleitung sehen jetzt aus wie die echten Knöpfe (grün umrandet, das «?» gelb).",
+        "Glossar «Rechnen»: Die Preise liegen weit unter den Marktpreisen von Airbnb; die ganze Familie zahlt pauschal pro Nacht.",
+        "Glossar «Zahlung»: Bank und IBAN stehen jetzt im Wichtigsten, mit Knopf zum Kopieren."
+      ]
+    },
+    {
       "v": "2.122.3.0",
       "datum": "2026-11-11",
       "titel": "Zahlung schon vorher sichtbar, Mailadresse erklärt",
