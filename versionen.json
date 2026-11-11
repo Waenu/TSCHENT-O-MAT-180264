@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.125.5.0",
+      "datum": "2026-11-11",
+      "titel": "«Termin suchen» wieder entfernt",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Der Zusatz «Termin suchen ›» im Kalender-Knopf ist wieder weg, er stand zu eng."
+      ]
+    },
+    {
       "v": "2.125.4.0",
       "datum": "2026-11-11",
       "titel": "Kalender-Knopf mit Angeboten als ein Kästchen",
