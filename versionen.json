@@ -2,6 +2,22 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.123.0.0",
+      "datum": "2026-11-11",
+      "titel": "Persönlicher Kopf mit goldenem Namen, Hinweis auf die Staffelzeit",
+      "arten": [
+        "Neu",
+        "Layout"
+      ],
+      "punkte": [
+        "Der Kopf ist in beiden Modi schwarz mit weisser Schrift. Unter TSCHENT-O-MAT steht in goldener Schreibschrift der Spitzname: Jerrys, Debys, Miris, Mänsis, Daves, Andys, Rahels, Sarahs, bei den Eltern Wänus und Mariannes.",
+        "TSCHENT-O-MAT ist so breit wie die Zeile «Preisrechner für das Chalet Tschenten».",
+        "Unten steht nur noch «Version …», klein daneben die Versionshistorie. «Vorschau» und das Datum sind weg.",
+        "Neue Schrift «Great Vibes» (frei, SIL Open Font License) ist in der App enthalten und läuft auch ohne Empfang.",
+        "Angebote: In der Staffelzeit erscheint «Staffel beginnen: ab heute (Staffelzeit bis …)», auch wenn noch niemand gebucht hat. Die Beschriftung der Auswahl wechselt alle 4 Sekunden zwischen den Lücken und «🔗 Es ist Staffelzeit: Beginne eine Staffel»."
+      ]
+    },
+    {
       "v": "2.122.4.1",
       "datum": "2026-11-11",
       "titel": "Staffel: «Keine Sorge, ihr werdet geführt»",
