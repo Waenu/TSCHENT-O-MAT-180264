@@ -2,6 +2,21 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.125.0.0",
+      "datum": "2026-11-11",
+      "titel": "Endreinigung der Staffel wird verrechnet",
+      "arten": [
+        "Neu"
+      ],
+      "punkte": [
+        "Ist eine Staffel abgeschlossen, erscheint bei der letzten Reisegruppe in der Verwaltung «🪣 Endreinigung der Staffel» mit Betrag, Frist (7 Tage nach deren Abreise) und den Anteilen aller Gruppen.",
+        "Fertige WhatsApp «Endreinigung mitteilen» mit Betrag, Frist und Anteilen. Ändern sich die Anteile danach (Storno, neue Gruppe), wird die Aufgabe wieder rot: neu mitteilen.",
+        "Die letzte Reisegruppe sieht auf der Startseite «🪣 Endreinigung der Staffel» mit Betrag, Frist und den Anteilen, die sie zurückholt; nach der Frist rot.",
+        "Die Zahlung der Endreinigung wird getrennt von den Nächten verbucht und im Zähler der Verwaltung mitgezählt.",
+        "Eine Nachricht statt drei: Ist die Staffel beim Bescheid schon abgeschlossen, stehen Staffel-Ende und Endreinigung gleich im Bescheid. Endet sie später, enthält die Staffel-Ende-Info auch die Endreinigung. Separat «mitteilen» nur noch, wenn sich die Anteile danach ändern."
+      ]
+    },
+    {
       "v": "2.124.0.0",
       "datum": "2026-11-11",
       "titel": "Stornieren mit Bestätigung, Staffel-Änderungen werden gemeldet",

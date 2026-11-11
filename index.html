@@ -1396,7 +1396,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.124.0.0";
+let VERSION = "2.125.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -3911,7 +3911,7 @@ function buchungenAn(j) {
   BUCH_ABGEL = gut.filter((b) => b.status === "abgelehnt").map((b) => ({ name: b.name.trim(), arr: b.arr, dep: b.dep, bescheid: bes(b) }));
   BUCH_STORNO = gut.filter((b) => b.status === "storniert").map((b) => Object.assign({}, b, { name: b.name.trim() }));   // seit 2.124.0.0 mit Datum und Aufgaben (Bestätigung, Airbnb, Pimlical)
   BUCH = gut.filter((b) => b.status !== "abgelehnt" && b.status !== "storniert")
-    .map((b) => ({ name: b.name.trim(), arr: b.arr, dep: b.dep, sb: b.selbst === true, lg: b.luecke === true, prov: PROV_AN && b.prov === true, verb: b.verb === true, waesche: b.waesche === "bringen" || b.waesche === "senden" ? b.waesche : "", rolle: b.rolle === "start" || b.rolle === "folge" ? b.rolle : "", endeInfo: typeof b.endeInfo === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.endeInfo) ? b.endeInfo : "", waescheInfo: typeof b.waescheInfo === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.waescheInfo) ? b.waescheInfo : "", waescheZurueck: typeof b.waescheZurueck === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.waescheZurueck) ? b.waescheZurueck : "", gesperrt: typeof b.gesperrt === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.gesperrt) ? b.gesperrt : "", kurtaxeAm: typeof b.kurtaxeAm === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.kurtaxeAm) ? b.kurtaxeAm : "", pers: Math.max(1, Number(b.pers) || 1), bescheid: bes(b), betrag: Number(b.betrag) > 0 ? Math.round(Number(b.betrag)) : 0, rechnung: typeof b.rechnung === "string" ? b.rechnung.slice(0, 4000) : "", bestaetigt: typeof b.bestaetigt === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(b.bestaetigt) ? b.bestaetigt : "", bezahlt: typeof b.bezahlt === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.bezahlt) ? b.bezahlt : "", pimlical: typeof b.pimlical === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.pimlical) ? b.pimlical : "", erinnert: Array.isArray(b.erinnert) ? b.erinnert.filter((t) => typeof t === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(t)) : [], angepasst: b.angepasst && typeof b.angepasst === "object" && DKEY.test(b.angepasst.arr) && DKEY.test(b.angepasst.dep) ? { arr: b.angepasst.arr, dep: b.angepasst.dep, betrag: Math.round(Number(b.angepasst.betrag) || 0), t: String(b.angepasst.t || "") } : null }))
+    .map((b) => ({ name: b.name.trim(), arr: b.arr, dep: b.dep, sb: b.selbst === true, lg: b.luecke === true, prov: PROV_AN && b.prov === true, verb: b.verb === true, waesche: b.waesche === "bringen" || b.waesche === "senden" ? b.waesche : "", rolle: b.rolle === "start" || b.rolle === "folge" ? b.rolle : "", endeInfo: typeof b.endeInfo === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.endeInfo) ? b.endeInfo : "", endreinInfo: typeof b.endreinInfo === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.endreinInfo) ? b.endreinInfo : "", endreinBezahlt: typeof b.endreinBezahlt === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.endreinBezahlt) ? b.endreinBezahlt : "", endreinAnteile: typeof b.endreinAnteile === "string" ? b.endreinAnteile : "", waescheInfo: typeof b.waescheInfo === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.waescheInfo) ? b.waescheInfo : "", waescheZurueck: typeof b.waescheZurueck === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.waescheZurueck) ? b.waescheZurueck : "", gesperrt: typeof b.gesperrt === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.gesperrt) ? b.gesperrt : "", kurtaxeAm: typeof b.kurtaxeAm === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.kurtaxeAm) ? b.kurtaxeAm : "", pers: Math.max(1, Number(b.pers) || 1), bescheid: bes(b), betrag: Number(b.betrag) > 0 ? Math.round(Number(b.betrag)) : 0, rechnung: typeof b.rechnung === "string" ? b.rechnung.slice(0, 4000) : "", bestaetigt: typeof b.bestaetigt === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(b.bestaetigt) ? b.bestaetigt : "", bezahlt: typeof b.bezahlt === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.bezahlt) ? b.bezahlt : "", pimlical: typeof b.pimlical === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.pimlical) ? b.pimlical : "", erinnert: Array.isArray(b.erinnert) ? b.erinnert.filter((t) => typeof t === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(t)) : [], angepasst: b.angepasst && typeof b.angepasst === "object" && DKEY.test(b.angepasst.arr) && DKEY.test(b.angepasst.dep) ? { arr: b.angepasst.arr, dep: b.angepasst.dep, betrag: Math.round(Number(b.angepasst.betrag) || 0), t: String(b.angepasst.t || "") } : null }))
     .sort((p, q) => (p.arr < q.arr ? -1 : 1));
   LOGBUCH = Array.isArray(j.logbuch) ? j.logbuch.filter((e) => e && typeof e.t === "string" && typeof e.text === "string").slice(-200) : [];
   BUCH_TAG.clear();
@@ -4010,8 +4010,9 @@ function aufentZeigen() {
   {   // rote Zahlungsmeldung: bleibt, bis Papi die Zahlung verbucht hat (kein Schliessen-Knopf)
     const zb = document.getElementById("zahlBox"), zl = ABSENDER ? BUCH.filter((b) => eigenN(b.name) && zahlFaellig(b)) : [];
     const vorab = ABSENDER ? BUCH.filter((b) => eigenN(b.name) && b.betrag > 0 && !b.bezahlt && !b.prov && !zahlFaellig(b) && heuteKey() <= zahlFrist(b)) : [];   // schon vor der Abreise sichtbar, ruhig statt rot (seit 2.122.3.0)
-    zb.hidden = zl.length === 0 && vorab.length === 0;
-    zb.innerHTML = vorab.map((b) => '<div class="note h"><b>💳 Zu bezahlen:</b> Für deinen Aufenthalt vom ' + esc(fmtTag(b.arr)) + " bis " + esc(fmtTag(b.dep)) + " sind <b>" + esc(chf(b.betrag)) + "</b> fällig, spätestens am " + esc(fmtTag(zahlFrist(b))) + ". Du kannst auch schon vorher überweisen, die Bankverbindung steht unter «Zahlung» " + symBtn("b-zahlung", "💰") + ".</div>").join("") + zl.map((b) => '<div class="note h rot-warn"><b>💳 Zahlung offen:</b> Für deinen Aufenthalt vom ' + esc(fmtTag(b.arr)) + ' bis ' + esc(fmtTag(b.dep)) + ' sind <b>' + esc(chf(b.betrag)) + '</b> fällig. Die Frist war am ' + esc(fmtTag(zahlFrist(b))) + '. Bitte überweise jetzt, die Bankverbindung steht unter «Zahlung» ' + symBtn("b-zahlung", "💰") + '. Sobald Papi die Zahlung verbucht hat, verschwindet diese Meldung.</div>').join("");
+    const er = ABSENDER ? BUCH.filter((b) => eigenN(b.name) && endreinOffen(b)) : [];   // Endreinigung der Staffel (seit 2.125.0.0)
+    zb.hidden = zl.length === 0 && vorab.length === 0 && er.length === 0;
+    zb.innerHTML = vorab.map((b) => '<div class="note h"><b>💳 Zu bezahlen:</b> Für deinen Aufenthalt vom ' + esc(fmtTag(b.arr)) + " bis " + esc(fmtTag(b.dep)) + " sind <b>" + esc(chf(b.betrag)) + "</b> fällig, spätestens am " + esc(fmtTag(zahlFrist(b))) + ". Du kannst auch schon vorher überweisen, die Bankverbindung steht unter «Zahlung» " + symBtn("b-zahlung", "💰") + ".</div>").join("") + er.map((b) => { const an = endreinAnteile(b).filter((a) => a.name !== b.name); return '<div class="note h' + (endreinUeberfaellig(b) ? " rot-warn" : "") + '"><b>🪣 Endreinigung der Staffel' + (endreinUeberfaellig(b) ? " offen" : "") + ":</b> Eure Staffel endet mit deinem Aufenthalt (" + esc(fmtTag(b.arr)) + " bis " + esc(fmtTag(b.dep)) + "). Bitte überweise die Endreinigung von <b>" + esc(chf(P.reinigung)) + "</b> spätestens am " + esc(fmtTag(endreinFrist(b))) + "." + (an.length ? " Die Anteile von " + esc(an.map((a) => a.name + " (" + chf(a.chf) + ")").join(" und ")) + " holst du dir zurück." : "") + " Bankverbindung unter «Zahlung» " + symBtn("b-zahlung", "💰") + ".</div>"; }).join("") + zl.map((b) => '<div class="note h rot-warn"><b>💳 Zahlung offen:</b> Für deinen Aufenthalt vom ' + esc(fmtTag(b.arr)) + ' bis ' + esc(fmtTag(b.dep)) + ' sind <b>' + esc(chf(b.betrag)) + '</b> fällig. Die Frist war am ' + esc(fmtTag(zahlFrist(b))) + '. Bitte überweise jetzt, die Bankverbindung steht unter «Zahlung» ' + symBtn("b-zahlung", "💰") + '. Sobald Papi die Zahlung verbucht hat, verschwindet diese Meldung.</div>').join("");
   }
 }
 function ovOeffnen(id, an) {
@@ -5124,6 +5125,11 @@ function zuTunKarte(x) {
       knoepfe: '<a class="btn" data-wainfo="' + key + '" href="https://wa.me/?text=' + encodeURIComponent(st ? waescheStartText(x) : waescheInfoText(x)) + '" target="_blank" rel="noopener">' + WA_SVG + "Änderung per WhatsApp senden</a>" })); }
   if (alarmListe().some((a) => a.typ === "ende" && a.x === x)) z.push(ztZeile({ ohneBox: true, titel: "🔗 Staffel beendet: " + esc(x.name) + " informieren", detail: esc(staffelEndeGrund(x)), knoepfe: '<a class="btn" data-endinfo="' + key + '" href="https://wa.me/?text=' + encodeURIComponent(endeInfoText(x)) + '" target="_blank" rel="noopener">' + WA_SVG + "Staffel-Ende-Info senden</a>" }));
   if (wRueck(x)) z.push(ztZeile({ feld: "waescheZurueck", key: key, done: !!x.waescheZurueck, titel: "🧺 Wäsche zurück", doneTxt: "Wäsche zurück am " + ztAm(x.waescheZurueck), knoepfe: '<button type="button" class="btn" data-wz="' + key + '">✓ Wäsche ist zurück</button>' }));
+  if (endreinFaellig(x)) z.push(ztZeile({ feld: "endreinBezahlt", key: key, done: !!x.endreinBezahlt, rot: endreinUeberfaellig(x) || endreinInfoOffen(x),
+    titel: "🪣 Endreinigung der Staffel " + esc(chf(P.reinigung)) + (x.endreinBezahlt ? "" : endreinUeberfaellig(x) ? " überfällig seit " + esc(fmtTag(endreinFrist(x))) : ", Frist bis " + esc(fmtTag(endreinFrist(x)))),
+    detail: "Anteile: " + esc(endreinTxt(x)) + ". " + esc(x.name) + " zahlt alles und holt die Anteile der anderen." + (endreinInfoOffen(x) ? (x.endreinAnteile ? " <b>Die Anteile haben sich geändert, bitte neu mitteilen.</b>" : " <b>Noch nicht mitgeteilt.</b>") : " Mitgeteilt am " + ztAm(x.endreinInfo) + "."),
+    doneTxt: "Endreinigung bezahlt am " + ztAm(x.endreinBezahlt),
+    knoepfe: !x.bescheid ? '<span class="hint">Wird mit dem Bescheid mitgeteilt.</span>' : endeOffen(x) ? '<span class="hint">Wird mit der Staffel-Ende-Info mitgeteilt.</span>' : '<a class="btn" data-erinfo="' + key + '" href="https://wa.me/?text=' + encodeURIComponent(endreinText(x)) + '" target="_blank" rel="noopener">' + WA_SVG + (x.endreinInfo ? "Endreinigung nochmals mitteilen" : "Endreinigung mitteilen") + "</a>" }));
   if (x.betrag > 0 && !(prov && !x.bezahlt && konf)) z.push(ztZeile({ feld: "bezahlt", key: key, done: !!x.bezahlt, titel: "💳 Zahlung " + esc(chf(x.betrag)) + (x.bezahlt ? "" : kommt ? " (fällig nach der Abreise)" : " offen"), doneTxt: "Zahlung eingegangen am " + ztAm(x.bezahlt), knoepfe: '<button type="button" class="btn" data-bez="' + key + '">✓ Zahlung eingegangen</button>' }));
   const offen = z.some((t) => !/zt-z done/.test(t) && !/fällig nach der Abreise/.test(t)), rot = /zt-z( done)? rot|zt-z rot/.test(z.join(""));
   const liste = '<div class="zt"><div class="zt-h">' + (offen ? "📌 Zu tun" : "✅ Alles erledigt") + "</div>" + z.join("") + "</div>";
@@ -5131,7 +5137,7 @@ function zuTunKarte(x) {
   const acts = '<button type="button" class="btn quiet' + (prov ? " full" : "") + '" data-bdel="' + key + '" aria-label="Aufenthalt ' + (fam ? "stornieren" : "entfernen") + '">' + (fam ? "❌ Stornieren" : "🗑️ " + (prov ? "Termin entfernen" : "Entfernen")) + "</button>";
   return vkKarte(x, rot ? "rot" : offen ? "offen" : "ok", vkChips(x), "", acts).replace('<div class="vk-acts">', liste + '<div class="vk-acts">');
 }
-const ZT_TXT = { bezahlt: "Zahlung eingegangen", bescheid: "Bescheid gegeben", gesperrt: "In Airbnb gesperrt", pimlical: "In Pimlical eingetragen", kurtaxeAm: "Freunde für die Kurtaxe angemeldet", waescheInfo: "Wäsche-Info gegeben", waescheZurueck: "Wäsche zurück", stornoInfo: "Storno-Bestätigung gesendet", freigegeben: "In Airbnb freigegeben", pimAus: "Aus Pimlical ausgetragen" };
+const ZT_TXT = { bezahlt: "Zahlung eingegangen", bescheid: "Bescheid gegeben", gesperrt: "In Airbnb gesperrt", pimlical: "In Pimlical eingetragen", kurtaxeAm: "Freunde für die Kurtaxe angemeldet", waescheInfo: "Wäsche-Info gegeben", waescheZurueck: "Wäsche zurück", stornoInfo: "Storno-Bestätigung gesendet", endreinBezahlt: "Endreinigung bezahlt", freigegeben: "In Airbnb freigegeben", pimAus: "Aus Pimlical ausgetragen" };
 async function ztSetzen(key, feld, an) {   // Aufgabe abhaken (an) oder wieder öffnen
   bestBusy = true; bestFehler = "";
   try {
@@ -5149,6 +5155,7 @@ document.getElementById("bestKasten").addEventListener("click", async (e) => {
   const key = bx.getAttribute("data-ztk"), feld = bx.getAttribute("data-zt"), done = bx.getAttribute("data-ztd") === "1", b = BUCH.find((x) => bKey(x) === key) || BUCH_STORNO.find((x) => bKey(x) === key);
   if (!b || !ZT_TXT[feld]) return;
   if (done) { if (!(await appFrage("«" + ZT_TXT[feld] + "» bei " + b.name + " (" + fmtTag(b.arr) + " bis " + fmtTag(b.dep) + ") wieder als offen markieren?", "Ja, wieder offen"))) return; }
+  else if (feld === "endreinBezahlt") { if (!(await appFrage("Endreinigung der Staffel von " + b.name + " (" + chf(P.reinigung) + ") als eingegangen verbuchen?", "Ja, verbuchen"))) return; }
   else if (feld === "bezahlt") { if (!(await appFrage("Zahlung von " + b.name + " (" + chf(b.betrag) + ", " + fmtTag(b.arr) + " bis " + fmtTag(b.dep) + ") als eingegangen verbuchen?", "Ja, verbuchen"))) return; }
   else if (feld === "waescheZurueck") { if (!(await appFrage("Ist die Wäsche von " + b.name + " (" + fmtTag(b.arr) + " bis " + fmtTag(b.dep) + ") zurück bei euch?", "Ja, ist zurück"))) return; }
   ztSetzen(key, feld, !done);
@@ -5158,6 +5165,21 @@ document.addEventListener("click", (e) => { const sm = e.target.closest && e.tar
 // Neue Verwaltung: pro Kind und Partner ein aufklappbarer Titel mit Zähler (gleiche Fälle wie der blaue Knopf «Verwaltung»)
 const PERS_STAND = new Map();   // vom Nutzer auf- oder zugeklappte Personen (bis zum Neuladen)
 document.addEventListener("click", (e) => { const sm = e.target.closest && e.target.closest("details.pers > summary"); if (!sm) return; const d = sm.parentNode; PERS_STAND.set(d.getAttribute("data-pers"), !d.open); });
+// Endreinigung der Staffel: die letzte Reisegruppe zahlt die ganze Endreinigung und holt die Anteile der anderen (seit 2.125.0.0)
+function staffelMitglieder(x) { const s = staffelBeginner(x); return BUCH.filter((b) => b.sb && staffelBeginner(b) === s).sort((p, q) => (p.arr < q.arr ? -1 : 1)); }
+function endreinFaellig(x) { return !!(x.sb && x.bestaetigt && rkVon(x) === "e"); }   // die Staffel ist geschlossen und endet bei x
+function endreinAnteile(x) { const m = staffelMitglieder(x), a = Math.round(P.reinigung / m.length); return m.map((b) => ({ name: b.name, chf: a })); }
+const endreinTxt = (x) => endreinAnteile(x).map((a) => a.name + " " + chf(a.chf)).join(", ");
+const endreinFrist = (x) => addDays(x.dep, ZAHL_TAGE);
+const endreinInfoOffen = (x) => endreinFaellig(x) && x.endreinAnteile !== endreinTxt(x);   // noch nicht oder mit anderen Anteilen mitgeteilt
+const endreinOffen = (x) => endreinFaellig(x) && !x.endreinBezahlt;
+const endreinUeberfaellig = (x) => endreinOffen(x) && heuteKey() > endreinFrist(x);
+function endreinSatz(x) {
+  const an = endreinAnteile(x), andere = an.filter((a) => a.name !== x.name);
+  return "Die Endreinigung von " + chf(P.reinigung) + " überweist du uns bitte bis spätestens " + fmtTagV(endreinFrist(x)) + "." + (andere.length ? " Aufgeteilt auf die Reisegruppen: " + endreinTxt(x) + ". Den Anteil von " + andere.map((a) => a.name).join(" und ") + " holst du dir bei " + (andere.length === 1 ? "ihr oder ihm" : "ihnen") + " zurück." : "") + " Die Bankverbindung findest du im TSCHENT-O-MAT unter «Zahlung».";
+}
+function endreinText(x) { return "Hoi " + x.name + ", eure Familienstaffel ist abgeschlossen, sie endet mit deinem Aufenthalt vom " + fmtTagV(x.arr) + " bis " + fmtTagV(x.dep) + ". " + endreinSatz(x) + " Danke!"; }
+const endeOffen = (x) => alarmListe().some((a) => a.typ === "ende" && a.x === x);
 function stornoVor(x) {   // zuletzt stornierter Aufenthalt direkt vor x (innerhalb von 30 Tagen), für die Meldung «… hat abgesagt»
   return BUCH_STORNO.filter((s) => s.dep <= x.arr && s.dep >= addDays(x.arr, -30) && s.name !== x.name).sort((p, q) => (p.dep < q.dep ? 1 : -1))[0] || null;
 }
@@ -5173,7 +5195,7 @@ function rolleJetzt(x) { return istStaffelStart(x.arr, x) ? "start" : "folge"; }
 function rolleBekannt(x) { return x.rolle || (x.waescheInfo ? (x.waesche ? "folge" : "start") : (x.waesche ? "start" : "folge")); }   // ältere Einträge ohne «rolle»: aus Wäscheweg und Wäsche-Info abgeleitet
 function rolleAenderung(x) { return !!(x.sb && x.bestaetigt && x.dep >= heuteKey() && rolleBekannt(x) !== rolleJetzt(x)); }   // beginnt die Staffel erst nachträglich (Staffelbeginn davor storniert), hat den Weg nie gewählt
 const waescheOffen = (x) => wRueck(x) && !x.waescheZurueck;
-function aufgZahl(x) { return x.dep >= heuteKey() ? aufgabenVon(x).length : (zahlOffen(x) ? 1 : 0) + (waescheOffen(x) ? 1 : 0); }   // wie punkteOffen
+function aufgZahl(x) { return x.dep >= heuteKey() ? aufgabenVon(x).length : (zahlOffen(x) ? 1 : 0) + (waescheOffen(x) ? 1 : 0) + (endreinOffen(x) || endreinInfoOffen(x) ? 1 : 0); }   // wie punkteOffen
 const naechteTxt = (x) => { const n = diffDays(x.arr, x.dep); return n + (n === 1 ? "\u00a0Nacht" : "\u00a0Nächte"); };
 const nw = (t) => '<span class="nw">' + t + "</span>";   // nicht umbrechen
 
@@ -5249,6 +5271,7 @@ function persBlock(name) {
   if (PERS_OK && PERS_OK.name === name && Date.now() - PERS_OK.t < 120000) inh += '<p class="note ps-ok">' + PERS_OK.html + "</p>";   // kurze Bestätigung, 2 Minuten lang
   inh += anf.map(anfrageKarte).join("");
   inh += kommend.map((x) => festKarte(x, true)).join("");
+  inh += vorbei.filter((x) => endreinOffen(x) || endreinInfoOffen(x)).map((x) => festKarte(x, true)).join("");
   inh += sto.map(stornoKarte).join("");
   inh += vorbei.filter((x) => zahlOffen(x) || waescheOffen(x)).map((x) => (zahlOffen(x) ? zahlZeile(x) : "") + (waescheOffen(x) ? waescheZeile(x) : "")).join("");
   inh += vorbei.filter((x) => GM_LISTEN && GM_LISTEN[bKey(x)]).map((x) => '<div class="vk" data-vk="' + esc(bKey(x)) + '"><div class="vk-top"><span class="vk-name">' + esc(x.name) + '</span><span class="hint">' + esc(fmtTag(x.arr)) + " bis " + esc(fmtTag(x.dep)) + "</span></div>" + gmPapiHtml(x) + "</div>").join("");
@@ -5326,7 +5349,7 @@ function punkteOffen() {   // Zahl am Knopf «Verwaltung»: offene Anfragen plus
   let n = OFFEN.length + (xmasOffen().length ? 1 : 0);
   BUCH.forEach((x) => {
     if (x.dep >= h) n += aufgabenVon(x).length;
-    else { if (zahlOffen(x)) n++; if (wRueck(x) && !x.waescheZurueck) n++; }   // nach der Abreise zählen nur Zahlung und Wäsche
+    else { if (zahlOffen(x)) n++; if (wRueck(x) && !x.waescheZurueck) n++; if (endreinOffen(x) || endreinInfoOffen(x)) n++; if (endeOffen(x)) n++; }   // nach der Abreise zählen Zahlung, Wäsche und Endreinigung
   });
   BUCH_STORNO.forEach((x) => { n += stornoOffen(x); });   // stornierte Aufenthalte: Bestätigung, Airbnb, Pimlical
   return n;
@@ -5668,15 +5691,15 @@ function alarmListe() {
     if (rolleAenderung(x) && rolleJetzt(x) === "folge") out.push({ typ: "waesche", x: x, text: "<b>" + esc(x.name) + "</b> (" + esc(fmtTag(x.arr)) + " bis " + esc(fmtTag(x.dep)) + ") bringt jetzt eigene Wäsche: vor ihm beginnt eine andere Familie die Staffel." });
     const st = schweifStop(x);
     const durchFam = st.stopper && !st.stopper.sb && diffDays(x.dep, st.k) < P.minNaechte;   // eine Familie ohne Selbstreinigung folgt direkt
-    if (rkVon(x) === "e" && !x.endeInfo && (durchFam ? !!(st.stopper.bestaetigt && x.bestaetigt && st.stopper.bestaetigt > x.bestaetigt) : true)) out.push({ typ: "ende", x: x, text: "Die Staffel von <b>" + esc(x.name) + "</b> (" + esc(fmtTag(x.arr)) + " bis " + esc(fmtTag(x.dep)) + ") ist beendet: " + esc(staffelEndeGrund(x)) + ". Die Endreinigung (" + esc(chf(P.reinigung)) + ") wird fällig." });
+    if (rkVon(x) === "e" && !x.endeInfo && !!x.bescheid && (durchFam ? !!(st.stopper.bestaetigt && x.bestaetigt && st.stopper.bestaetigt > x.bestaetigt) : true)) out.push({ typ: "ende", x: x, text: "Die Staffel von <b>" + esc(x.name) + "</b> (" + esc(fmtTag(x.arr)) + " bis " + esc(fmtTag(x.dep)) + ") ist beendet: " + esc(staffelEndeGrund(x)) + ". Die Endreinigung (" + esc(chf(P.reinigung)) + ") wird fällig." });
   });
   return out;
 }
-function endeInfoText(x) { return "Hoi " + x.name + ", für deinen Aufenthalt vom " + fmtTagV(x.arr) + " bis " + fmtTagV(x.dep) + " hat sich etwas geändert: Deine Familienstaffel endet bei dir, weil " + staffelEndeGrund(x) + ". Die Eltern reinigen nach dir, die Endreinigung (" + chf(P.reinigung) + ") wird für dich fällig, geteilt nur mit den früheren Gruppen deiner Staffel."; }
+function endeInfoText(x) { return "Hoi " + x.name + ", für deinen Aufenthalt vom " + fmtTagV(x.arr) + " bis " + fmtTagV(x.dep) + " hat sich etwas geändert: Deine Familienstaffel endet bei dir, weil " + staffelEndeGrund(x) + ". Die Eltern reinigen nach dir. " + endreinSatz(x); }
 async function endeInfoVermerken(key) {
   const jetzt = jetztStr();
   try {
-    const j = await ghAendern((l, jj) => { logEintrag(jj, "Staffel-Ende-Info gegeben: " + keyText(key)); return l.map((y) => (bKey(y) === key ? Object.assign({}, y, { endeInfo: jetzt }) : y)); });
+    const j = await ghAendern((l, jj) => { logEintrag(jj, "Staffel-Ende-Info gegeben: " + keyText(key)); const rb = BUCH.find((b) => bKey(b) === key), er = rb && endreinFaellig(rb) ? { endreinInfo: jetzt, endreinAnteile: endreinTxt(rb) } : {}; return l.map((y) => (bKey(y) === key && y.status !== "storniert" ? Object.assign({}, y, { endeInfo: jetzt }, er) : y)); });
     buchungenAn(j); try { localStorage.setItem("tm2_buchungen", JSON.stringify(j)); } catch (e2) {}
     bestFehler = "";
   } catch (err) { bestFehler = "Der Vermerk «Staffel-Ende-Info gegeben» konnte nicht gespeichert werden: " + (err && err.message ? err.message : "Fehler"); }
@@ -5691,6 +5714,7 @@ function aufgabenVon(x) {   // offene Aufgaben zu einem Aufenthalt, kurz (gleich
   if (!x.bescheid) out.push("Bescheid geben");
   if (pimOffen(x)) out.push("in Pimlical eintragen");
   if (gmOffen(x)) out.push(gmFehlt(x) ? "Liste der Freunde fehlt noch" : "Freunde für die Kurtaxe anmelden");
+  if (endreinInfoOffen(x) && x.bescheid && !endeOffen(x)) out.push("Endreinigung mitteilen");
   if (rolleAenderung(x)) out.push("Änderung melden: " + (rolleJetzt(x) === "start" ? "beginnt jetzt die Staffel" : "bringt jetzt eigene Wäsche"));
   if (alarmListe().some((a) => a.typ === "ende" && a.x === x)) out.push("Staffel-Ende-Info senden");
   if (x.dep < h && zahlOffen(x)) out.push("Zahlung offen");
@@ -5741,7 +5765,7 @@ async function waescheInfoVermerken(key) {
 async function bescheidVermerken(key) {
   const jetzt = jetztStr();
   try {
-    const j = await ghAendern((l, jj) => { logEintrag(jj, "Bescheid gegeben: " + keyText(key)); const rb = BUCH.find((b) => bKey(b) === key), rr = rb && rb.sb ? { rolle: rolleJetzt(rb) } : {}; return l.map((y) => (bKey(y) === key && y.status !== "storniert" ? Object.assign({}, y, { bescheid: jetzt }, rr) : y)); });
+    const j = await ghAendern((l, jj) => { logEintrag(jj, "Bescheid gegeben: " + keyText(key)); const rb = BUCH.find((b) => bKey(b) === key), rr = rb && rb.sb ? { rolle: rolleJetzt(rb) } : {}; if (rb && endreinFaellig(rb)) Object.assign(rr, { endeInfo: jetzt, endreinInfo: jetzt, endreinAnteile: endreinTxt(rb) }); return l.map((y) => (bKey(y) === key && y.status !== "storniert" ? Object.assign({}, y, { bescheid: jetzt }, rr) : y)); });
     buchungenAn(j); try { localStorage.setItem("tm2_buchungen", JSON.stringify(j)); } catch (e2) {}
     bestFehler = "";
   } catch (err) { bestFehler = "Der Vermerk «Bescheid gegeben» konnte nicht gespeichert werden: " + (err && err.message ? err.message : "Fehler"); }
@@ -5985,6 +6009,8 @@ document.getElementById("bestKasten").addEventListener("click", async (e) => {
   }
   const wa = e.target.closest("[data-bescheid]");
   if (wa) { bescheidVermerken(wa.getAttribute("data-bescheid")); return; }
+  const eri = e.target.closest("[data-erinfo]");
+  if (eri) { const k = eri.getAttribute("data-erinfo"), b = BUCH.find((x) => bKey(x) === k); if (b) { const at = endreinTxt(b), jetzt = jetztStr(); ghAendern((l, jj) => { logEintrag(jj, "Endreinigung mitgeteilt: " + keyText(k) + " (" + at + ")"); return l.map((y) => (bKey(y) === k && y.status !== "storniert" ? Object.assign({}, y, { endreinInfo: jetzt, endreinAnteile: at }) : y)); }).then((j) => { buchungenAn(j); try { localStorage.setItem("tm2_buchungen", JSON.stringify(j)); } catch (e2) {} bestNeuZeichnen(); }).catch((err) => { bestFehler = "Der Vermerk konnte nicht gespeichert werden: " + (err && err.message ? err.message : "Fehler"); bestNeuZeichnen(); }); } return; }
   const si = e.target.closest("[data-stinfo]");
   if (si) { ztSetzen(si.getAttribute("data-stinfo"), "stornoInfo", true); return; }
   const wi = e.target.closest("[data-wainfo]");
@@ -6647,8 +6673,10 @@ Promise.all([ladeEinstellungen(), ladeBelegt(), ladeBuchungen(), ladeGaeste()]).
 const grussVon = (n) => "\n\nLiebe Grüsse, " + (PARTNER_ABS.indexOf(n) >= 0 ? "Silvan und Marianne" : "Papi und Mami");
 (function () {
   const mitGruss = (f) => function (x) { const t = f.apply(this, arguments); return t ? t + grussVon(x && typeof x === "object" ? x.name : x) : t; };
+  const bt0 = bestText;   // Bescheid bei schon abgeschlossener Staffel: Staffel-Ende und Endreinigung gleich mitteilen (seit 2.125.0.0)
+  bestText = function (x, ab) { let t = bt0(x, ab); if (!ab && x && endreinFaellig(x)) t += " Eure Familienstaffel endet mit deinem Aufenthalt, weil " + staffelEndeGrund(x) + ". Die Eltern reinigen nach dir. " + endreinSatz(x); return t; };
   konfText = mitGruss(konfText); gmErinnerText = mitGruss(gmErinnerText); zahlText = mitGruss(zahlText); bestText = mitGruss(bestText);
-  endeInfoText = mitGruss(endeInfoText); waescheStartText = mitGruss(waescheStartText); waescheInfoText = mitGruss(waescheInfoText);
+  endeInfoText = mitGruss(endeInfoText); endreinText = mitGruss(endreinText); waescheStartText = mitGruss(waescheStartText); waescheInfoText = mitGruss(waescheInfoText);
 })();
 if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
   window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js").catch(() => {}); });
