@@ -1379,7 +1379,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.120.7.0";
+let VERSION = "2.120.8.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2413,7 +2413,7 @@ function schweifStop(b) {
 }
 // Wer eine Staffel beginnt: Aufenthalt mit Selbstreinigung, an dessen Anreisetag keine andere Staffel offen ist.
 // Er findet das Chalet gereinigt und bezogen, bringt keine Wäsche mit und sorgt dafür, dass die benutzte Wäsche zurückkommt.
-const istStaffelStart = (arr, self) => !!arr && !BUCH.some((x) => x.sb && x !== self && x.dep <= arr && arr <= schweifStop(x).k);
+const istStaffelStart = (arr, self) => !!arr && !BUCH.some((x) => x.sb && x !== self && x.dep <= arr && arr <= staffelOffenBis(x));
 const ZEIT_AN = "16 Uhr", ZEIT_AB = "10 Uhr";   // gilt für jede Buchung
 const zeitenKurz = () => "Einchecken ab " + ZEIT_AN + ", Auschecken bis " + ZEIT_AB;
 const zeitenSatz = () => "Du kannst ab " + ZEIT_AN + " anreisen. Am Abreisetag bitte ich dich, die Wohnung bis " + ZEIT_AB + " zu übergeben. Danke dir!";
@@ -2431,13 +2431,25 @@ function starterVerlieren(arr, dep) {
   return weg.filter((n, i) => weg.indexOf(n) === i);
 }
 // Wer reinigt nach dem Aufenthalt: Kinder (Rahmen), wenn die Staffel weitergeht; sonst die Eltern (gefülltes Kästchen)
-function rkVon(b) { if (!b.sb) return "e"; const st = schweifStop(b); return ((st.k !== b.dep && diffDays(b.dep, st.k) >= P.minNaechte) || (st.stopper && st.stopper.sb)) ? "k" : "e"; }
+// Stichtag (seit 2.120.8.0): Bleiben nach einer Staffel genug freie Nächte für eine weitere Familie, bleibt die Staffel offen,
+// aber nur bis STICHTAG_TAGE vor dem Ende der freien Zeit (nächste Buchung, Airbnb-Gast oder Ende der Tiefsaison). Hat bis dann niemand angeschlossen, endet sie.
+const STICHTAG_TAGE = 4;
+const staffelStichtag = (b) => addDays(schweifStop(b).k, -STICHTAG_TAGE);
+function staffelOffen(b) {
+  if (!b.sb) return false;
+  const st = schweifStop(b);
+  if (st.stopper && st.stopper.sb) return true;   // eine weitere Staffel schliesst an
+  if (st.k === b.dep || diffDays(b.dep, st.k) < P.minNaechte) return false;   // kein Platz für eine weitere Familie
+  return heuteKey() < addDays(st.k, -STICHTAG_TAGE);
+}
+const staffelOffenBis = (b) => (staffelOffen(b) ? schweifStop(b).k : b.dep);
+function rkVon(b) { return staffelOffen(b) ? "k" : "e"; }
 function schweifListe() {
   const out = [], heute = heuteKey();
   BUCH.filter((b) => b.sb).forEach((b) => {
     const st = schweifStop(b), k = st.k;
     if (k === b.dep) return;
-    if (diffDays(b.dep, k) < P.minNaechte) return;   // zu kurz für einen weiteren Aufenthalt: kein offener Balken
+    if (!staffelOffen(b)) return;   // zu kurz für einen weiteren Aufenthalt oder Stichtag vorbei: kein offener Balken
     const letzteNacht = addDays(k, -1);
     if (letzteNacht < heute) return;
     out.push({ von: b.dep, vonMitte: true, bis: st.art === "mitte" ? k : letzteNacht, bisMitte: st.art === "mitte" });
@@ -2447,7 +2459,7 @@ function schweifListe() {
 // Namen der Reisegruppen einer offenen Familienstaffel, die eine Anreise am Tag arr unterbrechen würde
 function staffelUnterbruch(arr) {
   if (!arr || !BUCH.length) return [];
-  const treffer = BUCH.filter((b) => b.sb && b.dep <= arr && arr < schweifStop(b).k);
+  const treffer = BUCH.filter((b) => b.sb && b.dep <= arr && arr < staffelOffenBis(b));
   if (!treffer.length) return [];
   const kette = [];
   let cur = treffer.sort((p, q) => (p.dep < q.dep ? 1 : -1))[0];
@@ -2462,7 +2474,7 @@ function staffelUnterbruch(arr) {
 // Gruppen nach der Anreise arr, die bisher zur selben Familienstaffel gehörten und ihre Endreinigung dann allein tragen
 function staffelFolger(arr) {
   if (!arr || !BUCH.length) return [];
-  const treffer = BUCH.filter((b) => b.sb && b.dep <= arr && arr < schweifStop(b).k);
+  const treffer = BUCH.filter((b) => b.sb && b.dep <= arr && arr < staffelOffenBis(b));
   if (!treffer.length) return [];
   const namen = [], gesehen = [];
   let st = schweifStop(treffer.sort((p, q) => (p.dep < q.dep ? 1 : -1))[0]).stopper;
@@ -5452,6 +5464,8 @@ function bestText(x, abgelehnt) {
 // Staffel endet bei dieser Buchung, weil die Eltern reinigen müssen: Grund als Text (nur für Aufenthalte mit Selbstreinigung)
 function staffelEndeGrund(b) {
   const st = schweifStop(b);
+  if (!(st.stopper && st.stopper.sb) && st.k !== b.dep && diffDays(b.dep, st.k) >= P.minNaechte)   // Stichtag vorbei
+    return "bis " + STICHTAG_TAGE + " Tage vor " + (st.stopper ? "dem Termin von " + st.stopper.name : st.art === "kante" ? "dem Ende der Tiefsaison" : "dem nächsten Airbnb-Gast") + " (" + (st.art === "kante" && !st.stopper ? "letzte Nacht " + fmtTag(addDays(st.k, -1)) : fmtTag(st.k)) + ") keine weitere Familie angeschlossen hat";
   if (st.stopper && !st.stopper.sb) return st.k === b.dep ? "direkt danach folgt der Termin von " + st.stopper.name + " mit Reinigung durch die Eltern" : "danach folgt der Termin von " + st.stopper.name + " mit Reinigung durch die Eltern, und für eine weitere Familie bleiben weniger als " + P.minNaechte + " Nächte";
   if (st.art === "kante") return diffDays(b.dep, st.k) < P.minNaechte ? "die Tiefsaison endet" : "die Tiefsaison endet danach";
   return "danach kommt ein Airbnb-Gast, und für eine weitere Familie bleiben weniger als " + P.minNaechte + " Nächte";
@@ -5459,11 +5473,12 @@ function staffelEndeGrund(b) {
 // Alarme für Papi: Mitteilungen, die fällig sind, weil sich bei einer Staffel etwas geändert hat
 function alarmListe() {
   const h = heuteKey(), out = [];
-  BUCH.filter((x) => x.dep >= h && x.sb).forEach((x) => {
-    if (wNeuStart(x) && !x.waescheInfo && x.dep >= heuteKey()) out.push({ typ: "waesche", x: x, text: "<b>" + esc(x.name) + "</b> (" + esc(fmtTag(x.arr)) + " bis " + esc(fmtTag(x.dep)) + ") beginnt jetzt die Staffel: der Staffelbeginn davor wurde abgesagt." });
-    if (x.waesche && !istStaffelStart(x.arr, x) && !x.waescheInfo) out.push({ typ: "waesche", x: x, text: "<b>" + esc(x.name) + "</b> (" + esc(fmtTag(x.arr)) + " bis " + esc(fmtTag(x.dep)) + ") bringt jetzt eigene Wäsche: vor ihm beginnt eine andere Familie die Staffel." });
+  BUCH.filter((x) => x.sb && (x.dep >= h || schweifStop(x).k >= h)).forEach((x) => {   // auch kurz nach der Abreise, solange die Endreinigung noch kommt
+    if (wNeuStart(x) && !x.waescheInfo && x.dep >= h) out.push({ typ: "waesche", x: x, text: "<b>" + esc(x.name) + "</b> (" + esc(fmtTag(x.arr)) + " bis " + esc(fmtTag(x.dep)) + ") beginnt jetzt die Staffel: der Staffelbeginn davor wurde abgesagt." });
+    if (x.dep >= h && x.waesche && !istStaffelStart(x.arr, x) && !x.waescheInfo) out.push({ typ: "waesche", x: x, text: "<b>" + esc(x.name) + "</b> (" + esc(fmtTag(x.arr)) + " bis " + esc(fmtTag(x.dep)) + ") bringt jetzt eigene Wäsche: vor ihm beginnt eine andere Familie die Staffel." });
     const st = schweifStop(x);
-    if (rkVon(x) === "e" && st.stopper && !st.stopper.sb && st.stopper.bestaetigt && x.bestaetigt && st.stopper.bestaetigt > x.bestaetigt && !x.endeInfo) out.push({ typ: "ende", x: x, text: "Die Staffel von <b>" + esc(x.name) + "</b> (" + esc(fmtTag(x.arr)) + " bis " + esc(fmtTag(x.dep)) + ") ist beendet: " + esc(staffelEndeGrund(x)) + ". Die Endreinigung (" + esc(chf(P.reinigung)) + ") wird fällig." });
+    const durchFam = st.stopper && !st.stopper.sb && diffDays(x.dep, st.k) < P.minNaechte;   // eine Familie ohne Selbstreinigung folgt direkt
+    if (rkVon(x) === "e" && !x.endeInfo && (durchFam ? !!(st.stopper.bestaetigt && x.bestaetigt && st.stopper.bestaetigt > x.bestaetigt) : true)) out.push({ typ: "ende", x: x, text: "Die Staffel von <b>" + esc(x.name) + "</b> (" + esc(fmtTag(x.arr)) + " bis " + esc(fmtTag(x.dep)) + ") ist beendet: " + esc(staffelEndeGrund(x)) + ". Die Endreinigung (" + esc(chf(P.reinigung)) + ") wird fällig." });
   });
   return out;
 }
