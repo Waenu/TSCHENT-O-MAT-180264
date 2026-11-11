@@ -62,10 +62,10 @@ Anschliessend prüfen, dass `origin/main:einstellungen.json` die neue Version tr
 1. Mailadresse beim ersten Öffnen: gebaut (2.119.x). Wänu prüft, ob bei David in der Verwaltung eine Mailadresse steht.
 2. Termin anpassen bei Konflikt: gebaut (2.122.0.0), Zeile «✂️ Konflikt mit Airbnb-Gast» mit Nachfragen, Anpassen (Nächte anteilig, Reinigung voll) und Absagen ohne Kosten.
 3. Fehler bei «Einnahmen» («reading 'split'»): nicht nachstellbar, Wänu meldet sich.
-4. Zahlung: Knopf «Zahlung eingegangen» erscheint erst nach der Abreise; Wänu fragt, ob früher nötig.
+4. Zahlung: Papi hat den Knopf schon vor der Abreise; das Kind sieht den Betrag seit 2.122.3.0 schon vorher (ruhig), nach der Frist rot.
 5. Stornierung: gebaut (2.122.1.0/2.122.2.0). Nur mit Freunden in Hochsaison und Februar, nie in einer Lücke: verbindlich, Absage bis 30 Tage vor Anreise, Freund sagt ab = neu rechnen. Keine Kosten bei später Absage (vorerst). Externe Gäste (Liselotte, Leo) laufen über eigene Verträge, nicht über die App.
-6. Reinigungsliste: Marianne gibt noch ihre Meinung (später nachfragen). Gartenkissen und Liegestühle stehen seit 2.120.3.0 in allen Listen (Annahme, Wänu prüft).
-7. Testdaten: Deborah 18.–21.11.2026, Miriam 10.–13.12.2026, Manuel 1.–4.3.2027, David 24.–27.3.2027 sind Tests; vor Version 3 entfernen (nur auf Wänus Ja). Davids persönlichen Link nach dem Test erneuern.
+6. Reinigungsliste: Mariannes Input umgesetzt (Wäsche nie selbst waschen, ungewaschen zurück). Gartenkissen und Liegestühle in allen Listen passt.
+7. Testdaten entfernt (11.11.2026). Jerome 6.–9.5.2027 ist eine echte Buchung. Davids Link hat Wänu nicht angerührt.
 8. Wänu testet am 11.11.2026 ausgiebig: Kurzfilm Saisons, Reinigung ab 18, Minderjährige, Wäsche (Geschirrtücher, ungewaschen zurück), Checkliste in einem Stück, Trennung Partner/Kind, Anreise-Wäsche für späteren Aufenthalt, Staffelbeginn abgesagt (Wäsche-Info an den Nächsten).
 10. Staffel-Stichtag (gebaut 2.120.8.0, Stichtag 4 Tage vor dem Ende der freien Zeit): Liegen zwischen einer Staffel und dem nächsten Aufenthalt ohne Selbstreinigung 2 oder mehr freie Nächte und bucht dort bis 4 Tage vor der Abreise der letzten Staffel-Gruppe niemand, gilt die Staffel als beendet: Pfeil weg, Kästchen rot (Eltern reinigen), Meldung «Staffel beendet: … informieren». Vor dem Push mit der Fall-Tabelle testen (0/1, 2/4 Nächte vor und nach Stichtag, Staffel-Buchung im Zwischenraum, Airbnb-Gast im Zwischenraum) und Listen von Deborah 18.–20.3. und Manuel 22.–24.3.2027 prüfen.
 11. Reinigungsliste der Eltern: gebaut (2.121.0.0): feste Wechseltage orange mit Wochentag, variable Spannen blau (frühestens Abreise, spätestens nächste Anreise), alle künftigen chronologisch, auch ohne Folgegast.

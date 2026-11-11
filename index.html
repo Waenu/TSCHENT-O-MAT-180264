@@ -1388,7 +1388,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.122.2.0";
+let VERSION = "2.122.3.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -3974,8 +3974,9 @@ function aufentZeigen() {
   mailPruefen();
   {   // rote Zahlungsmeldung: bleibt, bis Papi die Zahlung verbucht hat (kein Schliessen-Knopf)
     const zb = document.getElementById("zahlBox"), zl = ABSENDER ? BUCH.filter((b) => eigenN(b.name) && zahlFaellig(b)) : [];
-    zb.hidden = zl.length === 0;
-    zb.innerHTML = zl.map((b) => '<div class="note h rot-warn"><b>💳 Zahlung offen:</b> Für deinen Aufenthalt vom ' + esc(fmtTag(b.arr)) + ' bis ' + esc(fmtTag(b.dep)) + ' sind <b>' + esc(chf(b.betrag)) + '</b> fällig. Die Frist war am ' + esc(fmtTag(zahlFrist(b))) + '. Bitte überweise jetzt, die Bankverbindung steht unter «Zahlung» ' + symBtn("b-zahlung", "💰") + '. Sobald Papi die Zahlung verbucht hat, verschwindet diese Meldung.</div>').join("");
+    const vorab = ABSENDER ? BUCH.filter((b) => eigenN(b.name) && b.betrag > 0 && !b.bezahlt && !b.prov && !zahlFaellig(b) && heuteKey() <= zahlFrist(b)) : [];   // schon vor der Abreise sichtbar, ruhig statt rot (seit 2.122.3.0)
+    zb.hidden = zl.length === 0 && vorab.length === 0;
+    zb.innerHTML = vorab.map((b) => '<div class="note h"><b>💳 Zu bezahlen:</b> Für deinen Aufenthalt vom ' + esc(fmtTag(b.arr)) + " bis " + esc(fmtTag(b.dep)) + " sind <b>" + esc(chf(b.betrag)) + "</b> fällig, spätestens am " + esc(fmtTag(zahlFrist(b))) + ". Du kannst auch schon vorher überweisen, die Bankverbindung steht unter «Zahlung» " + symBtn("b-zahlung", "💰") + ".</div>").join("") + zl.map((b) => '<div class="note h rot-warn"><b>💳 Zahlung offen:</b> Für deinen Aufenthalt vom ' + esc(fmtTag(b.arr)) + ' bis ' + esc(fmtTag(b.dep)) + ' sind <b>' + esc(chf(b.betrag)) + '</b> fällig. Die Frist war am ' + esc(fmtTag(zahlFrist(b))) + '. Bitte überweise jetzt, die Bankverbindung steht unter «Zahlung» ' + symBtn("b-zahlung", "💰") + '. Sobald Papi die Zahlung verbucht hat, verschwindet diese Meldung.</div>').join("");
   }
 }
 function ovOeffnen(id, an) {
@@ -5314,7 +5315,7 @@ function mailPruefen() {
   let w = document.getElementById("mailWahl");
   if (w && !w.hidden) return;
   if (!w) { w = document.createElement("div"); w.id = "mailWahl"; w.setAttribute("role", "dialog"); w.setAttribute("aria-label", "Mailadresse"); document.body.appendChild(w); }
-  w.innerHTML = '<div class="mw-box"><h2>📧 Deine Mailadresse</h2><p>Hoi ' + esc(ABSENDER) + "! Bitte gib einmal deine Mailadresse ein. Die Eltern schicken dir damit zum Beispiel die Gästekarten für Adelboden. Sie ist nicht öffentlich.</p>" +
+  w.innerHTML = '<div class="mw-box"><h2>📧 Deine Mailadresse</h2><p>Hoi ' + esc(ABSENDER) + "! Bitte gib einmal deine Mailadresse ein.</p><p><b>Warum?</b> Für jeden Aufenthalt melden die Eltern die Gäste in Adelboden an und erhalten dafür die Gästekarten. Die schicken sie dir per Mail. Ohne Mailadresse kommen die Gästekarten nicht bei dir an. Die Adresse geht nur an die Eltern und ist nicht öffentlich.</p>" +
     '<label for="mw1">Mailadresse</label><input id="mw1" type="email" inputmode="email" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="name@beispiel.ch">' +
     '<label for="mw2">Nochmals eintippen</label><input id="mw2" type="email" inputmode="email" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="name@beispiel.ch">' +
     '<p class="mw-f" id="mwF" role="alert"></p><button type="button" class="btn main full" id="mwOk">Speichern und weiter</button></div>';

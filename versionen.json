@@ -2,6 +2,18 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.122.3.0",
+      "datum": "2026-11-11",
+      "titel": "Zahlung schon vorher sichtbar, Mailadresse erklärt",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Das Kind sieht den Betrag eines bestätigten Aufenthalts schon vor der Abreise auf der Startseite (ruhig, nicht rot), mit Frist und dem Hinweis, dass es auch vorher überweisen kann. Nach der Frist wird die Meldung rot wie bisher. Termine mit Vorbehalt erst nach der Abreise.",
+        "Die Abfrage der Mailadresse erklärt, warum sie nötig ist: für die Gästekarten von Adelboden."
+      ]
+    },
+    {
       "v": "2.122.2.0",
       "datum": "2026-11-11",
       "titel": "Persönliche Absagefrist",
