@@ -64,11 +64,7 @@
       "name": "Manuel",
       "arr": "2027-03-22",
       "dep": "2027-03-24",
-      "selbst": false,
-      "pers": 2,
-      "betrag": 640,
-      "rechnung": "Gesendet am Di 10.11.2026, 22:44 Uhr. App-Version 2.120.6.0.\nAnreise\tMontag 22.03.2027\nAbreise\tMittwoch 24.03.2027 (2 Nächte)\nFamilie\tIch und Partner/in\nFreunde\t2\nDavon Kinder von 6 bis 15 Jahren\t1\nMit den Bedingungen einverstanden: ja\nZimmer 1 unberührt\tJa\nReinigung\tNach Parteien: Familie und jeder Freund zahlen gleich viel\nTotal laut Rechner\tCHF 640.–\nDazu Kurtaxe Adelboden für die Freunde: CHF 14.60\n#Preisberechnung\nFamilie pro Nacht\tCHF 60.–\nFreund 1 pro Nacht\tCHF 70.–\nFreund 2 pro Nacht\tCHF 70.–\nÜbernachtung (2 Nächte)\tCHF 400.–\nReinigung\tCHF 240.–\nReinigung: Anteil Familie\tCHF 80.–\nReinigung: Anteil pro Freund\tCHF 80.–\nKurtaxe Adelboden (dazu) 1 Freund ab 16 Jahren zu CHF 5.20 pro Nacht, 1 Kind von 6 bis 15 Jahren zu CHF 2.10 pro Nacht, 2 Nächte\tCHF 14.60\nTotal mit Kurtaxe\tCHF 654.60\n#Aufteilung unter den Freunden\nFamilie zahlt\tCHF 200.–\nFreund 1 zahlt davon Kurtaxe CHF 10.40 (ab 16 Jahren)\tCHF 230.40\nFreund 2 zahlt davon Kurtaxe CHF 4.20 (Kind von 6 bis 15 Jahren)\tCHF 224.20\nZimmer 1 und rotes Bad bleiben unberührt: CHF 10.– weniger pro Nacht, die Familie zahlt CHF 60.– statt CHF 70.–.\nReinigung aufgeteilt: Nach Parteien: Familie und jeder Freund zahlen gleich viel.",
-      "bestaetigt": "2026-11-10T22:44"
+      "status": "storniert"
     }
   ],
   "logbuch": [
@@ -795,6 +791,10 @@
     {
       "t": "2026-11-11T00:31",
       "text": "Entfernt: Miriam, Do 10.12.2026 bis So 13.12.2026"
+    },
+    {
+      "t": "2026-11-11T10:46",
+      "text": "Entfernt: Manuel, Mo 22.03.2027 bis Mi 24.03.2027"
     }
   ]
 }
