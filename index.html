@@ -165,6 +165,9 @@
   .rt-z.rt-spanne { border-left-color: var(--fest-line); }
   .rt-z.rt-offen { opacity: .75; }
   .rt-z small { color: var(--muted); }
+  .kf-form { display: grid; gap: 6px; margin: 8px 0; padding: 8px; border: 1px solid var(--line); border-radius: 6px; }
+  .kf-form label { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .kf-form input { max-width: 60%; }
   .gm-zu > summary { cursor: pointer; list-style: none; display: block; background: none; color: inherit; padding: 0; margin: 0; border: 0; font-weight: 400; white-space: normal; }
   .gm-zu > summary::-webkit-details-marker { display: none; }
   .gm-zu > summary::after { content: " ▾"; color: var(--akzent, inherit); }
@@ -1384,7 +1387,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.121.0.0";
+let VERSION = "2.122.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1864,6 +1867,27 @@ function verbMoeglich(arr, dep) {
 const provSel = () => provStay(ARR, DEP) && !(S.verbOK === true && S.art === ART_V);
 // Erste Nacht eines Termins mit Vorbehalt, auf der schon ein Airbnb-Gast liegt (sonst null). Davor bleibt der Termin gesichert (seit 2.96.0.0)
 function provKonfliktAb(b) { if (!b.prov || !BELEGT_AIR) return null; for (let k = b.arr; k < b.dep; k = addDays(k, 1)) if (BELEGT_AIR.has(k)) return k; return null; }
+// Konflikt mit Airbnb-Gast (seit 2.122.0.0): belegte Nächte im Termin, freie Strecken, neuer Preis
+function konfNaechte(b) { const o = []; if (!BELEGT_AIR) return o; for (let k = b.arr; k < b.dep; k = addDays(k, 1)) if (BELEGT_AIR.has(k)) o.push(k); return o; }
+function konfFrei(b) {   // freie Strecken im Termin als [von, bis) (bis = Abreisetag)
+  const o = []; let von = null;
+  for (let k = b.arr; k <= b.dep; k = addDays(k, 1)) { const frei = k < b.dep && !(BELEGT_AIR && BELEGT_AIR.has(k)); if (frei && von === null) von = k; if (!frei && von !== null) { o.push([von, k]); von = null; } }
+  return o;
+}
+const strecken = (l) => l.map((r) => fmtTag(r[0]) + " bis " + fmtTag(r[1])).join(" und ");
+function konfBelegt(b) { const n = konfNaechte(b), o = []; n.forEach((k) => { const l = o[o.length - 1]; if (l && l[1] === k) l[1] = addDays(k, 1); else o.push([k, addDays(k, 1)]); }); return o; }
+function reinAnteil(b) { const m = /\nReinigung\tCHF ([\d'’]+)/.exec(b.rechnung || ""); const r = m ? Number(m[1].replace(/['’]/g, "")) : (b.sb ? 0 : P.reinigung); return Math.min(r, b.betrag || 0); }
+function konfPreis(b, arr, dep) {   // Übernachtungen anteilig nach Nächten, Reinigung voll
+  const n0 = diffDays(b.arr, b.dep), n = diffDays(arr, dep), r = reinAnteil(b);
+  if (!(n > 0) || !(n0 > 0) || !(b.betrag > 0)) return 0;
+  return Math.round(((b.betrag - r) * n) / n0 + r);
+}
+function konfText(b) {
+  const bel = strecken(konfBelegt(b)), frei = konfFrei(b), da = heuteKey() >= b.arr;
+  if (da) { const ab = konfNaechte(b).find((k) => k >= heuteKey()) || konfNaechte(b)[0];
+    return "Hoi " + b.name + ", für deinen Termin mit Vorbehalt hat sich ein Airbnb-Gast eingetragen. Er reist am " + fmtTagV(ab) + " an. Bitte verlass das Chalet an diesem Tag bis " + ZEIT_AB + ", damit wir bis " + ZEIT_AN + " reinigen können. Du zahlst die Nächte bis dahin und die Reinigung. Danke für dein Verständnis!"; }
+  return "Hoi " + b.name + ", für deinen Termin mit Vorbehalt vom " + fmtTagV(b.arr) + " bis " + fmtTagV(b.dep) + " hat ein Airbnb-Gast gebucht: " + bel + ". Wie willst du vorgehen? " + (frei.length ? "Frei bleibt " + strecken(frei) + ". Du kannst deine Anreise oder Abreise anpassen, oder du sagst den ganzen Termin ab, dann kostet er nichts." : "Der ganze Termin ist belegt, er fällt weg und kostet nichts.") + " Gib uns kurz Bescheid.";
+}
 function provKonflikt(b) { if (!b.prov || !BELEGT_AIR) return false; for (let k = b.arr; k < b.dep; k = addDays(k, 1)) if (BELEGT_AIR.has(k)) return true; return false; }
 // praktisch sicher: ein neuer Airbnb-Gast braucht VORLAUF Tage, also kann sich bis zur Abreise niemand mehr dazwischen buchen
 const provSicherDep = (dep) => dep <= addDays(heuteKey(), VORLAUF);
@@ -2540,6 +2564,13 @@ const typKnoepfe3 = (id, t) => '<div class="gtyp" id="' + id + '" role="group" a
 const typWahl = (id) => { const b = document.querySelector("#" + id + " .typ.on"); return typNorm(b && b.getAttribute("data-typ")); };
 const gbSumme = () => { const o = document.getElementById("gbSum"); if (!o) return; const v = (id) => frZahl((document.getElementById(id) || {}).value), n = v("gbN"), r = v("gbR"), p = v("gbP"); o.textContent = n || r || p ? "Nächte " + frk(Math.max(0, n + p - r)) + ", Reinigung " + frk(r) + (p ? ", Provision " + frk(p) : "") + ", brutto " + frk(n + p) + ", du erhältst " + frk(n) : ""; };
 document.addEventListener("input", (ev) => { if (ev.target.closest && ev.target.closest("#gbBetr")) gbSumme(); });
+document.addEventListener("change", (ev) => {   // Konflikt: neuer Betrag, wenn die Daten ändern
+  const f = ev.target.closest && ev.target.closest(".kf-form"); if (!f || ev.target.classList.contains("kf-bet")) return;
+  const x = BUCH.find((y) => bKey(y) === f.getAttribute("data-kfk")); if (!x) return;
+  const a = f.querySelector(".kf-arr").value, d = f.querySelector(".kf-dep").value, n = a && d ? diffDays(a, d) : 0;
+  f.querySelector(".kf-bet").value = n > 0 ? konfPreis(x, a, d) : 0;
+  f.querySelector(".kf-info").textContent = (n > 0 ? n + " Nächte." : "Abreise muss nach der Anreise liegen.") + " Übernachtungen anteilig, Reinigung voll (" + chf(reinAnteil(x)) + ").";
+});
 document.addEventListener("click", (ev) => { const b = ev.target.closest(".gtyp .typ"); if (!b) return; b.parentNode.querySelectorAll(".typ").forEach((x) => x.classList.toggle("on", x === b)); });
 const gastEnde = (x) => (x.dep && x.dep > x.arr ? x.dep : belegtEnde(x.arr));   // Abreisetag des Gastes: eigene Abreise oder Ende der Belegung
 function gaesteBalken() {
@@ -3833,7 +3864,7 @@ function buchungenAn(j) {
   BUCH_ABGEL = gut.filter((b) => b.status === "abgelehnt").map((b) => ({ name: b.name.trim(), arr: b.arr, dep: b.dep, bescheid: bes(b) }));
   BUCH_STORNO = gut.filter((b) => b.status === "storniert").map((b) => ({ name: b.name.trim(), arr: b.arr, dep: b.dep }));
   BUCH = gut.filter((b) => b.status !== "abgelehnt" && b.status !== "storniert")
-    .map((b) => ({ name: b.name.trim(), arr: b.arr, dep: b.dep, sb: b.selbst === true, lg: b.luecke === true, prov: PROV_AN && b.prov === true, verb: b.verb === true, waesche: b.waesche === "bringen" || b.waesche === "senden" ? b.waesche : "", endeInfo: typeof b.endeInfo === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.endeInfo) ? b.endeInfo : "", waescheInfo: typeof b.waescheInfo === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.waescheInfo) ? b.waescheInfo : "", waescheZurueck: typeof b.waescheZurueck === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.waescheZurueck) ? b.waescheZurueck : "", gesperrt: typeof b.gesperrt === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.gesperrt) ? b.gesperrt : "", kurtaxeAm: typeof b.kurtaxeAm === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.kurtaxeAm) ? b.kurtaxeAm : "", pers: Math.max(1, Number(b.pers) || 1), bescheid: bes(b), betrag: Number(b.betrag) > 0 ? Math.round(Number(b.betrag)) : 0, rechnung: typeof b.rechnung === "string" ? b.rechnung.slice(0, 4000) : "", bestaetigt: typeof b.bestaetigt === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(b.bestaetigt) ? b.bestaetigt : "", bezahlt: typeof b.bezahlt === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.bezahlt) ? b.bezahlt : "", pimlical: typeof b.pimlical === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.pimlical) ? b.pimlical : "", erinnert: Array.isArray(b.erinnert) ? b.erinnert.filter((t) => typeof t === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(t)) : [] }))
+    .map((b) => ({ name: b.name.trim(), arr: b.arr, dep: b.dep, sb: b.selbst === true, lg: b.luecke === true, prov: PROV_AN && b.prov === true, verb: b.verb === true, waesche: b.waesche === "bringen" || b.waesche === "senden" ? b.waesche : "", endeInfo: typeof b.endeInfo === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.endeInfo) ? b.endeInfo : "", waescheInfo: typeof b.waescheInfo === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.waescheInfo) ? b.waescheInfo : "", waescheZurueck: typeof b.waescheZurueck === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.waescheZurueck) ? b.waescheZurueck : "", gesperrt: typeof b.gesperrt === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.gesperrt) ? b.gesperrt : "", kurtaxeAm: typeof b.kurtaxeAm === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.kurtaxeAm) ? b.kurtaxeAm : "", pers: Math.max(1, Number(b.pers) || 1), bescheid: bes(b), betrag: Number(b.betrag) > 0 ? Math.round(Number(b.betrag)) : 0, rechnung: typeof b.rechnung === "string" ? b.rechnung.slice(0, 4000) : "", bestaetigt: typeof b.bestaetigt === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(b.bestaetigt) ? b.bestaetigt : "", bezahlt: typeof b.bezahlt === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.bezahlt) ? b.bezahlt : "", pimlical: typeof b.pimlical === "string" && /^\d{4}-\d{2}-\d{2}/.test(b.pimlical) ? b.pimlical : "", erinnert: Array.isArray(b.erinnert) ? b.erinnert.filter((t) => typeof t === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(t)) : [], angepasst: b.angepasst && typeof b.angepasst === "object" && DKEY.test(b.angepasst.arr) && DKEY.test(b.angepasst.dep) ? { arr: b.angepasst.arr, dep: b.angepasst.dep, betrag: Math.round(Number(b.angepasst.betrag) || 0), t: String(b.angepasst.t || "") } : null }))
     .sort((p, q) => (p.arr < q.arr ? -1 : 1));
   LOGBUCH = Array.isArray(j.logbuch) ? j.logbuch.filter((e) => e && typeof e.t === "string" && typeof e.text === "string").slice(-200) : [];
   BUCH_TAG.clear();
@@ -3908,6 +3939,11 @@ function aufentZeigen() {
   {
     const st = document.getElementById("aufStatus"), kk = BUCH.filter((b) => ABSENDER && eigenN(b.name) && b.dep >= heuteKey() && provKonflikt(b));
     if (kk.length) { st.hidden = false; st.innerHTML += '<div class="note h rot-warn"><b>⚠️ Konflikt:</b> Für ' + kk.map((b) => esc(fmtTag(b.arr)) + " bis " + esc(fmtTag(b.dep))).join(" und ") + ' hat sich ein Airbnb-Gast eingetragen. Dein Termin stand mit Vorbehalt. Melde dich bei den Eltern.</div>'; }
+  }
+  {   // von den Eltern angepasster Termin (Konflikt mit Airbnb-Gast): Hinweis, bis das Kind ihn wegklickt (seit 2.122.0.0)
+    const st = document.getElementById("aufStatus"), ok = stornoGelesen();
+    const al = ABSENDER ? BUCH.filter((b) => eigenN(b.name) && b.angepasst && b.dep >= heuteKey() && ok.indexOf("anp|" + bKey(b) + "|" + b.angepasst.t) < 0) : [];
+    if (al.length) { st.hidden = false; st.innerHTML += al.map((b) => '<div class="note h"><b>✂️ Termin angepasst:</b> Wegen eines Airbnb-Gastes gilt neu <b>' + esc(fmtTag(b.arr)) + " bis " + esc(fmtTag(b.dep)) + "</b>" + (b.betrag ? ", " + esc(chf(b.betrag)) : "") + " (vorher " + esc(fmtTag(b.angepasst.arr)) + " bis " + esc(fmtTag(b.angepasst.dep)) + (b.angepasst.betrag ? ", " + esc(chf(b.angepasst.betrag)) : "") + '). <button type="button" class="ov-back" data-stok="' + esc("anp|" + bKey(b) + "|" + b.angepasst.t) + '">OK, gelesen</button></div>').join(""); }
   }
   {   // von den Eltern gelöschter (stornierter) Aufenthalt: Meldung, bis das Kind sie wegklickt oder die Abreise vorbei ist
     const st = document.getElementById("aufStatus"), ok = stornoGelesen();
@@ -4887,6 +4923,7 @@ function vkChips(x, anfrage) {
   c.push('<span class="vk-chip">' + ((x.selbst || x.sb) ? "🧹 reinigt selbst" : "🪣 Eltern reinigen") + "</span>");
   if (x.luecke || x.lg) c.push('<span class="vk-chip">ganze Lücke</span>');
   if (!anfrage && wRueck(x)) c.push('<span class="vk-chip' + (x.waescheZurueck ? "" : " v") + '">🧺 ' + (x.waescheZurueck ? "Wäsche zurück am " + esc(fmtTag(x.waescheZurueck.slice(0, 10))) : (x.waesche === "senden" ? "sendet" : x.waesche === "bringen" ? "bringt" : "bringt oder sendet") + " die Wäsche bis " + esc(fmtTag(waescheBis(x)))) + "</span>");
+  if (!anfrage && x.angepasst) c.push('<span class="vk-chip v">✂️ angepasst, vorher ' + esc(fmtTag(x.angepasst.arr)) + " bis " + esc(fmtTag(x.angepasst.dep)) + (x.angepasst.betrag ? ", " + esc(chf(x.angepasst.betrag)) : "") + "</span>");
   c.push('<span class="vk-chip">' + x.pers + (x.pers === 1 ? " Person" : " Personen") + "</span>");
   if (x.betrag > 0) c.push('<span class="vk-chip">💳 ' + (x.bezahlt ? "bezahlt am " + esc(fmtTag(x.bezahlt.slice(0, 10))) : esc(chf(x.betrag)) + " offen") + "</span>");
   return '<div class="vk-chips">' + c.join("") + "</div>";
@@ -4993,7 +5030,13 @@ const ztAm = (t) => esc(fmtTag(String(t).slice(0, 10))) + (String(t).length > 11
 function zuTunKarte(x) {
   const key = esc(bKey(x)), prov = !!x.prov, konf = prov && provKonflikt(x), z = [], kommt = x.dep >= heuteKey();
   const n = diffDays(x.arr, x.dep), letzte = addDays(x.dep, -1);
-  if (konf) z.push(ztZeile({ ohneBox: true, rot: true, titel: "⚠️ <b>Konflikt mit Airbnb-Gast:</b> " + esc(x.name) + " informieren" }));
+  if (konf) {
+    const fr = konfFrei(x), best = fr.slice().sort((p, q) => diffDays(q[0], q[1]) - diffDays(p[0], p[1]))[0], kk = esc(bKey(x));
+    const form = best ? '<div class="kf-form" data-kfk="' + kk + '"><label>Anreise <input type="date" class="kf-arr" min="' + x.arr + '" max="' + x.dep + '" value="' + best[0] + '"></label><label>Abreise <input type="date" class="kf-dep" min="' + x.arr + '" max="' + x.dep + '" value="' + best[1] + '"></label><label>Neuer Betrag CHF <input type="number" class="kf-bet" min="0" step="1" value="' + konfPreis(x, best[0], best[1]) + '"></label><p class="hint kf-info">' + diffDays(best[0], best[1]) + " Nächte. Übernachtungen anteilig, Reinigung voll (" + esc(chf(reinAnteil(x))) + ').</p><button type="button" class="btn main" data-kfsave="' + kk + '">✂️ Termin anpassen und speichern</button></div>' : "";
+    z.push(ztZeile({ ohneBox: true, rot: true, titel: "✂️ <b>Konflikt mit Airbnb-Gast:</b> " + esc(x.name) + " fragen, wie es weitergeht",
+      detail: "Airbnb belegt: " + esc(strecken(konfBelegt(x))) + "." + (fr.length ? " Frei bleibt: " + esc(strecken(fr)) + "." : " Der ganze Termin ist belegt."),
+      knoepfe: '<a class="btn" href="https://wa.me/?text=' + encodeURIComponent(konfText(x)) + '" target="_blank" rel="noopener">' + WA_SVG + "Nachfragen</a>" + form + '<button type="button" class="btn quiet" data-bdel="' + kk + '">🗑️ Ganzen Termin absagen (keine Kosten)</button>' }));
+  }
   z.push(ztZeile({ feld: "bescheid", key: key, done: !!x.bescheid, titel: "✉️ Bescheid geben", doneTxt: "Bescheid gegeben am " + ztAm(x.bescheid), knoepfe: bescheidKnopf(x, false) }));
   if (kommt && !prov) {
     const auto = !!(BELEGT_AIR && !nichtGesperrt(x)), done = auto || gesperrtFrisch(x) || (!BELEGT_AIR && !!x.gesperrt), warnt = !!x.gesperrt && !done;
@@ -5928,6 +5971,22 @@ document.getElementById("bestKasten").addEventListener("click", async (e) => {
       const j = await ghAendern((l, jj) => { logEintrag(jj, "In Pimlical eingetragen: " + keyText(pim)); return l.map((y) => (bKey(y) === pim ? Object.assign({}, y, { pimlical: jetzt }) : y)); });
       buchungenAn(j); try { localStorage.setItem("tm2_buchungen", JSON.stringify(j)); } catch (e2) {}
       bestMsg = "🗓️ Als in Pimlical eingetragen markiert.";
+    } catch (err) { bestFehler = err && err.message ? err.message : "Das hat nicht geklappt."; }
+    bestBusy = false; bestNeuZeichnen(); bestMsgZeigen(); return;
+  }
+  const kfs = f("data-kfsave");
+  if (kfs) {
+    const fo = e.target.closest(".kf-form"), x = BUCH.find((y) => bKey(y) === kfs); if (!fo || !x) return;
+    const a = fo.querySelector(".kf-arr").value, d = fo.querySelector(".kf-dep").value, bet = Math.max(0, Math.round(Number(fo.querySelector(".kf-bet").value) || 0));
+    const neu = { arr: a, dep: d }, fehl = !DKEY.test(a) || !DKEY.test(d) || d <= a ? "Bitte gültige Anreise und Abreise wählen." : a < x.arr || d > x.dep ? "Der neue Termin muss innerhalb des alten liegen." : konfNaechte(neu).length ? "In den neuen Daten liegt noch eine Airbnb-Nacht." : "";
+    if (fehl) { bestFehler = fehl; bestZeigen(); return; }
+    if (!(await appFrage("Termin von " + x.name + " anpassen: neu " + fmtTag(a) + " bis " + fmtTag(d) + " (" + diffDays(a, d) + " Nächte), " + chf(bet) + " statt " + chf(x.betrag) + "?", "Ja, anpassen"))) return;
+    bestBusy = true; bestFehler = "";
+    try {
+      const jetzt = jetztStr();
+      const j = await ghAendern((l, jj) => { logEintrag(jj, "Angepasst wegen Airbnb-Gast: " + keyText(kfs) + " → " + a + " bis " + d + ", CHF " + bet); return l.map((y) => (bKey(y) === kfs ? Object.assign({}, y, { arr: a, dep: d, betrag: bet, angepasst: { arr: y.arr, dep: y.dep, betrag: y.betrag || 0, t: jetzt } }) : y)); });
+      buchungenAn(j); try { localStorage.setItem("tm2_buchungen", JSON.stringify(j)); } catch (e2) {}
+      bestMsg = "✂️ Angepasst: " + esc(x.name) + ", neu " + esc(fmtTag(a)) + " bis " + esc(fmtTag(d)) + ", " + esc(chf(bet)) + ". Beim Öffnen der App sieht " + esc(x.name) + " die Änderung.";
     } catch (err) { bestFehler = err && err.message ? err.message : "Das hat nicht geklappt."; }
     bestBusy = false; bestNeuZeichnen(); bestMsgZeigen(); return;
   }

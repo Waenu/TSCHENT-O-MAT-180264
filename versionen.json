@@ -2,6 +2,20 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.122.0.0",
+      "datum": "2026-11-11",
+      "titel": "Termin anpassen bei Konflikt mit Airbnb-Gast",
+      "arten": [
+        "Neu"
+      ],
+      "punkte": [
+        "Bucht ein Airbnb-Gast in einen Termin mit Vorbehalt, steht bei der Person unter «Zu tun» die rote Zeile «✂️ Konflikt mit Airbnb-Gast» mit den belegten und den freien Tagen.",
+        "Knopf «Nachfragen»: fertige WhatsApp, ob das Kind An- oder Abreise anpassen oder den Termin absagen will. Ist es schon im Chalet: Abreise am Anreisetag des Gastes bis 10 Uhr.",
+        "Termin anpassen: neue An- und Abreise innerhalb des alten Termins, neuer Betrag (Übernachtungen anteilig, Reinigung voll, änderbar). Oder ganzen Termin absagen, ohne Kosten.",
+        "Beim Kind erscheint «✂️ Termin angepasst» mit den neuen und alten Daten, bis es «OK, gelesen» tippt."
+      ]
+    },
+    {
       "v": "2.121.0.0",
       "datum": "2026-11-11",
       "titel": "Reinigungstermine der Eltern",
