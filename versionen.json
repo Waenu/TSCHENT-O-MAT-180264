@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.125.0.1",
+      "datum": "2026-11-11",
+      "titel": "Satzbau beim Staffel-Ende",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Der Grund für das Staffel-Ende steht korrekt nach «weil», zum Beispiel «weil danach ein Airbnb-Gast kommt und für eine weitere Familie weniger als 2 Nächte bleiben»."
+      ]
+    },
+    {
       "v": "2.125.0.0",
       "datum": "2026-11-11",
       "titel": "Endreinigung der Staffel wird verrechnet",

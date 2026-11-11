@@ -1396,7 +1396,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.125.0.0";
+let VERSION = "2.125.0.1";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -5070,7 +5070,7 @@ function festKarte(x, direkt) {   // direkt: nur die Karte (neue Verwaltung pro 
   const wik = wInfo ? ' <a class="btn" data-wainfo="' + key + '" href="https://wa.me/?text=' + encodeURIComponent(wNeu ? waescheStartText(x) : waescheInfoText(x)) + '" target="_blank" rel="noopener">' + WA_SVG + (x.waescheInfo ? "Nochmals Wäsche-Info" : "Wäsche-Info senden") + "</a>" : "";
   const wzk = wRueck(x) && !x.waescheZurueck ? '<button type="button" class="btn main" data-wz="' + key + '">🧺 Wäsche ist zurück</button>' : "";
   const ende = alarmListe().some((a) => a.typ === "ende" && a.x === x);
-  if (ende) st += '<span><b class="bs-fehlt">🔗 Staffel beendet: ' + esc(x.name) + " noch informieren (" + esc(staffelEndeGrund(x)) + ")</b></span>";
+  if (ende) st += '<span><b class="bs-fehlt">🔗 Staffel beendet: ' + esc(x.name) + " noch informieren (weil " + esc(staffelEndeGrund(x)) + ")</b></span>";
   const eik = ende ? ' <a class="btn" data-endinfo="' + key + '" href="https://wa.me/?text=' + encodeURIComponent(endeInfoText(x)) + '" target="_blank" rel="noopener">' + WA_SVG + "Staffel-Ende-Info senden</a>" : "";
   const gmk = gmFehlt(x) ? ' <a class="btn" href="https://wa.me/?text=' + encodeURIComponent(gmErinnerText(x)) + '" target="_blank" rel="noopener">' + WA_SVG + "An die Liste erinnern</a>" : "";
   const acts = gmk + eik + wik + wzk + (prov && !hochVorbehalt(x) ? '<button type="button" class="btn main" data-fest="' + key + '">' + lockSvg(true) + '→' + lockSvg(false) + ' In Airbnb gesperrt</button>' : "") + bescheidKnopf(x, false) +
@@ -5123,7 +5123,7 @@ function zuTunKarte(x) {
     z.push(ztZeile({ ohneBox: true, rot: true, titel: "🔔 <b>Änderung: " + esc(x.name) + " informieren</b>, " + (st ? "beginnt jetzt die Staffel" : "bringt jetzt eigene Wäsche"),
       detail: st ? (ab ? esc(ab.name) + " hat abgesagt. " : "Der Staffelbeginn davor fällt weg. ") + esc(x.name) + " findet das Chalet bezogen vor, bringt keine Wäsche mit und gibt die Wäsche der Eltern zurück." : (sb && sb !== x ? esc(sb.name) + " beginnt jetzt vor " + esc(x.name) + " die Staffel (ab " + esc(fmtTag(sb.arr)) + "). " : "") + esc(x.name) + " findet keine bezogenen Betten vor und bringt eigene Wäsche mit.",
       knoepfe: '<a class="btn" data-wainfo="' + key + '" href="https://wa.me/?text=' + encodeURIComponent(st ? waescheStartText(x) : waescheInfoText(x)) + '" target="_blank" rel="noopener">' + WA_SVG + "Änderung per WhatsApp senden</a>" })); }
-  if (alarmListe().some((a) => a.typ === "ende" && a.x === x)) z.push(ztZeile({ ohneBox: true, titel: "🔗 Staffel beendet: " + esc(x.name) + " informieren", detail: esc(staffelEndeGrund(x)), knoepfe: '<a class="btn" data-endinfo="' + key + '" href="https://wa.me/?text=' + encodeURIComponent(endeInfoText(x)) + '" target="_blank" rel="noopener">' + WA_SVG + "Staffel-Ende-Info senden</a>" }));
+  if (alarmListe().some((a) => a.typ === "ende" && a.x === x)) z.push(ztZeile({ ohneBox: true, titel: "🔗 Staffel beendet: " + esc(x.name) + " informieren", detail: "Weil " + esc(staffelEndeGrund(x)) + ".", knoepfe: '<a class="btn" data-endinfo="' + key + '" href="https://wa.me/?text=' + encodeURIComponent(endeInfoText(x)) + '" target="_blank" rel="noopener">' + WA_SVG + "Staffel-Ende-Info senden</a>" }));
   if (wRueck(x)) z.push(ztZeile({ feld: "waescheZurueck", key: key, done: !!x.waescheZurueck, titel: "🧺 Wäsche zurück", doneTxt: "Wäsche zurück am " + ztAm(x.waescheZurueck), knoepfe: '<button type="button" class="btn" data-wz="' + key + '">✓ Wäsche ist zurück</button>' }));
   if (endreinFaellig(x)) z.push(ztZeile({ feld: "endreinBezahlt", key: key, done: !!x.endreinBezahlt, rot: endreinUeberfaellig(x) || endreinInfoOffen(x),
     titel: "🪣 Endreinigung der Staffel " + esc(chf(P.reinigung)) + (x.endreinBezahlt ? "" : endreinUeberfaellig(x) ? " überfällig seit " + esc(fmtTag(endreinFrist(x))) : ", Frist bis " + esc(fmtTag(endreinFrist(x)))),
@@ -5678,10 +5678,10 @@ function bestText(x, abgelehnt) {
 function staffelEndeGrund(b) {
   const st = schweifStop(b);
   if (!(st.stopper && st.stopper.sb) && st.k !== b.dep && diffDays(b.dep, st.k) >= P.minNaechte)   // Stichtag vorbei
-    return "bis " + STICHTAG_TAGE + " Tage vor " + (st.stopper ? "dem Termin von " + st.stopper.name : st.art === "kante" ? "dem Ende der Tiefsaison" : "dem nächsten Airbnb-Gast") + " (" + (st.art === "kante" && !st.stopper ? "letzte Nacht " + fmtTag(addDays(st.k, -1)) : fmtTag(st.k)) + ") keine weitere Familie angeschlossen hat";
-  if (st.stopper && !st.stopper.sb) return st.k === b.dep ? "direkt danach folgt der Termin von " + st.stopper.name + " mit Reinigung durch die Eltern" : "danach folgt der Termin von " + st.stopper.name + " mit Reinigung durch die Eltern, und für eine weitere Familie bleiben weniger als " + P.minNaechte + " Nächte";
-  if (st.art === "kante") return diffDays(b.dep, st.k) < P.minNaechte ? "die Tiefsaison endet" : "die Tiefsaison endet danach";
-  return "danach kommt ein Airbnb-Gast, und für eine weitere Familie bleiben weniger als " + P.minNaechte + " Nächte";
+    return "sich bis " + STICHTAG_TAGE + " Tage vor " + (st.stopper ? "dem Termin von " + st.stopper.name : st.art === "kante" ? "dem Ende der Tiefsaison" : "dem nächsten Airbnb-Gast") + " (" + (st.art === "kante" && !st.stopper ? "letzte Nacht " + fmtTag(addDays(st.k, -1)) : fmtTag(st.k)) + ") keine weitere Familie angeschlossen hat";
+  if (st.stopper && !st.stopper.sb) return st.k === b.dep ? "direkt danach der Termin von " + st.stopper.name + " mit Reinigung durch die Eltern folgt" : "danach der Termin von " + st.stopper.name + " mit Reinigung durch die Eltern folgt und für eine weitere Familie weniger als " + P.minNaechte + " Nächte bleiben";
+  if (st.art === "kante") return diffDays(b.dep, st.k) < P.minNaechte ? "die Tiefsaison endet" : "die Tiefsaison danach endet";
+  return "danach ein Airbnb-Gast kommt und für eine weitere Familie weniger als " + P.minNaechte + " Nächte bleiben";
 }
 // Alarme für Papi: Mitteilungen, die fällig sind, weil sich bei einer Staffel etwas geändert hat
 function alarmListe() {
@@ -5691,7 +5691,7 @@ function alarmListe() {
     if (rolleAenderung(x) && rolleJetzt(x) === "folge") out.push({ typ: "waesche", x: x, text: "<b>" + esc(x.name) + "</b> (" + esc(fmtTag(x.arr)) + " bis " + esc(fmtTag(x.dep)) + ") bringt jetzt eigene Wäsche: vor ihm beginnt eine andere Familie die Staffel." });
     const st = schweifStop(x);
     const durchFam = st.stopper && !st.stopper.sb && diffDays(x.dep, st.k) < P.minNaechte;   // eine Familie ohne Selbstreinigung folgt direkt
-    if (rkVon(x) === "e" && !x.endeInfo && !!x.bescheid && (durchFam ? !!(st.stopper.bestaetigt && x.bestaetigt && st.stopper.bestaetigt > x.bestaetigt) : true)) out.push({ typ: "ende", x: x, text: "Die Staffel von <b>" + esc(x.name) + "</b> (" + esc(fmtTag(x.arr)) + " bis " + esc(fmtTag(x.dep)) + ") ist beendet: " + esc(staffelEndeGrund(x)) + ". Die Endreinigung (" + esc(chf(P.reinigung)) + ") wird fällig." });
+    if (rkVon(x) === "e" && !x.endeInfo && !!x.bescheid && (durchFam ? !!(st.stopper.bestaetigt && x.bestaetigt && st.stopper.bestaetigt > x.bestaetigt) : true)) out.push({ typ: "ende", x: x, text: "Die Staffel von <b>" + esc(x.name) + "</b> (" + esc(fmtTag(x.arr)) + " bis " + esc(fmtTag(x.dep)) + ") ist beendet, weil " + esc(staffelEndeGrund(x)) + ". Die Endreinigung (" + esc(chf(P.reinigung)) + ") wird fällig." });
   });
   return out;
 }
@@ -6413,7 +6413,7 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
     const z = [], zs = [], zh = [], mon = [];
     const vz = [];   // Lücke / «Kurzfristig frei»: steht ganz oben unter dem Datum, damit es nicht unter dem Bildschirmrand verschwindet   // mon: Erklärung der Monatsfarbe, steht zuoberst
     const stay = BUCH.filter((b) => b.arr <= k && k < b.dep), abr = BUCH.filter((b) => b.dep === k), zb = stay.length ? zh : z;
-    stay.filter((b) => b.sb && rkVon(b) === "e").forEach((b) => zh.push(rkVon(b) === "e" ? "<b>Staffel:</b> Gebucht mit Selbstreinigung. Die Staffel " + (b.dep < heuteKey() ? "endete" : "endet") + " bei dieser Buchung am " + esc(fmtTag(b.dep)) + ", weil die Eltern reinigen müssen: " + esc(staffelEndeGrund(b)) + ". Die Endreinigung (" + chf(P.reinigung) + ") wird fällig " + symBtn("b-staffel", "🔗") + "." : "<b>Staffel:</b> Gebucht mit Selbstreinigung. Die Staffel geht nach dieser Buchung weiter " + symBtn("b-staffel", "🔗") + "."));
+    stay.filter((b) => b.sb && rkVon(b) === "e").forEach((b) => zh.push(rkVon(b) === "e" ? "<b>Staffel:</b> Gebucht mit Selbstreinigung. Die Staffel " + (b.dep < heuteKey() ? "endete" : "endet") + " bei dieser Buchung am " + esc(fmtTag(b.dep)) + ", weil " + esc(staffelEndeGrund(b)) + ". Die Endreinigung (" + chf(P.reinigung) + ") wird fällig " + symBtn("b-staffel", "🔗") + "." : "<b>Staffel:</b> Gebucht mit Selbstreinigung. Die Staffel geht nach dieser Buchung weiter " + symBtn("b-staffel", "🔗") + "."));
     stay.filter((b) => !b.prov).forEach(() => zs.push(lockSvg(false) + " <b>Gesichert:</b> Dieser Aufenthalt ist in Airbnb gesperrt " + symBtn("b-prov", "🔒") + "."));
     stay.filter((b) => b.prov).forEach((b) => {
       if (provKonflikt(b)) { zs.push("⚠️ <b>Konflikt:</b> Ein Airbnb-Gast hat sich auf diese Tage eingetragen. Der Aufenthalt muss weichen " + symBtn("b-prov", "🔓") + "."); return; }
