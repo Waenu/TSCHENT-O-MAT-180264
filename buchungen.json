@@ -26,13 +26,6 @@
       "status": "storniert"
     },
     {
-      "name": "Deborah",
-      "arr": "2026-11-16",
-      "dep": "2026-11-18",
-      "status": "storniert",
-      "freigegeben": "2026-11-11T16:31"
-    },
-    {
       "name": "Miriam",
       "arr": "2026-11-20",
       "dep": "2026-11-22",
@@ -59,10 +52,6 @@
     }
   ],
   "logbuch": [
-    {
-      "t": "2026-10-27T21:25",
-      "text": "Bestätigt: Manuel, Mi 17.03.2027 bis Sa 20.03.2027, CHF 165"
-    },
     {
       "t": "2026-10-27T21:25",
       "text": "Bescheid gegeben: Manuel, Mi 17.03.2027 bis Sa 20.03.2027"
@@ -858,6 +847,10 @@
     {
       "t": "2026-11-11T16:31",
       "text": "In Airbnb freigegeben: Deborah, Mo 16.11.2026 bis Mi 18.11.2026"
+    },
+    {
+      "t": "2026-11-11T16:41",
+      "text": "Endgültig gelöscht: Deborah, Mo 16.11.2026 bis Mi 18.11.2026"
     }
   ]
 }
