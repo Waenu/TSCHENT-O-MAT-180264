@@ -2,6 +2,23 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.123.2.0",
+      "datum": "2026-11-11",
+      "titel": "Staffel: Änderung melden, wenn jemand davor beginnt",
+      "arten": [
+        "Funktion",
+        "Text"
+      ],
+      "punkte": [
+        "Setzt sich jemand vor einen bisherigen Staffelbeginn, heisst die offene Aufgabe in der Verwaltung «🔔 Änderung: … informieren» und nennt, wer jetzt vor ihr beginnt.",
+        "Die WhatsApp dazu nennt den neuen Staffelbeginn mit Namen und Datum, sagt, dass keine Betten bezogen sind und eigene Wäsche mitkommt, und verweist auf die neue Liste «Anreise-Wäsche».",
+        "Das Kind sieht auf der Startseite «🧺 Neu bringst du eigene Wäsche mit» mit dem Namen der Person, die jetzt vor ihm beginnt.",
+        "Die Warnung beim Buchen vor einer bestehenden Staffel ist klarer: Du findest fertig bezogene Betten vor, musst aber danach die Bettwäsche ungewaschen zu den Eltern bringen oder schicken.",
+        "Checkliste: «Reissverschluss zumachen, damit er in der Waschmaschine nicht kaputt geht»; «ungewaschen» ist gelb hervorgehoben.",
+        "Eine noch nicht bestätigte Anfrage heisst beim Kind «Anfrage hier ausblenden (nur auf diesem Handy)», darunter: «Willst du absagen? Melde dich bei den Eltern.» Vor dem Ausblenden erklärt die App, dass die Eltern nichts davon erfahren."
+      ]
+    },
+    {
       "v": "2.123.1.2",
       "datum": "2026-11-11",
       "titel": "Willkommenstext von den Eltern",

@@ -1396,7 +1396,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.123.1.2";
+let VERSION = "2.123.2.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2359,7 +2359,7 @@ function begriffeFuellen() {
   set("bc-ruhe", RUHE.length ? "<p>" + filmGlossar("staffel") + "</p>" + bildRuhe() + "<ul><li>Möglich " + ruhe + ".</li>" +
     "<li>Selbst reinigt ihr in der Familienstaffel, ohne Freunde. Mit Freunden reinigen die Eltern. Wie die Staffel funktioniert, steht unter «Familienstaffel» " + symBtn("b-staffel", "🔗") + "." + " Gewählt wird im Feld «Wie möchtest du buchen?» " + symBtn("b-auswahl", "🔽") + "</li>" +
     "<li>Alles aus Stoff bringt ihr selbst mit: frische Bettwäsche, Frottiertücher und Waschlappen, dazu " + WAESCHE_FIX.map((w) => w[1] + " " + (w[0] === "Geschirrtuch" ? "Geschirrtücher" : w[0])).join(" und ") + " (pro Aufenthalt). Die Betten bezieht ihr selbst. Bettdecken und Kissen nie ohne frischen Duvet- und Kissenbezug benutzen. Alles nehmt ihr wieder mit. Nur die Moltons bleiben nach dem Benutzen auf der Matratze. Die Liste mit den Mengen für eure Personenzahl findet ihr nach der Bestätigung im Knopf «🧳 Anreise-Wäsche» auf der Startseite, zum Abhaken.</li>" +
-    "<li><b>Wer die Staffel beginnt:</b> Die Wohnung ist gereinigt und bezogen, ihr bringt keine Wäsche. Beim Abreisen zieht ihr die Betten ab (die Moltons bleiben) und nehmt die Wäsche mit. Ihr bringt sie den Eltern oder sendet sie per Post, spätestens " + WAESCHE_TAGE + " Tage nach der Rückreise, <b>ungewaschen</b>: Wascht sie nie selbst. Das Porto zahlt, wer sendet. Beim Buchen wählt ihr, ob ihr bringt oder sendet. Wie ihr die Duvets und Kissen für die Wäsche vorbereitet, steht in der Reinigungs-Checkliste, die ihr nach der Bestätigung bekommt.</li>" +
+    "<li><b>Wer die Staffel beginnt:</b> Die Wohnung ist gereinigt und bezogen, ihr bringt keine Wäsche. Beim Abreisen zieht ihr die Betten ab (die Moltons bleiben) und nehmt die Wäsche mit. Ihr bringt sie den Eltern oder sendet sie per Post, spätestens " + WAESCHE_TAGE + " Tage nach der Rückreise, <span class='hl'>ungewaschen</span>: Wascht sie nie selbst. Das Porto zahlt, wer sendet. Beim Buchen wählt ihr, ob ihr bringt oder sendet. Wie ihr die Duvets und Kissen für die Wäsche vorbereitet, steht in der Reinigungs-Checkliste, die ihr nach der Bestätigung bekommt.</li>" +
     "<li>Wer geht, reinigt: WC putzen, staubsaugen, Küche sauber, Abfall entsorgen, alles picobello.</li>" +
     "<li>Ihr zahlt den Eltern noch keine Reinigung (" + chf(P.reinigungSelbst) + "). Die Endreinigung durch die Eltern ist trotzdem Pflicht, weil sie ihren Standard wahren wollen.</li></ul>" : "<p>Zurzeit gibt es keine Zeiten, in denen ihr selbst reinigen könnt.</p>");
   set("bc-endrein", "<p><b>Aufwand</b></p><ul>" +
@@ -2527,7 +2527,7 @@ function staffelWarnung(d) {
   if (!ARR || !DEP) return "";   // erst warnen, wenn der Aufenthalt (Anreise und Abreise) gewählt ist
   if (d.SM && S.selbst === "Ja") {   // Staffel: wird jemand durch diese Buchung vom Starter zum Folgenden?
     const sv = starterVerlieren(ARR, DEP);
-    return sv.length ? "Mit deiner Staffel beginnt jetzt ihr die Kette. " + (sv.length === 1 ? sv[0] + " war" : sv.join(" und ") + " waren") + " bisher der Beginn und " + (sv.length === 1 ? "bringt" : "bringen") + " dann eigene Wäsche mit. Die Eltern geben Bescheid." : "";
+    return sv.length ? "Mit deiner Buchung beginnst du jetzt die Staffel: Du findest fertig bezogene Betten vor, musst aber danach die Bettwäsche ungewaschen zu den Eltern bringen oder schicken. " + (sv.length === 1 ? sv[0] + " war" : sv.join(" und ") + " waren") + " bisher der Beginn und " + (sv.length === 1 ? "bringt" : "bringen") + " nach dir eigene Wäsche mit. Die Eltern geben Bescheid." : "";
   }
   const ohneSelbst = d.SM ? S.selbst === "Nein" : true;
   if (!ohneSelbst) return "";
@@ -3877,7 +3877,7 @@ const waescheListe = (n) => WAESCHE.filter((w) => !/^Küchentuch/.test(w[0])).ma
 let WAESCHE = [["Duvetbezug", 1], ["Kissenbezug", 1], ["Spannleintuch", 1], ["Frottiertuch gross", 2], ["Frottiertuch klein", 2], ["Küchentuch", 1], ["Waschlappen", 1]];
 // Wäsche zurückgeben (nur wer die Staffel beginnt und die Wäsche bringt oder sendet): Untermenü mit den Einzelschritten
 const WR_TITEL = "🧺 Duvets und Kissen für die Wäsche vorbereiten";
-const WR_SCHRITTE = ["Auf der Terrasse ausschütteln", "Umstülpen und nochmals ausschütteln", "Reissverschluss zumachen (sonst geht es nicht in die Waschmaschine)", "Zusammenlegen"];
+const WR_SCHRITTE = ["Auf der Terrasse ausschütteln", "Umstülpen und nochmals ausschütteln", "Reissverschluss zumachen, damit er in der Waschmaschine nicht kaputt geht", "Zusammenlegen"];
 const wrMit = (a) => (a.waesche === "senden" ? "📮 Wäsche per Post senden, spätestens " : a.waesche === "bringen" ? "🚗 Wäsche den Eltern bringen, spätestens " : "🧺 Wäsche den Eltern bringen oder per Post senden, spätestens ") + WAESCHE_TAGE + " Tage nach der Rückreise";
 const WR_NIE = "🚫 Nicht selbst waschen: Die Wäsche kommt ungewaschen zu den Eltern zurück";
 const wrListe = (a) => (a && a.sb && a.start ? WR_SCHRITTE.concat([WR_NIE, wrMit(a)]) : []);   // wer die Staffel beginnt, gibt die Wäsche zurück (seit 2.120.6.0 nach dem Beginn, nicht nach dem gewählten Weg)
@@ -3975,14 +3975,16 @@ function aufentZeigen() {
   document.getElementById("btnAnreise").hidden = !aw;   // Listen erst nach der Bestätigung durch Papi
   document.getElementById("btnCheck").hidden = !(a && a.ok);
   { const ws = document.getElementById("wsHinweis"), n = a && a.ok && a.sb && a.start && !a.waesche;   // Staffelbeginn erst nachträglich: Hinweis beim Kind (seit 2.120.6.0)
-    ws.hidden = !n; ws.innerHTML = n ? '<div class="note h"><b>🧺 Neu beginnst du die Staffel</b> (' + esc(fmtTag(a.arr)) + " bis " + esc(fmtTag(a.dep)) + "): Der Aufenthalt vor dir wurde abgesagt. Das Chalet ist bezogen, du bringst keine Wäsche mit. Dafür nimmst du die benutzte Wäsche ungewaschen mit und bringst oder sendest sie den Eltern, spätestens " + WAESCHE_TAGE + " Tage nach der Rückreise. Alles steht in der Reinigungs-Checkliste.</div>" : ""; }
+    const bk = a && a.ok && a.sb && !a.start && a.waesche ? BUCH.find((b) => b.arr === a.arr && b.dep === a.dep && eigenN(b.name)) : null, sbk = bk ? staffelBeginner(bk) : null;   // umgekehrt: jemand beginnt jetzt vor dir (seit 2.123.2.0)
+    if (!n && bk) { ws.hidden = false; ws.innerHTML = '<div class="note h"><b>🧺 Neu bringst du eigene Wäsche mit</b> (' + esc(fmtTag(a.arr)) + " bis " + esc(fmtTag(a.dep)) + "): " + (sbk && sbk !== bk ? esc(sbk.name) + " beginnt jetzt vor dir die Staffel" : "Vor dir beginnt jetzt jemand die Staffel") + ". Du findest keine bezogenen Betten vor. Was du mitbringst, steht unter «Anreise-Wäsche».</div>"; } else
+    ws.hidden = !n, ws.innerHTML = n ? '<div class="note h"><b>🧺 Neu beginnst du die Staffel</b> (' + esc(fmtTag(a.arr)) + " bis " + esc(fmtTag(a.dep)) + "): Der Aufenthalt vor dir wurde abgesagt. Das Chalet ist bezogen, du bringst keine Wäsche mit. Dafür nimmst du die benutzte Wäsche ungewaschen mit und bringst oder sendest sie den Eltern, spätestens " + WAESCHE_TAGE + " Tage nach der Rückreise. Alles steht in der Reinigungs-Checkliste.</div>" : ""; }
   document.getElementById("aufStatus").hidden = !AUFENT || (!!TOKEN && !ABSENDER);   // Papi-Zugang in der Eltern-Ansicht: keine Kinder-Meldung «Anfrage gesendet»
   if (a) {
     const von = fmtTag(a.arr) + " bis " + fmtTag(a.dep);
     if (aw) document.getElementById("btnAnreiseSub").textContent = "Bestätigt: " + fmtTag(aw.arr) + " bis " + fmtTag(aw.dep);
     document.getElementById("btnCheckSub").textContent = "Bestätigt. Abreise: " + fmtTag(a.dep);
   }
-  document.getElementById("aufStatus").innerHTML = AUFENT && aufAbgelehnt() ? '<div class="note h"><b>❌ Abgelehnt:</b> Deine Anfrage vom ' + esc(fmtTag(AUFENT.arr)) + ' bis ' + esc(fmtTag(AUFENT.dep)) + ' haben die Eltern abgelehnt. Melde dich bei ihnen. <button type="button" class="ov-back" data-ok="1">OK, gelesen</button></div>' : AUFENT ? '<div class="note h"><b>📨 Anfrage gesendet:</b> ' + esc(fmtTag(AUFENT.arr)) + ' bis ' + esc(fmtTag(AUFENT.dep)) + '. Sobald Papi sie bestätigt hat, erscheinen hier deine Knöpfe. Lade die Seite dann neu.</div><button type="button" class="ov-weg" data-weg="1">Anfrage ' + fmtTag(AUFENT.arr) + ' bis ' + fmtTag(AUFENT.dep) + ' nicht bestätigt? Entfernen</button>' : "";
+  document.getElementById("aufStatus").innerHTML = AUFENT && aufAbgelehnt() ? '<div class="note h"><b>❌ Abgelehnt:</b> Deine Anfrage vom ' + esc(fmtTag(AUFENT.arr)) + ' bis ' + esc(fmtTag(AUFENT.dep)) + ' haben die Eltern abgelehnt. Melde dich bei ihnen. <button type="button" class="ov-back" data-ok="1">OK, gelesen</button></div>' : AUFENT ? '<div class="note h"><b>📨 Anfrage gesendet:</b> ' + esc(fmtTag(AUFENT.arr)) + ' bis ' + esc(fmtTag(AUFENT.dep)) + '. Sobald ' + (PARTNER_ABS.indexOf(ABSENDER) >= 0 ? "Silvan" : "Papi") + ' sie bestätigt hat, erscheinen hier deine Knöpfe. Lade die Seite dann neu.</div><button type="button" class="ov-weg" data-weg="1">Anfrage hier ausblenden (nur auf diesem Handy)</button><p class="hint">Willst du absagen? Melde dich bei den Eltern.</p>' : "";
   {
     const st = document.getElementById("aufStatus"), kk = BUCH.filter((b) => ABSENDER && eigenN(b.name) && b.dep >= heuteKey() && provKonflikt(b));
     if (kk.length) { st.hidden = false; st.innerHTML += '<div class="note h rot-warn"><b>⚠️ Konflikt:</b> Für ' + kk.map((b) => esc(fmtTag(b.arr)) + " bis " + esc(fmtTag(b.dep))).join(" und ") + ' hat sich ein Airbnb-Gast eingetragen. Dein Termin stand mit Vorbehalt. Melde dich bei den Eltern.</div>'; }
@@ -4382,7 +4384,7 @@ function checkZeichnen() {
   const liste = checkListe(a);
   const done = liste.filter((i) => h[i]).length;
   const alle = liste.length > 0 && done === liste.length;
-  const btn = (i) => '<button type="button" class="chk-item' + (h[i] ? ' erledigt' : '') + '" data-chk="' + liste.indexOf(i) + '" aria-pressed="' + (h[i] ? 'true' : 'false') + '"><span class="box">' + (h[i] ? '✓' : '') + '</span><span>' + esc(i) + '</span></button>';
+  const btn = (i) => '<button type="button" class="chk-item' + (h[i] ? ' erledigt' : '') + '" data-chk="' + liste.indexOf(i) + '" aria-pressed="' + (h[i] ? 'true' : 'false') + '"><span class="box">' + (h[i] ? '✓' : '') + '</span><span>' + esc(i).replace(/ungewaschen/g, '<span class="hl">ungewaschen</span>') + '</span></button>';
   const teil = (titel, arr) => arr.length ? '<h3 class="chk-teil">' + titel + '</h3>' + arr.map(btn).join("") : "";
   const wr = wrListe(a), wrTeil = wr.length ? '<h3 class="chk-teil">🧺 Wäsche zurückgeben</h3><p class="chk-unter">' + WR_TITEL + '</p><div class="chk-einr">' + WR_SCHRITTE.map(btn).join("") + '</div>' + wr.slice(WR_SCHRITTE.length).map(btn).join("") : "";   // danach «nicht selbst waschen» und «senden/bringen»
   document.getElementById("ovCheckIn").innerHTML =
@@ -4625,7 +4627,7 @@ async function aufentWeg(e) {
   const so = e.target.closest("[data-stok]");
   if (so) { const l = stornoGelesen(); l.push(so.getAttribute("data-stok")); try { localStorage.setItem("tm2_stornook", JSON.stringify(l.slice(-50))); } catch (e2) {} aufentZeigen(); return true; }
   if (e.target.closest("[data-ok]")) { AUFENT = null; aufentSichern(); aufentZeigen(); return true; }
-  if (e.target.closest("[data-weg]") && (await appFrage("Willst du den Aufenthalt wirklich entfernen?", "Ja, entfernen"))) {
+  if (e.target.closest("[data-weg]") && (await appFrage(AUFENT && !BUCH.some((b) => b.arr === AUFENT.arr && b.dep === AUFENT.dep) ? "Die Anfrage verschwindet nur auf diesem Handy. Die Eltern erfahren davon nichts. Willst du absagen, melde dich bei ihnen. Trotzdem ausblenden?" : "Willst du den Aufenthalt wirklich entfernen?", AUFENT && !BUCH.some((b) => b.arr === AUFENT.arr && b.dep === AUFENT.dep) ? "Ja, ausblenden" : "Ja, entfernen"))) {
     AUFENT = null; aufentSichern(); aufentZeigen(); ovOeffnen("ovAnreise", false); ovOeffnen("ovCheck", false);
     return true;
   }
@@ -5111,7 +5113,7 @@ function zuTunKarte(x) {
       knoepfe: (gmFehlt(x) ? '<a class="btn" href="https://wa.me/?text=' + encodeURIComponent(gmErinnerText(x)) + '" target="_blank" rel="noopener">' + WA_SVG + "Erinnern</a>" : "") + (ge || !GM_KEY || GM_LISTEN === null ? gmPapiHtml(x, true) : "") + (ge ? '<button type="button" class="btn" data-ztset="kurtaxeAm" data-ztk="' + key + '">✓ Erledigt, Freunde angemeldet</button>' : "") }));
   }
   if (wNeuStart(x) && kommt) z.push(ztZeile({ feld: "waescheInfo", key: key, done: !!x.waescheInfo, titel: "🧺 Wäsche-Info: " + esc(x.name) + " beginnt jetzt die Staffel", detail: "Der Staffelbeginn davor wurde abgesagt. " + esc(x.name) + " bringt keine Wäsche mehr mit, nimmt aber die benutzte Wäsche mit.", doneTxt: "Wäsche-Info gegeben am " + ztAm(x.waescheInfo), knoepfe: '<a class="btn" data-wainfo="' + key + '" href="https://wa.me/?text=' + encodeURIComponent(waescheStartText(x)) + '" target="_blank" rel="noopener">' + WA_SVG + "Wäsche-Info senden</a>" }));
-  if (x.sb && x.waesche && !istStaffelStart(x.arr, x)) z.push(ztZeile({ feld: "waescheInfo", key: key, done: !!x.waescheInfo, titel: "🧺 Wäsche-Info: " + esc(x.name) + " bringt jetzt eigene Wäsche", doneTxt: "Wäsche-Info gegeben am " + ztAm(x.waescheInfo), knoepfe: '<a class="btn" data-wainfo="' + key + '" href="https://wa.me/?text=' + encodeURIComponent(waescheInfoText(x)) + '" target="_blank" rel="noopener">' + WA_SVG + "Wäsche-Info senden</a>" }));
+  if (x.sb && x.waesche && !istStaffelStart(x.arr, x)) z.push(ztZeile({ feld: "waescheInfo", key: key, done: !!x.waescheInfo, titel: "🔔 Änderung: " + esc(x.name) + " informieren, bringt jetzt eigene Wäsche", detail: (() => { const sb = staffelBeginner(x); return sb && sb !== x ? esc(sb.name) + " beginnt jetzt vor " + esc(x.name) + " die Staffel (ab " + esc(fmtTag(sb.arr)) + "). " + esc(x.name) + " findet keine bezogenen Betten vor und bringt eigene Wäsche mit." : ""; })(), doneTxt: "Wäsche-Info gegeben am " + ztAm(x.waescheInfo), knoepfe: '<a class="btn" data-wainfo="' + key + '" href="https://wa.me/?text=' + encodeURIComponent(waescheInfoText(x)) + '" target="_blank" rel="noopener">' + WA_SVG + "Wäsche-Info senden</a>" }));
   if (alarmListe().some((a) => a.typ === "ende" && a.x === x)) z.push(ztZeile({ ohneBox: true, titel: "🔗 Staffel beendet: " + esc(x.name) + " informieren", detail: esc(staffelEndeGrund(x)), knoepfe: '<a class="btn" data-endinfo="' + key + '" href="https://wa.me/?text=' + encodeURIComponent(endeInfoText(x)) + '" target="_blank" rel="noopener">' + WA_SVG + "Staffel-Ende-Info senden</a>" }));
   if (wRueck(x)) z.push(ztZeile({ feld: "waescheZurueck", key: key, done: !!x.waescheZurueck, titel: "🧺 Wäsche zurück", doneTxt: "Wäsche zurück am " + ztAm(x.waescheZurueck), knoepfe: '<button type="button" class="btn" data-wz="' + key + '">✓ Wäsche ist zurück</button>' }));
   if (x.betrag > 0 && !(prov && !x.bezahlt && konf)) z.push(ztZeile({ feld: "bezahlt", key: key, done: !!x.bezahlt, titel: "💳 Zahlung " + esc(chf(x.betrag)) + (x.bezahlt ? "" : kommt ? " (fällig nach der Abreise)" : " offen"), doneTxt: "Zahlung eingegangen am " + ztAm(x.bezahlt), knoepfe: '<button type="button" class="btn" data-bez="' + key + '">✓ Zahlung eingegangen</button>' }));
@@ -5147,6 +5149,11 @@ document.addEventListener("click", (e) => { const sm = e.target.closest && e.tar
 // Neue Verwaltung: pro Kind und Partner ein aufklappbarer Titel mit Zähler (gleiche Fälle wie der blaue Knopf «Verwaltung»)
 const PERS_STAND = new Map();   // vom Nutzer auf- oder zugeklappte Personen (bis zum Neuladen)
 document.addEventListener("click", (e) => { const sm = e.target.closest && e.target.closest("details.pers > summary"); if (!sm) return; const d = sm.parentNode; PERS_STAND.set(d.getAttribute("data-pers"), !d.open); });
+function staffelBeginner(x) {   // wer die Staffel von x beginnt (x selbst, wenn niemand davor) (seit 2.123.2.0)
+  let cur = x;
+  for (let i = 0; i < 30; i++) { const v = BUCH.find((b) => b.sb && b !== cur && b.dep <= cur.arr && cur.arr <= staffelOffenBis(b)); if (!v) return cur; cur = v; }
+  return cur;
+}
 const wRueck = (x) => !!(x.sb && istStaffelStart(x.arr, x));   // beginnt die Staffel: nimmt die benutzte Wäsche mit und bringt oder sendet sie (seit 2.120.6.0 auch ohne gewählten Weg)
 const wNeuStart = (x) => wRueck(x) && !x.waesche;   // beginnt die Staffel erst nachträglich (Staffelbeginn davor storniert), hat den Weg nie gewählt
 const waescheOffen = (x) => wRueck(x) && !x.waescheZurueck;
@@ -5655,7 +5662,7 @@ function aufgabenVon(x) {   // offene Aufgaben zu einem Aufenthalt, kurz (gleich
   if (!x.bescheid) out.push("Bescheid geben");
   if (pimOffen(x)) out.push("in Pimlical eintragen");
   if (gmOffen(x)) out.push(gmFehlt(x) ? "Liste der Freunde fehlt noch" : "Freunde für die Kurtaxe anmelden");
-  if (x.sb && x.waesche && !istStaffelStart(x.arr, x) && !x.waescheInfo) out.push("Wäsche-Info senden");
+  if (x.sb && x.waesche && !istStaffelStart(x.arr, x) && !x.waescheInfo) out.push("Änderung melden: bringt jetzt eigene Wäsche");
   if (alarmListe().some((a) => a.typ === "ende" && a.x === x)) out.push("Staffel-Ende-Info senden");
   if (x.dep < h && zahlOffen(x)) out.push("Zahlung offen");
   if (x.dep < h && wRueck(x) && !x.waescheZurueck) out.push("Wäsche zurück quittieren");
@@ -5663,7 +5670,7 @@ function aufgabenVon(x) {   // offene Aufgaben zu einem Aufenthalt, kurz (gleich
   return out;
 }
 function waescheStartText(x) { return "Hoi " + x.name + ", für deinen Aufenthalt vom " + fmtTagV(x.arr) + " bis " + fmtTagV(x.dep) + " hat sich etwas geändert: Der Aufenthalt vor dir wurde abgesagt, du beginnst jetzt die Staffel. Das Chalet ist gereinigt und bezogen, du bringst keine Wäsche mit. Beim Abreisen ziehst du die Betten ab (die Moltons bleiben) und nimmst die benutzte Wäsche ungewaschen mit. Bring sie uns oder sende sie per Post, spätestens " + WAESCHE_TAGE + " Tage nach der Rückreise. Alles steht in deiner Reinigungs-Checkliste im TSCHENT-O-MAT."; }
-function waescheInfoText(x) { return "Hoi " + x.name + ", für deinen Aufenthalt vom " + fmtTagV(x.arr) + " bis " + fmtTagV(x.dep) + " hat sich etwas geändert: Vor dir beginnt jetzt eine andere Familie die Staffel. Du bringst deshalb eigene Bettwäsche, Handtücher und Küchentücher mit, siehe «Anreise-Wäsche» im TSCHENT-O-MAT. Die benutzte Wäsche musst du nicht zurückbringen. Das Chalet reinigst du am Schluss selbst."; }
+function waescheInfoText(x) { const sb = staffelBeginner(x), wer = sb && sb !== x ? sb.name + " beginnt jetzt vor dir die Staffel (ab " + fmtTagV(sb.arr) + ")" : "Vor dir beginnt jetzt eine andere Familie die Staffel"; return "Hoi " + x.name + ", für deinen Aufenthalt vom " + fmtTagV(x.arr) + " bis " + fmtTagV(x.dep) + " hat sich etwas geändert: " + wer + ". Du findest deshalb keine bezogenen Betten vor und bringst eigene Bettwäsche, Handtücher und Küchentücher mit. Die neue Liste dazu findest du im TSCHENT-O-MAT unter «Anreise-Wäsche». Das Chalet reinigst du am Schluss selbst."; }
 async function erinnertVermerken(key) {
   const jetzt = jetztStr();
   try {
