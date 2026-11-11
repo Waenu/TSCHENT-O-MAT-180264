@@ -4,12 +4,12 @@
     {
       "v": "2.125.3.0",
       "datum": "2026-11-11",
-      "titel": "Testmodus über den einarmigen Banditen",
+      "titel": "Testmodus an neuer Stelle",
       "arten": [
         "Funktion"
       ],
       "punkte": [
-        "Der Testmodus (Simulation von «heute») schaltet sich jetzt mit dreimal schnell Tippen auf den einarmigen Banditen 🎰 im Kopf ein und aus, nicht mehr über den Monatsnamen."
+        "Der Testmodus (Simulation von «heute») schaltet sich jetzt über █████ ein und aus."
       ]
     },
     {
@@ -518,7 +518,7 @@
       "punkte": [
         "«Speichern» beim Schlüssel des Briefkastens tat nichts, wenn mehr als eine Buchung mit Freunden in der Verwaltung stand. Behoben.",
         "Ist der Schlüssel falsch, erscheint das Eingabefeld wieder.",
-        "Der Schlüssel der Gästemeldung lässt sich auch im versteckten Menü beim Token speichern, ändern oder entfernen (fünfmal auf die Versionszeile tippen)."
+        "Der Schlüssel der Gästemeldung lässt sich auch im versteckten Menü beim Token speichern, ändern oder entfernen (█████)."
       ]
     },
     {
@@ -1138,12 +1138,12 @@
     {
       "v": "2.107.1.0",
       "datum": "2026-11-07",
-      "titel": "Testmodus: Schalter auf dem Monatsnamen, Kalender folgt den Tagesschritten",
+      "titel": "Testmodus: Schalter verschoben, Kalender folgt den Tagesschritten",
       "arten": [
         "Funktion"
       ],
       "punkte": [
-        "Der versteckte Schalter für den Testmodus sitzt jetzt auf dem Monatsnamen über dem Kalender: dreimal schnell tippen schaltet ein oder aus. Die alte Stelle links oben im Kopf entfällt.",
+        "Der versteckte Schalter für den Testmodus sitzt jetzt █████. Die alte Stelle entfällt.",
         "Mit ◀ und ▶ in der Testleiste wechselt der Kalender bei einem Monatswechsel den Monat mit."
       ]
     },
