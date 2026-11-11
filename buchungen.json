@@ -16,14 +16,6 @@
   ],
   "logbuch": [
     {
-      "t": "2026-10-28T13:36",
-      "text": "Entfernt: Miriam, Sa 19.06.2027 bis Sa 26.06.2027"
-    },
-    {
-      "t": "2026-10-28T13:37",
-      "text": "Bestätigt: Miriam, Sa 19.06.2027 bis Sa 26.06.2027, CHF 625, mit Vorbehalt"
-    },
-    {
       "t": "2026-10-28T13:38",
       "text": "Bescheid gegeben: Miriam, Sa 19.06.2027 bis Sa 26.06.2027"
     },
@@ -818,6 +810,16 @@
     {
       "t": "2026-11-11T21:25",
       "text": "Endgültig gelöscht: Sarah, Di 17.11.2026 bis Do 19.11.2026 (abgelehnte Testanfrage)"
+    },
+    {
+      "t": "2026-11-11T22:07",
+      "text": "Reinigungstag gesetzt: Do 26.11.2026"
+    }
+  ],
+  "reinigung": [
+    {
+      "tag": "2026-11-26",
+      "ab": "2026-11-16"
     }
   ]
 }
