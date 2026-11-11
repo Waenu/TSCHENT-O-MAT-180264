@@ -63,7 +63,7 @@ Anschliessend prüfen, dass `origin/main:einstellungen.json` die neue Version tr
 2. Termin anpassen bei Konflikt: gebaut (2.122.0.0), Zeile «✂️ Konflikt mit Airbnb-Gast» mit Nachfragen, Anpassen (Nächte anteilig, Reinigung voll) und Absagen ohne Kosten.
 3. Fehler bei «Einnahmen» («reading 'split'»): nicht nachstellbar, Wänu meldet sich.
 4. Zahlung: Knopf «Zahlung eingegangen» erscheint erst nach der Abreise; Wänu fragt, ob früher nötig.
-5. Stornierung 30 Tage für externe Gäste in Februar und Hochsaison, Regel danach offen.
+5. Stornierung: gebaut (2.122.1.0/2.122.2.0). Nur mit Freunden in Hochsaison und Februar, nie in einer Lücke: verbindlich, Absage bis 30 Tage vor Anreise, Freund sagt ab = neu rechnen. Keine Kosten bei später Absage (vorerst). Externe Gäste (Liselotte, Leo) laufen über eigene Verträge, nicht über die App.
 6. Reinigungsliste: Marianne gibt noch ihre Meinung (später nachfragen). Gartenkissen und Liegestühle stehen seit 2.120.3.0 in allen Listen (Annahme, Wänu prüft).
 7. Testdaten: Deborah 18.–21.11.2026, Miriam 10.–13.12.2026, Manuel 1.–4.3.2027, David 24.–27.3.2027 sind Tests; vor Version 3 entfernen (nur auf Wänus Ja). Davids persönlichen Link nach dem Test erneuern.
 8. Wänu testet am 11.11.2026 ausgiebig: Kurzfilm Saisons, Reinigung ab 18, Minderjährige, Wäsche (Geschirrtücher, ungewaschen zurück), Checkliste in einem Stück, Trennung Partner/Kind, Anreise-Wäsche für späteren Aufenthalt, Staffelbeginn abgesagt (Wäsche-Info an den Nächsten).
