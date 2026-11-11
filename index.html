@@ -160,6 +160,11 @@
   .gm-k .gm-gs { display: flex; gap: 18px; } .gm-k .gm-gs label { display: flex; align-items: center; gap: 6px; min-height: 40px; }
   .gm-k.gm-ok { border-left: 4px solid var(--gruen); }
   .gm-k.gm-offen { border-left: 4px solid var(--hoch-line); }
+  .rt-z { display: flex; gap: 8px; align-items: flex-start; padding: 8px 10px; margin: 6px 0; border-radius: 6px; border-left: 4px solid var(--line); background: var(--surface); }
+  .rt-z.rt-fest, .rt-z.rt-selbst { border-left-color: var(--hoch-line); }
+  .rt-z.rt-spanne { border-left-color: var(--fest-line); }
+  .rt-z.rt-offen { opacity: .75; }
+  .rt-z small { color: var(--muted); }
   .gm-zu > summary { cursor: pointer; list-style: none; display: block; background: none; color: inherit; padding: 0; margin: 0; border: 0; font-weight: 400; white-space: normal; }
   .gm-zu > summary::-webkit-details-marker { display: none; }
   .gm-zu > summary::after { content: " ▾"; color: var(--akzent, inherit); }
@@ -1379,7 +1384,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.120.8.0";
+let VERSION = "2.121.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -5050,6 +5055,50 @@ const waescheOffen = (x) => wRueck(x) && !x.waescheZurueck;
 function aufgZahl(x) { return x.dep >= heuteKey() ? aufgabenVon(x).length : (zahlOffen(x) ? 1 : 0) + (waescheOffen(x) ? 1 : 0); }   // wie punkteOffen
 const naechteTxt = (x) => { const n = diffDays(x.arr, x.dep); return n + (n === 1 ? "\u00a0Nacht" : "\u00a0Nächte"); };
 const nw = (t) => '<span class="nw">' + t + "</span>";   // nicht umbrechen
+
+// Reinigungstermine der Eltern (seit 2.121.0.0): alle künftigen, chronologisch.
+// Fest (orange): der nächste Gast kommt am Abreisetag (Wechseltag 10–16 Uhr). Spanne (blau): frühestens Abreise 10 Uhr, spätestens nächste Anreise 16 Uhr.
+// Grau: Staffel noch offen, die Endreinigung steht erst nach dem Stichtag fest.
+function reinigungsTermine() {
+  const h = heuteKey(), stays = [];
+  BUCH.forEach((x) => stays.push({ arr: x.arr, dep: x.dep, name: x.name, fam: true, x: x }));
+  const famNacht = (k) => BUCH.some((b) => b.arr <= k && k < b.dep);
+  (BELEGT_AIR ? gaesteBalken() : []).forEach((g) => { if (!famNacht(g.arr)) stays.push({ arr: g.arr, dep: g.end, name: g.name, typ: g.typ }); });
+  if (BELEGT_AIR) {   // Airbnb-Nächte ohne Namen zu Blöcken zusammenfassen
+    const frei = Array.from(BELEGT_AIR).filter((k) => !famNacht(k) && !stays.some((st) => !st.fam && st.arr <= k && k < st.dep)).sort();
+    frei.forEach((k) => { const l = stays[stays.length - 1]; if (l && l.ohneName && l.dep === k) l.dep = addDays(k, 1); else stays.push({ arr: k, dep: addDays(k, 1), name: "Airbnb (ohne Name)", typ: "airbnb", ohneName: true }); });
+  }
+  const naechste = (k) => stays.filter((st) => st.arr >= k).sort((p, q) => (p.arr < q.arr ? -1 : 1))[0] || null;
+  const out = [];
+  stays.forEach((st) => {
+    if (st.typ === "block") return;   // blockiert: kein Gast, keine Reinigung
+    if (st.fam && st.x.sb && staffelOffen(st.x)) {
+      const sp = schweifStop(st.x);
+      if (!(sp.stopper && sp.stopper.sb) && sp.k >= h) out.push({ art: "offen", frueh: st.dep, spaet: sp.k, st: st, nach: sp.stopper || null, stich: staffelStichtag(st.x) });
+      return;
+    }
+    if (st.fam && rkVon(st.x) !== "e") return;
+    const n = naechste(st.dep), spaet = n ? n.arr : "";
+    if ((spaet || st.dep) < h) return;
+    const eltern = st.typ === "fam" && /\b(Marianne|ich|Mami|Papi|Silvan|Eltern)\b/i.test(st.name || "");   // eigener Aufenthalt der Eltern (Pimlical «/Familie» mit Marianne oder «ich»): ihr reinigt beim Gehen selbst
+    out.push({ art: eltern ? "selbst" : n && n.arr === st.dep ? "fest" : "spanne", frueh: st.dep, spaet: spaet, st: st, nach: n });
+  });
+  return out.sort((p, q) => (p.frueh < q.frueh ? -1 : p.frueh > q.frueh ? 1 : 0));
+}
+function reinigungsListeHtml() {
+  const l = reinigungsTermine();
+  if (!l.length) return '<p class="hint">Keine Reinigung geplant.</p>';
+  const wer = (st) => esc(st.name) + (st.fam && st.x.sb ? " (Ende der Staffel)" : st.fam && st.x.prov ? " (mit Vorbehalt)" : "");
+  const vor = (n) => (n ? ", vor " + esc(n.name) : "");
+  return '<p class="hint">Alle Reinigungen der Eltern, chronologisch. 🟧 fester Wechseltag, 🟦 Spanne von der Abreise (10 Uhr) bis zur nächsten Anreise (16 Uhr), ⬜ Staffel noch offen.</p>' + l.map((r) => {
+    let t;
+    if (r.art === "fest") t = "<b>" + esc(fmtTag(r.frueh)) + "</b>, Wechseltag 10–16 Uhr";
+    else if (r.art === "selbst") t = "<b>" + esc(fmtTag(r.frueh)) + "</b>, ihr reist ab und reinigt selbst";
+    else if (r.art === "offen") t = "<b>" + esc(fmtTag(r.frueh)) + "</b> 10 Uhr bis <b>" + esc(fmtTag(r.spaet)) + "</b> 16 Uhr, steht fest am Stichtag " + esc(fmtTag(r.stich)) + " (bis dann kann eine Familie die Staffel weiterführen)";
+    else t = r.spaet ? "<b>" + esc(fmtTag(r.frueh)) + "</b> 10 Uhr bis <b>" + esc(fmtTag(r.spaet)) + "</b> 16 Uhr" : "ab <b>" + esc(fmtTag(r.frueh)) + "</b> 10 Uhr, noch kein Folgegast";
+    return '<div class="rt-z rt-' + r.art + '"><span class="rt-i">' + (r.art === "fest" || r.art === "selbst" ? "🟧" : r.art === "offen" ? "⬜" : "🟦") + "</span><span>" + t + "<br><small>nach " + wer(r.st) + vor(r.nach) + "</small></span></div>";
+  }).join("");
+}
 function persTitel(key, name, zeile, n, rot, mitMarke, offen, inhalt) {
   const marke = mitMarke ? '<span class="alarm-n' + (n ? (rot ? " rot" : "") : " ok") + '" title="' + (n ? n + (n === 1 ? " offener Punkt" : " offene Punkte") : "Alles erledigt") + '">' + (n || "✓") + "</span>" : "";
   return '<details class="pers' + (rot ? " rot" : n ? " fehlt" : "") + '" data-pers="' + esc(key) + '"' + (offen ? " open" : "") + '><summary><span class="ps-l"><span class="ps-n">' + name + '</span><span class="ps-b">' + zeile + "</span></span>" + marke + '</summary><div class="ps-in">' + inhalt + "</div></details>";
@@ -5371,6 +5420,8 @@ function bestZeigen() {
     if (ABSENDER) { k.innerHTML = s; return; }
     s += '<p class="hint">Pro Person ein Titel mit der nächsten Buchung. Die Zahl zeigt, wie viel dort noch zu tun ist, orange oder rot bei Dringendem (Konflikt, Airbnb-Sperre). ✓ heisst: alles erledigt. Darunter stehen die früheren Aufenthalte.</p>';
     s += persListe();
+    { const rl = reinigungsTermine(), r0 = rl.find((r) => r.art !== "offen") || rl[0];
+      s += '<div class="ps-abst"></div>' + persTitel("__reinigung", "🧽 Reinigungstermine", r0 ? "nächste: " + esc(fmtTag(r0.frueh)) + (r0.art === "spanne" && r0.spaet ? " bis " + esc(fmtTag(r0.spaet)) : "") : "keine geplant", 0, false, false, PERS_STAND.get("__reinigung") === true, reinigungsListeHtml()); }
     // Block «Weiteres»: offene Anfragen, Weihnachtssperre und alles zum Nachschlagen
     const xo = xmasOffen(), fremd = BUCH.filter((x) => ABS.indexOf(x.name) < 0).sort((p, q) => (p.arr < q.arr ? -1 : 1));   // fremd: Buchung ohne bekannten Namen (sollte nicht vorkommen)
     const nW = (xo.length ? 1 : 0) + fremd.reduce((n, x) => n + aufgZahl(x), 0);

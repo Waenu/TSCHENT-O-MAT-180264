@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.121.0.0",
+      "datum": "2026-11-11",
+      "titel": "Reinigungstermine der Eltern",
+      "arten": [
+        "Neu"
+      ],
+      "punkte": [
+        "Neu in der Verwaltung: «🧽 Reinigungstermine». Alle künftigen Reinigungen der Eltern, chronologisch: fester Wechseltag (orange), Spanne von der Abreise bis zur nächsten Anreise (blau), noch offene Staffel bis zum Stichtag (grau). Mit Wochentag, wer abreist und wer danach kommt."
+      ]
+    },
+    {
       "v": "2.120.8.0",
       "datum": "2026-11-11",
       "titel": "Staffel-Ende: Stichtag und Meldung auch bei Airbnb-Gast",
