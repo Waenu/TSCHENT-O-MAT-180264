@@ -118,6 +118,8 @@
   * { box-sizing: border-box; }
   :root { --fs: 1; --t-title: 1.05rem; --t-text: 1rem; --t-small: 0.85rem; }
   html { font-size: calc(16px * var(--fs)); }
+  html, body { overflow-x: clip; max-width: 100%; }   /* nichts darf seitlich überstehen: kein Hin-und-her-Schieben auf schmalen Handys (seit 2.125.2.0) */
+  #absageBox .btn { width: 100%; box-sizing: border-box; justify-content: center; } #absageBox[hidden] { display: none; } #absageBox .hint { margin: 4px 0 0; }
   html, body { margin: 0; }
   body {
     background: var(--bg);
@@ -782,7 +784,11 @@
   #bestKasten .zt-warn { border-color: #E5534B; color: #E5534B; cursor: default; }
   #bestKasten .zt-i { flex: 1; min-width: 0; }
   #bestKasten .zt-z.done .zt-t { opacity: .6; }
-  #bestKasten .zt-z.rot .zt-t { color: #E5534B; }
+  #bestKasten .zt-z.rot .zt-d { color: #E5534B; opacity: 1; }   /* dringend: Kästchen und Hinweis rot, Titel bleibt weiss (seit 2.125.2.0) */
+  #bestKasten .zt-leg { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; font-size: .85em; margin: 4px 0 10px; }
+  #bestKasten .zt-leg span { display: inline-flex; align-items: center; gap: 6px; }
+  #bestKasten .zt-leg i { display: inline-flex; width: 18px; height: 18px; border: 2px solid var(--fg); border-radius: 4px; font-style: normal; font-size: .8em; align-items: center; justify-content: center; }
+  #bestKasten .zt-leg i.r { border-color: #E5534B; color: #E5534B; } #bestKasten .zt-leg i.g { background: var(--gruen); border-color: var(--gruen); color: #0B2B22; }
   #bestKasten .zt-d { font-size: .9em; opacity: .85; margin-top: 2px; }
   #bestKasten .zt-ok { font-size: .9em; color: var(--gruen); margin-top: 2px; }
   #bestKasten .zt-k { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; align-items: center; }
@@ -1302,6 +1308,7 @@
     <div id="zahlBox" hidden></div>
     <div id="wsHinweis" hidden></div>
     <div id="gmBox" hidden></div>
+    <div id="absageBox" hidden></div>
   </nav>
 
   <div id="rechner" hidden>
@@ -1396,7 +1403,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.125.1.0";
+let VERSION = "2.125.2.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -4010,6 +4017,8 @@ function aufentZeigen() {
   {   // rote Zahlungsmeldung: bleibt, bis Papi die Zahlung verbucht hat (kein Schliessen-Knopf)
     const zb = document.getElementById("zahlBox"), zl = ABSENDER ? BUCH.filter((b) => eigenN(b.name) && zahlFaellig(b)) : [];
     const vorab = ABSENDER ? BUCH.filter((b) => eigenN(b.name) && b.betrag > 0 && !b.bezahlt && !b.prov && !zahlFaellig(b) && heuteKey() <= zahlFrist(b)) : [];   // schon vor der Abreise sichtbar, ruhig statt rot (seit 2.122.3.0)
+    { const ab = document.getElementById("absageBox"), l = (AUF_LISTE || []).filter((x) => x.ok && x.dep >= heuteKey());   // Stornierung anfragen: auf der Startseite (seit 2.125.2.0)
+      ab.hidden = !ABSENDER || !l.length; ab.innerHTML = ab.hidden ? "" : l.map((x) => '<div class="absage">' + (l.length > 1 ? '<p class="hint">' + esc(fmtTag(x.arr)) + " bis " + esc(fmtTag(x.dep)) + "</p>" : "") + absageKnopf(x) + "</div>").join(""); }
     const er = ABSENDER ? BUCH.filter((b) => eigenN(b.name) && endreinOffen(b)) : [];   // Endreinigung der Staffel (seit 2.125.0.0)
     zb.hidden = zl.length === 0 && vorab.length === 0 && er.length === 0;
     zb.innerHTML = vorab.map((b) => '<div class="note h"><b>💳 Zu bezahlen:</b> Für deinen Aufenthalt vom ' + esc(fmtTag(b.arr)) + " bis " + esc(fmtTag(b.dep)) + " sind <b>" + esc(chf(b.betrag)) + "</b> fällig, spätestens am " + esc(fmtTag(zahlFrist(b))) + ". Du kannst auch schon vorher überweisen, die Bankverbindung steht unter «Zahlung» " + symBtn("b-zahlung", "💰") + ".</div>").join("") + er.map((b) => { const an = endreinAnteile(b).filter((a) => a.name !== b.name); return '<div class="note h' + (endreinUeberfaellig(b) ? " rot-warn" : "") + '"><b>🪣 Endreinigung der Staffel' + (endreinUeberfaellig(b) ? " offen" : "") + ":</b> Eure Staffel endet mit deinem Aufenthalt (" + esc(fmtTag(b.arr)) + " bis " + esc(fmtTag(b.dep)) + "). Bitte überweise die Endreinigung von <b>" + esc(chf(P.reinigung)) + "</b> spätestens am " + esc(fmtTag(endreinFrist(b))) + "." + (an.length ? " Die Anteile von " + esc(an.map((a) => a.name + " (" + chf(a.chf) + ")").join(" und ")) + " holst du dir zurück." : "") + " Bankverbindung unter «Zahlung» " + symBtn("b-zahlung", "💰") + ".</div>"; }).join("") + zl.map((b) => '<div class="note h rot-warn"><b>💳 Zahlung offen:</b> Für deinen Aufenthalt vom ' + esc(fmtTag(b.arr)) + ' bis ' + esc(fmtTag(b.dep)) + ' sind <b>' + esc(chf(b.betrag)) + '</b> fällig. Die Frist war am ' + esc(fmtTag(zahlFrist(b))) + '. Bitte überweise jetzt, die Bankverbindung steht unter «Zahlung» ' + symBtn("b-zahlung", "💰") + '. Sobald Papi die Zahlung verbucht hat, verschwindet diese Meldung.</div>').join("");
@@ -4360,11 +4369,11 @@ function absageKnopf(a) {   // Stornierungsanfrage an die Eltern per WhatsApp (s
   if (!ABSENDER || a.dep < heuteKey()) return "";
   const p = PARTNER_ABS.indexOf(ABSENDER) >= 0;
   const t = (p ? "Hallo Marianne und Silvan" : "Hallo Mami und Papi") + ", ich möchte meinen Aufenthalt vom " + fmtTagV(a.arr) + " bis " + fmtTagV(a.dep) + " leider absagen. Könnt ihr ihn bitte im TSCHENT-O-MAT stornieren? Danke!\n\nLiebe Grüsse, " + ABSENDER;
-  return '<a class="btn" href="https://wa.me/?text=' + encodeURIComponent(t) + '" target="_blank" rel="noopener">' + WA_SVG + "Stornierung anfragen</a><p class=\"hint\">Die Eltern stornieren den Termin und bestätigen es dir per WhatsApp.</p>";
+  return '<a class="btn" href="https://wa.me/?text=' + encodeURIComponent(t) + '" target="_blank" rel="noopener">' + WA_SVG + "Stornierung anfragen" + '</a><p class="hint">Die Eltern stornieren den Termin und bestätigen es dir per WhatsApp.</p>';
 }
 function ovWeg(a) {
   return (a.ok
-    ? '<p class="hint">Bestätigt von den Eltern. Bei Änderungen melde dich bei ihnen.</p>' + absageKnopf(a)
+    ? '<p class="hint">Bestätigt von den Eltern. Bei Änderungen melde dich bei ihnen.</p>'
     : '<button type="button" class="ov-weg" data-weg="1">Aufenthalt entfernen</button>') +
     (a.ok ? rechDetails(a.rechnung, a.bestaetigt) : "") +
     '<p class="hint">Die Knöpfe verschwinden am Tag nach der Abreise von selbst (am ' + fmtTagV(addDays(a.dep, 1)) + ').</p>';
@@ -5581,6 +5590,7 @@ function bestZeigen() {
     s += '<div class="field"><label for="ansichtAls">👁️ Ansicht als</label><select id="ansichtAls"><option value="">Eltern</option>' + absOpt(ABSENDER) + '</select></div><p class="hint">Zeigt dir die Startseite so, wie dieses Kind sie sieht. Nur auf diesem Handy. Die Verwaltung bleibt dabei ausgeblendet, denn die Kinder sehen sie nicht.</p>';
     if (ABSENDER) { k.innerHTML = s; return; }
     s += '<p class="hint">Pro Person ein Titel mit der nächsten Buchung. Die Zahl zeigt, wie viel dort noch zu tun ist, orange oder rot bei Dringendem (Konflikt, Airbnb-Sperre). ✓ heisst: alles erledigt. Darunter stehen die früheren Aufenthalte.</p>';
+    s += '<div class="zt-leg"><span><i class="r"></i>dringend</span><span><i></i>offen</span><span><i class="g">✓</i>erledigt</span><span><i class="r">!</i>Hinweis</span></div><p class="hint">Dringend (rot) sind: in Airbnb sperren, ein Konflikt mit einem Airbnb-Gast, ein falsch gesperrter Abreisetag, eine Änderung, die du melden musst, und eine Endreinigung mit abgelaufener Frist oder geänderten Anteilen. Alles andere ist offen (weiss), bis du es abhakst.</p>';
     s += persListe();
     { const rl = reinigungsTermine(), r0 = rl.find((r) => r.art !== "offen") || rl[0];
       s += '<div class="ps-abst"></div>' + persTitel("__reinigung", "🧽 Reinigungstermine", r0 ? "nächste: " + esc(fmtTag(r0.frueh)) + (r0.art === "spanne" && r0.spaet ? " bis " + esc(fmtTag(r0.spaet)) : "") : "keine geplant", 0, false, false, PERS_STAND.get("__reinigung") === true, reinigungsListeHtml()); }

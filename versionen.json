@@ -2,6 +2,20 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.125.2.0",
+      "datum": "2026-11-11",
+      "titel": "Legende in der Verwaltung, Stornierung anfragen auf der Startseite",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Verwaltung: kleine Legende über den Personen (rot dringend, weiss offen, grün erledigt) mit der Erklärung, was als dringend gilt.",
+        "Dringende Aufgaben: Kästchen und Hinweis rot, der Titel bleibt weiss.",
+        "«Stornierung anfragen» steht jetzt auf der Startseite statt in der Reinigungs-Checkliste.",
+        "Auf schmalen Handys lässt sich die Seite nicht mehr seitlich verschieben; breite Handys nutzen weiterhin die volle Breite."
+      ]
+    },
+    {
       "v": "2.125.1.0",
       "datum": "2026-11-11",
       "titel": "Termin endgültig löschen",
