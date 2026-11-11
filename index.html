@@ -119,7 +119,8 @@
   :root { --fs: 1; --t-title: 1.05rem; --t-text: 1rem; --t-small: 0.85rem; }
   html { font-size: calc(16px * var(--fs)); }
   html, body { overflow-x: clip; max-width: 100%; }   /* nichts darf seitlich überstehen: kein Hin-und-her-Schieben auf schmalen Handys (seit 2.125.2.0) */
-  #absageBox .btn { width: 100%; box-sizing: border-box; justify-content: center; } #absageBox[hidden] { display: none; } #hochHinweis[hidden] { display: none; } #hochHinweis { margin-bottom: 12px; } #absageBox .hint { margin: 4px 0 0; }
+  #absageBox .btn { width: 100%; box-sizing: border-box; justify-content: center; } #absageBox[hidden] { display: none; }
+  .chem-ul { list-style: none; padding-left: 0; } .chem-ul li { padding-left: 1.1em; text-indent: -1.1em; } .chem-ul li::before { content: "◦"; display: inline-block; width: 1.1em; text-indent: 0; }   /* Cheminée Punkt 4: Aufzählung bündig, Folgezeilen eingerückt */ #hochHinweis[hidden] { display: none; } #hochHinweis { margin-bottom: 12px; } #absageBox .hint { margin: 4px 0 0; }
   html, body { margin: 0; }
   body {
     background: var(--bg);
@@ -1355,7 +1356,7 @@
         <p><b>Beim Feuern</b></p>
         <ol start="4">
           <li>Brennt das Feuer richtig gut:
-            <ul style="padding-left: 1.1em">
+            <ul class="chem-ul">
               <li>Schublade schliessen, Schieber offen lassen oder höchstens halb schliessen.</li>
               <li>Fenster wieder schliessen.</li>
               <li>Dunstabzug und Bad-Ventilatoren dürfen jetzt laufen. Die Ventis stellen selber ab.</li>
@@ -1404,7 +1405,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.125.6.1";
+let VERSION = "2.125.6.2";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -5867,12 +5868,20 @@ function sHilfe(terme) {
     for (let e = d; e && e.id !== "b-begriffe"; e = e.parentElement) if (e.hidden) return;
     const bc = d.querySelector(".bc"), sm = d.querySelector("summary");
     if (!bc) return;
-    const titel = (sm ? sm.textContent : "").replace(/\s+/g, " ").trim(), text = bc.textContent.replace(/\s+/g, " ").trim();
+    const titel = (sm ? sm.textContent : "").replace(/\s+/g, " ").trim(), text = sLesetext(bc);
     if (!sTrifft(titel + " " + text, terme)) return;
     const saetze = text.split(/(?<=[.!?:;])\s+/).filter((z) => terme.some((w) => sFold(z).indexOf(w) >= 0));
     out.push({ id: d.id, titel: titel, saetze: saetze });
   });
   return out;
+}
+function sLesetext(el) {   // nur Fliesstext: ohne Grafiken, Knöpfe und Zwischentitel, Absätze getrennt (seit 2.125.6.2)
+  const c = el.cloneNode(true);
+  c.querySelectorAll('svg, button, summary, [aria-hidden="true"], .exgrid, .exrow, .exfields, .exlist, .exmon, .extl, .exyear, .exdat, .exbild, .bk-leg').forEach((x) => x.remove());
+  c.querySelectorAll("p, li, div, h1, h2, h3, h4, td, th, dt, dd, br, details, tr span, tr b, small").forEach((x) => x.appendChild(document.createTextNode(" ¶ ")));
+  c.querySelectorAll("small").forEach((x) => x.parentNode.insertBefore(document.createTextNode(" ¶ "), x));
+  c.querySelectorAll("s, del").forEach((x) => { x.insertBefore(document.createTextNode("statt "), x.firstChild); x.appendChild(document.createTextNode(" neu ")); });
+  return c.textContent.replace(/\s+/g, " ").split(/\s*¶\s*/).map((x) => x.trim()).filter(Boolean).map((x) => (/[.!?:;]$/.test(x) ? x : x + ".")).join(" ").replace(/\s+/g, " ").trim();
 }
 function sKurz(satz, terme) {   // langen Satz um den ersten Treffer kürzen
   if (satz.length <= 230) return satz;

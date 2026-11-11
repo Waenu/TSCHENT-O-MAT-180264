@@ -2,6 +2,19 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.125.6.2",
+      "datum": "2026-11-11",
+      "titel": "Suche und Cheminée-Anleitung",
+      "arten": [
+        "Fehler",
+        "Layout"
+      ],
+      "punkte": [
+        "Suche «In der Hilfe»: Die Fundstellen zeigen nur noch Fliesstext. Beschriftungen aus den Grafiken und Knöpfen klebten vorher zusammen («Fam.JeromeFam.Miriam…»).",
+        "Cheminée-Anleitung: Die Unterpunkte bei Punkt 4 stehen bündig unter «Brennt das Feuer …»."
+      ]
+    },
+    {
       "v": "2.125.6.1",
       "datum": "2026-11-11",
       "titel": "Hochsaison-Hinweis als rote Meldung",
