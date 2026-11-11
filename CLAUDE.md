@@ -9,7 +9,7 @@ Dieses Dokument fasst Projekt, Regeln und Arbeitsweise zusammen. Es ersetzt den 
 - Dort läuft auch die Belegung: Workflow `.github/workflows/belegung.yml` (stündlich, Minute 17) holt per `.github/scripts/belegung.py` den Airbnb-iCal (Secret `AIRBNB_ICAL`) und schreibt `belegt.json`. Die App liest `/Tschentomat/belegt.json`.
 
 ## Dateien
-- `index.html`: die ganze App, eine Datei mit Vanilla JS und CSS (ca. 5700 Zeilen). Kein Build-Schritt.
+- `index.html`: die ganze App, eine Datei mit Vanilla JS und CSS (ca. 6700 Zeilen). Kein Build-Schritt.
 - `einstellungen.json`: Einstellungen und Version. Die Dateigrösse muss exakt 3024 Bytes bleiben (still prüfen, nicht in Meldungen erwähnen).
 - `versionen.json`: Versionsverlauf, neueste zuerst, Schlüssel `versionen`, Einträge `{"v","datum","titel","arten":[...],"punkte":[...]}`.
 - `sw.js` Service Worker, `buchungen.json`, `gaeste.json` Daten.
@@ -20,7 +20,7 @@ Dieses Dokument fasst Projekt, Regeln und Arbeitsweise zusammen. Es ersetzt den 
 2. Stelle: neue Funktion (zählt ohne Obergrenze hoch, also 2.99, 2.100, 2.101).
 3. Stelle: funktionelle Änderung oder Regeländerung.
 4. Stelle: Layout, Text oder Fehlerkorrektur.
-Stand beim Schreiben: 2.118.1.0.
+Stand beim Schreiben: 2.125.6.2.
 
 ## Versionsänderung (Ablauf)
 1. In `index.html` genau eine Stelle `let VERSION = "…"` ändern (vorher prüfen, dass sie genau einmal vorkommt).
@@ -58,20 +58,26 @@ Anschliessend prüfen, dass `origin/main:einstellungen.json` die neue Version tr
 - Keine Hinweise, etwas auf dem Galaxy S10 zu testen.
 - Texte in der App: positiv und einladend. Kinder nennen die Eltern «Papi» und «Mami». Mehr Wortregeln stehen in den Texten der App selbst.
 
-## Offene Themen (Stand 10.11.2026, abends, Version 2.120.6.0)
-1. Mailadresse beim ersten Öffnen: gebaut (2.119.x). Wänu prüft, ob bei David in der Verwaltung eine Mailadresse steht.
-2. Termin anpassen bei Konflikt: gebaut (2.122.0.0), Zeile «✂️ Konflikt mit Airbnb-Gast» mit Nachfragen, Anpassen (Nächte anteilig, Reinigung voll) und Absagen ohne Kosten.
-3. Fehler bei «Einnahmen» («reading 'split'»): nicht nachstellbar, Wänu meldet sich.
-4. Zahlung: Papi hat den Knopf schon vor der Abreise; das Kind sieht den Betrag seit 2.122.3.0 schon vorher (ruhig), nach der Frist rot.
-5. Stornierung: gebaut (2.122.1.0/2.122.2.0). Nur mit Freunden in Hochsaison und Februar, nie in einer Lücke: verbindlich, Absage bis 30 Tage vor Anreise, Freund sagt ab = neu rechnen. Keine Kosten bei später Absage (vorerst). Externe Gäste (Liselotte, Leo) laufen über eigene Verträge, nicht über die App.
-6. Reinigungsliste: Mariannes Input umgesetzt (Wäsche nie selbst waschen, ungewaschen zurück). Gartenkissen und Liegestühle in allen Listen passt.
-7. Testdaten entfernt (11.11.2026). Jerome 6.–9.5.2027 ist eine echte Buchung. Davids Link hat Wänu nicht angerührt.
-8. Wänu testet am 11.11.2026 ausgiebig: Kurzfilm Saisons, Reinigung ab 18, Minderjährige, Wäsche (Geschirrtücher, ungewaschen zurück), Checkliste in einem Stück, Trennung Partner/Kind, Anreise-Wäsche für späteren Aufenthalt, Staffelbeginn abgesagt (Wäsche-Info an den Nächsten).
-10. Staffel-Stichtag (gebaut 2.120.8.0, Stichtag 4 Tage vor dem Ende der freien Zeit): Liegen zwischen einer Staffel und dem nächsten Aufenthalt ohne Selbstreinigung 2 oder mehr freie Nächte und bucht dort bis 4 Tage vor der Abreise der letzten Staffel-Gruppe niemand, gilt die Staffel als beendet: Pfeil weg, Kästchen rot (Eltern reinigen), Meldung «Staffel beendet: … informieren». Vor dem Push mit der Fall-Tabelle testen (0/1, 2/4 Nächte vor und nach Stichtag, Staffel-Buchung im Zwischenraum, Airbnb-Gast im Zwischenraum) und Listen von Deborah 18.–20.3. und Manuel 22.–24.3.2027 prüfen.
-11. Reinigungsliste der Eltern: gebaut (2.121.0.0): feste Wechseltage orange mit Wochentag, variable Spannen blau (frühestens Abreise, spätestens nächste Anreise), alle künftigen chronologisch, auch ohne Folgegast.
-13. Notiz Wänu 11.11.2026, 00:40: Unterbricht ein Airbnb-Gast eine Staffel, muss die Endreinigung auf einen Tag vor seiner Ankunft fallen (für die Reinigungsliste und den Stichtag berücksichtigen; klären, wie das zum Wechseltag 10–16 Uhr passt). Kosten der Endreinigung verteilt auf alle Staffel-Gruppen, die letzte Gruppe zahlt und treibt das Geld selbst ein (bestehende Regel). Listen sind korrekt verteilt, die Meldung bei ungesperrtem Airbnb funktioniert zuverlässig. Reinigungskosten bei unter 18-Jährigen: Wänu denkt nochmals darüber nach.
-12. Kein Zuschlag für den, der eine Staffel unterbricht (Entscheid 10.11.2026): alles bleibt bei der bestehenden Regel der Staffel-Endreinigung.
-9. Bei «Meine Familie und Geschwister» kennt die App die Zahl der Enkel nicht; bei der Reinigung «nach Personen» zählen dort alle ausser Kleinkindern.
+## Offene Themen (Stand 11.11.2026, abends, Version 2.125.6.2)
+1. Wechsel auf Version 3.0 entscheidet Wänu nach seiner Testphase. Dann überall «3.0.0.0» setzen (einstellungen.json-Grösse beachten) und einen Historie-Eintrag «Freigabe» schreiben. Erst danach verschickt er die WhatsApp-Ankündigung (Gruppe ohne Link) und jedem einzeln den persönlichen Link aus der Verwaltung.
+2. Persönliche Links: alle acht vergeben. Wo in der Verwaltung «hier nicht sichtbar» steht, erzeugt Wänu den Link vor dem Versand neu.
+3. Real noch nicht getestet (nur mit nachgestellten Daten): Storno mit Änderungsmeldung an den neuen Staffelbeginn, Endreinigung der Staffel samt Zahlung, Kopf «Mariannes».
+4. Offen bei Wänu: Reinigungskosten unter 18; ob Davids Mail in der Verwaltung ankommt; Fehler «Einnahmen» («reading 'split'») falls er wieder auftritt; Endreinigung vor einem Airbnb-Gast («ein Tag vor Ankunft» oder Zeitfenster Abreise bis Ankunft, heute Zeitfenster).
+5. Bei «Meine Familie und Geschwister» kennt die App die Zahl der Enkel nicht; bei der Reinigung «nach Personen» zählen dort alle ausser Kleinkindern.
+6. Daten: nur Jerome 6.–9.5.2027 (echt). Testanfragen sind entfernt.
+
+## Gebaut am 11.11.2026 (2.122.3.0 bis 2.125.6.2)
+- Kopf: schwarz in beiden Modi, Spitzname in Gold (Schrift «Great Vibes», lokal in fonts/): Jerrys, Debys, Miris, Mänsis, Daves, Andys, Rahels, Sarahs; Eltern Wänus und Mariannes. Spitznamen nur im Kopf (SPITZNAME). Unten «Version …» und Versionshistorie.
+- Testmodus: dreimal auf den 🎰 im Kopf tippen (in der Versionshistorie geschwärzt, ebenso das versteckte Menü).
+- Angebote: in der Staffelzeit auch ohne Buchung «Staffel beginnen: ab heute (Staffelzeit bis …)»; Beschriftung wechselt alle 4 s zwischen Lücken und «Es ist Staffelzeit». Auswahl bündig unter dem Kalendersymbol; offener Kalender: ganzes Kästchen grün.
+- Hochsaison unter 7 Nächten: dunkelrote Meldung oben im Rechner «Mit Vorbehalt … verbindlich erst ab 7 Nächten».
+- Gruss unter jeder WhatsApp der Eltern (grussVon): Kinder «Liebe Grüsse, Papi und Mami», Partner «Liebe Grüsse, Silvan und Marianne». Texte in der Wir-Form.
+- Storno: «❌ Stornieren» (Eintrag bleibt grau mit Datum; Aufgaben Storno-Bestätigung, In Airbnb freigeben, Aus Pimlical austragen) und «🗑️ Endgültig löschen» (keine Spur, keine Meldung beim Kind; für Tests). Kinder: «Stornierung anfragen» auf der Startseite (WhatsApp an die Eltern). Bei Kindern nur «Bei Änderungen melde dich».
+- Rolle in der Staffel (rolle: start/folge, beim Bestätigen, Bescheid und bei der Änderungsmeldung gespeichert): weicht sie von der aktuellen Lage ab, erscheint rot «🔔 Änderung: … informieren» (beide Richtungen), Hinweis auch beim Kind. stornoVor() nennt, wer abgesagt hat; staffelBeginner() wer jetzt beginnt.
+- Endreinigung der Staffel: bei der letzten Gruppe einer geschlossenen Staffel «🪣 Endreinigung» mit Anteilen, Frist 7 Tage nach deren Abreise, eigener Zahlungshaken (endreinBezahlt), beim Kind auf der Startseite. Mitgeteilt im Bescheid oder in der Staffel-Ende-Info (eine Nachricht statt drei); separat nur, wenn sich die Anteile danach ändern (endreinAnteile).
+- Verwaltung: Legende (rot dringend, weiss offen, grün erledigt); bei dringenden Aufgaben Titel weiss, Kästchen und Hinweis rot.
+- Texte: Willkommen (statt Benutzung) mit «Neu: Ferien können gratis sein, auch in der Hochsaison»; Cheminée-Anleitung «So bedienst du das Cheminée richtig», Unterschrift «die Eltern»; Reissverschluss-Hinweis; «ungewaschen» gelb; IBAN und SLF im Glossar Zahlung; Preise «weit unter den Marktpreisen».
+- Fehler behoben: Mailabfrage zeigte nach einem neuen Link kurz den alten Namen; Suche in der Hilfe zeigt nur Fliesstext; Seite nicht seitlich verschiebbar (overflow-x: clip).
 
 Erledigt 10.11.2026 abends: Kurzfilm Saisons (2.120.0.x), Beherbergungsabgabe im Glossar, Backup eingerichtet, Gästemeldung getestet, Test-Stornos entfernt.
 Erledigt: Haftung, Bedingungen, Stornierung als Kapitel, gelber Hilfeknopf (2.118.x). Liste «Zu tun» pro Buchung (2.117.0.0). Gästemeldung (2.116.x). Verwaltung neu, Schritte A bis C (2.114.0.0 bis 2.115.1.0). Kurtaxe für Freunde (2.113.0.0 und 2.113.0.1). Beträge fix im Code (P.kurtaxe, kurtaxeBeherb, kurtaxeKind), nicht aus der aktuellen Verordnung.
