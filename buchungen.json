@@ -35,14 +35,8 @@
       "name": "Miriam",
       "arr": "2026-11-20",
       "dep": "2026-11-22",
-      "selbst": true,
-      "pers": 2,
-      "waesche": "senden",
-      "betrag": 120,
-      "rechnung": "Gesendet am Mi 11.11.2026, 15:29 Uhr. App-Version 2.123.2.0.\nAnreise\tFreitag 20.11.2026\nAbreise\tSonntag 22.11.2026 (2 Nächte)\nFamilie\tIch und Partner/in\nFreunde\t0\nMit den Bedingungen einverstanden: ja\nZimmer 1 unberührt\tJa\nSelbstreinigung\tJa\nTotal laut Rechner\tCHF 120.–\nReinigungskosten sind erst nach Ablauf der Familienstaffel bekannt und werden nachbelastet.\n#Preisberechnung\nFamilie pro Nacht\tCHF 60.–\nÜbernachtung (2 Nächte)\tCHF 120.–\nReinigung\tCHF 0.–\nZimmer 1 und rotes Bad bleiben unberührt: CHF 10.– weniger pro Nacht, die Familie zahlt CHF 60.– statt CHF 70.–.",
-      "bestaetigt": "2026-11-11T15:31",
-      "bescheid": "2026-11-11T15:31",
-      "waescheInfo": "2026-11-11T15:48"
+      "status": "storniert",
+      "storniert": "2026-11-11T16:31"
     },
     {
       "name": "Manuel",
@@ -64,10 +58,6 @@
     }
   ],
   "logbuch": [
-    {
-      "t": "2026-10-27T11:10",
-      "text": "Zahlung erinnert: Jerome, Mo 10.05.2027 bis Mo 17.05.2027"
-    },
     {
       "t": "2026-10-27T11:12",
       "text": "Zahlung eingegangen: Jerome, Mo 10.05.2027 bis Mo 17.05.2027, CHF 1000"
@@ -863,6 +853,10 @@
     {
       "t": "2026-11-11T16:30",
       "text": "Storniert: Deborah, Di 17.11.2026 bis Do 19.11.2026"
+    },
+    {
+      "t": "2026-11-11T16:31",
+      "text": "Storniert: Miriam, Fr 20.11.2026 bis So 22.11.2026"
     }
   ]
 }
