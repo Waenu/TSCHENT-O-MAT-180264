@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.122.2.0",
+      "datum": "2026-11-11",
+      "titel": "Persönliche Absagefrist",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Hat ein Kind einen bestätigten Aufenthalt mit Freunden in der Hochsaison oder im Februar, steht die Absagefrist auf der Startseite und oben im Glossar «Absagen und Stornierung»: «📌 Dein Aufenthalt vom … bis … (mit Freunden): Absage spätestens am …», solange die Frist läuft."
+      ]
+    },
+    {
       "v": "2.122.1.0",
       "datum": "2026-11-11",
       "titel": "Verbindlich mit Freunden: Absage bis 30 Tage vorher",
@@ -9,7 +20,7 @@
         "Funktion"
       ],
       "punkte": [
-        "Mit Freunden und bei verbindlichen Buchungen in der Hochsaison und im Februar ist die Buchung verbindlich. Absage spätestens 30 Tage vor der Anreise. Sagt ein Freund ab, rechnen die Eltern neu, wo ein Mindestpreis gilt, zahlen die übrigen etwas mehr.",
+        "Mit Freunden in der Hochsaison und im Februar ist die Buchung verbindlich (nicht in einer Lücke). Absage spätestens 30 Tage vor der Anreise. Sagt ein Freund ab, rechnen die Eltern neu, die übrigen zahlen etwas mehr.",
         "Im Rechner steht das in einem Kasten über dem Häkchen «Bedingungen», mit dem Datum. In der Anfrage steht die Zeile «Verbindlich: Absage spätestens am …». Das Glossar «Absagen und Stornierung» ist ergänzt."
       ]
     },

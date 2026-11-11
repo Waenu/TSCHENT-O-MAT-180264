@@ -1274,7 +1274,7 @@
         <details class="sub" id="b-kurtaxe"><summary>🎟️ Kurtaxe und Gästekarte</summary><div class="bc" id="bc-kurtaxe"></div></details>
         <details class="sub" id="b-bedingungen"><summary>📜 Bedingungen</summary><div class="bc"><p class="wt">Das Wichtigste</p><p>Mit deiner Anfrage bist du mit diesen Punkten einverstanden. Sie sind einfach und fair, damit es für alle schön bleibt.</p><ul><li>Absagen und Stornierung <button type="button" class="sym" data-info="b-storno" aria-label="Zur Erklärung springen">📅</button></li><li>Zahlung <button type="button" class="sym" data-info="b-zahlung" aria-label="Zur Erklärung springen">💰</button></li><li>Ein- und Auschecken <button type="button" class="sym" data-info="b-zeiten" aria-label="Zur Erklärung springen">🕓</button></li><li>Endreinigung <button type="button" class="sym" data-info="b-endrein" aria-label="Zur Erklärung springen">🪣</button></li><li>Wäsche zurückgeben, siehe Checkliste für die Abreise</li><li>Kurtaxe für Freunde <button type="button" class="sym" data-info="b-kurtaxe" aria-label="Zur Erklärung springen">🎟️</button></li><li>Haftung <button type="button" class="sym" data-info="b-haftung" aria-label="Zur Erklärung springen">🛡️</button></li></ul></div></details>
         <details class="sub" id="b-haftung"><summary>🛡️ Haftung</summary><div class="bc"><p class="wt">Das Wichtigste</p><p>Geht bei deinem Aufenthalt etwas kaputt, sag es den Eltern. Schäden, die Gäste verursachen, bezahlt ihre Privathaftpflichtversicherung.</p><details class="mehr"><summary>Mehr erfahren</summary><p>Das gilt auch für deine Freunde: Wer etwas beschädigt, meldet den Schaden der eigenen Haftpflichtversicherung.</p><p>Buchst du mit Freunden, gib das bitte deinen Freunden weiter.</p></details></div></details>
-        <details class="sub" id="b-storno"><summary>📅 Absagen und Stornierung</summary><div class="bc"><p class="wt">Das Wichtigste</p><p>Für die Familie sind wir kulant. Kommt etwas dazwischen, sag so früh wie möglich ab, in der Hochsaison mindestens 2 Wochen vor der Anreise.</p><p><b>Mit Freunden</b> und bei <b>verbindlichen Buchungen</b> in der Hochsaison und im Februar ist die Buchung verbindlich. Absagen kannst du bis spätestens 30 Tage vor der Anreise. Sagt ein Freund ab, rechnen die Eltern neu. Wo ein Mindestpreis gilt, zahlen die übrigen dann etwas mehr.</p><details class="mehr"><summary>Mehr erfahren</summary><p>In der Hochsaison und im Februar sind die Nächte bei Gästen gefragt. Wird ein Termin kurzfristig frei, lässt er sich kaum noch vermieten.</p><p>Mit Freunden reservieren die Eltern die Wohnung für eine ganze Gruppe, oft zu gefragten Zeiten. Ein Beispiel: 5 Freunde, 4 Nächte, CHF 2'400.–. Sagt die Gruppe ein paar Wochen vorher ab, weil es den meisten nicht mehr passt, steht die Wohnung leer. Darum bitten wir um Verbindlichkeit: Wer mit Freunden bucht, klärt vorher, dass alle dabei sind.</p><p>Absagen kannst du per WhatsApp bei den Eltern.</p></details></div></details>
+        <details class="sub" id="b-storno"><summary>📅 Absagen und Stornierung</summary><div class="bc"><div id="stornoPers"></div><p class="wt">Das Wichtigste</p><p>Für die Familie sind wir kulant. Kommt etwas dazwischen, sag so früh wie möglich ab, in der Hochsaison mindestens 2 Wochen vor der Anreise.</p><p><b>Mit Freunden in der Hochsaison und im Februar</b> ist die Buchung verbindlich (in einer Lücke nicht). Absagen kannst du bis spätestens 30 Tage vor der Anreise. Sagt ein Freund ab, rechnen die Eltern neu, die übrigen zahlen dann etwas mehr.</p><details class="mehr"><summary>Mehr erfahren</summary><p>In der Hochsaison und im Februar sind die Nächte bei Gästen gefragt. Wird ein Termin kurzfristig frei, lässt er sich kaum noch vermieten.</p><p>Mit Freunden reservieren die Eltern die Wohnung für eine ganze Gruppe, oft zu gefragten Zeiten. Ein Beispiel: 5 Freunde, 4 Nächte, CHF 2'400.–. Sagt die Gruppe ein paar Wochen vorher ab, weil es den meisten nicht mehr passt, steht die Wohnung leer. Darum bitten wir um Verbindlichkeit: Wer mit Freunden bucht, klärt vorher, dass alle dabei sind.</p><p>Absagen kannst du per WhatsApp bei den Eltern.</p></details></div></details>
         <details class="sub" id="b-sparen"><summary>💸 So sparst du Geld</summary><div class="bc" id="bc-sparen"></div></details>
         <details class="sub" id="b-zahlung"><summary><span class="an-geld" aria-hidden="true"><span class="gb">💰</span><i class="mz m1"></i><i class="mz m2"></i><i class="mz m3"></i></span> Zahlung</summary><div class="bc" id="bc-zahlung"></div></details>
         <details class="sub" id="b-trinkgeld"><summary><span class="an-schwein" aria-hidden="true">🐖</span> Trinkgeld</summary><div class="bc" id="bc-trinkgeld"></div></details>
@@ -1388,7 +1388,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.122.1.0";
+let VERSION = "2.122.2.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -3351,8 +3351,15 @@ function schnappText(z) {   // fertiger Text der Berechnung zum Zeitpunkt der An
 }
 // Verbindliche Buchung (seit 2.122.1.0): mit Freunden oder verbindlich in Hochsaison und Februar. Absage spätestens STORNO_TAGE vor der Anreise.
 const STORNO_TAGE = 30;
-function stornoStreng(d) { if (!(ARR && DEP) || !d) return false; if (d.GE > 0 || d.VERB) return true; for (let k = ARR; k < DEP; k = addDays(k, 1)) if (FEST_MONATE.indexOf(monatVon(k)) >= 0) return true; return false; }
+const saisonStreng = (arr, dep) => { for (let k = arr; k < dep; k = addDays(k, 1)) if (FEST_MONATE.indexOf(monatVon(k)) >= 0 || istHoch(k)) return true; return false; };   // eine Nacht im Februar oder in der Hochsaison
+function stornoStreng(d) { return !!(ARR && DEP && d && d.GE > 0 && !S.inLuecke && saisonStreng(ARR, DEP)); }   // nur mit Freunden, nur Februar und Hochsaison, nicht in einer Lücke
 const stornoBis = () => addDays(ARR, -STORNO_TAGE);
+function buchStreng(b) { return freundeVon(b) > 0 && !b.lg && !/^Lücke\t/m.test(b.rechnung || "") && saisonStreng(b.arr, b.dep); }   // bestätigte Buchung: verbindlich mit Absagefrist
+function stornoZeilen() {   // eigene bestätigte Buchungen, deren Absagefrist noch läuft (seit 2.122.2.0)
+  if (!ABSENDER) return [];
+  return BUCH.filter((b) => eigenN(b.name) && buchStreng(b) && heuteKey() <= addDays(b.arr, -STORNO_TAGE)).sort((p, q) => (p.arr < q.arr ? -1 : 1))
+    .map((b) => "📌 Dein Aufenthalt vom " + esc(fmtTag(b.arr)) + " bis " + esc(fmtTag(b.dep)) + " (mit Freunden): Absage spätestens am <b>" + esc(fmtTag(addDays(b.arr, -STORNO_TAGE))) + "</b>.");
+}
 function anfrageText(r) {
   const x = r.d;
   const z = [];
@@ -3519,7 +3526,7 @@ function anfrageKasten(r) {
     (NAME_FIX && !TOKEN && ABSENDER ? '<div class="field"><label>Wer schickt die Anfrage?</label><p class="namefest">' + esc(ABSENDER) + ' ' + lockSvg(false) + '</p></div>' : '<div class="field"><label for="absender">Wer schickt die Anfrage?</label><select id="absender" class="' + (ok ? "done" : "missing") + '"><option value="">– wählen –</option>' +
     absOpt(ABSENDER) +
     '</select>' + (ABSENDER !== "" ? "" : '<p class="hint">Erst den Namen wählen, dann sind die Knöpfe aktiv.</p>') + '</div>') +
-    (stornoStreng(r.d) ? '<div class="note h storno-warn"><b>⚠️ Verbindlich:</b> ' + (r.d.GE > 0 ? "Mit Freunden" : "In dieser Zeit") + " ist die Buchung verbindlich. Absagen kannst du bis spätestens <b>" + esc(fmtTag(stornoBis())) + "</b> (" + STORNO_TAGE + " Tage vor der Anreise)." + (r.d.GE > 0 ? " Sagt ein Freund ab, rechnen die Eltern neu. Wo ein Mindestpreis gilt, zahlen die übrigen dann etwas mehr." : "") + " " + symBtn("b-storno", "📅") + "</div>" : "") +
+    (stornoStreng(r.d) ? '<div class="note h storno-warn"><b>⚠️ Verbindlich:</b> ' + "Mit Freunden ist die Buchung in dieser Zeit verbindlich. Absagen kannst du bis spätestens <b>" + esc(fmtTag(stornoBis())) + "</b> (" + STORNO_TAGE + " Tage vor der Anreise). Sagt ein Freund ab, rechnen die Eltern neu, die übrigen zahlen dann etwas mehr. " + symBtn("b-storno", "📅") + "</div>" : "") +
     '<label class="risiko"><input type="checkbox" id="bedOk"' + (hok ? " checked" : "") + '> <span>Ich bin mit den <b>Bedingungen</b> einverstanden ' + symBtn("b-bedingungen", "📜") + ".</span></label>" +
     (prov ? '<label class="risiko"><input type="checkbox" id="risikoOk"' + (rok ? " checked" : "") + '> <span><b>Ich habe das Risiko verstanden:</b> Für diesen Termin gilt ein Vorbehalt. Kommt eine Airbnb-Buchung, muss ich weichen oder gar nicht erst reisen. Das Risiko trage ich selbst.</span></label>' + (rok ? "" : '<p class="hint">Erst das Risiko bestätigen, dann sind die Knöpfe aktiv.</p>') : "") + '<div class="btns">';
   h += ok ? '<a class="btn" id="waReq" href="https://wa.me/?text=' + encodeURIComponent(t) + '" target="_blank" rel="noopener">' + WA_SVG + 'Per WhatsApp an den «Adelboden Airbnb Chat» senden</a>' : '<span class="btn off" aria-disabled="true">' + WA_SVG + 'Per WhatsApp an den «Adelboden Airbnb Chat» senden</span>';
@@ -3946,6 +3953,11 @@ function aufentZeigen() {
   {
     const st = document.getElementById("aufStatus"), kk = BUCH.filter((b) => ABSENDER && eigenN(b.name) && b.dep >= heuteKey() && provKonflikt(b));
     if (kk.length) { st.hidden = false; st.innerHTML += '<div class="note h rot-warn"><b>⚠️ Konflikt:</b> Für ' + kk.map((b) => esc(fmtTag(b.arr)) + " bis " + esc(fmtTag(b.dep))).join(" und ") + ' hat sich ein Airbnb-Gast eingetragen. Dein Termin stand mit Vorbehalt. Melde dich bei den Eltern.</div>'; }
+  }
+  {   // Absagefrist der eigenen verbindlichen Buchungen: auf der Startseite und im Glossar (seit 2.122.2.0)
+    const z = stornoZeilen(), st = document.getElementById("aufStatus"), gp = document.getElementById("stornoPers");
+    if (z.length) { st.hidden = false; st.innerHTML += '<div class="note h storno-warn">' + z.join("<br>") + " " + symBtn("b-storno", "📅") + "</div>"; }
+    if (gp) gp.innerHTML = z.length ? '<div class="note h storno-warn">' + z.join("<br>") + "</div>" : "";
   }
   {   // von den Eltern angepasster Termin (Konflikt mit Airbnb-Gast): Hinweis, bis das Kind ihn wegklickt (seit 2.122.0.0)
     const st = document.getElementById("aufStatus"), ok = stornoGelesen();
