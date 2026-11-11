@@ -1396,7 +1396,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "2.125.0.1";
+let VERSION = "2.125.1.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -5134,7 +5134,7 @@ function zuTunKarte(x) {
   const offen = z.some((t) => !/zt-z done/.test(t) && !/fällig nach der Abreise/.test(t)), rot = /zt-z( done)? rot|zt-z rot/.test(z.join(""));
   const liste = '<div class="zt"><div class="zt-h">' + (offen ? "📌 Zu tun" : "✅ Alles erledigt") + "</div>" + z.join("") + "</div>";
   const fam = ABS.indexOf(String(x.name).trim()) >= 0;
-  const acts = '<button type="button" class="btn quiet' + (prov ? " full" : "") + '" data-bdel="' + key + '" aria-label="Aufenthalt ' + (fam ? "stornieren" : "entfernen") + '">' + (fam ? "❌ Stornieren" : "🗑️ " + (prov ? "Termin entfernen" : "Entfernen")) + "</button>";
+  const acts = '<button type="button" class="btn quiet' + (prov ? " full" : "") + '" data-bdel="' + key + '" aria-label="Aufenthalt ' + (fam ? "stornieren" : "entfernen") + '">' + (fam ? "❌ Stornieren" : "🗑️ " + (prov ? "Termin entfernen" : "Entfernen")) + "</button>" + (fam ? '<button type="button" class="btn quiet" data-bweg="' + key + '|a">🗑️ Endgültig löschen</button>' : "");
   return vkKarte(x, rot ? "rot" : offen ? "offen" : "ok", vkChips(x), "", acts).replace('<div class="vk-acts">', liste + '<div class="vk-acts">');
 }
 const ZT_TXT = { bezahlt: "Zahlung eingegangen", bescheid: "Bescheid gegeben", gesperrt: "In Airbnb gesperrt", pimlical: "In Pimlical eingetragen", kurtaxeAm: "Freunde für die Kurtaxe angemeldet", waescheInfo: "Wäsche-Info gegeben", waescheZurueck: "Wäsche zurück", stornoInfo: "Storno-Bestätigung gesendet", endreinBezahlt: "Endreinigung bezahlt", freigegeben: "In Airbnb freigegeben", pimAus: "Aus Pimlical ausgetragen" };
@@ -5288,7 +5288,7 @@ function stornoKarte(x) {   // stornierter Aufenthalt: bleibt grau stehen, mit d
   if (!x.prov && (x.dep > heuteKey() || x.freigegeben)) z.push(ztZeile({ feld: "freigegeben", key: key, done: !!x.freigegeben, titel: lockSvg(true) + " In Airbnb wieder freigeben: <b>" + esc(fmtTag(x.arr)) + " bis " + esc(fmtTag(addDays(x.dep, -1))) + "</b> (" + n + (n === 1 ? " Nacht" : " Nächte") + ")", doneTxt: "In Airbnb freigegeben am " + ztAm(x.freigegeben), knoepfe: '<button type="button" class="btn" data-ztset="freigegeben" data-ztk="' + key + '">✓ Freigegeben</button>' }));
   if (x.pimlical) z.push(ztZeile({ feld: "pimAus", key: key, done: !!x.pimAus, titel: "🗓️ Aus Pimlical austragen: <b>" + esc(fmtTag(x.arr)) + " bis und mit " + esc(fmtTag(x.dep)) + "</b>", doneTxt: "Aus Pimlical ausgetragen am " + ztAm(x.pimAus), knoepfe: '<button type="button" class="btn" data-ztset="pimAus" data-ztk="' + key + '">✓ Ausgetragen</button>' }));
   const offen = stornoOffen(x) > 0;
-  return '<div class="vk vk-storno" data-vk="' + key + '"><div class="vk-top"><span class="vk-name">' + esc(x.name) + '</span><span class="hint">' + esc(fmtTag(x.arr)) + " bis " + esc(fmtTag(x.dep)) + '</span></div><div class="vk-chips"><span class="vk-chip v">❌ storniert' + (x.storniert ? " am " + esc(fmtTag(x.storniert.slice(0, 10))) : "") + '</span></div><div class="zt"><div class="zt-h">' + (offen ? "📌 Zu tun" : "✅ Alles erledigt") + "</div>" + z.join("") + "</div></div>";
+  return '<div class="vk vk-storno" data-vk="' + key + '"><div class="vk-top"><span class="vk-name">' + esc(x.name) + '</span><span class="hint">' + esc(fmtTag(x.arr)) + " bis " + esc(fmtTag(x.dep)) + '</span></div><div class="vk-chips"><span class="vk-chip v">❌ storniert' + (x.storniert ? " am " + esc(fmtTag(x.storniert.slice(0, 10))) : "") + '</span></div><div class="zt"><div class="zt-h">' + (offen ? "📌 Zu tun" : "✅ Alles erledigt") + "</div>" + z.join("") + '</div><div class="vk-acts"><button type="button" class="btn quiet" data-bweg="' + key + '|s">🗑️ Endgültig löschen</button></div></div>';
 }
 function anfrageKarte(x) { return vkKarte(x, "offen", '<div class="vk-chips"><span class="vk-chip v">📨 Anfrage, noch nicht bestätigt</span></div>' + vkChips(x, true), "", '<button type="button" class="btn main" data-ja="' + esc(bKey(x)) + '">✅ Bestätigen</button><button type="button" class="btn" data-nein="' + esc(bKey(x)) + '">✖ Ablehnen</button>'); }
 function persListe() { return KINDER_ABS.map(persBlock).join("") + '<div class="ps-abst"></div>' + PARTNER_ABS.map(persBlock).join(""); }
@@ -6120,6 +6120,18 @@ document.getElementById("bestKasten").addEventListener("click", async (e) => {
       const j = await ghAendern((l, jj) => { logEintrag(jj, "In Airbnb gesperrt (vorher mit Vorbehalt): " + keyText(fest)); return l.map((y) => { if (bKey(y) !== fest) return y; const n = Object.assign({}, y); delete n.prov; return n; }); });
       buchungenAn(j); try { localStorage.setItem("tm2_buchungen", JSON.stringify(j)); } catch (e2) {}
       bestMsg = lockSvg(false) + " Als in Airbnb gesperrt eingetragen. Der Preis bleibt wie berechnet. Sperre den Termin in Airbnb, falls noch nicht geschehen.";
+    } catch (err) { bestFehler = err && err.message ? err.message : "Das hat nicht geklappt."; }
+    bestBusy = false; bestNeuZeichnen(); bestMsgZeigen(); return;
+  }
+  const bw = f("data-bweg");
+  if (bw) {   // endgültig löschen: keine Spur, auch keine Meldung beim Kind (seit 2.125.1.0)
+    const teile = bw.split("|"), art = teile.pop(), key = teile.join("|"), [name, arr, dep] = teile;
+    if (!(await appFrage("Aufenthalt von " + name + " (" + fmtTag(arr) + " bis " + fmtTag(dep) + ") endgültig löschen? Es bleibt keine Spur, auch keine Meldung «Storniert» bei " + name + ". Das lässt sich nicht rückgängig machen.", "Ja, endgültig löschen"))) return;
+    bestBusy = true; bestFehler = "";
+    try {
+      const j = await ghAendern((l, jj) => { logEintrag(jj, "Endgültig gelöscht: " + keyText(key)); return l.filter((y) => !(bKey(y) === key && (y.status === "storniert") === (art === "s"))); });
+      buchungenAn(j); try { localStorage.setItem("tm2_buchungen", JSON.stringify(j)); } catch (e2) {}
+      PERS_ZIEL = name; PERS_STAND.set(name, true); PERS_OK = { name: name, t: Date.now(), html: "🗑️ Endgültig gelöscht: " + esc(fmtTag(arr)) + " bis " + esc(fmtTag(dep)) + "." }; bestMsg = "";
     } catch (err) { bestFehler = err && err.message ? err.message : "Das hat nicht geklappt."; }
     bestBusy = false; bestNeuZeichnen(); bestMsgZeigen(); return;
   }
