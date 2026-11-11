@@ -29,25 +29,9 @@
       "arr": "2026-11-17",
       "dep": "2026-11-19",
       "status": "abgelehnt"
-    },
-    {
-      "name": "Sarah",
-      "arr": "2026-11-16",
-      "dep": "2026-11-18",
-      "selbst": true,
-      "pers": 2,
-      "waesche": "bringen",
-      "rolle": "start",
-      "betrag": 120,
-      "rechnung": "Gesendet am Mi 11.11.2026, 16:53 Uhr. App-Version 2.125.1.0.\nAnreise\tMontag 16.11.2026\nAbreise\tMittwoch 18.11.2026 (2 Nächte)\nFamilie\tIch und Partner/in\nFreunde\t0\nMit den Bedingungen einverstanden: ja\nZimmer 1 unberührt\tJa\nSelbstreinigung\tJa\nTotal laut Rechner\tCHF 120.–\nReinigungskosten sind erst nach Ablauf der Familienstaffel bekannt und werden nachbelastet.\n#Preisberechnung\nFamilie pro Nacht\tCHF 60.–\nÜbernachtung (2 Nächte)\tCHF 120.–\nReinigung\tCHF 0.–\nZimmer 1 und rotes Bad bleiben unberührt: CHF 10.– weniger pro Nacht, die Familie zahlt CHF 60.– statt CHF 70.–.",
-      "bestaetigt": "2026-11-11T16:55"
     }
   ],
   "logbuch": [
-    {
-      "t": "2026-10-28T13:28",
-      "text": "In Airbnb gesperrt (vorher mit Vorbehalt): Miriam, Sa 19.06.2027 bis Sa 26.06.2027"
-    },
     {
       "t": "2026-10-28T13:28",
       "text": "Bescheid gegeben: Miriam, Sa 19.06.2027 bis Sa 26.06.2027"
@@ -843,6 +827,10 @@
     {
       "t": "2026-11-11T17:12",
       "text": "Endgültig gelöscht: Miriam, Fr 20.11.2026 bis So 22.11.2026"
+    },
+    {
+      "t": "2026-11-11T17:12",
+      "text": "Endgültig gelöscht: Sarah, Mo 16.11.2026 bis Mi 18.11.2026"
     }
   ]
 }
