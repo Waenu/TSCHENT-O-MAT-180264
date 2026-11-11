@@ -2,6 +2,24 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.124.0.0",
+      "datum": "2026-11-11",
+      "titel": "Stornieren mit Bestätigung, Staffel-Änderungen werden gemeldet",
+      "arten": [
+        "Neu",
+        "Funktion",
+        "Text"
+      ],
+      "punkte": [
+        "Verwaltung: Bei Kindern und Partnern heisst der Knopf «❌ Stornieren». Der Termin verschwindet aus dem Kalender, bleibt aber grau als «storniert am …» stehen, mit den Aufgaben Storno-Bestätigung senden (fertige WhatsApp, keine Kosten), in Airbnb wieder freigeben und, falls eingetragen, aus Pimlical austragen.",
+        "Die App merkt sich bei jedem Staffel-Aufenthalt, was das Kind zuletzt erfahren hat (beginnt die Staffel oder bringt eigene Wäsche). Ändert sich das durch eine neue Buchung oder ein Storno, erscheint «🔔 Änderung: … informieren» mit fertiger WhatsApp, in beide Richtungen und auch bei mehreren Wechseln.",
+        "Beginnt jemand nach einem Storno neu die Staffel, nennt die Meldung, wer abgesagt hat, und das Datum, bis wann die Wäsche der Eltern zurück sein muss. Listen und Checkliste wechseln von selbst.",
+        "Kinder können über «Stornierung anfragen» in ihrer Buchung eine fertige WhatsApp an die Eltern schicken. Stornieren tun die Eltern in der Verwaltung.",
+        "Jede WhatsApp der Eltern endet mit «Liebe Grüsse, Papi und Mami», an die Partner mit «Liebe Grüsse, Silvan und Marianne». Die Texte sprechen in der Wir-Form.",
+        "Warnung beim Buchen vor einer Staffel: «Die Eltern geben ihr (ihm, ihnen) Bescheid»."
+      ]
+    },
+    {
       "v": "2.123.2.0",
       "datum": "2026-11-11",
       "titel": "Staffel: Änderung melden, wenn jemand davor beginnt",
