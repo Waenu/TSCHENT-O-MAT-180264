@@ -16,10 +16,6 @@
   ],
   "logbuch": [
     {
-      "t": "2026-10-28T13:38",
-      "text": "Bescheid gegeben: Miriam, Sa 19.06.2027 bis Sa 26.06.2027"
-    },
-    {
       "t": "2026-10-28T13:40",
       "text": "In Airbnb gesperrt (vorher mit Vorbehalt): Miriam, Sa 19.06.2027 bis Sa 26.06.2027"
     },
@@ -814,12 +810,11 @@
     {
       "t": "2026-11-11T22:07",
       "text": "Reinigungstag gesetzt: Do 26.11.2026"
+    },
+    {
+      "t": "2026-11-11T22:08",
+      "text": "Reinigungstag entfernt: Do 26.11.2026"
     }
   ],
-  "reinigung": [
-    {
-      "tag": "2026-11-26",
-      "ab": "2026-11-16"
-    }
-  ]
+  "reinigung": []
 }
