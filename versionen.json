@@ -2,6 +2,18 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.123.1.1",
+      "datum": "2026-11-11",
+      "titel": "Cheminée-Anleitung",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Die Anleitung beginnt mit «So bedienst du das Cheminée richtig». Die Unterpunkte bei Punkt 4 sind nicht mehr zusätzlich eingerückt.",
+        "Unterschrift «Gruess, die Eltern»; im Text entsprechend «die saugen wir ab» und «reinigen wir auch»."
+      ]
+    },
+    {
       "v": "2.123.1.0",
       "datum": "2026-11-11",
       "titel": "Angebote breiter",
