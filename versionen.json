@@ -2,6 +2,18 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "2.125.4.0",
+      "datum": "2026-11-11",
+      "titel": "Kalender-Knopf mit Angeboten als ein Kästchen",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Ist der Kalender offen, wird das ganze Kästchen grün, auch der Teil mit den Angeboten.",
+        "Im Kalender-Knopf steht unten rechts klein «Termin suchen ›», damit klar ist, wozu er da ist."
+      ]
+    },
+    {
       "v": "2.125.3.1",
       "datum": "2026-11-11",
       "titel": "Willkommen",
