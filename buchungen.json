@@ -29,7 +29,8 @@
       "name": "Deborah",
       "arr": "2026-11-16",
       "dep": "2026-11-18",
-      "status": "storniert"
+      "status": "storniert",
+      "freigegeben": "2026-11-11T16:31"
     },
     {
       "name": "Miriam",
@@ -58,10 +59,6 @@
     }
   ],
   "logbuch": [
-    {
-      "t": "2026-10-27T11:12",
-      "text": "Zahlung eingegangen: Jerome, Mo 10.05.2027 bis Mo 17.05.2027, CHF 1000"
-    },
     {
       "t": "2026-10-27T21:25",
       "text": "Bestätigt: Manuel, Mi 17.03.2027 bis Sa 20.03.2027, CHF 165"
@@ -857,6 +854,10 @@
     {
       "t": "2026-11-11T16:31",
       "text": "Storniert: Miriam, Fr 20.11.2026 bis So 22.11.2026"
+    },
+    {
+      "t": "2026-11-11T16:31",
+      "text": "In Airbnb freigegeben: Deborah, Mo 16.11.2026 bis Mi 18.11.2026"
     }
   ]
 }
