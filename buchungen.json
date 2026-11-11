@@ -18,20 +18,9 @@
       "arr": "2026-11-18",
       "dep": "2026-11-21",
       "status": "storniert"
-    },
-    {
-      "name": "Miriam",
-      "arr": "2026-11-20",
-      "dep": "2026-11-22",
-      "status": "storniert",
-      "storniert": "2026-11-11T16:31"
     }
   ],
   "logbuch": [
-    {
-      "t": "2026-10-28T10:39",
-      "text": "Bescheid gegeben: Jerome, Do 29.10.2026 bis Sa 31.10.2026"
-    },
     {
       "t": "2026-10-28T13:00",
       "text": "Bestätigt: Miriam, Sa 19.06.2027 bis Sa 26.06.2027, CHF 625, mit Vorbehalt"
@@ -827,6 +816,10 @@
     {
       "t": "2026-11-11T16:41",
       "text": "Endgültig gelöscht: Manuel, Fr 27.11.2026 bis So 29.11.2026"
+    },
+    {
+      "t": "2026-11-11T16:41",
+      "text": "Endgültig gelöscht: Miriam, Fr 20.11.2026 bis So 22.11.2026"
     }
   ]
 }
