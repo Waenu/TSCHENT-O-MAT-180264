@@ -60,7 +60,8 @@ Anschliessend prüfen, dass `origin/main:einstellungen.json` die neue Version tr
 
 ## Offene Themen (Stand 11.11.2026, abends, Version 3.0.0.0)
 1. Erledigt 11.11.2026: Version 3.0.0.0 freigegeben (Historie «Meilenstein: Version 3 freigegeben» mit Übersicht aller Funktionen). Manifest und Seitentitel ohne «Vorschau», Name auf dem Startbildschirm «TSCHENT-O-MAT». Wänu verschickt die WhatsApp-Ankündigung (Gruppe ohne Link, mit Hinweis auf Startbildschirm) und jedem einzeln den persönlichen Link aus der Verwaltung.
-1b. Offen: iPhone. Eine Web-App auf dem Home-Bildschirm hat dort vermutlich einen eigenen Speicher, getrennt von Safari. Der persönliche Link (Kennung im #-Teil, wird nach dem Lesen aus der Adresse entfernt) wirkt dann nicht in der Startbildschirm-App. Noch nicht geprüft; Wänu klärt, wer ein iPhone hat.
+1b. Erledigt: Niemand in der Familie hat ein iPhone (Wänu, 11.11.2026). Startbildschirm-Hinweis im Text für Chrome und Samsung Internet.
+1c. Marianne: weiterhin die Speziallösung …/#mami=CODE (nur Ansehen, Kopf «Mariannes»), nicht über die persönlichen Links der Verwaltung. Code kennt nur Wänu.
 2. Persönliche Links: alle acht vergeben. Wo in der Verwaltung «hier nicht sichtbar» steht, erzeugt Wänu den Link vor dem Versand neu.
 3. Real noch nicht getestet (nur mit nachgestellten Daten): Storno mit Änderungsmeldung an den neuen Staffelbeginn, Endreinigung der Staffel samt Zahlung, Kopf «Mariannes».
 4. Offen bei Wänu: Reinigungskosten unter 18; ob Davids Mail in der Verwaltung ankommt; Fehler «Einnahmen» («reading 'split'») falls er wieder auftritt; Endreinigung vor einem Airbnb-Gast («ein Tag vor Ankunft» oder Zeitfenster Abreise bis Ankunft, heute Zeitfenster).
