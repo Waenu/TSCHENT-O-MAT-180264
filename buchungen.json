@@ -20,12 +20,6 @@
       "status": "storniert"
     },
     {
-      "name": "Manuel",
-      "arr": "2026-11-27",
-      "dep": "2026-11-29",
-      "status": "storniert"
-    },
-    {
       "name": "Miriam",
       "arr": "2026-11-20",
       "dep": "2026-11-22",
@@ -34,10 +28,6 @@
     }
   ],
   "logbuch": [
-    {
-      "t": "2026-10-28T10:39",
-      "text": "Bestätigt: Jerome, Do 29.10.2026 bis Sa 31.10.2026, CHF 110"
-    },
     {
       "t": "2026-10-28T10:39",
       "text": "Bescheid gegeben: Jerome, Do 29.10.2026 bis Sa 31.10.2026"
@@ -833,6 +823,10 @@
     {
       "t": "2026-11-11T16:41",
       "text": "Endgültig gelöscht: Manuel, Mi 25.11.2026 bis Fr 27.11.2026"
+    },
+    {
+      "t": "2026-11-11T16:41",
+      "text": "Endgültig gelöscht: Manuel, Fr 27.11.2026 bis So 29.11.2026"
     }
   ]
 }
