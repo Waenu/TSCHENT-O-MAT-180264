@@ -58,6 +58,11 @@ Anschliessend prüfen, dass `origin/main:einstellungen.json` die neue Version tr
 - Keine Hinweise, etwas auf dem Galaxy S10 zu testen.
 - Texte in der App: positiv und einladend. Kinder nennen die Eltern «Papi» und «Mami». Mehr Wortregeln stehen in den Texten der App selbst.
 
+## Testversion und neuer Kalender (12.11.2026, übernommen als 3.2.1.2)
+- Testversion: Repo `Waenu/TSCHENT-O-MAT-Test`, Seite https://waenu.github.io/TSCHENT-O-MAT-Test/ (nur Layout-Tests, speichert und sendet nichts). Dieselbe `index.html` erkennt am Pfad «TSCHENT-O-MAT-Test» den Testmodus (`TEST_MODUS`, Skript ganz oben im `<head>`); hier in der laufenden App ist er aus. Einzelheiten in `CLAUDE.md` des Test-Repos. Neues zuerst dort bauen, nach Wänus «übernehmen» `index.html` und `sw.js` unverändert hierher kopieren (nie `manifest.json` oder die orangen Symbole).
+- Kalender seit 3.2.0.0: Monate untereinander im Scroll-Fenster `#calBox` (`KAL_LISTE`, `kalSpringen`, `kalOben`, `KAL_BIS`, `KAL_ZIEL`), aktuelle Woche zuoberst, 12 Monate zurück, 13 voraus plus «Weitere Monate» bis 24. `#calGrid` ist ein Behälter, jeder Monat ein `.cal-grid.kal-g`; `zeichneBalken()` ohne Angabe zeichnet alle Monate.
+- 3.2.1.x: Umschalter `#calArt` neben «Heute» (⇄/⇅) zwischen untereinander und Blättern, pro Handy in `tm2_kalart`; schmale Pfeile, Titel `titelHtml()`; Klasse `zieht` beim Wischen an `#cal`.
+
 ## Offene Themen (Stand 11.11.2026, abends, Version 3.0.0.0)
 1. Erledigt 11.11.2026: Version 3.0.0.0 freigegeben (Historie «Meilenstein: Version 3 freigegeben» mit Übersicht aller Funktionen). Manifest und Seitentitel ohne «Vorschau», Name auf dem Startbildschirm «TSCHENT-O-MAT». Wänu verschickt die WhatsApp-Ankündigung (Gruppe ohne Link, mit Hinweis auf Startbildschirm) und jedem einzeln den persönlichen Link aus der Verwaltung.
 1b. Erledigt: Niemand in der Familie hat ein iPhone (Wänu, 11.11.2026). Startbildschirm-Hinweis im Text für Chrome und Samsung Internet.

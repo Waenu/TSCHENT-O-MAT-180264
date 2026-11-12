@@ -2,6 +2,76 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.2.1.2",
+      "datum": "2026-11-12",
+      "titel": "Kalender beim Blättern: mehr Platz für den Monatsnamen",
+      "arten": [
+        "Layout",
+        "Fehler"
+      ],
+      "punkte": [
+        "Die Pfeile ‹ › sind schmaler. Der Monatsname steht jetzt in einer Zeile und rutscht nicht mehr in den Pfeil, Zusätze wie «Skisaison» stehen klein darunter.",
+        "Auf schmalen Handys wird der Monatsname etwas kleiner statt überzulaufen.",
+        "Fehler behoben: Beim Wischen blenden «Heute», die Pfeile und der Umschalter wieder aus, damit die Monatsnamen frei vorbeigleiten."
+      ]
+    },
+    {
+      "v": "3.2.1.1",
+      "datum": "2026-11-12",
+      "titel": "Kalender-Umschalter ohne Leuchten",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Der Knopf ⇄/⇅ neben «Heute» wechselt die Ansicht jetzt ohne goldenes Aufleuchten und ohne Hinweis. Das Symbol zeigt die Wahl eindeutig an."
+      ]
+    },
+    {
+      "v": "3.2.1.0",
+      "datum": "2026-11-12",
+      "titel": "Kalender: Ansicht selbst wählen",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Neben «Heute» steht ein neuer Knopf: Mit ⇄ wechselt ihr zum seitlichen Blättern wie früher, mit ⇅ zurück zu den Monaten untereinander.",
+        "Beim Antippen leuchtet der Knopf kurz golden auf, und ein Hinweis nennt die gewählte Ansicht.",
+        "Jedes Handy merkt sich die gewählte Ansicht. Wer nichts wählt, sieht die Monate untereinander.",
+        "Beim Wechseln bleibt der Monat, den ihr gerade seht, und eine angefangene Auswahl bleibt erhalten."
+      ]
+    },
+    {
+      "v": "3.2.0.0",
+      "datum": "2026-11-12",
+      "titel": "Kalender: Monate untereinander, wie bei Airbnb",
+      "arten": [
+        "Neu",
+        "Layout"
+      ],
+      "punkte": [
+        "Die Monate stehen jetzt untereinander in einem eigenen Fenster. Ihr scrollt nach unten in die Zukunft und nach oben bis zu 12 Monate zurück, statt seitlich zu blättern.",
+        "Beim Öffnen steht die aktuelle Woche zuoberst. «Heute» bringt euch jederzeit dorthin zurück.",
+        "Die Wochentage Mo bis So bleiben oben stehen, jeder Monat hat seinen Titel. Oben in der Zeile steht immer der Monat, den ihr gerade seht.",
+        "Ein Aufenthalt über den Monatswechsel lässt sich ohne Blättern wählen: Anreise antippen, weiterscrollen, Abreise antippen.",
+        "Angezeigt werden zuerst 13 Monate voraus, mit «Weitere Monate anzeigen» bis zu 24 Monate.",
+        "Balken, Lücken, Reinigungskästchen, Farben und alle Regeln bleiben gleich."
+      ]
+    },
+    {
+      "v": "3.1.0.0",
+      "datum": "2026-11-12",
+      "titel": "Testversion zum Ausprobieren neuer Layouts",
+      "arten": [
+        "Neu"
+      ],
+      "punkte": [
+        "Dieselbe App läuft zusätzlich als Testversion unter einer eigenen Adresse. Dort probieren wir neue Layouts aus, bevor sie in die App kommen.",
+        "Die Testversion speichert nichts und sendet nichts: keine Buchungen, keine Mails, keine WhatsApp-Nachrichten. Sie arbeitet mit einer Kopie der Daten.",
+        "Erkennbar am orangen Balken «TESTVERSION», am Namen «TSCHENT-O-MAT TEST» und am orangen Symbol. Im Balken lässt sich die Ansicht wechseln (Papi oder ein Kind).",
+        "In der App selbst ändert sich dadurch nichts."
+      ]
+    },
+    {
       "v": "3.0.0.1",
       "datum": "2026-11-12",
       "titel": "Mindestpreis im Glossar richtiggestellt",

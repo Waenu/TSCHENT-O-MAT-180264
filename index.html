@@ -6,6 +6,75 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>TSCHENT-O-MAT</title>
 <meta name="theme-color" content="#1F5D4D">
+<script>
+/* Testversion (ab 3.1.0.0): dieselbe index.html läuft im Repo «TSCHENT-O-MAT-Test». Erkennt die App diese Adresse, gilt:
+   eigener Speicher im Browser (tm2t_ statt tm2_), nichts wird gespeichert (GitHub) und nichts gesendet (Google, WhatsApp).
+   In der laufenden App ist TEST_MODUS false und hier passiert nichts. */
+var TEST_MODUS = /TSCHENT-O-MAT-Test/i.test(location.pathname);
+if (TEST_MODUS) {
+  try {
+    var _sp = Storage.prototype, _sg = _sp.getItem, _ss = _sp.setItem, _sr = _sp.removeItem;
+    var _sk = function (k) { k = String(k); return k.indexOf("tm2_") === 0 ? "tm2t_" + k.slice(4) : k; };
+    _sp.getItem = function (k) { return _sg.call(this, _sk(k)); };
+    _sp.setItem = function (k, v) { return _ss.call(this, _sk(k), v); };
+    _sp.removeItem = function (k) { return _sr.call(this, _sk(k)); };
+    if (localStorage.getItem("tm2_token") === null && localStorage.getItem("tm2_absender") === null) localStorage.setItem("tm2_token", "test");   // erster Start: Papi-Ansicht
+  } catch (e) {}
+  (function () {
+    var f = window.fetch;   // nur Lesen aus dem eigenen Ordner und belegt.json; GitHub-Schnittstelle und Google-Briefkasten gesperrt
+    window.fetch = function (u, o) {
+      var url = String((u && u.url) || u), m = String((o && o.method) || (u && u.method) || "GET").toUpperCase();
+      if (m !== "GET" || /api\.github\.com|script\.google(usercontent)?\.com/i.test(url)) return Promise.reject(new Error("In der Testversion wird nichts gespeichert."));
+      return f.apply(this, arguments);
+    };
+  })();
+  document.title = "TSCHENT-O-MAT TEST";
+  try { document.querySelector('meta[name="theme-color"]').setAttribute("content", "#D66C00"); } catch (e) {}
+  window.testHinweis = function (t) {
+    var d = document.getElementById("testToast");
+    if (!d) { d = document.createElement("div"); d.id = "testToast"; d.setAttribute("role", "status"); document.body.appendChild(d); }
+    d.textContent = t; d.hidden = false; clearTimeout(window.testHinweis.t);
+    window.testHinweis.t = setTimeout(function () { d.hidden = true; }, 3000);
+  };
+  document.addEventListener("click", function (e) {   // WhatsApp-Knöpfe bleiben sichtbar, öffnen aber nichts
+    var a = e.target && e.target.closest && e.target.closest('a[href*="wa.me"], a[href^="whatsapp:"], a[href^="mailto:"], a[href^="sms:"]');
+    if (!a) return;
+    e.preventDefault(); e.stopPropagation();
+    window.testHinweis("🧪 In der Testversion wird nichts gesendet.");
+  }, true);
+  document.addEventListener("DOMContentLoaded", function () {
+    var namen = ["Jerome", "Deborah", "Miriam", "Manuel", "David", "Rahel", "Andreas", "Sarah"];
+    var tok = "", abs = "";
+    try { tok = localStorage.getItem("tm2_token") || ""; abs = localStorage.getItem("tm2_absender") || ""; } catch (e) {}
+    var jetzt = tok ? "Papi" : abs;
+    var b = document.createElement("div"); b.id = "testBalken";
+    var opt = '<option value="Papi"' + (jetzt === "Papi" ? " selected" : "") + ">Papi</option>" + namen.map(function (n) { return '<option value="' + n + '"' + (jetzt === n ? " selected" : "") + ">" + n + "</option>"; }).join("");
+    if (!jetzt) opt = '<option value="" selected>wählen</option>' + opt;
+    b.innerHTML = '<div class="tb-t"><b>🧪 TESTVERSION</b><span>nichts wird gespeichert oder gesendet</span></div><label class="tb-a">Ansicht <select id="testAnsicht" aria-label="Ansicht wählen">' + opt + "</select></label>";
+    document.body.insertBefore(b, document.body.firstChild);
+    var st = document.createElement("div"); st.id = "testStrich"; st.setAttribute("aria-hidden", "true"); document.body.appendChild(st);
+    document.getElementById("testAnsicht").addEventListener("change", function () {
+      var v = this.value; if (!v) return;
+      try {
+        if (v === "Papi") { localStorage.setItem("tm2_token", "test"); localStorage.setItem("tm2_absender", ""); localStorage.removeItem("tm2_namefix"); localStorage.removeItem("tm2_absender_ts"); }
+        else { localStorage.removeItem("tm2_token"); localStorage.setItem("tm2_absender", v); localStorage.setItem("tm2_namefix", "1"); }
+      } catch (e) {}
+      location.href = location.pathname + location.search;
+    });
+  });
+}
+</script>
+<style>
+  #testBalken { display: flex; align-items: center; justify-content: space-between; gap: 8px 12px; flex-wrap: wrap; background: #D66C00; color: #fff; padding: 8px 14px; font: 600 0.95rem/1.25 system-ui, sans-serif; }
+  #testBalken .tb-t { display: flex; flex-direction: column; }
+  #testBalken .tb-t b { font-size: 1.05rem; letter-spacing: 0.06em; }
+  #testBalken .tb-t span { font-weight: 400; font-size: 0.85rem; opacity: 0.95; }
+  #testBalken .tb-a { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+  #testBalken select { font: inherit; padding: 4px 6px; border-radius: 6px; border: 0; background: #fff; color: #5A2D00; }
+  #testStrich { position: fixed; top: 0; left: 0; right: 0; height: 4px; background: #D66C00; z-index: 100001; pointer-events: none; }
+  #testToast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 100002; max-width: 86vw; padding: 10px 16px; border-radius: 999px; background: #D66C00; color: #fff; font: 600 0.95rem/1.3 system-ui, sans-serif; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,.4); }
+  #testToast[hidden] { display: none; }
+</style>
 <script>try{var _t=localStorage.getItem("tm2_theme");document.documentElement.dataset.theme=(_t==="light"||_t==="dark")?_t:"dark";}catch(e){document.documentElement.dataset.theme="dark";}</script>
 <meta name="apple-mobile-web-app-title" content="TSCHENT-O-MAT">
 <link rel="icon" type="image/png" href="icon-192.png">
@@ -353,10 +422,25 @@
   .cal-nav button { font: inherit; font-size: 1.5rem; font-weight: 700; line-height: 1; color: var(--accent); background: transparent; border: 2px solid var(--accent); border-radius: 6px; width: 52px; min-height: 48px; cursor: pointer; }
   .cal-links { display: flex; gap: 6px; }
   .cal-nav .cal-heute { width: auto; padding: 0 9px; font-size: 0.95rem; border-color: #C2188F; color: #C2188F; }   /* gleiche Farbe wie der Rahmen des heutigen Tages */
-  .cal-nav #calPrev, .cal-nav #calNext { width: 46px; }
-  .cal-nav strong { flex: 1; text-align: center; min-width: 0; }
+  .cal-nav #calPrev, .cal-nav #calNext { width: 30px; padding: 0; flex: none; }   /* seit 3.2.1.2 schmal, damit der Monatsname Platz hat */
+  .cal-nav strong { flex: 1; text-align: center; min-width: 0; line-height: 1.15; white-space: nowrap; font-size: min(var(--t-title), 3.9vw); }   /* schmale Handys: Monatsname wird etwas kleiner statt überzulaufen */
+  .kt-sub { display: block; font-size: 0.72em; font-weight: 600; opacity: 0.85; }
   .cal-nav button:disabled { opacity: 0.3; cursor: default; }
   .cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+  /* Kalender seit 3.2.0.0: Monate untereinander in einem Scroll-Fenster (wie bei Airbnb) */
+  .kal-box { position: relative; }
+  .kal-box.liste { max-height: 60vh; max-height: 60dvh; overflow-y: auto; overflow-x: clip; -webkit-overflow-scrolling: touch; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .kal-wdz[hidden] { display: none; }
+  .cal-links { display: flex; align-items: center; gap: 8px; }
+  .cal-nav .cal-art { width: 44px; font-size: 1.5rem; flex: none; }
+  .cal-nav .cal-links { flex: none; }
+  .kal-wdz { position: sticky; top: 0; z-index: 20; background: var(--surface); padding: 4px 0; border-bottom: 1px solid var(--line); }
+  .kal-m { padding: 0 0 6px; }
+  .kal-mt { font-weight: 700; font-size: var(--t-title); padding: 14px 2px 8px; }
+  .kal-g { position: relative; }
+  .kal-mehr { display: block; width: 100%; margin: 10px 0; }
+  .kal-mehr[hidden] { display: none; }
+  #calPrev[hidden], #calNext[hidden] { display: none; }
   .cal-wd { font-size: var(--t-small); color: var(--muted); text-align: center; padding: 2px 0; font-weight: 700; }
   .cal-d { font: inherit; color: var(--fg); min-height: 56px; padding: 3px 0 0; border: 1px solid var(--line); border-radius: 6px; background: transparent; cursor: pointer; font-variant-numeric: tabular-nums; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; line-height: 1.1; }
   .cal-d { position: relative; }
@@ -370,7 +454,7 @@
   .cal-d.past { color: var(--muted); opacity: 0.45; border-style: dashed; }
   .cal-d.off { color: var(--muted); opacity: 0.5; }
   .kal-nb { position: absolute; pointer-events: none; z-index: 1; }
-  .kal-nbk { position: absolute; left: 0; right: 0; text-align: center; white-space: nowrap; pointer-events: none; }
+  .kal-nbk { position: absolute; left: 0; right: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.15; text-align: center; white-space: nowrap; pointer-events: none; }
   #cal.zieht .cal-nav button { visibility: hidden; }   /* beim Schieben tragen die Monatsnamen die Titelzeile */
   .cal-d.in { background: var(--note-bg); border-color: var(--accent); }
   .cal-d.sel { background: var(--sel); color: var(--sel-fg); border-color: var(--sel); font-weight: 700; }
@@ -1319,11 +1403,11 @@
   <section id="cal" class="card cal" aria-label="Wunschtermin">
     <h2>Wunschtermin finden <button type="button" class="sym" id="jahrBtn" aria-label="Jahresübersicht zeigen">🗓️</button><button type="button" class="sym" data-info="b-blick" aria-label="Regeln auf einen Blick">📊</button><button type="button" class="sym" data-film="saison" aria-label="Kurzfilm: Gleicher Wunsch, andere Regeln (die Saisons)">🎬</button></h2>
     <div class="cal-nav">
-      <div class="cal-links"><button type="button" id="calPrev" aria-label="Vorheriger Monat">‹</button><button type="button" id="calHeute" class="cal-heute" aria-label="Zum aktuellen Monat">Heute</button></div>
+      <div class="cal-links"><button type="button" id="calPrev" aria-label="Vorheriger Monat">‹</button><button type="button" id="calHeute" class="cal-heute" aria-label="Zum aktuellen Monat">Heute</button><button type="button" id="calArt" class="cal-art" aria-label="Kalenderansicht wechseln"></button></div>
       <strong id="calTitle"></strong>
       <button type="button" id="calNext" aria-label="Nächster Monat">›</button>
     </div>
-    <div class="cal-grid" id="calGrid"></div>
+    <div class="kal-box liste" id="calBox"><div class="cal-grid kal-wdz" id="calWdz" aria-hidden="true"></div><div id="calGrid" class="kal-liste"></div><button type="button" class="btn kal-mehr" id="calMehr" hidden>Weitere Monate anzeigen</button></div>
     <p class="cal-sel" id="calSel" role="status"></p>
     <div class="note h" id="calBlase" role="status" aria-live="polite" hidden></div>
     <div class="note h" id="calTermin" role="status" aria-live="polite" hidden></div>
@@ -1405,7 +1489,7 @@
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.0.0.1";
+let VERSION = "3.2.1.2";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1789,6 +1873,9 @@ let BELEGT = new Set();
 let BELEGT_OK = false, BELEGT_FRISCH = false;   // FRISCH: Belegung eben erfolgreich aus dem Netz geladen (nicht aus dem Zwischenspeicher)
 let ARR = "", DEP = "";
 let calY = 0, calM = 0;
+let KAL_LISTE = true;   // seit 3.2.0.0: Monate untereinander im Scroll-Fenster; seit 3.2.1.0 umschaltbar (pro Handy, tm2_kalart = "blatt" für Blättern); calY/calM = Monat oben im Fenster
+try { KAL_LISTE = localStorage.getItem("tm2_kalart") !== "blatt"; } catch (e) {}
+let KAL_BIS = 13, KAL_GEZEIGT = -1, KAL_ZIEL = null;   // KAL_BIS: aufgebaute Monate ab heute; KAL_GEZEIGT: Monat oben im Fenster (Jahr*12+Monat); KAL_ZIEL: offener Sprung {heute} | {tag} | {monat}
 const pad2 = (n) => String(n).padStart(2, "0");
 const dkey = (y, m, d) => y + "-" + pad2(m + 1) + "-" + pad2(d);
 const dparse = (k) => { const a = k.split("-").map(Number); return new Date(Date.UTC(a[0], a[1] - 1, a[2])); };
@@ -2065,7 +2152,7 @@ function kurzMap() {
   return KURZ_MAP;
 }
 function lueckeVon(k) { for (const [st, en] of GAPSTART) if (k >= st && k < en) return [st, en]; return null; }
-function initKalenderMonat() { const n = heuteDate(); calY = n.getFullYear(); calM = n.getMonth(); }
+function initKalenderMonat() { const n = heuteDate(); calY = n.getFullYear(); calM = n.getMonth(); KAL_ZIEL = { heute: true }; }   // im Fenster: aktuelle Woche zuoberst
 
 function kalenderKlick(k) {
   if (GFORM && GFORM.mode) { gastTagWahl(k); return; }
@@ -2077,7 +2164,7 @@ function kalenderKlick(k) {
   if (ARR && !DEP) {   // gibt es nach der Anreise nur genau einen möglichen Abreisetag (z. B. bei einer Lücke), wird er gleich gesetzt
     const moegl = []; for (let q = 1; q <= P.maxNaechte + 1 && moegl.length < 2; q++) { const kk = addDays(ARR, q); if (kannAbreise(kk)) moegl.push(kk); }
     if (moegl.length === 1) DEP = moegl[0];
-    if (moegl.length) { const f = moegl[0], fy = parseInt(f.slice(0, 4), 10), fm = parseInt(f.slice(5, 7), 10) - 1; if (fy !== calY || fm !== calM) { calY = fy; calM = fm; } }   // der früheste mögliche Abreisetag liegt in einem anderen Monat: der Kalender wechselt dorthin, ohne einen Tag zu wählen
+    if (moegl.length && !KAL_LISTE) { const f = moegl[0], fy = parseInt(f.slice(0, 4), 10), fm = parseInt(f.slice(5, 7), 10) - 1; if (fy !== calY || fm !== calM) { calY = fy; calM = fm; } }   // der früheste mögliche Abreisetag liegt in einem anderen Monat: der Kalender wechselt dorthin, ohne einen Tag zu wählen
   }
   ELTERN = false;
   S.nights = (ARR && DEP) ? diffDays(ARR, DEP) : null;
@@ -2779,6 +2866,7 @@ function eigenMerken(k) {
   } catch (e) {}
 }
 function zeichneBalken(gr) {
+  if (!gr && KAL_LISTE) { document.querySelectorAll("#calGrid .kal-g").forEach((m) => zeichneBalken(m)); return; }   // Fenster: jeden Monat einzeln
   const g = gr || document.getElementById("calGrid");
   g.querySelectorAll(".bk").forEach((e) => e.remove());
   if ((!BUCH.length && !GAESTE.length && !(ARR && DEP)) || g.offsetWidth === 0) return;
@@ -2888,9 +2976,9 @@ function zeichneBalken(gr) {
 }
 // Baut die Zellen eines Monats (Wochentage, Tage, Tage des Nachbarmonats) in das Gitter g
 const CLR_FELD_AN = false;   // «✕ löschen»-Feld unter dem Monat: ausgeschaltet seit 2.106.0.1 (Code bleibt, auf true setzen zum Einschalten)
-function monatBauen(g, calY, calM) {
+function monatBauen(g, calY, calM, ohneWt) {
   const heute = heuteKey();
-  WT_KURZ.forEach((w) => { const h = document.createElement("div"); h.className = "cal-wd"; h.textContent = w; g.appendChild(h); });
+  if (!ohneWt) WT_KURZ.forEach((w) => { const h = document.createElement("div"); h.className = "cal-wd"; h.textContent = w; g.appendChild(h); });
   const erster = new Date(Date.UTC(calY, calM, 1));
   const lead = (erster.getUTCDay() + 6) % 7;
   const tage = new Date(Date.UTC(calY, calM + 1, 0)).getUTCDate();
@@ -2955,7 +3043,7 @@ function monatBauen(g, calY, calM) {
   };
   for (let i = 0; i < lead; i++) g.appendChild(document.createElement("div"));
   for (let d = 1; d <= tage; d++) g.appendChild(zelleBauen(dkey(calY, calM, d), d));
-  if (CLR_FELD_AN && !(GFORM && GFORM.mode) && (ARR || DEP)) {   // «löschen»: immer in einer eigenen Zeile unter dem letzten Tag, rechts aussen (zwei Spalten breit); in derselben Zeile würde es bei einer Buchung, die in den nächsten Monat läuft, unter deren Balken liegen
+  if (CLR_FELD_AN && !(GFORM && GFORM.mode) && (ARR || DEP) && (!ohneWt || (DEP || ARR).slice(0, 7) === dkey(calY, calM, 1).slice(0, 7))) {   // «löschen»: immer in einer eigenen Zeile unter dem letzten Tag, rechts aussen (zwei Spalten breit); in derselben Zeile würde es bei einer Buchung, die in den nächsten Monat läuft, unter deren Balken liegen
     const rest = (lead + tage) % 7;
     for (let i = 0; rest && i < 7 - rest; i++) g.appendChild(document.createElement("div"));
     const c = document.createElement("button");
@@ -3092,6 +3180,31 @@ function kopfName() {
   const n = ABSENDER ? (SPITZNAME[ABSENDER] || ABSENDER) + "s" : TOKEN ? "Wänus" : mamiAn() ? "Mariannes" : "";
   if (e.textContent !== n || e.hidden !== !n) { e.textContent = n; e.hidden = !n; }
 }
+// Scroll-Fenster (seit 3.2.0.0): offenen Sprung ausführen (aktuelle Woche, Tag oder Monat zuoberst); false, solange das Fenster nicht sichtbar ist
+// Monatstitel in der Kopfzeile: Zusatz wie «(Skisaison)» klein in einer zweiten Zeile (seit 3.2.1.2)
+function titelHtml(m, y) { const t = monTitel(m, y), i = t.indexOf(" ("); return i < 0 ? esc(t) : esc(t.slice(0, i)) + '<span class="kt-sub">' + esc(t.slice(i + 2, -1)) + "</span>"; }
+function kalSpringen() {
+  const box = document.getElementById("calBox");
+  if (!KAL_LISTE) { KAL_ZIEL = null; return false; }
+  if (!KAL_ZIEL || !box || !box.offsetHeight) return false;
+  const z = KAL_ZIEL; KAL_ZIEL = null;
+  const k = z.heute ? heuteKey() : z.tag || "";
+  let el = k ? box.querySelector('#calGrid [data-k="' + k + '"]') : null;
+  if (!el) el = box.querySelector('.kal-m[data-y="' + calY + '"][data-m="' + calM + '"]');
+  if (el) box.scrollTop += el.getBoundingClientRect().top - box.getBoundingClientRect().top - document.getElementById("calWdz").offsetHeight - 4;
+  kalOben();
+  return true;
+}
+// Monat oben im Fenster: wird calY/calM und steht in der Titelzeile
+function kalOben() {
+  const box = document.getElementById("calBox"); if (!box || !box.offsetHeight) return;
+  const lim = box.getBoundingClientRect().top + document.getElementById("calWdz").offsetHeight + 8;
+  let best = null;
+  for (const w of box.querySelectorAll(".kal-m")) { if (w.getBoundingClientRect().top <= lim) best = w; else break; }
+  if (!best) best = box.querySelector(".kal-m"); if (!best) return;
+  calY = +best.dataset.y; calM = +best.dataset.m; KAL_GEZEIGT = calY * 12 + calM;
+  document.getElementById("calTitle").innerHTML = titelHtml(calM, calY);
+}
 function renderKalender() {
   try { kopfName(); } catch (e) {}
   reservTexte(); angeboteFuellen();
@@ -3101,12 +3214,35 @@ function renderKalender() {
   document.getElementById("calPrev").disabled = abstand <= -KAL_MONATE_ZURUECK;
   document.getElementById("calNext").disabled = abstand >= KAL_MONATE_VORAUS;
   document.getElementById("calHeute").disabled = abstand === 0;
-  document.getElementById("calTitle").textContent = monTitel(calM, calY);
+  document.getElementById("calTitle").innerHTML = titelHtml(calM, calY);
   const g = document.getElementById("calGrid");
+  if (KAL_LISTE) {
+    const box = document.getElementById("calBox"), alt = box.scrollTop, basis = n0.getFullYear() * 12 + n0.getMonth(), ziel = calY * 12 + calM;
+    if (ziel - basis > KAL_BIS) KAL_BIS = Math.min(KAL_MONATE_VORAUS, ziel - basis + 1);   // Sprung weiter in die Zukunft: Fenster verlängern
+    g.innerHTML = "";
+    g.classList.toggle("papi", !!TOKEN);
+    for (let i = -KAL_MONATE_ZURUECK; i <= KAL_BIS; i++) {
+      const t = basis + i, y = Math.floor(t / 12), m = t % 12;
+      const w = document.createElement("div"); w.className = "kal-m"; w.dataset.y = y; w.dataset.m = m;
+      const h = document.createElement("div"); h.className = "kal-mt"; h.textContent = monTitel(m, y);
+      const mg = document.createElement("div"); mg.className = "cal-grid kal-g";
+      monatBauen(mg, y, m, true);
+      w.append(h, mg); g.appendChild(w);
+    }
+    zeichneBalken();
+    document.getElementById("calMehr").hidden = KAL_BIS >= KAL_MONATE_VORAUS;
+    document.getElementById("calPrev").hidden = true; document.getElementById("calNext").hidden = true;
+    document.getElementById("calHeute").disabled = false;
+    box.scrollTop = alt;
+    if (ziel !== KAL_GEZEIGT && !KAL_ZIEL) KAL_ZIEL = { monat: true };   // Monat von aussen gewählt (Jahresübersicht, Angebote): dorthin
+    if (!kalSpringen()) kalOben();
+  } else {
+  document.getElementById("calPrev").hidden = false; document.getElementById("calNext").hidden = false;
   g.innerHTML = "";
   g.classList.toggle("papi", !!TOKEN);
   monatBauen(g, calY, calM);
   zeichneBalken();
+  }
   const sel = document.getElementById("calSel");
   sel.classList.toggle("frag", !(ARR && DEP));
   if (ARR && DEP) sel.textContent = fmtTag(ARR) + " bis " + fmtTag(DEP) + " = " + S.nights + " " + (S.nights === 1 ? "Nacht" : "Nächte") + (S.lueckeGanz ? " · ganze Lücke" : "");
@@ -3138,7 +3274,7 @@ function renderKalender() {
   begriffeFuellen();
   terminBox();
   document.getElementById("calHint").innerHTML = BELEGT_OK
-    ? "👉 Erst den Anreisetag, dann den Abreisetag antippen (" + P.minNaechte + " bis " + P.maxNaechte + " Nächte). Durch die Monate blättert ihr mit Wischen oder mit <span class='zei pfeil'>‹</span> und <span class='zei pfeil'>›</span>. Die Belegung wird alle paar Stunden aktualisiert."
+    ? "👉 Erst den Anreisetag, dann den Abreisetag antippen (" + P.minNaechte + " bis " + P.maxNaechte + " Nächte). " + (KAL_LISTE ? "Durch die Monate scrollt ihr im Kalender nach oben und unten, «Heute» bringt euch zur aktuellen Woche." : "Durch die Monate blättert ihr mit Wischen oder mit <span class='zei pfeil'>‹</span> und <span class='zei pfeil'>›</span>.") + " Mit <span class='zei'>" + (KAL_LISTE ? "⇄" : "⇅") + "</span> neben «Heute» wechselt ihr die Ansicht. Die Belegung wird alle paar Stunden aktualisiert."
     : "Die Belegung konnte nicht geladen werden, alle Tage erscheinen frei. Der Termin ist nur eine Anfrage, die Eltern prüfen ihn.";
 }
 // Termin-Box: eine einzige Box unter dem Kalender, sobald Anreise und Abreise gewählt sind. Warnungen (⚠️) stehen immer, Erklärungen nur bei eingeschalteter Hilfe «?»
@@ -3281,6 +3417,7 @@ document.getElementById("calNext").addEventListener("click", () => { calM++; if 
     a.onfinish = a.oncancel = () => { if (el) el.style.overflowX = ""; };
   };
   window._kalWisch = (dir) => {   // dir +1 = nächster Monat, -1 = vorheriger; false, wenn an der Grenze
+    if (KAL_LISTE) return false;   // Monate untereinander: kein Blättern
     const btn = document.getElementById(dir > 0 ? "calNext" : "calPrev");
     if (!btn || btn.disabled) return false;
     btn.click(); gleiten(dir > 0 ? 36 : -36, 0.25); merken(); return true;
@@ -3290,11 +3427,11 @@ document.getElementById("calNext").addEventListener("click", () => { calM++; if 
   let st = null, stumm = 0;
   g.style.touchAction = "pan-y";
   const btnFuer = (dir) => document.getElementById(dir > 0 ? "calNext" : "calPrev");
-  const weg = () => { if (st && st.nb) { st.nb.remove(); st.nb = null; } if (st && st.gk) { st.gk.remove(); st.gk = null; } const ti = document.getElementById("calTitle"); if (ti) ti.style.visibility = ""; const el = g.parentElement; if (el) { el.style.overflowX = ""; el.classList.remove("zieht"); } g.style.transition = ""; g.style.transform = ""; };
-  const kopfBauen = (text) => {   // Monatsname auf Höhe der Titelzeile, gleitet mit seinem Monat mit
+  const weg = () => { if (st && st.nb) { st.nb.remove(); st.nb = null; } if (st && st.gk) { st.gk.remove(); st.gk = null; } const ti = document.getElementById("calTitle"); if (ti) ti.style.visibility = ""; const el = g.parentElement; if (el) { el.style.overflowX = ""; el.classList.remove("zieht"); } document.getElementById("cal").classList.remove("zieht"); g.style.transition = ""; g.style.transform = ""; };
+  const kopfBauen = (html) => {   // Monatsname auf Höhe der Titelzeile, gleitet mit seinem Monat mit
     const ti = document.getElementById("calTitle"), tr = ti.getBoundingClientRect(), gr = g.getBoundingClientRect(), cs = getComputedStyle(ti);
-    const d = document.createElement("div"); d.className = "kal-nbk"; d.textContent = text;
-    d.style.top = (tr.top - gr.top) + "px"; d.style.height = tr.height + "px"; d.style.lineHeight = tr.height + "px"; d.style.font = cs.font; d.style.color = cs.color;
+    const d = document.createElement("div"); d.className = "kal-nbk"; d.innerHTML = html;
+    d.style.top = (tr.top - gr.top) + "px"; d.style.height = tr.height + "px"; d.style.font = cs.font; d.style.color = cs.color;
     return d;
   };
   const nachbar = (dir) => {   // Nachbarmonat daneben aufbauen (dir +1 = rechts daneben, -1 = links daneben); null an der Grenze
@@ -3308,7 +3445,7 @@ document.getElementById("calNext").addEventListener("click", () => { calM++; if 
     nb.style.left = g.offsetLeft + "px"; nb.style.top = g.offsetTop + "px"; nb.style.width = g.offsetWidth + "px";
     g.insertAdjacentElement("afterend", nb);
     monatBauen(nb, y, mm);
-    nb.appendChild(kopfBauen(monTitel(mm, y)));
+    nb.appendChild(kopfBauen(titelHtml(mm, y)));
     zeichneBalken(nb);
     st.nb = nb;
   };
@@ -3323,12 +3460,12 @@ document.getElementById("calNext").addEventListener("click", () => { calM++; if 
     let ok = false; const once = () => { if (ok) return; ok = true; fn(); };
     g.addEventListener("transitionend", once, { once: true }); setTimeout(once, 300);
   };
-  g.addEventListener("touchstart", (e) => { if (st && st.mode === "x") return; st = e.touches.length === 1 ? { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now(), mode: null, nb: null, nbDir: 0 } : null; }, { passive: true });
+  g.addEventListener("touchstart", (e) => { if (KAL_LISTE) { st = null; return; } if (st && st.mode === "x") return; st = e.touches.length === 1 ? { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now(), mode: null, nb: null, nbDir: 0 } : null; }, { passive: true });
   g.addEventListener("touchmove", (e) => {
     if (!st || e.touches.length !== 1) return;
     const dx = e.touches[0].clientX - st.x, dy = e.touches[0].clientY - st.y;
     if (!st.mode) {
-      if (Math.abs(dx) > 10 && Math.abs(dx) > 1.5 * Math.abs(dy)) { st.mode = "x"; const el = g.parentElement; if (el) { el.style.overflowX = "clip"; el.classList.add("zieht"); } g.style.transition = "none"; const ti = document.getElementById("calTitle"); st.gk = kopfBauen(ti.textContent); g.appendChild(st.gk); ti.style.visibility = "hidden"; }
+      if (Math.abs(dx) > 10 && Math.abs(dx) > 1.5 * Math.abs(dy)) { st.mode = "x"; const el = g.parentElement; if (el) { el.style.overflowX = "clip"; el.classList.add("zieht"); } document.getElementById("cal").classList.add("zieht"); g.style.transition = "none"; const ti = document.getElementById("calTitle"); st.gk = kopfBauen(ti.innerHTML); g.appendChild(st.gk); ti.style.visibility = "hidden"; }
       else if (Math.abs(dy) > 10) st.mode = "y";
     }
     if (st.mode === "x") lage(dx);
@@ -3356,7 +3493,7 @@ document.getElementById("calNext").addEventListener("click", () => { calM++; if 
   g.addEventListener("click", (e) => { if (Date.now() < stumm) { e.stopPropagation(); e.preventDefault(); } }, true);
   // Einmaliger Wink: beim ersten Mal, wenn der Kalender im Bild ist, schiebt sich der Monat kurz nach links und federt zurück
   try {
-    if (!lesen() && !ruhig() && "IntersectionObserver" in window && g.animate) {
+    if (!KAL_LISTE && !lesen() && !ruhig() && "IntersectionObserver" in window && g.animate) {
       const io = new IntersectionObserver((es) => {
         if (!es.some((x) => x.isIntersecting) || g.offsetWidth === 0) return;
         io.disconnect(); merken();
@@ -4715,7 +4852,7 @@ document.getElementById("aufStatus").addEventListener("click", aufentWeg);
   aufentWeg(e);
 }));
 // ===== Bestätigen durch die Eltern: Link aus der Anfrage, Eintrag in buchungen.json über die GitHub-Schnittstelle =====
-const GH_REPO = "Waenu/TSCHENT-O-MAT-180264", GH_DATEI = "buchungen.json";
+const GH_REPO = TEST_MODUS ? "Waenu/TSCHENT-O-MAT-Test" : "Waenu/TSCHENT-O-MAT-180264", GH_DATEI = "buchungen.json";
 let TOKEN = "";
 try { TOKEN = localStorage.getItem("tm2_token") || ""; } catch (e) {}
 // Ansicht «Mami»: darf alles sehen, aber nichts ändern oder bestätigen. Papi schickt einen Link (…/#mami=CODE) per WhatsApp; öffnet ihn Mami einmal, merkt sich ihr Handy die Ansicht. Im Programm steht nur der Fingerabdruck des Codes. «#mami=aus» schaltet sie wieder ab.
@@ -4808,7 +4945,7 @@ async function einlLaden() {
 }
 const einlAktiv = () => EINL === null || Object.keys(EINL).length > 0;
 async function einladungPruefen() {
-  if (TOKEN || MAMI || ELTERN_GERAET) return;
+  if (TOKEN || MAMI || ELTERN_GERAET || TEST_MODUS) return;   // Testversion: Ansicht kommt aus dem orangen Balken
   const m = /[#&]ich=([^&.]+)\.([^&]+)/.exec(location.hash || "");   // zuerst lesen: andere Teile der App räumen die Adresse beim Start auf
   await einlLaden();
   if (m) {
@@ -4953,6 +5090,7 @@ const frZahl = (v) => { const n = Number(String(v == null ? "" : v).replace(/[�
 const frk = (n) => "CHF " + (Math.round(n * 100) / 100).toLocaleString("de-CH", { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }).replace(/[’']/g, "’") + (n % 1 ? "" : ".–");
 function einnAn(j) { EINN = {}; (j && Array.isArray(j.eintraege) ? j.eintraege : []).forEach((x) => { if (x && DKEY.test(x.arr || "")) EINN[x.arr] = { n: frZahl(x.n), r: frZahl(x.r), p: frZahl(x.p) }; }); }
 async function einnLaden() {
+  if (TEST_MODUS) { EINN = {}; EINN_STATUS = "ok"; return; }   // Testversion: privaten Speicher nicht anfassen
   if (!TOKEN || ABSENDER) return;
   const kopf = { Authorization: "Bearer " + TOKEN, Accept: "application/vnd.github+json" };
   try {
@@ -5437,7 +5575,7 @@ document.getElementById("infoBtn").addEventListener("click", () => {
 // ===== Gästemeldung der Freunde (Kurtaxe Adelboden), seit 2.116.0.0 =====
 // Der Buchende füllt pro Freund Name, Vorname, Geburtsdatum, Geschlecht und Nationalität aus (höchstens 5).
 // Die Liste geht an einen Briefkasten (Google-Apps-Script im Konto der Eltern, scripts/gaestemeldung.gs), nicht ins Repo.
-const GM_URL = "https://script.google.com/macros/s/AKfycbwHIFROA_Eiyl2nufeTUiM3blx59uTe7-obr3z9ZqEzSISvm5E_dtXHiXltBd-Z747S/exec";   // Adresse der Web-App des Briefkastens; leer = Funktion noch nicht eingerichtet
+const GM_URL = TEST_MODUS ? "" : "https://script.google.com/macros/s/AKfycbwHIFROA_Eiyl2nufeTUiM3blx59uTe7-obr3z9ZqEzSISvm5E_dtXHiXltBd-Z747S/exec";   // Adresse der Web-App des Briefkastens; leer = Funktion noch nicht eingerichtet
 const GM_MAX = 5;
 const gmAktiv = () => !!GM_URL;
 function gmErinnerText(x) { const p = PARTNER_ABS.indexOf(x.name) >= 0; return "Hoi " + x.name + ", für euren Aufenthalt vom " + fmtTagV(x.arr) + " bis " + fmtTagV(x.dep) + " fehlt uns noch die Liste deiner Freunde für die Kurtaxe. Bitte fülle sie im TSCHENT-O-MAT aus, sie steht zuoberst auf der Startseite (Name, Geburtsdatum, Nationalität). Wir brauchen sie, damit wir die Reservation abschliessen können. Danke dir!"; }
@@ -6037,8 +6175,9 @@ document.getElementById("ovSuche").addEventListener("click", (e) => {
 function zumKalender(k) {
   ZURUECK = null; document.getElementById("zurueck").hidden = true;
   setHilfe(false); hilfeZuklappen(); setChem(false); ansichtZu(); setRechner(true);
-  calY = +k.slice(0, 4); calM = +k.slice(5, 7) - 1; renderKalender();
+  calY = +k.slice(0, 4); calM = +k.slice(5, 7) - 1; KAL_ZIEL = KAL_LISTE ? { tag: k } : null; renderKalender();
   requestAnimationFrame(() => {
+    kalSpringen();
     const c = document.querySelector('#calGrid [data-k="' + k + '"]');
     document.getElementById("cal").scrollIntoView({ behavior: "auto", block: "start" });
     if (!c) return;
@@ -6355,7 +6494,9 @@ document.getElementById("tokPanel").addEventListener("click", (e) => {
   const ausHinweis = () => { let schon = false; try { schon = localStorage.getItem("tm2_hilfe_info") === "1"; localStorage.setItem("tm2_hilfe_info", "1"); } catch (e) {} if (schon) return; blase.innerHTML = '<div class="txt">' + AUS_INFO + "</div>"; blase.style.border = ""; blase.style.background = ""; blase.hidden = false; };
   const speichern = () => { try { localStorage.setItem("tm2_hilfe", an ? "1" : "0"); } catch (e) {} };
   window._hilfeAn = () => an;
-  const START = "<b>💡 Hilfe ist an.</b> Tippe einen Tag an, dann erklärt er sich. Zum Wechseln des Monats wischst du im Kalender nach links oder rechts. Mit unterstrichenen Symbolen wie " + symBtn("b-luecke", "🧩") + " springst du zur ausführlichen Erklärung. Mehr dazu unter «Willkommen» " + symBtn("b-benutzung", "👋") + ". Mit dem Knopf <span class='zei hilfe'>?</span> unten rechts schaltest du die Hilfe aus.";
+  const startText = () => "<b>💡 Hilfe ist an.</b> Tippe einen Tag an, dann erklärt er sich. " + (KAL_LISTE ? "Durch die Monate scrollst du im Kalender nach oben und unten." : "Zum Wechseln des Monats wischst du im Kalender nach links oder rechts.") + " Mit unterstrichenen Symbolen wie " + symBtn("b-luecke", "🧩") + " springst du zur ausführlichen Erklärung. Mehr dazu unter «Willkommen» " + symBtn("b-benutzung", "👋") + ". Mit dem Knopf <span class='zei hilfe'>?</span> unten rechts schaltest du die Hilfe aus.";
+  let START = startText();
+  window._hilfeStartNeu = () => { const war = !blase.hidden && blase.innerHTML === START; START = startText(); if (war) zeigen(START); };
   const zeigen = (html, zelle, still) => {
     if (html == null) { blase.hidden = true; return; }   // nichts Neues zu sagen: keine Box
     blase.innerHTML = '<div class="txt">' + html + '</div><button type="button" id="calBlaseZu" aria-label="Hilfe schliessen">✕</button>';
@@ -6611,6 +6752,32 @@ document.querySelectorAll("details.sub > summary").forEach((sm) => {   // Symbol
 })();
 aufentLaden();
 try { new ResizeObserver(() => zeichneBalken()).observe(document.getElementById("calGrid")); } catch (e) {}
+(function () {   // Scroll-Fenster des Kalenders (seit 3.2.0.0)
+  const box = document.getElementById("calBox"), wdz = document.getElementById("calWdz");
+  WT_KURZ.forEach((w) => { const h = document.createElement("div"); h.className = "cal-wd"; h.textContent = w; wdz.appendChild(h); });
+  let lauf = false;
+  box.addEventListener("scroll", () => { if (lauf || !KAL_LISTE) return; lauf = true; requestAnimationFrame(() => { lauf = false; kalOben(); }); }, { passive: true });
+  document.getElementById("calMehr").addEventListener("click", () => { KAL_BIS = KAL_MONATE_VORAUS; renderKalender(); });
+  const art = document.getElementById("calArt");
+  const artZeigen = () => {   // zeigt jeweils die andere Ansicht: ⇄ = zum Blättern, ⇅ = zu Monaten untereinander
+    art.textContent = KAL_LISTE ? "⇄" : "⇅";
+    art.setAttribute("aria-label", KAL_LISTE ? "Ansicht wechseln: Monate seitlich blättern" : "Ansicht wechseln: Monate untereinander");
+    art.title = KAL_LISTE ? "Monate seitlich blättern" : "Monate untereinander";
+    box.classList.toggle("liste", KAL_LISTE); wdz.hidden = !KAL_LISTE;
+    const g = document.getElementById("calGrid"); g.className = KAL_LISTE ? "kal-liste" : "cal-grid"; g.style.transform = "";
+    if (!KAL_LISTE) document.getElementById("calMehr").hidden = true;
+  };
+  artZeigen();
+  art.addEventListener("click", () => {
+    KAL_LISTE = !KAL_LISTE;
+    try { localStorage.setItem("tm2_kalart", KAL_LISTE ? "liste" : "blatt"); } catch (e) {}
+    artZeigen();
+    if (KAL_LISTE) KAL_ZIEL = { monat: true };   // der Monat, den man eben sah, kommt oben ins Fenster
+    renderKalender();
+    if (window._hilfeStartNeu) window._hilfeStartNeu();
+  });
+  try { new ResizeObserver(() => { if (KAL_ZIEL && KAL_LISTE) kalSpringen(); }).observe(box); } catch (e) {}   // erst sichtbar (Rechner aufgeklappt): Sprung nachholen
+})();
 Promise.all([ladeEinstellungen(), ladeBelegt(), ladeBuchungen(), ladeGaeste()]).then(() => {
   einnLaden().then(() => { try { zeichneBalken(); } catch (e) {} });
   {
