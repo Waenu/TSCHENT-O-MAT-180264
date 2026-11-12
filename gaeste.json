@@ -7,6 +7,14 @@
       "typ": "fam"
     },
     {
+      "arr": "2026-11-18",
+      "dep": "2026-11-21",
+      "name": "Deborah",
+      "typ": "fam",
+      "quelle": "kalender",
+      "kal": "Deborah"
+    },
+    {
       "arr": "2026-12-04",
       "dep": "2026-12-08",
       "name": "Andrea",
@@ -45,6 +53,14 @@
       "typ": "extern"
     },
     {
+      "arr": "2027-01-22",
+      "dep": "2027-01-25",
+      "name": "Marianne und ich",
+      "typ": "fam",
+      "quelle": "kalender",
+      "kal": "Marianne und ich"
+    },
+    {
       "arr": "2027-01-25",
       "dep": "2027-01-30",
       "name": "Luca Banfi",
@@ -75,6 +91,14 @@
       "typ": "fam",
       "quelle": "kalender",
       "kal": "Manuel"
+    },
+    {
+      "arr": "2027-03-10",
+      "dep": "2027-03-14",
+      "name": "Jerome",
+      "typ": "fam",
+      "quelle": "kalender",
+      "kal": "Jerome"
     }
   ]
 }
