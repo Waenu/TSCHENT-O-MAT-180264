@@ -2,6 +2,20 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.2.1.4",
+      "datum": "2026-11-12",
+      "titel": "Kalender: Jahr immer ausgeschrieben",
+      "arten": [
+        "Layout",
+        "Fehler"
+      ],
+      "punkte": [
+        "Das Jahr steht immer ausgeschrieben, zum Beispiel «November 2026», nie mehr abgekürzt.",
+        "In der Ansicht untereinander steht es neben «Heute» auf einer Zeile. Beim Blättern auch, wenn es passt; sonst steht bei allen Monaten das Jahr in einer neuen Zeile.",
+        "Fehler behoben: Nach dem Umschalten auf Blättern konnte der Monatsname auf schmalen Handys über den Rand ragen. Die App misst jetzt neu, sobald sich die Breite des Titels ändert."
+      ]
+    },
+    {
       "v": "3.2.1.3",
       "datum": "2026-11-12",
       "titel": "Kalender: Monatsnamen einheitlich",

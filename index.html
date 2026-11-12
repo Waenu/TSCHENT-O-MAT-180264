@@ -423,7 +423,7 @@ if (TEST_MODUS) {
   .cal-links { display: flex; gap: 6px; }
   .cal-nav .cal-heute { width: auto; padding: 0 9px; font-size: 0.95rem; border-color: #C2188F; color: #C2188F; }   /* gleiche Farbe wie der Rahmen des heutigen Tages */
   .cal-nav #calPrev, .cal-nav #calNext { width: 30px; padding: 0; flex: none; }   /* seit 3.2.1.2 schmal, damit der Monatsname Platz hat */
-  .cal-nav strong { flex: 1; text-align: center; min-width: 0; line-height: 1.15; white-space: nowrap; font-size: var(--t-title); }   /* gleiche Grösse wie die Monatsüberschriften in der Liste; passt «September 27» nicht, steht das Jahr bei allen Monaten in einer neuen Zeile (kalJahrForm) */
+  .cal-nav strong { flex: 1; text-align: center; min-width: 0; line-height: 1.15; white-space: nowrap; font-size: var(--t-title); }   /* gleiche Grösse wie die Monatsüberschriften in der Liste; passt «September 2027» nicht, steht das Jahr bei allen Monaten in einer neuen Zeile (kalJahrForm) */
   .kt-jahr { display: block; }
   .kt-sub { display: block; font-size: 0.72em; font-weight: 600; opacity: 0.85; }
   .cal-nav button:disabled { opacity: 0.3; cursor: default; }
@@ -1490,7 +1490,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.2.1.3";
+let VERSION = "3.2.1.4";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -3183,24 +3183,24 @@ function kopfName() {
 }
 // Scroll-Fenster (seit 3.2.0.0): offenen Sprung ausführen (aktuelle Woche, Tag oder Monat zuoberst); false, solange das Fenster nicht sichtbar ist
 // Monatstitel in der Kopfzeile: Zusatz wie «(Skisaison)» klein in einer zweiten Zeile (seit 3.2.1.2)
-// Titel: Monat, Jahr und Zusatz (z. B. Skisaison) klein darunter. form: "voll" (Februar 2027, Überschriften in der Liste), "kurz" (Februar 27) oder "zeile" (Jahr 2027 in neuer Zeile); ohne Angabe entscheidet kalJahrForm() für alle Monate gleich
+// Titel: Monat, Jahr und Zusatz (z. B. Skisaison) klein darunter. form: "voll" (Februar 2027) oder "zeile" (Jahr 2027 in neuer Zeile); das Jahr wird nie abgekürzt; ohne Angabe entscheidet kalJahrForm() für alle Monate gleich
 function titelHtml(m, y, form) {
-  const t = monTitel(m, y), i = t.indexOf(" ("), f = form || kalJahrForm();
-  const kopf = esc(MONATE[m]) + (f === "kurz" ? " " + String(y).slice(2) : f === "zeile" ? '<span class="kt-jahr">' + y + "</span>" : " " + y);
+  const t = monTitel(m, y), i = t.indexOf(" ("), f = form || (KAL_LISTE ? "voll" : kalJahrForm());   // untereinander: immer «November 2026», Platz hat es genug
+  const kopf = esc(MONATE[m]) + (f === "zeile" ? '<span class="kt-jahr">' + y + "</span>" : " " + y);
   return kopf + (i < 0 ? "" : '<span class="kt-sub">' + esc(t.slice(i + 2, -1)) + "</span>");
 }
 function kalTitelNeu() { const ti = document.getElementById("calTitle"); if (ti && ti.clientWidth) ti.innerHTML = titelHtml(calM, calY); }   // nach Änderung der Breite oder Schriftgrösse neu messen
-let KAL_FORM = "kurz";   // zuletzt gemessene Form, gilt weiter, solange der Titel nicht sichtbar ist
-function kalJahrForm() {   // passt der breiteste Monat mit kurzem Jahr («September 27») in den Titel? Dann alle kurz, sonst alle mit dem Jahr in neuer Zeile
+let KAL_FORM = "voll";   // zuletzt gemessene Form, gilt weiter, solange der Titel nicht sichtbar ist
+function kalJahrForm() {   // passt der breiteste Monat mit Jahr («September 2027») in eine Zeile? Dann alle so, sonst bei allen das Jahr in neuer Zeile (nie «27», Wänu 12.11.2026)
   const ti = document.getElementById("calTitle");
   if (!ti || !ti.clientWidth) return KAL_FORM;
   const sp = document.createElement("span"), cs = getComputedStyle(ti);
   sp.style.cssText = "position:absolute;visibility:hidden;white-space:nowrap;left:-9999px;top:0";
   sp.style.font = cs.font; sp.style.letterSpacing = cs.letterSpacing;
   document.body.appendChild(sp);
-  let w = 0; MONATE.forEach((n) => { sp.textContent = n + " 27"; w = Math.max(w, sp.getBoundingClientRect().width); });
+  let w = 0; MONATE.forEach((n) => { sp.textContent = n + " 2027"; w = Math.max(w, sp.getBoundingClientRect().width); });
   sp.remove();
-  KAL_FORM = w <= ti.clientWidth ? "kurz" : "zeile";
+  KAL_FORM = w <= ti.clientWidth ? "voll" : "zeile";
   return KAL_FORM;
 }
 function kalSpringen() {
@@ -6796,7 +6796,8 @@ try { new ResizeObserver(() => zeichneBalken()).observe(document.getElementById(
     renderKalender();
     if (window._hilfeStartNeu) window._hilfeStartNeu();
   });
-  try { new ResizeObserver(() => { if (KAL_ZIEL && KAL_LISTE) kalSpringen(); }).observe(box); } catch (e) {}   // erst sichtbar (Rechner aufgeklappt): Sprung nachholen
+  try { new ResizeObserver(() => { if (KAL_ZIEL && KAL_LISTE) kalSpringen(); }).observe(box); } catch (e) {}
+  try { let bw = 0; new ResizeObserver(() => { const ti = document.getElementById("calTitle"), w = ti ? ti.clientWidth : 0; if (w && w !== bw) { bw = w; kalTitelNeu(); } }).observe(document.getElementById("calTitle")); } catch (e) {}   // Titelbreite ändert sich (Umschalten, Pfeile, Aufklappen): Jahr neu messen   // erst sichtbar (Rechner aufgeklappt): Sprung nachholen
 })();
 Promise.all([ladeEinstellungen(), ladeBelegt(), ladeBuchungen(), ladeGaeste()]).then(() => {
   einnLaden().then(() => { try { zeichneBalken(); } catch (e) {} });
