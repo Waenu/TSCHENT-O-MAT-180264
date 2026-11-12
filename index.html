@@ -666,6 +666,10 @@ if (TEST_MODUS) {
   .pf rect { fill: none; stroke: var(--ac, var(--accent)); stroke-width: 1.5; stroke-dasharray: 5 4; animation: marsch .9s linear infinite; }
   .symz > .pf rect { stroke-width: 2; stroke-dasharray: 8 6; animation-name: marsch2; }
   .symz { position: relative; display: flex; width: fit-content; align-items: center; gap: 6px; margin: 10px 0 8px; padding: 4px 6px; }
+  /* seit 3.2.1.5: Symbolzeile ohne Ameisenpfad, jedes Symbol mit dünner oranger Linie darunter wie die übrigen verlinkten Symbole */
+  .symz > .pf { display: none; }
+  .symz { padding: 0; gap: 16px; }
+  .symz .symik { width: auto; height: auto; min-height: 0; padding: 10px 1px 1px; border-radius: 0; border-bottom: 1px solid var(--hoch-line); line-height: 1.15; }
   .symik { font: inherit; line-height: 1; background: none; border: 0; color: inherit; width: 40px; height: 40px; padding: 0; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
   .lks { width: 1.3em; height: 1.3em; display: inline-block; vertical-align: -0.3em; margin: -0.15em 0; }
   .blick { margin: 8px 0; }
@@ -1226,6 +1230,7 @@ if (TEST_MODUS) {
 
   /* Aktion buchbar: gelber Blitz in der Ecke, einmal pro Tag blitzt der Rahmen zweimal auf (auch bei «Bewegung aus» und «Bewegung reduzieren»: bewusst nicht abschaltbar, kurz und weich) */
   #btnReserv { position: relative; }
+  .rv-sym { margin-left: 0.4em; white-space: nowrap; }
   #btnReserv.mit-ang.on + .angebote, #btnReserv.mit-ang:active + .angebote { background: var(--accent); }   /* Knopf und Angebote als ein Kästchen: zusammen grün (seit 2.125.4.0) */
   #btnReserv.mit-ang { border-bottom: 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; min-height: 0; padding-bottom: 4px; }
   .angebote { display: flex; align-items: center; margin-top: -12px; padding: 4px 16px 14px calc(24px + (2.4rem - 34px) / 2); border: 3px solid var(--accent); border-top: 0; border-radius: 0 0 6px 6px; background: var(--surface); }
@@ -1490,7 +1495,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.2.1.4";
+let VERSION = "3.2.1.5";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -3112,12 +3117,12 @@ function angebotFit() {   // Schrift der geschlossenen Angebote-Auswahl so verkl
 window.addEventListener("resize", () => { try { angebotFit(); } catch (e) {} try { kalTitelNeu(); } catch (e) {} });
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { try { angebotFit(); } catch (e) {} });
 let ANG_KOPF = [], ANG_I = 0;
-setInterval(() => {   // Beschriftung der geschlossenen Auswahl alle 4 Sekunden wechseln, weich überblendet
+setInterval(() => {   // Beschriftung der geschlossenen Auswahl alle 60 Sekunden wechseln (seit 3.2.1.5, vorher 4 s), weich überblendet
   const sel = document.getElementById("angSel");
   if (!sel || ANG_KOPF.length < 2 || !sel.offsetParent || document.activeElement === sel || !sel.options[0]) return;
   sel.classList.add("ang-weg");
   setTimeout(() => { ANG_I = (ANG_I + 1) % ANG_KOPF.length; if (sel.options[0]) sel.options[0].textContent = ANG_KOPF[ANG_I]; try { angebotFit(); } catch (e) {} sel.classList.remove("ang-weg"); }, 300);
-}, 4000);
+}, 60000);
 function angeboteFuellen() {
   const box = document.getElementById("angebote"), sel = document.getElementById("angSel");
   if (!box || !sel) return;
@@ -3152,7 +3157,7 @@ function angebotWaehlen(v) {   // Lücke: Anreise und Abreise gleich gesetzt; St
 function reservTexte() {
   try {
     const h = heuteKey(), m = Number(h.slice(5, 7)), sm = SAISON_TITEL[m], slot = Number(h.slice(8)) * 12 + Math.floor(new Date().getHours() / 2);   // alle 2 Stunden ein anderer Spruch des Monats
-    const t = sm ? [sm[0] + " " + sm[1][slot % 10][0], sm[1][slot % 10][1]] : ["Reif für die Berge", ""];
+    const t = sm ? [sm[1][slot % 10][0], sm[1][slot % 10][1]] : ["Reif für die Berge", ""], sym = sm ? sm[0] : "";   // Monatssymbol am Ende des Titels, damit beide Zeilen bündig anfangen (seit 3.2.1.5)
     let titel = t[0], zeile = t[1];
     let lk = null; for (let i = 0; i < 28 && !lk; i++) { const k = addDays(h, i); if (GAP.has(k) && !GAPSPERR.has(k)) lk = lueckeVon(k); else if (SICHT.has(k)) { let e = k; while (SICHT.has(e)) e = addDays(e, 1); lk = [k, e]; } }   // nur spontane Lücken: in den nächsten 4 Wochen, auch die gelben Tage ab heute (Vorlaufzeit)
     const tg = (k) => Number(k.slice(8)) + ". " + MONATE[Number(k.slice(5, 7)) - 1];
@@ -3160,7 +3165,7 @@ function reservTexte() {
     // Titel und Zeile bleiben der Monatsspruch; Lücken und Staffeln stehen unter «Aktuelle Angebote», der Blitz zeigt nur, dass es etwas gibt
     if (lk) aktion = "luecke";
     else { let sw = null; try { sw = schweifListe().filter((x) => x.von <= addDays(h, 28)).sort((a, b) => (a.von < b.von ? -1 : 1))[0] || null; } catch (e) {} if (sw) aktion = "staffel"; }
-    document.querySelectorAll(".rv-t").forEach((e) => { e.textContent = titel; });
+    document.querySelectorAll(".rv-t").forEach((e) => { e.textContent = titel; if (sym) { const s = document.createElement("span"); s.className = "rv-sym"; s.textContent = sym; e.appendChild(s); } });
     document.querySelectorAll(".rv-z").forEach((e) => { e.textContent = zeile; e.hidden = !zeile; });
     // Aktion buchbar: der kleine Blitz zeigt sich nur bei der Animation, einmal pro Tag (und bei jeder neuen Art von Aktion) blitzt der Rahmen
     const knoepfe = document.querySelectorAll("#btnReserv, #btnReservFix");
