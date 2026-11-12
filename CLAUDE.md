@@ -58,12 +58,27 @@ Anschliessend prüfen, dass `origin/main:einstellungen.json` die neue Version tr
 - Keine Hinweise, etwas auf dem Galaxy S10 zu testen.
 - Texte in der App: positiv und einladend. Kinder nennen die Eltern «Papi» und «Mami». Mehr Wortregeln stehen in den Texten der App selbst.
 
+## Arbeitsweise Testversion und laufende App (Wänu, 12.11.2026)
+1. Layout, Texte und Kalender zuerst in der Testversion (`Waenu/TSCHENT-O-MAT-Test`). Am Anfang der Antwort «📍 Testversion» schreiben. Nach Wänus «push» schaut er auf dem Handy, nach «übernehmen» `index.html` und `sw.js` unverändert in die laufende App kopieren.
+2. Direkt in der laufenden App (`Waenu/TSCHENT-O-MAT-180264`) nur, was die Testversion nicht prüfen kann (Buchungen, Mails, WhatsApp, Zahlungen, speichern) oder dringende Fehlerkorrekturen. Am Anfang «📍 Laufende App» schreiben und den Grund nennen. Danach die Testversion auf denselben Stand bringen.
+3. Vor jeder Arbeit in beiden Repos den neuesten Stand holen (`git pull`), weil Wänu auch in anderen Chats ändern kann.
+4. Beide Repos im selben Chat angehängt; ein eigener Chat für die Testversion ist nicht nötig.
+
 ## Testversion und neuer Kalender (12.11.2026, übernommen als 3.2.1.2)
 - Testversion: Repo `Waenu/TSCHENT-O-MAT-Test`, Seite https://waenu.github.io/TSCHENT-O-MAT-Test/ (nur Layout-Tests, speichert und sendet nichts). Dieselbe `index.html` erkennt am Pfad «TSCHENT-O-MAT-Test» den Testmodus (`TEST_MODUS`, Skript ganz oben im `<head>`); hier in der laufenden App ist er aus. Einzelheiten in `CLAUDE.md` des Test-Repos. Neues zuerst dort bauen, nach Wänus «übernehmen» `index.html` und `sw.js` unverändert hierher kopieren (nie `manifest.json` oder die orangen Symbole).
 - Kalender seit 3.2.0.0: Monate untereinander im Scroll-Fenster `#calBox` (`KAL_LISTE`, `kalSpringen`, `kalOben`, `KAL_BIS`, `KAL_ZIEL`), aktuelle Woche zuoberst, 12 Monate zurück, 13 voraus plus «Weitere Monate» bis 24. `#calGrid` ist ein Behälter, jeder Monat ein `.cal-grid.kal-g`; `zeichneBalken()` ohne Angabe zeichnet alle Monate.
 - 3.2.1.3 (12.11.2026 aus der Testversion übernommen): Monatstitel beim Blättern gleich gross wie die Überschriften der Liste; «Monat 27» oder, falls «September 27» nicht passt, bei allen Monaten «2027» in neuer Zeile (`kalJahrForm`); Skisaison klein darunter, auch in der Liste.
 - 3.2.1.4 (übernommen): Jahr nie abgekürzt. Untereinander immer «Monat 2026»; beim Blättern «Monat 2027» oder, falls «September 2027» nicht passt, bei allen Monaten «2027» in neuer Zeile. ResizeObserver auf `#calTitle` misst nach dem Umschalten neu.
+- 3.2.1.5 (12.11.2026, in einem anderen Chat direkt in der laufenden App gebaut, Testversion nachgezogen): Monatssymbol am Ende des Monatsspruchs; Angebote wechseln nur alle 60 s; Symbolzeile der Termin-Box ohne Ameisenpfad, Symbole orange unterstrichen.
 - 3.2.1.x: Umschalter `#calArt` neben «Heute» (⇄/⇅) zwischen untereinander und Blättern, pro Handy in `tm2_kalart`; schmale Pfeile, Titel `titelHtml()`; Klasse `zieht` beim Wischen an `#cal`.
+
+## Offen und Hinweise nach dem Kalender-Umbau (Stand 12.11.2026, 3.2.1.5)
+1. Zurück zum Stand vor dem neuen Kalender (3.0.0.1): Commit `0ede210`. Nur `index.html`, `sw.js`, `einstellungen.json`, `versionen.json` und `CLAUDE.md` aus diesem Commit zurückholen, die Daten bleiben. Ein Git-Tag dafür gibt es nicht (Anlegen hatte nicht geklappt). Nur auf Wänus ausdrücklichen Wunsch.
+2. Geschwindigkeit: für Wänu in Ordnung (12.11.2026). Der Kalender zeichnet bei jedem Antippen alle (bis 26) Monate neu; nur bei Bedarf beschleunigen.
+3. Gäste durch Papi im Kalender eintragen: funktioniert mit dem neuen Kalender (Wänu auf dem Handy und Playwright in beiden Ansichten, Speichern nachgestellt; 12.11.2026).
+4. Scrollen am Ende des Kalenderfensters: Danach scrollt die ganze Seite weiter. Für Wänu so in Ordnung (12.11.2026).
+5. Name «TSCHENT-O-MAT TEST» unter dem Symbol auf dem Startbildschirm (vermutlich gekürzt) nicht geprüft.
+6. Umschalter ⇄/⇅: kein Leuchten und kein Hinweis, das Symbol genügt (Wänu).
 
 ## Offene Themen (Stand 11.11.2026, abends, Version 3.0.0.0)
 1. Erledigt 11.11.2026: Version 3.0.0.0 freigegeben (Historie «Meilenstein: Version 3 freigegeben» mit Übersicht aller Funktionen). Manifest und Seitentitel ohne «Vorschau», Name auf dem Startbildschirm «TSCHENT-O-MAT». Wänu verschickt die WhatsApp-Ankündigung (Gruppe ohne Link, mit Hinweis auf Startbildschirm) und jedem einzeln den persönlichen Link aus der Verwaltung.
