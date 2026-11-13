@@ -39,14 +39,6 @@
       "kal": "Manuel und Freunde"
     },
     {
-      "arr": "2027-01-11",
-      "dep": "2027-01-15",
-      "name": "Marianne und ich",
-      "typ": "fam",
-      "quelle": "kalender",
-      "kal": "Marianne und ich"
-    },
-    {
       "arr": "2027-01-15",
       "dep": "2027-01-22",
       "name": "Janine Collins",
@@ -91,14 +83,6 @@
       "typ": "fam",
       "quelle": "kalender",
       "kal": "Manuel"
-    },
-    {
-      "arr": "2027-03-10",
-      "dep": "2027-03-14",
-      "name": "Jerome",
-      "typ": "fam",
-      "quelle": "kalender",
-      "kal": "Jerome"
     }
   ]
 }
