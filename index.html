@@ -1495,7 +1495,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.2.1.6";
+let VERSION = "3.2.1.7";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2788,10 +2788,10 @@ document.addEventListener("click", async (ev) => {
 // Storniert (Tage nicht mehr in der Belegung): der von Hand eingetragene Name verschwindet. Nur Papi, nur bei frisch geladener Belegung.
 async function gaesteAufraeumen() {
   if (!TOKEN || !BELEGT_FRISCH || !BELEGT_AIR || BELEGT_AIR.size === 0 || bestBusy) return;
-  const h = heuteKey(), weg = GAESTE.filter((x) => x.arr >= h && !BELEGT_AIR.has(x.arr));
+  const h = heuteKey(), weg = GAESTE.filter((x) => !x.kal && x.arr >= h && !BELEGT_AIR.has(x.arr));   // Einträge aus dem Kalender räumt der Abgleich selbst auf (seit 3.2.1.7)
   if (!weg.length) return;
   try {
-    const j = await ghGaeste((l) => l.filter((x) => !(x.arr >= h && !BELEGT_AIR.has(x.arr))));
+    const j = await ghGaeste((l) => l.filter((x) => x.quelle === "kalender" || !(x.arr >= h && !BELEGT_AIR.has(x.arr))));
     gaesteAn(j); try { localStorage.setItem("tm2_gaeste", JSON.stringify(j)); } catch (e2) {}
     bestMsg = "👤 Storniert, Name entfernt: " + weg.map((x) => esc(x.name) + " (ab " + esc(fmtTag(x.arr)) + ")").join(", ") + ".";
     zeichneBalken(); bestZeigen();
@@ -2799,7 +2799,7 @@ async function gaesteAufraeumen() {
 }
 function gaesteAn(j) {
   if (!j || !Array.isArray(j.gaeste)) return false;
-  GAESTE = j.gaeste.filter((x) => x && typeof x.name === "string" && x.name.trim() && DKEY.test(x.arr)).map((x) => ({ arr: x.arr, dep: DKEY.test(x.dep || "") && x.dep > x.arr ? x.dep : "", name: gastKurz(x.name), typ: typNorm(x.typ) }));
+  GAESTE = j.gaeste.filter((x) => x && typeof x.name === "string" && x.name.trim() && DKEY.test(x.arr)).map((x) => ({ arr: x.arr, dep: DKEY.test(x.dep || "") && x.dep > x.arr ? x.dep : "", name: gastKurz(x.name), typ: typNorm(x.typ), kal: x.quelle === "kalender" }));
   belegtMischen();
   return true;
 }
