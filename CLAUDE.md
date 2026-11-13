@@ -80,6 +80,31 @@ Anschliessend prüfen, dass `origin/main:einstellungen.json` die neue Version tr
 5. Name «TSCHENT-O-MAT TEST» unter dem Symbol auf dem Startbildschirm (vermutlich gekürzt) nicht geprüft.
 6. Umschalter ⇄/⇅: kein Leuchten und kein Hinweis, das Symbol genügt (Wänu).
 
+## Idee: Zahler für Freunde unter 18 und Gästegrafik (Wänu, 13.11.2026, nächste Woche besprechen, NICHTS bauen ohne «ja»)
+Ausgangspapier von Wänu (von anderer KI geschrieben): grafische Gästeübersicht mit Zahlungsaufteilung. Wänus Präzisierung:
+1. Grafik nur, wenn ein Freund unter 18 dabei ist.
+2. Die Familie kennt die App über das Handy des Buchenden (z. B. Rahel: mit Partner und 2 Kindern). Namen der Enkel würde Wänu hinterlegen.
+3. Freunde brauchen keine Namen: «Freund über 18», «Freund unter 18» genügt.
+4. Freund unter 18 antippen, dann wählen, wer für ihn zahlt (Familie und/oder einzelne Freunde; Standard gleich verteilt, wahlweise Prozent).
+5. Bei vielen Freunden (z. B. Dave allein mit 5) muss man wissen, wer wer ist: Daten der Gästemeldung (Kurtaxe) könnten helfen.
+6. Bei «Wer zahlt was» eine Option «Grafik zeigen» mit allen Namen. Fehlt die Gästemeldung noch: Hinweis, dass die Funktion erst danach geht. Bei Familie ohne Freunde nur die Abbildung.
+Analyse und Empfehlung Claude (13.11.2026):
+- Heute: Familie zahlt Pauschale pro Nacht unabhängig von der Kopfzahl (Enkel kosten nichts extra); jeder Freund ist eigener Zahler (Nachtpreis, Reinigungsanteil, Kurtaxe nach Alter); nur Anzahlen, keine Namen/Alter im Rechner; ein Buchender pro Anfrage.
+- Rechnung in `derive()`/`calc()` unverändert lassen, Zuordnung nur als Umverteilung der fertigen Beträge (Total bleibt gleich).
+- Mehrere Familien mit getrennter Zahlung pro Buchung: grosser Umbau, vorerst nicht.
+- Namen und Alter von Minderjährigen nie ins öffentliche Repo (auch nicht in `index.html`); höchstens privat (Handy oder privater Speicher).
+- Zuerst klären, wie oft Freunde unter 18 mitkommen. Wenn selten: einfache Lösung ohne Grafik («Wer übernimmt seinen Anteil?»).
+
+## Offen: Airbnb-Belegung ins App-Repo umziehen (Wänu «ja», 13.11.2026, nächste Woche)
+- Heute: Workflow `belegung.yml` + `belegung.py` im alten Repo `Waenu/Tschentomat` (Secret `AIRBNB_ICAL`) schreibt `belegt.json`; die App liest `/Tschentomat/belegt.json`.
+- Plan (mit Wänu abgesprochen 13.11.2026, Testzeit etwa 4 Wochen, altes Repo am Schluss nur stilllegen, nicht löschen):
+  1. Woche 1: Workflow und Skript ins App-Repo kopieren; erzeugt eigene `belegt.json`, App liest weiter die alte. Claude vergleicht beide Dateien.
+  2. Ab Woche 2, wenn gleich: App (und Testversion) lesen die eigene `belegt.json` (3.2.2.0, funktionelle Änderung). Altes Repo läuft als Reserve weiter. Rückweg: eine Zeile in der App.
+  3. Nach 4 Wochen ohne Probleme: Wänu legt das alte Repo still (Actions → Workflow «belegung» → Disable; Settings → Pages → Unpublish; Settings → Archive).
+- Wänu muss nur das Secret `AIRBNB_ICAL` im App-Repo eintragen (Settings → Secrets and variables → Actions; Wert: Airbnb-Kalender exportieren). Claude kann Secrets weder sehen noch setzen. Schreibrechte für Workflows im App-Repo sind vorhanden (gaeste-sync schreibt bereits).
+- Bis dahin gilt: altes Repo nie ändern, löschen oder umbenennen.
+- Die alte App 1.10.5 ist unter waenu.github.io/Tschentomat/ weiterhin öffentlich erreichbar (GitHub Pages ist dort an, weil `belegt.json` von dort kommt). Erst mit dem Umzug abschaltbar.
+
 ## Offene Themen (Stand 11.11.2026, abends, Version 3.0.0.0)
 1. Erledigt 11.11.2026: Version 3.0.0.0 freigegeben (Historie «Meilenstein: Version 3 freigegeben» mit Übersicht aller Funktionen). Manifest und Seitentitel ohne «Vorschau», Name auf dem Startbildschirm «TSCHENT-O-MAT». Wänu verschickt die WhatsApp-Ankündigung (Gruppe ohne Link, mit Hinweis auf Startbildschirm) und jedem einzeln den persönlichen Link aus der Verwaltung.
 1b. Erledigt: Niemand in der Familie hat ein iPhone (Wänu, 11.11.2026). Startbildschirm-Hinweis im Text für Chrome und Samsung Internet.
