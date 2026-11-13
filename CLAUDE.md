@@ -121,6 +121,13 @@ Bedienung (Vorschlag Claude, 13.11.2026) und Entscheide Wänu:
 - Gästemeldung: Empfehlung echter Briefkasten (Google Apps Script) und Testlisten danach in der Verwaltung löschen; zweiter Briefkasten nur, falls Wänu das will (Entscheid offen).
 - Prüfen: die laufende App darf nie ins Test-Repo schreiben und umgekehrt (beide Adressen lokal testen). Version: funktionelle Änderung.
 
+## Offen: Kalender-Abgleich aus der App anstossen (Wänu «ja», 13.11.2026, umsetzen am Dienstag)
+- Papi-Ansicht: beim Öffnen der App (auch Herunterziehen = Neuladen) startet der Workflow `gaeste-sync.yml` automatisch per GitHub-API (workflow_dispatch), höchstens alle 10 Min.; danach gaeste.json neu laden.
+- Viertes Symbol 🔄 neben 📅 📊 🎬 im Titel «Wunschtermin finden», nur für Papi: dreht sich während des Laufs, dann ✅ bzw. ⚠️; Antippen startet sofort und zeigt den letzten Abgleich. Platz schaffen (Titel «Wunschtermin finden» etwas nach links bzw. Abstände anpassen), auf 360 px prüfen.
+- Token braucht zusätzlich «Actions: Read and write» für `TSCHENT-O-MAT-180264`: Wänu bekommt eine Schritt-für-Schritt-Anleitung für GitHub.
+- 📍 Laufende App (Testversion kann keine Abläufe auslösen), danach Testversion nachziehen. Version 3.3.0.0.
+- Hinweis: wirkt nur auf die Stufe Google-iCal-Link → App; Verzögerung von Google selbst bleibt.
+
 ## Offene Themen (Stand 11.11.2026, abends, Version 3.0.0.0)
 1. Erledigt 11.11.2026: Version 3.0.0.0 freigegeben (Historie «Meilenstein: Version 3 freigegeben» mit Übersicht aller Funktionen). Manifest und Seitentitel ohne «Vorschau», Name auf dem Startbildschirm «TSCHENT-O-MAT». Wänu verschickt die WhatsApp-Ankündigung (Gruppe ohne Link, mit Hinweis auf Startbildschirm) und jedem einzeln den persönlichen Link aus der Verwaltung.
 1b. Erledigt: Niemand in der Familie hat ein iPhone (Wänu, 11.11.2026). Startbildschirm-Hinweis im Text für Chrome und Samsung Internet.
