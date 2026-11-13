@@ -94,6 +94,15 @@ Analyse und Empfehlung Claude (13.11.2026):
 - Mehrere Familien mit getrennter Zahlung pro Buchung: grosser Umbau, vorerst nicht.
 - Namen und Alter von Minderjährigen nie ins öffentliche Repo (auch nicht in `index.html`); höchstens privat (Handy oder privater Speicher).
 - Zuerst klären, wie oft Freunde unter 18 mitkommen. Wenn selten: einfache Lösung ohne Grafik («Wer übernimmt seinen Anteil?»).
+Ergänzung Wänu (13.11.2026): Gästemeldung schon im Rechner. Bei «Wie viele Freunde» erscheint die bestehende Tabelle (Name, Vorname, Geburtsdatum …).
+- Frage «Kinder von 6 bis 15 Jahren» fällt weg (Alter aus Geburtsdatum). Damit sind Kurtaxe und Zuordnung der Zahler für unter 18 möglich, und Wänu muss der Liste nicht mehr nachrennen.
+- Empfehlung Claude: im Rechner nur Vorname und Geburtsdatum pro Freund (Preis, Kurtaxe, Zahler); Name, Geschlecht, Nationalität erst beim Abschicken der Anfrage, vorausgefüllt. Liste bleibt nachträglich änderbar. Daten weiterhin nur an den Briefkasten (Google), nie ins Repo; bei Ablehnung/Storno Liste dort löschen. Kleinkinder von Freunden (unter 2½, ohne Bett): Preis noch von Wänu festzulegen.
+- Als ein Paket mit «Zahler für Freunde unter 18» umsetzen.
+Bedienung (Vorschlag Claude, 13.11.2026) und Entscheide Wänu:
+- Unter 2½: nur in der Liste («Kleinkind, ohne Bett, gratis»), keine Zuordnung.
+- 2½ bis 17: eigener Anteil (Nachtpreis + Kurtaxe); bei «Wer zahlt was» Chips zum Antippen: Familie, jeder erwachsene Freund UND der Jugendliche selbst (Wänu: z. B. 17-Jähriger ohne Eltern zahlt selbst). Mehrere gewählt = gleich verteilt; Prozente vorerst nicht. Abschicken erst, wenn für jedes Kind ein Zahler gewählt ist (kein Vorschlag).
+- Nachtpreis für Freunde unter 18 gleich wie Erwachsene (Wänu: Bett, Wäsche, Dusche, WLAN, Infrastruktur), kein Kinderpreis.
+- Reinigungsanteil von Freunden unter 18 (Wänu «ja», 13.11.2026): zahlt der Jugendliche selbst, zählt er wie ein erwachsener Freund (auch bei der Reinigung); wird er übernommen, trägt er keinen Reinigungsanteil. Option «Nach Personen» dann sinngemäss «jede Person, die selbst zahlt». Total bleibt immer gleich.
 
 ## Offen: Airbnb-Belegung ins App-Repo umziehen (Wänu «ja», 13.11.2026, nächste Woche)
 - Heute: Workflow `belegung.yml` + `belegung.py` im alten Repo `Waenu/Tschentomat` (Secret `AIRBNB_ICAL`) schreibt `belegt.json`; die App liest `/Tschentomat/belegt.json`.
@@ -104,6 +113,13 @@ Analyse und Empfehlung Claude (13.11.2026):
 - Wänu muss nur das Secret `AIRBNB_ICAL` im App-Repo eintragen (Settings → Secrets and variables → Actions; Wert: Airbnb-Kalender exportieren). Claude kann Secrets weder sehen noch setzen. Schreibrechte für Workflows im App-Repo sind vorhanden (gaeste-sync schreibt bereits).
 - Bis dahin gilt: altes Repo nie ändern, löschen oder umbenennen.
 - Die alte App 1.10.5 ist unter waenu.github.io/Tschentomat/ weiterhin öffentlich erreichbar (GitHub Pages ist dort an, weil `belegt.json` von dort kommt). Erst mit dem Umzug abschaltbar.
+
+## Offen: Testversion für echte Tests ausbauen (Wänu «ja», 13.11.2026, nächste Woche als erster Schritt vor «Zahler/Gästemeldung im Rechner»)
+- Ziel: In der Testversion auch Speichern, Gästemeldung, WhatsApp und Mail echt durchspielen, ohne die laufende App zu berühren.
+- Speichern: nur ins Test-Repo (`GH_REPO` ist dort schon richtig). Wänu erweitert seinen Token um `TSCHENT-O-MAT-Test` und tippt ihn in der Testversion ein. Private Beträge (`Tschentomat-privat`) bleiben gesperrt.
+- WhatsApp/Mail: öffnen wieder; Text beginnt mit «🧪 TEST». Wänu sendet beim Testen an sich selbst (so macht er es schon).
+- Gästemeldung: Empfehlung echter Briefkasten (Google Apps Script) und Testlisten danach in der Verwaltung löschen; zweiter Briefkasten nur, falls Wänu das will (Entscheid offen).
+- Prüfen: die laufende App darf nie ins Test-Repo schreiben und umgekehrt (beide Adressen lokal testen). Version: funktionelle Änderung.
 
 ## Offene Themen (Stand 11.11.2026, abends, Version 3.0.0.0)
 1. Erledigt 11.11.2026: Version 3.0.0.0 freigegeben (Historie «Meilenstein: Version 3 freigegeben» mit Übersicht aller Funktionen). Manifest und Seitentitel ohne «Vorschau», Name auf dem Startbildschirm «TSCHENT-O-MAT». Wänu verschickt die WhatsApp-Ankündigung (Gruppe ohne Link, mit Hinweis auf Startbildschirm) und jedem einzeln den persönlichen Link aus der Verwaltung.
