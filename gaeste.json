@@ -7,14 +7,6 @@
       "typ": "fam"
     },
     {
-      "arr": "2026-11-18",
-      "dep": "2026-11-21",
-      "name": "Deborah",
-      "typ": "fam",
-      "quelle": "kalender",
-      "kal": "Deborah"
-    },
-    {
       "arr": "2026-12-04",
       "dep": "2026-12-08",
       "name": "Andrea",
@@ -91,14 +83,6 @@
       "typ": "fam",
       "quelle": "kalender",
       "kal": "Manuel"
-    },
-    {
-      "arr": "2027-03-10",
-      "dep": "2027-03-14",
-      "name": "Jerome",
-      "typ": "fam",
-      "quelle": "kalender",
-      "kal": "Jerome"
     }
   ]
 }
