@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.2.1.6",
+      "datum": "2026-11-13",
+      "titel": "Kalender: Namen laufender und vergangener Aufenthalte bleiben",
+      "arten": [
+        "Fehler"
+      ],
+      "punkte": [
+        "Fehler behoben: Hatte ein Aufenthalt schon begonnen, verschwand der eingetragene Name (zum Beispiel «Marianne und Yolanda») aus dem Kalender, weil die Airbnb-Belegung nur Tage ab heute meldet. Laufende und vergangene Aufenthalte behalten jetzt ihren Namen."
+      ]
+    },
+    {
       "v": "3.2.1.5",
       "datum": "2026-11-12",
       "titel": "Startseite und Termin-Box: ruhiger und bündig",

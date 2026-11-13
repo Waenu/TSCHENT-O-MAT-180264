@@ -1495,7 +1495,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.2.1.5";
+let VERSION = "3.2.1.6";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2033,7 +2033,7 @@ function belegtMischen() {
   const s = new Set(BELEGT_AIR);
   BUCH.forEach((b) => { if (b.prov) for (let k = b.arr; k < b.dep; k = addDays(k, 1)) s.add(k); });
   // Gast mit eigenem Abreisetag: alle Nächte gelten als belegt, auch wenn der Airbnb-Kalender eine Lücke hat (z. B. geteilter Eintrag)
-  GAESTE.forEach((x) => { if (x.dep && BELEGT_AIR.has(x.arr)) for (let k = x.arr; k < x.dep; k = addDays(k, 1)) s.add(k); });
+  GAESTE.forEach((x) => { if (x.dep && gastGilt(x)) for (let k = x.arr; k < x.dep; k = addDays(k, 1)) s.add(k); });
   sperreNaechte().forEach((k) => s.add(k));   // Weihnachtssperre zählt für Lücken und freie Strecken wie eine Belegung
   REIN_SPERR.forEach((t, k) => s.add(k));   // ungeputzt bis zum Reinigungstag
   BELEGT = s;
@@ -2715,13 +2715,15 @@ document.addEventListener("change", (ev) => {   // Konflikt: neuer Betrag, wenn 
 });
 document.addEventListener("click", (ev) => { const b = ev.target.closest(".gtyp .typ"); if (!b) return; b.parentNode.querySelectorAll(".typ").forEach((x) => x.classList.toggle("on", x === b)); });
 const gastEnde = (x) => (x.dep && x.dep > x.arr ? x.dep : belegtEnde(x.arr));   // Abreisetag des Gastes: eigene Abreise oder Ende der Belegung
+// Name gilt, wenn Airbnb die Anreise als belegt meldet. belegt.json enthält nur Tage ab heute: hat der Aufenthalt schon begonnen oder ist er vorbei, bleibt der Name trotzdem stehen (seit 3.2.1.6)
+function gastGilt(x) { return !!BELEGT_AIR && (BELEGT_AIR.has(x.arr) || x.arr < heuteKey()); }
 function gaesteBalken() {
   if (!BELEGT_AIR) return [];
-  const l = GAESTE.filter((x) => BELEGT_AIR.has(x.arr)).slice().sort((p, q) => (p.arr < q.arr ? -1 : 1));
+  const l = GAESTE.filter(gastGilt).slice().sort((p, q) => (p.arr < q.arr ? -1 : 1));
   return l.filter((x) => !(x.typ === "fam" && BUCH.some((b) => b.arr < gastEnde(x) && b.dep > x.arr))).map((x, i) => { let end = gastEnde(x); const nx = l[i + 1]; if (nx && nx.arr > x.arr && nx.arr < end) end = nx.arr; return { arr: x.arr, end: end, name: x.name, typ: x.typ }; });
 }
 function gastKurz(n) { return String(n || "").replace(/[<>"&]/g, "").trim().replace(/\s+/g, " ").slice(0, 30); }   // Name bleibt, wie er eingegeben wird
-function gastEintragFuer(k) { const l = GAESTE.filter((x) => BELEGT_AIR && BELEGT_AIR.has(x.arr) && x.arr <= k && k < gastEnde(x)).sort((p, q) => (p.arr < q.arr ? -1 : 1)); return l.length ? l[l.length - 1] : null; }
+function gastEintragFuer(k) { const l = GAESTE.filter((x) => gastGilt(x) && x.arr <= k && k < gastEnde(x)).sort((p, q) => (p.arr < q.arr ? -1 : 1)); return l.length ? l[l.length - 1] : null; }
 let GFORM = null;   // Eingabe zu einem Namen im Kalender: {k, alt, arr, dep, name, typ, mode}
 function gastFormularFuer(k) {
   if (!TOKEN || ABSENDER || !BELEGT_AIR || !BELEGT_AIR.has(k)) return "";
