@@ -7,14 +7,6 @@
       "typ": "fam"
     },
     {
-      "arr": "2026-11-18",
-      "dep": "2026-11-21",
-      "name": "Deborah",
-      "typ": "fam",
-      "quelle": "kalender",
-      "kal": "Deborah"
-    },
-    {
       "arr": "2026-12-04",
       "dep": "2026-12-08",
       "name": "Andrea",
@@ -45,14 +37,6 @@
       "typ": "fam",
       "quelle": "kalender",
       "kal": "Manuel und Freunde"
-    },
-    {
-      "arr": "2027-01-11",
-      "dep": "2027-01-15",
-      "name": "Marianne und ich",
-      "typ": "fam",
-      "quelle": "kalender",
-      "kal": "Marianne und ich"
     },
     {
       "arr": "2027-01-15",
@@ -99,14 +83,6 @@
       "typ": "fam",
       "quelle": "kalender",
       "kal": "Manuel"
-    },
-    {
-      "arr": "2027-03-10",
-      "dep": "2027-03-14",
-      "name": "Jerome",
-      "typ": "fam",
-      "quelle": "kalender",
-      "kal": "Jerome"
     }
   ]
 }
