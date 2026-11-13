@@ -124,7 +124,8 @@ Bedienung (Vorschlag Claude, 13.11.2026) und Entscheide Wänu:
 ## Erledigt: Kalender-Abgleich aus der App (3.3.0.0, 13.11.2026)
 - Gebaut: `syncAnstossen()` (nur Papi, nicht Testmodus/Mami/Kind-Ansicht) startet `gaeste-sync.yml` per workflow_dispatch beim Start und bei `visibilitychange`, höchstens alle 10 Min. (`tm2_syncZeit`), wartet auf den Lauf (id > letzter Lauf), holt `gaeste.json` roh über die API und zeichnet neu. Symbol 🔄 (`#syncK`) im Knopf «Verwaltung» neben dem Häkchen (Wänus Wunsch statt im Titel «Wunschtermin finden»), Infozeile `#syncInfo`; ✅ eine Minute, ⚠️ bleibt. Letzter Erfolg in `tm2_syncOk`.
 - 3.2.1.7: `gaesteAufraeumen()` lässt Einträge mit `quelle: "kalender"` stehen (hatte Familienaufenthalte ohne Airbnb-Sperre gelöscht).
-- Offen: Wänu ergänzt den Token um «Actions: Read and write»; echter Lauf mit seinem Token noch nicht getestet.
+- Token um «Actions: Read and write» ergänzt, echter Lauf aus der App am 13.11.2026 erfolgreich.
+- 3.3.1.0: Kalendereinträge Familie/Extern/Blockiert (`kalEigen`) gelten auch ohne Airbnb-Sperre (`gastGilt`), Tage wie Vorbehalt gezeichnet (`provtag`: nicht schraffiert, nicht wählbar). Schraffiert heisst damit immer «in Airbnb gesperrt». Airbnb-Gäste weiterhin nur mit Sperre. Wänus Arten: A schraffiert ohne Name (Airbnb gesperrt, nicht im Pimlical oder Lücke nicht freigegeben), B schraffiert mit Name, C nicht schraffiert mit Name (Vorbehalt oder in Airbnb offen).
 
 ## Früherer Plan: Kalender-Abgleich aus der App anstossen (Wänu «ja», 13.11.2026)
 - Papi-Ansicht: beim Öffnen der App (auch Herunterziehen = Neuladen) startet der Workflow `gaeste-sync.yml` automatisch per GitHub-API (workflow_dispatch), höchstens alle 10 Min.; danach gaeste.json neu laden.
