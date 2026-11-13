@@ -2,6 +2,18 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.3.0.0",
+      "datum": "2026-11-13",
+      "titel": "Kalender-Abgleich aus der App",
+      "arten": [
+        "Neu"
+      ],
+      "punkte": [
+        "Nur für Papi: Beim Öffnen der App startet der Abgleich mit dem Google-Kalender von selbst, höchstens alle 10 Minuten. Danach erscheinen neue Namen sofort.",
+        "Symbol 🔄 neben dem Häkchen bei «Verwaltung»: Antippen startet den Abgleich sofort und zeigt, wann er zuletzt lief. Während des Laufs dreht es sich, danach ✅ oder ⚠️ mit Hinweis."
+      ]
+    },
+    {
       "v": "3.2.1.7",
       "datum": "2026-11-13",
       "titel": "Familienaufenthalte aus dem Kalender bleiben",

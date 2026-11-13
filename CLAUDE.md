@@ -121,7 +121,12 @@ Bedienung (Vorschlag Claude, 13.11.2026) und Entscheide Wänu:
 - Gästemeldung: Empfehlung echter Briefkasten (Google Apps Script) und Testlisten danach in der Verwaltung löschen; zweiter Briefkasten nur, falls Wänu das will (Entscheid offen).
 - Prüfen: die laufende App darf nie ins Test-Repo schreiben und umgekehrt (beide Adressen lokal testen). Version: funktionelle Änderung.
 
-## Offen: Kalender-Abgleich aus der App anstossen (Wänu «ja», 13.11.2026, umsetzen am Dienstag)
+## Erledigt: Kalender-Abgleich aus der App (3.3.0.0, 13.11.2026)
+- Gebaut: `syncAnstossen()` (nur Papi, nicht Testmodus/Mami/Kind-Ansicht) startet `gaeste-sync.yml` per workflow_dispatch beim Start und bei `visibilitychange`, höchstens alle 10 Min. (`tm2_syncZeit`), wartet auf den Lauf (id > letzter Lauf), holt `gaeste.json` roh über die API und zeichnet neu. Symbol 🔄 (`#syncK`) im Knopf «Verwaltung» neben dem Häkchen (Wänus Wunsch statt im Titel «Wunschtermin finden»), Infozeile `#syncInfo`; ✅ eine Minute, ⚠️ bleibt. Letzter Erfolg in `tm2_syncOk`.
+- 3.2.1.7: `gaesteAufraeumen()` lässt Einträge mit `quelle: "kalender"` stehen (hatte Familienaufenthalte ohne Airbnb-Sperre gelöscht).
+- Offen: Wänu ergänzt den Token um «Actions: Read and write»; echter Lauf mit seinem Token noch nicht getestet.
+
+## Früherer Plan: Kalender-Abgleich aus der App anstossen (Wänu «ja», 13.11.2026)
 - Papi-Ansicht: beim Öffnen der App (auch Herunterziehen = Neuladen) startet der Workflow `gaeste-sync.yml` automatisch per GitHub-API (workflow_dispatch), höchstens alle 10 Min.; danach gaeste.json neu laden.
 - Viertes Symbol 🔄 neben 📅 📊 🎬 im Titel «Wunschtermin finden», nur für Papi: dreht sich während des Laufs, dann ✅ bzw. ⚠️; Antippen startet sofort und zeigt den letzten Abgleich. Platz schaffen (Titel «Wunschtermin finden» etwas nach links bzw. Abstände anpassen), auf 360 px prüfen.
 - Token braucht zusätzlich «Actions: Read and write» für `TSCHENT-O-MAT-180264`: Wänu bekommt eine Schritt-für-Schritt-Anleitung für GitHub.
