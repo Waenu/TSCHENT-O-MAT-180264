@@ -103,6 +103,11 @@ Bedienung (Vorschlag Claude, 13.11.2026) und Entscheide Wänu:
 - 2½ bis 17: eigener Anteil (Nachtpreis + Kurtaxe); bei «Wer zahlt was» Chips zum Antippen: Familie, jeder erwachsene Freund UND der Jugendliche selbst (Wänu: z. B. 17-Jähriger ohne Eltern zahlt selbst). Mehrere gewählt = gleich verteilt; Prozente vorerst nicht. Abschicken erst, wenn für jedes Kind ein Zahler gewählt ist (kein Vorschlag).
 - Nachtpreis für Freunde unter 18 gleich wie Erwachsene (Wänu: Bett, Wäsche, Dusche, WLAN, Infrastruktur), kein Kinderpreis.
 - Reinigungsanteil von Freunden unter 18 (Wänu «ja», 13.11.2026): zahlt der Jugendliche selbst, zählt er wie ein erwachsener Freund (auch bei der Reinigung); wird er übernommen, trägt er keinen Reinigungsanteil. Option «Nach Personen» dann sinngemäss «jede Person, die selbst zahlt». Total bleibt immer gleich.
+Entscheide Wänu (13.11.2026 spät, nach Mockup im privaten Design-Artefakt «TSCHENT-O-MAT Mockup: Wer zahlt was»):
+- Grafik (Personen-Kreise) und Chip-Zeilen «Wer übernimmt …?» erscheinen NUR, wenn ein Freund unter 18 dabei ist; kein Knopf «Grafik zeigen» sonst. Die Aufteilung selbst (Hälfte-Hälfte, pro Kopf usw.) kommt weiter aus der bestehenden Auswahl; vor dem Bau prüfen, was diese genau abdeckt.
+- Familie pro Handy: Partner und Kinder des Kindes stecken im persönlichen Link (von Wänu in der Verwaltung erzeugt) und werden nur auf dem Handy gespeichert (localStorage). NIE ins Repo, nicht in index.html, nicht in CLAUDE.md. Neues Enkelkind = neuer Link.
+- «Wer kommt?»: die buchende Person fest, Partner und jedes Kind als Chips zum An- und Abwählen (jede Kombination, z. B. ohne Partner mit Kindern).
+- Mehrere Familien zusammen (z. B. zwei Geschwister mit Familie) und Freunde mit mehreren Jugendlichen sind im Mockup skizziert; ab etwa drei Jugendlichen Chip-Zeilen einklappbar.
 
 ## Offen: Airbnb-Belegung ins App-Repo umziehen (Wänu «ja», 13.11.2026, nächste Woche)
 - Heute: Workflow `belegung.yml` + `belegung.py` im alten Repo `Waenu/Tschentomat` (Secret `AIRBNB_ICAL`) schreibt `belegt.json`; die App liest `/Tschentomat/belegt.json`.
