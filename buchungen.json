@@ -36,13 +36,20 @@
       "betrag": 240,
       "rechnung": "Gesendet am Fr 13.11.2026, 11:10 Uhr. App-Version 3.2.1.5.\nAnreise\tMittwoch 14.04.2027\nAbreise\tSonntag 18.04.2027 (4 Nächte)\nFamilie\tIch und Partner/in\nFreunde\t0\nMit den Bedingungen einverstanden: ja\nZimmer 1 unberührt\tJa\nSelbstreinigung\tJa\nTotal laut Rechner\tCHF 240.–\nReinigungskosten sind erst nach Ablauf der Familienstaffel bekannt und werden nachbelastet.\n#Preisberechnung\nFamilie pro Nacht\tCHF 60.–\nÜbernachtung (4 Nächte)\tCHF 240.–\nReinigung\tCHF 0.–\nZimmer 1 und rotes Bad bleiben unberührt: CHF 10.– weniger pro Nacht, die Familie zahlt CHF 60.– statt CHF 70.–.",
       "bestaetigt": "2026-11-13T11:10"
+    },
+    {
+      "name": "Miriam",
+      "arr": "2027-04-20",
+      "dep": "2027-04-23",
+      "selbst": true,
+      "pers": 2,
+      "rolle": "folge",
+      "betrag": 180,
+      "rechnung": "Gesendet am Fr 13.11.2026, 11:13 Uhr. App-Version 3.2.1.5.\nAnreise\tDienstag 20.04.2027\nAbreise\tFreitag 23.04.2027 (3 Nächte)\nFamilie\tIch und Partner/in\nFreunde\t0\nMit den Bedingungen einverstanden: ja\nZimmer 1 unberührt\tJa\nSelbstreinigung\tJa\nTotal laut Rechner\tCHF 180.–\nReinigungskosten sind erst nach Ablauf der Familienstaffel bekannt und werden nachbelastet.\n#Preisberechnung\nFamilie pro Nacht\tCHF 60.–\nÜbernachtung (3 Nächte)\tCHF 180.–\nReinigung\tCHF 0.–\nZimmer 1 und rotes Bad bleiben unberührt: CHF 10.– weniger pro Nacht, die Familie zahlt CHF 60.– statt CHF 70.–.",
+      "bestaetigt": "2026-11-13T11:13"
     }
   ],
   "logbuch": [
-    {
-      "t": "2026-10-28T13:55",
-      "text": "Entfernt: Miriam, Sa 19.06.2027 bis Sa 26.06.2027"
-    },
     {
       "t": "2026-10-28T14:05",
       "text": "Bestätigt: Manuel, Fr 21.05.2027 bis So 23.05.2027, CHF 490, mit Vorbehalt"
@@ -838,6 +845,10 @@
     {
       "t": "2026-11-13T11:10",
       "text": "Bestätigt: Manuel, Mi 14.04.2027 bis So 18.04.2027, CHF 240"
+    },
+    {
+      "t": "2026-11-13T11:14",
+      "text": "Bestätigt: Miriam, Di 20.04.2027 bis Fr 23.04.2027, CHF 180"
     }
   ],
   "reinigung": []
