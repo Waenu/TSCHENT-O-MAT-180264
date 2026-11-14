@@ -20,6 +20,9 @@ if (TEST_MODUS) {
     _sp.setItem = function (k, v) { return _ss.call(this, _sk(k), v); };
     _sp.removeItem = function (k) { return _sr.call(this, _sk(k)); };
     if (localStorage.getItem("tm2_token") === null && localStorage.getItem("tm2_absender") === null) localStorage.setItem("tm2_token", "test");   // erster Start: Papi-Ansicht
+    if (/[?&]b=/.test(location.search) && !localStorage.getItem("tm2_token")) {   // Bestätigungslink aus WhatsApp: gleich in die Ansicht Papi (seit 3.5.0.2), sonst geht die Anfrage in der Kind-Ansicht verloren
+      localStorage.setItem("tm2_token", localStorage.getItem("tm2_papitoken") || "test"); localStorage.setItem("tm2_absender", ""); localStorage.removeItem("tm2_namefix"); localStorage.removeItem("tm2_absender_ts");
+    }
   } catch (e) {}
   (function () {
     var f = window.fetch;   // GitHub-Schnittstelle nur für das Test-Repo; alle anderen Repos (laufende App, privater Speicher) gesperrt
@@ -1245,6 +1248,7 @@ if (TEST_MODUS) {
   .namefest { margin: 4px 0 0; font-weight: 700; }
   .lk-row { border-top: 1px solid var(--line, rgba(128,128,128,.3)); padding: 8px 0; text-align: left; }
   .lk-row .btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+  .lk-row .lk-fam { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; } .lk-row .lk-fam input { width: 100%; box-sizing: border-box; } .lk-row .lk-fam .btn { align-self: flex-start; }
 
   #btnReserv .bt, #btnReservFix .bt { min-width: 0; }
   #btnReserv .rv-z, #btnReservFix .rv-z { font-size: 0.82rem; font-weight: 400; line-height: 1.25; margin-top: 3px; }
@@ -1517,7 +1521,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.4.0.1";
+let VERSION = "3.5.0.2";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1748,7 +1752,7 @@ function calc(s) {
 // CALC-END
 
 /* ============ Oberfläche ============ */
-const EMPTY = { art: "", luecke: false, lueckeDyn: false, selbstOK: false, selbst: "", nights: null, wer: "", fam: null, gaeste: null, kinder: null, zimmer: "", kk: null, spar: "", sparAuto: false, reinig: "", waesche: "" };
+const EMPTY = { art: "", luecke: false, lueckeDyn: false, selbstOK: false, selbst: "", nights: null, wer: "", werFam: "", fam: null, gaeste: null, kinder: null, zimmer: "", kk: null, spar: "", sparAuto: false, reinig: "", waesche: "" };
 let S = Object.assign({}, EMPTY);
 let NOTICES = {};   // Meldungen nach Feld: erscheinen direkt unter dem betroffenen Feld (seit 2.94.3.0, vorher ein Feld ganz oben)
 const meld = (id, text) => { NOTICES[id] = text; };
@@ -1789,11 +1793,11 @@ const FIELDS = [
   { id: "wer", label: "👨‍👩‍👧‍👦 Wer von der Familie kommt?", type: "str",
     hint: () => S.luecke
       ? "«Ich» ist Sohn oder Tochter. Familienmitglied ist Partner/in, Bruder oder Schwester, keine Freunde. Das Kleinkind ist ein Enkelkind bis etwa 2½ Jahren. Es schläft im Kinderbettchen in Zimmer 3 oder bei den Erwachsenen in Zimmer 2. In den Betten schlafen höchstens 2 Erwachsene. Zimmer 1 und das rote Bad bleiben unberührt."
-      : "«Ich» ist Sohn, Tochter oder Partner/in eines Kindes, «Kind» ist ein Enkelkind. Hier zählen alle, die mitkommen, auch Kleinkinder. Kleinkinder im Kinderbettchen oder bei den eigenen Eltern gibst du danach an.",
-    opts: () => S.luecke ? LWERL : WERL },
+      : (famOpts() ? "Wähle, wer von euch mitkommt. Mit Bruder oder Schwester wählst du «" + MFG + "». Kleinkinder im Kinderbettchen oder bei den eigenen Eltern gibst du danach an." : "«Ich» ist Sohn, Tochter oder Partner/in eines Kindes, «Kind» ist ein Enkelkind. Hier zählen alle, die mitkommen, auch Kleinkinder. Kleinkinder im Kinderbettchen oder bei den eigenen Eltern gibst du danach an."),
+    opts: () => { const fo = famOpts(); return fo ? fo.map((o) => o.l) : (S.luecke ? LWERL : WERL); } },
   { id: "fam", label: "👨‍👩‍👧‍👦 Wie viele Personen aus der Familie kommen?", type: "num",
     hint: (d) => "Alle zählen, auch Kleinkinder: du selbst, Geschwister, Partner/in, Enkelkinder. Beispiel: Tochter, Sohn und 2 Enkel sind 4. Kleinkinder im Kinderbettchen oder bei den eigenen Eltern gibst du danach an." + (d.kkFix ? " Bei " + S.fam + " Personen sind " + d.kkMin + " davon Kleinkinder im Kinderbettchen oder bei den eigenen Eltern, das setzt der Rechner automatisch." : ""),
-    visible: (d) => S.wer === MFG, opts: () => range(2, P.maxPersonen + 2) },
+    visible: (d) => S.wer === MFG && !((famWahl() || {}).fam), opts: () => range(2, P.maxPersonen + 2) },
   { id: "kk", label: "👶 Wie viele davon brauchen {{kein}} normales Bett und schlafen in einem Kinderbettchen oder bei den eigenen Eltern?", type: "num",
     hint: () => "Kinder bis etwa 2½ Jahren. Sie belegen kein Bett und zählen bei der Reinigung nicht mit.",
     visible: (d) => d.kkMax > 0 && !d.kkFix, opts: (d) => range(d.kkMin, d.kkMax) },
@@ -1882,7 +1886,9 @@ function build() {
     sel.addEventListener("change", () => {
       const v = sel.value;
       if (f.id === "spar") S.sparAuto = false;
-      S[f.id] = v === "" ? (f.type === "num" ? null : "") : (f.type === "num" ? Number(v) : v);
+      const fo = f.id === "wer" ? famOpts() : null;
+      if (fo) { const o = fo.find((x) => x.l === v), vorher = S.werFam; S.werFam = o ? o.l : ""; S.wer = o ? o.w : ""; if (o && o.fam) S.fam = o.fam; else if (o && o.w === MFG && vorher !== MFG) S.fam = null; }
+      else S[f.id] = v === "" ? (f.type === "num" ? null : "") : (f.type === "num" ? Number(v) : v);
       normalize(); render();
       if (f.id === "art") renderKalender();   // Hinweise unter dem Kalender (verbindlich oder mit Vorbehalt) folgen der Wahl
     });
@@ -3633,6 +3639,31 @@ async function ladeBelegt() {
 const KINDER_ABS = ["Jerome", "Deborah", "Miriam", "Manuel"];
 const PARTNER_ABS = ["David", "Rahel", "Andreas", "Sarah"];   // Partner der Kinder: gehören zur Familie und buchen selbst
 const ABS = KINDER_ABS.concat(PARTNER_ABS);
+// Familie mit Namen (seit 3.5.0.0): Partner/in und Kinder kommen über den persönlichen Link (…&fp=…&fk=…) und liegen nur auf dem Handy (tm2_famIch).
+// Papi trägt sie in der Verwaltung ein (tm2_famListe, nur auf seinem Handy). Nie ins Repo. In der Testversion nimmt die Ansicht die Namen aus tm2_famListe.
+function famListe() { try { const o = JSON.parse(localStorage.getItem("tm2_famListe") || "{}"); return o && typeof o === "object" ? o : {}; } catch (e) { return {}; } }
+function famSauber(o) { if (!o || typeof o !== "object") return null; const p = String(o.p || "").trim().slice(0, 40), k = (Array.isArray(o.k) ? o.k : []).map((x) => String(x || "").trim().slice(0, 40)).filter(Boolean).slice(0, 6); return p || k.length ? { p, k } : null; }
+function famNamen() {
+  try { if (TOKEN || MAMI) return null; } catch (e) { return null; }   // Papi und Mami: keine Namen
+  if (TEST_MODUS) return ABSENDER ? famSauber(famListe()[ABSENDER]) : null;
+  try { return famSauber(JSON.parse(localStorage.getItem("tm2_famIch") || "null")); } catch (e) { return null; }
+}
+function famOpts() {   // alle Kombinationen mit Namen; w = Antwort für die Rechnung (unverändert), fam = Personenzahl bei mehr als 2 Kindern
+  const f = famNamen(); if (!f || S.luecke) return null;
+  const leute = (f.p ? [{ n: f.p, p: true }] : []).concat(f.k.map((n) => ({ n, p: false })));
+  const subs = []; for (let m = 0; m < (1 << leute.length); m++) subs.push(leute.filter((x, i) => m & (1 << i)));
+  subs.sort((a, b) => a.length - b.length);
+  const out = subs.map((sb) => {
+    const nm = sb.map((x) => x.n), p = sb.some((x) => x.p), k = sb.length - (p ? 1 : 0);
+    const l = !nm.length ? "Nur ich" : nm.length === 1 ? "Ich und " + nm[0] : "Ich, " + nm.slice(0, -1).join(", ") + " & " + nm[nm.length - 1];
+    if (k > 2) return { l, w: MFG, fam: 1 + sb.length };
+    const w = k === 0 ? (p ? "Ich und Partner/in" : "Nur ich") : p ? "Ich, Partner/in und " + (k === 1 ? "1 Kind" : "2 Kinder") : "Ich und " + (k === 1 ? "1 Kind" : "2 Kinder");
+    return { l, w };
+  });
+  out.push({ l: MFG, w: MFG });
+  return out;
+}
+function famWahl() { const o = famOpts(); return o && S.werFam ? o.find((x) => x.l === S.werFam && x.w === S.wer) || null : null; }
 const PAAR = { Jerome: "Rahel", Rahel: "Jerome", Deborah: "David", David: "Deborah", Miriam: "Andreas", Andreas: "Miriam", Manuel: "Sarah", Sarah: "Manuel" };   // Paare (nur noch als Zuordnung, sie sehen ihre Buchungen nicht mehr gegenseitig)
 const absOpt = (sel) => ABS.map((n) => '<option value="' + n + '"' + (n === sel ? " selected" : "") + ">" + n + "</option>").join("");
 const ANSICHT_TIMEOUT = 15 * 60 * 1000;   // Kind-Modus (nur Papi): nach 15 Minuten ohne Bedienung zurück
@@ -3683,7 +3714,9 @@ function anfrageText(r) {
   z.push("Anreise: " + fmtTagV(ARR));
   z.push("Abreise: " + fmtTagV(DEP) + " (" + x.nights + " Nächte)");
   z.push("");
-  z.push("Familie: " + S.wer + (S.wer === MFG ? " (" + S.fam + " Personen)" : "") + (x.KK > 0 ? ", davon " + x.KK + " im Kinderbettchen oder bei den eigenen Eltern" : ""));
+  const kkTxt = x.KK > 0 ? ", davon " + x.KK + " im Kinderbettchen oder bei den eigenen Eltern" : "";
+  z.push("Familie: " + S.wer + (S.wer === MFG ? " (" + S.fam + " Personen)" : "") + kkTxt);
+  const iFam = z.length - 1, fw = famWahl(), famTxt = fw && fw.l !== MFG ? "Familie: " + fw.l + kkTxt : "";   // Namen nur in der WhatsApp, gespeichert (Bestätigungslink → buchungen.json) bleibt die neutrale Zeile (seit 3.5.0.1)
   z.push("Freunde: " + x.GE);
   if (x.GE > 0 && typeof S.kinder === "number") z.push("Davon Kinder von 6 bis 15 Jahren: " + S.kinder);
   if (x.GE > 0 && !x.lock) z.push("Freund im selben Zimmer: " + x.ZE);
@@ -3710,6 +3743,7 @@ function anfrageText(r) {
   z.push("");
   if (x.LG) { z.push(""); z.push("Wir bitten euch, eigene Bettwäsche, Frottee- und Küchentücher mitzubringen, so wie im Tschent-O-Mat beschrieben. Die Reinigung übernehmen die Eltern."); }
   z.push("Zum Bestätigen durch " + (PARTNER_ABS.indexOf(ABSENDER) >= 0 ? "Silvan" : "Papi") + ": " + bestLink(ABSENDER, ARR, DEP, x.SB === true, x.FP, x.LG === true, spA ? 0 : r.TOT, x.VERB === true, b64u(schnappText(z)), S.waesche));
+  if (famTxt) z[iFam] = famTxt;
   return z.join("\n");
 }
 
@@ -3890,6 +3924,7 @@ const meldSichtbar = (id) => { const w = document.getElementById("f-" + id); ret
 const meldOrt = (id) => [id, "gaeste", "wer", "art"].find(meldSichtbar) || "";
 const meldZiel = (fid) => Object.keys(NOTICES).filter((id) => meldOrt(id) === fid).map((id) => NOTICES[id]).join(" ");
 function render() {
+  if (famOpts() && S.wer && !famWahl()) { S.wer = ""; S.werFam = ""; S.fam = null; }   // Namen-Auswahl und Rechnung immer gleich (z. B. nach Wechsel zur Lücke und zurück)
   const d = derive(S);
   {   // Hochsaison ohne Wahl: gleich oben sagen, dass der Termin mit Vorbehalt gilt und warum (seit 2.125.6.0)
     let hh = document.getElementById("hochHinweis");
@@ -3904,7 +3939,8 @@ function render() {
     const vis = f.visible ? f.visible(d) : true;
     const vorab = f.id === "art" && !vis && !(ARR && DEP);   // Termin noch nicht komplett: Feld zeigen, aber sperren
     wrap.hidden = !vis && !vorab;
-    const cur = S[f.id] === null || S[f.id] === undefined ? "" : String(S[f.id]);
+    let cur = S[f.id] === null || S[f.id] === undefined ? "" : String(S[f.id]);
+    if (f.id === "wer" && famOpts()) cur = famWahl() ? S.werFam : "";
     const list = f.opts(d).map(String);
     const sig = list.join("|");
     if (sel.dataset.sig !== sig) {
@@ -5050,6 +5086,7 @@ const einlAktiv = () => EINL === null || Object.keys(EINL).length > 0;
 async function einladungPruefen() {
   if (TOKEN || MAMI || ELTERN_GERAET || TEST_MODUS) return;   // Testversion: Ansicht kommt aus dem orangen Balken
   const m = /[#&]ich=([^&.]+)\.([^&]+)/.exec(location.hash || "");   // zuerst lesen: andere Teile der App räumen die Adresse beim Start auf
+  const mfp = /[#&]fp=([^&]*)/.exec(location.hash || ""), mfk = /[#&]fk=([^&]*)/.exec(location.hash || "");   // Familie mit Namen (seit 3.5.0.0)
   await einlLaden();
   if (m) {
     let ok = false; const n = decodeURIComponent(m[1]), c = decodeURIComponent(m[2]);
@@ -5058,6 +5095,7 @@ async function einladungPruefen() {
     if (ok) {
       ABSENDER = n; NAME_FIX = true;
       try { localStorage.setItem("tm2_absender", n); localStorage.setItem("tm2_namefix", "1"); localStorage.setItem("tm2_invcode", c); } catch (e) {}
+      if (mfp || mfk) { const dk = (x) => { try { return decodeURIComponent(x || ""); } catch (e) { return ""; } }; const fo = famSauber({ p: dk(mfp && mfp[1]), k: dk(mfk && mfk[1]).split(",") }); try { if (fo) localStorage.setItem("tm2_famIch", JSON.stringify(fo)); else localStorage.removeItem("tm2_famIch"); } catch (e) {} }
       try { aufentZeigen(); render(); bestZeigen(); renderKalender(); } catch (e) {}
       return;
     }
@@ -5164,7 +5202,8 @@ async function ghEinl(fn) {   // einladungen.json (Fingerabdrücke der persönli
 let INV = {}; try { INV = JSON.parse(localStorage.getItem("tm2_invlinks") || "{}") || {}; } catch (e) { INV = {}; }   // Papi: erzeugte Codes, nur auf diesem Gerät
 let zeigLk = false, LK_HASH = null;
 const lkNeuCode = () => { const a = new Uint8Array(9); crypto.getRandomValues(a); return btoa(String.fromCharCode.apply(null, a)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); };
-const lkLink = (n) => INV[n] ? location.origin + location.pathname + "#ich=" + encodeURIComponent(n) + "." + INV[n] : "";
+const lkFam = (n) => { const f = famSauber(famListe()[n]); return f ? "&fp=" + encodeURIComponent(f.p) + "&fk=" + encodeURIComponent(f.k.join(",")) : ""; };   // Namen der Familie im Link (seit 3.5.0.0)
+const lkLink = (n) => INV[n] ? location.origin + location.pathname + "#ich=" + encodeURIComponent(n) + "." + INV[n] + lkFam(n) : "";
 const lkText = (n) => "Hallo " + n + ", das ist dein persönlicher Link zum TSCHENT-O-MAT. Tippe ihn einfach an, mehr musst du nicht tun. Er gehört nur dir, bitte leite ihn nicht weiter.\n" + lkLink(n) + grussVon(n);
 function lkHtml() {
   let h = '<div class="note h"><b>🔗 Persönliche Links</b><p class="hint">Sobald der erste Link ausgegeben ist, läuft die App für Kinder und Partner nur noch mit ihrem Link. Erzeuge zuerst alle acht und verschicke sie dann. Ein neu erzeugter Link macht den alten ungültig. Das ist auch der Reset: Erzeuge einen neuen Link und schicke ihn der Person.</p>';
@@ -5174,9 +5213,10 @@ function lkHtml() {
     const da = !!INV[n], vergeben = !!LK_HASH[n];
     h += '<div class="lk-row"><b>' + esc(n) + '</b> <span class="hint">' + (da ? "Link bereit" : vergeben ? "Link vergeben, hier nicht sichtbar" : "noch kein Link") + '</span><div class="btns">' +
       (da ? '<a class="btn" target="_blank" rel="noopener" href="https://wa.me/?text=' + encodeURIComponent(lkText(n)) + '">Per WhatsApp</a><button type="button" class="btn" data-lkcp="' + n + '">Kopieren</button>' : "") +
-      '<button type="button" class="btn" data-lkneu="' + n + '">' + (da || vergeben ? "Neu erzeugen" : "Erzeugen") + '</button></div></div>';
+      '<button type="button" class="btn" data-lkneu="' + n + '">' + (da || vergeben ? "Neu erzeugen" : "Erzeugen") + '</button></div>' +
+      (() => { const fm = famSauber(famListe()[n]) || { p: "", k: [] }; return '<div class="lk-fam"><input type="text" data-lkfp="' + n + '" maxlength="40" autocomplete="off" placeholder="Partner/in" aria-label="Partner/in von ' + esc(n) + '" value="' + esc(fm.p) + '"><input type="text" data-lkfk="' + n + '" maxlength="200" autocomplete="off" placeholder="Kinder, mit Komma getrennt" aria-label="Kinder von ' + esc(n) + '" value="' + esc(fm.k.join(", ")) + '"><button type="button" class="btn" data-lkfs="' + n + '">Namen speichern</button></div>'; })() + '</div>';
   });
-  return h + '<p class="hint">Der Code steht nur in diesem Link und auf diesem Handy. Auf einem anderen Gerät erzeugst du den Link neu.</p></div>';
+  return h + '<p class="hint">Der Code steht nur in diesem Link und auf diesem Handy. Auf einem anderen Gerät erzeugst du den Link neu.</p><p class="hint">Namen der Familie: Sie stehen nur auf diesem Handy und im Link. Nach «Namen speichern» enthält der Link die Namen, der Code bleibt gleich. Schicke den Link dann nochmals, damit «Wer von der Familie kommt?» die Namen zeigt.</p></div>';
 }
 async function lkLaden() { try { await einlLaden(); LK_HASH = EINL || {}; } catch (e) { LK_HASH = {}; } bestZeigen(); }
 async function lkErzeugen(namen) {
@@ -6368,7 +6408,14 @@ document.getElementById("bestKasten").addEventListener("click", async (e) => {
   if (e.target.closest("[data-zu]")) { bestMsg = ""; bestFehler = ""; bestZeigen(); return; }
   if (bestMsg && /<(a|button)\b/.test(bestMsg) && !e.target.closest(".best-msg") && e.target.closest("#bestKasten")) { const m = bestMsg; setTimeout(() => { if (bestMsg === m) { bestMsg = ""; bestZeigen(); } }, 0); }
   const ej = f("data-ejahr"); if (ej) { EJAHR = (EJAHR || Number(heuteKey().slice(0, 4))) + Number(ej); bestZeigen(); return; }
-  const lkn = f("data-lkneu"), lkc = f("data-lkcp");
+  const lkn = f("data-lkneu"), lkc = f("data-lkcp"), lkf = f("data-lkfs");
+  if (lkf) {   // Namen der Familie speichern (nur auf diesem Handy)
+    const box = e.target.closest(".lk-fam"), pv = box.querySelector("[data-lkfp]").value, kv = box.querySelector("[data-lkfk]").value;
+    const o = famListe(), fo = famSauber({ p: pv, k: kv.split(",") });
+    if (fo) o[lkf] = fo; else delete o[lkf];
+    try { localStorage.setItem("tm2_famListe", JSON.stringify(o)); } catch (er) {}
+    bestMsg = fo ? "Namen für " + lkf + " gespeichert." + (INV[lkf] ? " Der Link enthält sie jetzt." : "") : "Namen für " + lkf + " entfernt."; bestZeigen(); return;
+  }
   if (lkc) { kopiere(lkText(lkc), e.target.closest("[data-lkcp]"), "Kopiert"); return; }
   if (lkn || e.target.closest("[data-lkalle]")) {
     const alle = !lkn, namen = alle ? ABS.slice() : [lkn];

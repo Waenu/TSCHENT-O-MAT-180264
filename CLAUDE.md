@@ -109,6 +109,15 @@ Entscheide Wänu (13.11.2026 spät, nach Mockup im privaten Design-Artefakt «TS
 - «Wer kommt?»: die buchende Person fest, Partner und jedes Kind als Chips zum An- und Abwählen (jede Kombination, z. B. ohne Partner mit Kindern).
 - Mehrere Familien zusammen (z. B. zwei Geschwister mit Familie) und Freunde mit mehreren Jugendlichen sind im Mockup skizziert; ab etwa drei Jugendlichen Chip-Zeilen einklappbar.
 
+## Familie mit Namen (3.5.0.x, Testversion 14.11.2026, übernommen als 3.5.0.2)
+- «Wer von der Familie kommt?» zeigt die echten Namen (alle Kombinationen aus Partner/in und Kindern, z. B. «Ich, David, Mael & Yara») plus «Meine Familie und Geschwister». `famOpts()`; `S.werFam` = Label, `S.wer` bleibt die alte Antwort für `derive()` (mehr als 2 Kinder: MFG mit automatischer Personenzahl).
+- Namen: Papi in der Verwaltung (Persönliche Links, Felder Partner/in und Kinder, «Namen speichern», `tm2_famListe` nur auf seinem Handy). Link `#ich=Name.CODE&fp=Partner&fk=Kind1,Kind2`, Code bleibt gleich; beim Kind `tm2_famIch`. Nie ins Repo.
+- WhatsApp-Anfrage mit Namen; der gespeicherte Schnappschuss (`rechnung` in `buchungen.json`) bleibt neutral ohne Namen.
+- Ohne Namen, in der Lücke, bei Papi und Mami: alte Liste. Kleinkind-Frage unverändert.
+- Später (Wänu): bei Chips/Personen-Kreisen «Ich» und darunter klein «(Name der buchenden Person)».
+- Nationalität in der Liste der Freunde bleibt, vorausgefüllt mit «Schweiz».
+- Nächstes Paket (in der Testversion): Liste der Freunde im Rechner (Vorname, Name, Geschlecht, Geburtsdatum, Nationalität), danach Zahler für Freunde unter 18. Einzelheiten in der CLAUDE.md der Testversion.
+
 ## Offen: Airbnb-Belegung ins App-Repo umziehen (Wänu «ja», 13.11.2026, nächste Woche)
 - Heute: Workflow `belegung.yml` + `belegung.py` im alten Repo `Waenu/Tschentomat` (Secret `AIRBNB_ICAL`) schreibt `belegt.json`; die App liest `/Tschentomat/belegt.json`.
 - Plan (mit Wänu abgesprochen 13.11.2026, Testzeit etwa 4 Wochen, altes Repo am Schluss nur stilllegen, nicht löschen):

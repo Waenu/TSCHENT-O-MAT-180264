@@ -2,6 +2,21 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.5.0.2",
+      "datum": "14.11.2026",
+      "titel": "Familie mit Namen (aus der Testversion übernommen)",
+      "arten": [
+        "Neu"
+      ],
+      "punkte": [
+        "«Wer von der Familie kommt?» zeigt die Namen der eigenen Familie, zum Beispiel «Ich, David, Mael & Yara», mit allen Kombinationen. Mit Geschwistern weiterhin «Meine Familie und Geschwister».",
+        "Papi trägt die Namen in der Verwaltung bei den persönlichen Links ein. Sie stehen nur auf dem Handy und im Link, der Code bleibt gleich.",
+        "Die WhatsApp-Anfrage nennt die Familie mit Namen. Gespeichert wird weiterhin ohne Namen.",
+        "Ohne Namen (alter Link) bleibt die bisherige Auswahl. Preise unverändert.",
+        "Testversion: Ein Bestätigungslink schaltet gleich auf Papi."
+      ]
+    },
+    {
       "v": "3.4.0.1",
       "datum": "2026-11-14",
       "titel": "Liste der Freunde rot umrandet",
