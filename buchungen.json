@@ -12,13 +12,19 @@
       "bestaetigt": "2026-11-09T21:37",
       "pimlical": "2026-11-09T21:44",
       "bescheid": "2026-11-10T14:57"
+    },
+    {
+      "name": "Deborah",
+      "arr": "2026-11-25",
+      "dep": "2026-11-28",
+      "selbst": false,
+      "pers": 2,
+      "betrag": 840,
+      "rechnung": "Gesendet am Sa 14.11.2026, 11:29 Uhr. App-Version 3.4.0.1.\nAnreise\tMittwoch 25.11.2026\nAbreise\tSamstag 28.11.2026 (3 Nächte)\nFamilie\tIch und Partner/in\nFreunde\t2\nDavon Kinder von 6 bis 15 Jahren\t1\nMit den Bedingungen einverstanden: ja\nZimmer 1 unberührt\tJa\nReinigung\tNach Personen: ab 18 Jahren zählt jede Person gleich\nTotal laut Rechner\tCHF 840.–\nDazu Kurtaxe Adelboden für die Freunde: CHF 21.90\n#Preisberechnung\nFamilie pro Nacht\tCHF 60.–\nFreund 1 pro Nacht\tCHF 70.–\nFreund 2 pro Nacht\tCHF 70.–\nÜbernachtung (3 Nächte)\tCHF 600.–\nReinigung\tCHF 240.–\nReinigung: Anteil Familie\tCHF 120.–\nReinigung: Anteil pro Freund\tCHF 60.–\nKurtaxe Adelboden (dazu) 1 Freund ab 16 Jahren zu CHF 5.20 pro Nacht, 1 Kind von 6 bis 15 Jahren zu CHF 2.10 pro Nacht, 3 Nächte\tCHF 21.90\nTotal mit Kurtaxe\tCHF 861.90\n#Aufteilung unter den Freunden\nFamilie zahlt\tCHF 300.–\nFreund 1 zahlt davon Kurtaxe CHF 15.60 (ab 16 Jahren)\tCHF 285.60\nFreund 2 zahlt davon Kurtaxe CHF 6.30 (Kind von 6 bis 15 Jahren)\tCHF 276.30\nZimmer 1 und rotes Bad bleiben unberührt: CHF 10.– weniger pro Nacht, die Familie zahlt CHF 60.– statt CHF 70.–.\nReinigung aufgeteilt: Nach Personen: ab 18 Jahren zählt jede Person gleich.",
+      "bestaetigt": "2026-11-14T11:39"
     }
   ],
   "logbuch": [
-    {
-      "t": "2026-10-28T14:13",
-      "text": "Bestätigt: Miriam, Mo 10.05.2027 bis Do 13.05.2027, CHF 405"
-    },
     {
       "t": "2026-10-28T15:02",
       "text": "Bestätigt: Manuel, Mi 25.11.2026 bis Fr 27.11.2026, CHF 110"
@@ -814,6 +820,10 @@
     {
       "t": "2026-11-13T11:16",
       "text": "Endgültig gelöscht: Manuel, Mi 14.04.2027 bis So 18.04.2027"
+    },
+    {
+      "t": "2026-11-14T11:39",
+      "text": "Bestätigt: Deborah, Mi 25.11.2026 bis Sa 28.11.2026, CHF 840"
     }
   ],
   "reinigung": []
