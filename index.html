@@ -7,8 +7,9 @@
 <title>TSCHENT-O-MAT</title>
 <meta name="theme-color" content="#1F5D4D">
 <script>
-/* Testversion (ab 3.1.0.0): dieselbe index.html läuft im Repo «TSCHENT-O-MAT-Test». Erkennt die App diese Adresse, gilt:
-   eigener Speicher im Browser (tm2t_ statt tm2_), nichts wird gespeichert (GitHub) und nichts gesendet (Google, WhatsApp).
+/* Testversion (ab 3.1.0.0, echte Tests ab 3.4.0.0): dieselbe index.html läuft im Repo «TSCHENT-O-MAT-Test». Erkennt die App diese Adresse, gilt:
+   eigener Speicher im Browser (tm2t_ statt tm2_); Speichern geht NUR ins Test-Repo (GitHub-Schnittstelle sonst gesperrt, auch der private Speicher);
+   der Briefkasten (Google) ist echt, aber mit eigenen Buchungsnummern «TEST:…» (keine Mailadressen); WhatsApp-Nachrichten öffnen, ihr Text beginnt mit «🧪 TEST».
    In der laufenden App ist TEST_MODUS false und hier passiert nichts. */
 var TEST_MODUS = /TSCHENT-O-MAT-Test/i.test(location.pathname);
 if (TEST_MODUS) {
@@ -21,10 +22,10 @@ if (TEST_MODUS) {
     if (localStorage.getItem("tm2_token") === null && localStorage.getItem("tm2_absender") === null) localStorage.setItem("tm2_token", "test");   // erster Start: Papi-Ansicht
   } catch (e) {}
   (function () {
-    var f = window.fetch;   // nur Lesen aus dem eigenen Ordner und belegt.json; GitHub-Schnittstelle und Google-Briefkasten gesperrt
+    var f = window.fetch;   // GitHub-Schnittstelle nur für das Test-Repo; alle anderen Repos (laufende App, privater Speicher) gesperrt
     window.fetch = function (u, o) {
-      var url = String((u && u.url) || u), m = String((o && o.method) || (u && u.method) || "GET").toUpperCase();
-      if (m !== "GET" || /api\.github\.com|script\.google(usercontent)?\.com/i.test(url)) return Promise.reject(new Error("In der Testversion wird nichts gespeichert."));
+      var url = String((u && u.url) || u);
+      if (/api\.github\.com/i.test(url) && !/api\.github\.com\/repos\/Waenu\/TSCHENT-O-MAT-Test\//i.test(url)) return Promise.reject(new Error("In der Testversion wird nur ins Test-Repo gespeichert."));
       return f.apply(this, arguments);
     };
   })();
@@ -36,11 +37,14 @@ if (TEST_MODUS) {
     d.textContent = t; d.hidden = false; clearTimeout(window.testHinweis.t);
     window.testHinweis.t = setTimeout(function () { d.hidden = true; }, 3000);
   };
-  document.addEventListener("click", function (e) {   // WhatsApp-Knöpfe bleiben sichtbar, öffnen aber nichts
+  document.addEventListener("click", function (e) {   // Nachrichten öffnen echt, ihr Text beginnt aber mit «🧪 TEST»
     var a = e.target && e.target.closest && e.target.closest('a[href*="wa.me"], a[href^="whatsapp:"], a[href^="mailto:"], a[href^="sms:"]');
     if (!a) return;
-    e.preventDefault(); e.stopPropagation();
-    window.testHinweis("🧪 In der Testversion wird nichts gesendet.");
+    try {
+      var h = a.getAttribute("href") || "", feld = /^mailto:|^sms:/i.test(h) ? "body" : "text", q = h.indexOf("?");
+      var par = new URLSearchParams(q < 0 ? "" : h.slice(q + 1)), t = par.get(feld) || "";
+      if (t.indexOf("🧪 TEST") !== 0) { par.set(feld, "🧪 TEST\n\n" + t); a.setAttribute("href", (q < 0 ? h : h.slice(0, q)) + "?" + par.toString().replace(/\+/g, "%20")); }
+    } catch (e2) {}
   }, true);
   document.addEventListener("DOMContentLoaded", function () {
     var namen = ["Jerome", "Deborah", "Miriam", "Manuel", "David", "Rahel", "Andreas", "Sarah"];
@@ -50,13 +54,15 @@ if (TEST_MODUS) {
     var b = document.createElement("div"); b.id = "testBalken";
     var opt = '<option value="Papi"' + (jetzt === "Papi" ? " selected" : "") + ">Papi</option>" + namen.map(function (n) { return '<option value="' + n + '"' + (jetzt === n ? " selected" : "") + ">" + n + "</option>"; }).join("");
     if (!jetzt) opt = '<option value="" selected>wählen</option>' + opt;
-    b.innerHTML = '<div class="tb-t"><b>🧪 TESTVERSION</b><span>nichts wird gespeichert oder gesendet</span></div><label class="tb-a">Ansicht <select id="testAnsicht" aria-label="Ansicht wählen">' + opt + "</select></label>";
+    b.innerHTML = '<div class="tb-t"><b>🧪 TESTVERSION</b><span>speichert nur hier · Nachrichten mit «🧪 TEST»</span></div><label class="tb-a">Ansicht <select id="testAnsicht" aria-label="Ansicht wählen">' + opt + "</select></label>";
     document.body.insertBefore(b, document.body.firstChild);
     var st = document.createElement("div"); st.id = "testStrich"; st.setAttribute("aria-hidden", "true"); document.body.appendChild(st);
     document.getElementById("testAnsicht").addEventListener("change", function () {
       var v = this.value; if (!v) return;
       try {
-        if (v === "Papi") { localStorage.setItem("tm2_token", "test"); localStorage.setItem("tm2_absender", ""); localStorage.removeItem("tm2_namefix"); localStorage.removeItem("tm2_absender_ts"); }
+        var alt = localStorage.getItem("tm2_token");   // echter Token bleibt beim Wechsel der Ansicht erhalten
+        if (alt && alt !== "test") localStorage.setItem("tm2_papitoken", alt);
+        if (v === "Papi") { localStorage.setItem("tm2_token", localStorage.getItem("tm2_papitoken") || "test"); localStorage.setItem("tm2_absender", ""); localStorage.removeItem("tm2_namefix"); localStorage.removeItem("tm2_absender_ts"); }
         else { localStorage.removeItem("tm2_token"); localStorage.setItem("tm2_absender", v); localStorage.setItem("tm2_namefix", "1"); }
       } catch (e) {}
       location.href = location.pathname + location.search;
@@ -224,6 +230,7 @@ if (TEST_MODUS) {
   #infoBtn { position: relative; width: 44px; height: 44px; font-size: 1.2rem; line-height: 1; background: var(--surface); color: var(--fg); border: 2px solid var(--line); border-radius: 50%; cursor: pointer; padding: 0; }
   #infoBtn[hidden] { display: none; }
   #gmBox[hidden] { display: none; }
+  .note.h.gm-k.gm-offen { border-color: #E5534B; }   /* Liste der Freunde noch offen: roter Rahmen (seit 3.4.0.1) */
   .gm-k .gm-f { border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px 10px; margin: 8px 0; display: flex; flex-direction: column; gap: 6px; }
   .gm-k .gm-f legend { font-weight: 700; padding: 0 4px; }
   .gm-k input[type=text] { width: 100%; box-sizing: border-box; }
@@ -1510,7 +1517,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.3.1.1";
+let VERSION = "3.4.0.1";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -5671,7 +5678,7 @@ document.getElementById("infoBtn").addEventListener("click", () => {
 // ===== Gästemeldung der Freunde (Kurtaxe Adelboden), seit 2.116.0.0 =====
 // Der Buchende füllt pro Freund Name, Vorname, Geburtsdatum, Geschlecht und Nationalität aus (höchstens 5).
 // Die Liste geht an einen Briefkasten (Google-Apps-Script im Konto der Eltern, scripts/gaestemeldung.gs), nicht ins Repo.
-const GM_URL = TEST_MODUS ? "" : "https://script.google.com/macros/s/AKfycbwHIFROA_Eiyl2nufeTUiM3blx59uTe7-obr3z9ZqEzSISvm5E_dtXHiXltBd-Z747S/exec";   // Adresse der Web-App des Briefkastens; leer = Funktion noch nicht eingerichtet
+const GM_URL = "https://script.google.com/macros/s/AKfycbwHIFROA_Eiyl2nufeTUiM3blx59uTe7-obr3z9ZqEzSISvm5E_dtXHiXltBd-Z747S/exec";   // Adresse der Web-App des Briefkastens; leer = Funktion noch nicht eingerichtet
 const GM_MAX = 5;
 const gmAktiv = () => !!GM_URL;
 function gmErinnerText(x) { const p = PARTNER_ABS.indexOf(x.name) >= 0; return "Hoi " + x.name + ", für euren Aufenthalt vom " + fmtTagV(x.arr) + " bis " + fmtTagV(x.dep) + " fehlt uns noch die Liste deiner Freunde für die Kurtaxe. Bitte fülle sie im TSCHENT-O-MAT aus, sie steht zuoberst auf der Startseite (Name, Geburtsdatum, Nationalität). Wir brauchen sie, damit wir die Reservation abschliessen können. Danke dir!"; }
@@ -5679,10 +5686,15 @@ function gmOffen(x) { return gmAktiv() && x.dep >= heuteKey() && freundeVon(x) >
 function gmFehlt(x) { return gmAktiv() && x.dep >= heuteKey() && freundeVon(x) > 0 && GM_LISTEN !== null && !GM_LISTEN[bKey(x)]; }   // erst wenn die Listen geladen sind
 function freundeVon(x) { const m = /^Freunde\t(\d+)/m.exec(String((x && x.rechnung) || "")); return m ? Math.min(Number(m[1]), GM_MAX) : 0; }
 async function gmPost(daten) {
+  if (TEST_MODUS) {   // Testversion: eigene Buchungsnummern «TEST:…», echte Listen und Mailadressen bleiben unberührt
+    if (daten.a === "mail") throw new Error("In der Testversion wird keine Mailadresse gespeichert.");
+    if (daten.buchung) daten = Object.assign({}, daten, { buchung: "TEST:" + daten.buchung });
+  }
   const r = await fetch(GM_URL, { method: "POST", body: JSON.stringify(daten), redirect: "follow" });   // Text statt JSON-Kopf: keine Vorab-Anfrage (CORS)
   if (!r.ok) throw new Error("Der Briefkasten antwortet mit Fehler " + r.status + ".");
   const j = await r.json();
   if (!j || !j.ok) throw new Error((j && j.fehler) || "Der Briefkasten hat nicht geantwortet.");
+  if (TEST_MODUS && Array.isArray(j.listen)) j.listen = j.listen.filter((x) => String(x && x.buchung).indexOf("TEST:") === 0).map((x) => Object.assign({}, x, { buchung: String(x.buchung).slice(5) }));
   return j;
 }
 const gmDatum = (iso) => /^\d{4}-\d{2}-\d{2}$/.test(iso || "") ? iso.slice(8, 10) + "." + iso.slice(5, 7) + "." + iso.slice(0, 4) : "";
