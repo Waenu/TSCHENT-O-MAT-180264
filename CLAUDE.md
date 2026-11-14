@@ -125,6 +125,7 @@ Entscheide Wänu (13.11.2026 spät, nach Mockup im privaten Design-Artefakt «TS
 - WhatsApp/Mail: öffnen wieder; Text beginnt mit «🧪 TEST». Wänu sendet beim Testen an sich selbst (so macht er es schon).
 - Gästemeldung: Empfehlung echter Briefkasten (Google Apps Script) und Testlisten danach in der Verwaltung löschen; zweiter Briefkasten nur, falls Wänu das will (Entscheid offen).
 - Prüfen: die laufende App darf nie ins Test-Repo schreiben und umgekehrt (beide Adressen lokal testen). Version: funktionelle Änderung.
+- Gebaut 14.11.2026 als 3.4.0.0 in der Testversion (Einzelheiten in deren CLAUDE.md). Briefkasten: Testversion sendet Buchungsnummern «TEST:…»; `scripts/gaestemeldung.gs` prüft diese gegen das Test-Repo (`REPO_TEST`), Wänu muss das Skript bei Google nachführen (neue Version der Bereitstellung, Adresse bleibt). Die laufende App bleibt bei 3.3.1.1, bis Wänu «übernehmen» sagt (index.html enthält nur TEST_MODUS-Weichen).
 - Entscheide Wänu (13.11.2026 abends): echter Briefkasten (kein zweiter); Daten der Testversion vor dem Start aus der laufenden App auffrischen; Start am Dienstag 17.11.2026 (Limit). Token hat `TSCHENT-O-MAT-Test` bereits (Contents Read and write), Wänu tippt ihn nur in der Testversion ein. Version 3.4.0.0 (neue Funktion).
 
 ## Erledigt: Kalender-Abgleich aus der App (3.3.0.0, 13.11.2026)

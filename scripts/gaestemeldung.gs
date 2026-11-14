@@ -17,6 +17,7 @@
  *   (a: "liste" liefert zusätzlich die gespeicherten Mailadressen)
  */
 const REPO_BUCHUNGEN = "https://raw.githubusercontent.com/Waenu/TSCHENT-O-MAT-180264/main/buchungen.json";
+const REPO_TEST = "https://raw.githubusercontent.com/Waenu/TSCHENT-O-MAT-Test/main/buchungen.json";   // Testversion: Buchungsnummer beginnt mit «TEST:»
 const MAX_FREUNDE = 5;
 const BLATT = "Gaestemeldung";
 const BLATT_MAIL = "Mailadressen";
@@ -54,7 +55,8 @@ function txt(v, n) { return String(v == null ? "" : v).replace(/[\u0000-\u001f<>
 
 // Spamschutz: nur für eine bestätigte, noch nicht vergangene Buchung mit Freunden (Buchungsnummer = Name|Anreise|Abreise)
 function buchungPruefen(key) {
-  const r = UrlFetchApp.fetch(REPO_BUCHUNGEN + "?t=" + Date.now(), { muteHttpExceptions: true });
+  const test = key.indexOf("TEST:") === 0; if (test) key = key.slice(5);   // Listen aus der Testversion gegen deren Buchungen prüfen
+  const r = UrlFetchApp.fetch((test ? REPO_TEST : REPO_BUCHUNGEN) + "?t=" + Date.now(), { muteHttpExceptions: true });
   if (r.getResponseCode() !== 200) throw new Error("Buchungen nicht lesbar (" + r.getResponseCode() + ")");
   const j = JSON.parse(r.getContentText()), heute = Utilities.formatDate(new Date(), "Europe/Zurich", "yyyy-MM-dd");
   const b = (j.buchungen || []).find((x) => x && [String(x.name).trim(), x.arr, x.dep].join("|") === key && x.status !== "storniert" && x.status !== "abgelehnt");
