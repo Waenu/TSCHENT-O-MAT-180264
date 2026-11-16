@@ -1,0 +1,39 @@
+name: Belegung aktualisieren
+
+# Kopie des Workflows aus Waenu/Tschentomat (Umzug, Woche 1 ab 16.11.2026).
+# Schreibt eine eigene belegt.json; die App liest vorerst weiter /Tschentomat/belegt.json.
+# Ohne Lücken-Meldung (Issues): die läuft weiter im alten Repo, damit keine doppelten Meldungen kommen.
+
+on:
+  schedule:
+    - cron: "17 * * * *"   # jede Stunde, gleiche Minute wie im alten Repo (gleicher Stand zum Vergleichen)
+  workflow_dispatch:         # auch von Hand startbar (Actions, Run workflow)
+
+permissions:
+  contents: write
+
+concurrency:
+  group: belegung
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Kalender holen und belegt.json schreiben
+        env:
+          ICAL_URL: ${{ secrets.AIRBNB_ICAL }}
+        run: python3 scripts/belegung.py
+      - name: Speichern, falls geaendert
+        run: |
+          git config user.name "belegung-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add belegt.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Belegung aktualisiert"
+            git pull --rebase
+            git push
+          else
+            echo "Keine Aenderung."
+          fi

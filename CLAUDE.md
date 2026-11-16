@@ -125,6 +125,7 @@ Entscheide Wänu (13.11.2026 spät, nach Mockup im privaten Design-Artefakt «TS
   2. Ab Woche 2, wenn gleich: App (und Testversion) lesen die eigene `belegt.json` (3.2.2.0, funktionelle Änderung). Altes Repo läuft als Reserve weiter. Rückweg: eine Zeile in der App.
   3. Nach 4 Wochen ohne Probleme: Wänu legt das alte Repo still (Actions → Workflow «belegung» → Disable; Settings → Pages → Unpublish; Settings → Archive).
 - Wänu muss nur das Secret `AIRBNB_ICAL` im App-Repo eintragen (Settings → Secrets and variables → Actions; Wert: Airbnb-Kalender exportieren). Claude kann Secrets weder sehen noch setzen. Schreibrechte für Workflows im App-Repo sind vorhanden (gaeste-sync schreibt bereits).
+- 16.11.2026: Secret `AIRBNB_ICAL` im App-Repo von Wänu eingetragen. Schritt 1 gebaut: `.github/workflows/belegung.yml` (stündlich Minute 17, `concurrency: belegung`, `git pull --rebase` vor dem Push, ohne Lücken-Meldung und ohne Lebenszeichen, beides bleibt im alten Repo) und `scripts/belegung.py` (unverändert kopiert). Schreibt `belegt.json` ins App-Repo; die App liest weiter `/Tschentomat/belegt.json`. Vergleich: `git show origin/main:belegt.json` hier gegen das alte Repo.
 - Bis dahin gilt: altes Repo nie ändern, löschen oder umbenennen.
 - Die alte App 1.10.5 ist unter waenu.github.io/Tschentomat/ weiterhin öffentlich erreichbar (GitHub Pages ist dort an, weil `belegt.json` von dort kommt). Erst mit dem Umzug abschaltbar.
 
