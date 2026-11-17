@@ -1590,7 +1590,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.16.2.3";
+let VERSION = "3.16.3.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -6695,7 +6695,8 @@ beide("inkBox", "click", (e) => {
   inkSetzen(key, o); INK_SIG = ""; inkZeigen();
 });
 // --- Meine Verwaltung des Kindes (seit 3.11.0.0): Name, Mail, TWINT, IBAN; alles nur auf dem Handy, die Mail geht wie bisher an den Briefkasten ---
-const meinModus = () => !!ABSENDER && !TOKEN && !MAMI;
+const meinModus = () => !!ABSENDER && !MAMI;   // seit 3.16.3.0 auch bei Papi «Ansicht als» (Vorschau)
+const meinVorschau = () => meinModus() && !!TOKEN;
 let MEIN_N = { gm: 0, zb: 0, ink: 0, li: 0 };   // li: anstehende Listen (orange, seit 3.13.0.0)   // offene Aufgaben für den Zähler am Knopf (seit 3.12.0.0)
 function meinKnopf() {
   const kn = document.getElementById("btnMein"), k = document.getElementById("meinKasten"); if (!kn) return;
@@ -6782,7 +6783,8 @@ document.getElementById("meinAuf").addEventListener("click", (e) => { const b = 
   if (b.dataset.liste === "w") { anreiseZeichnen(); ovOeffnen("ovAnreise", true); } else { checkZeichnen(); ovOeffnen("ovCheck", true); } });
 function meinZeigen() {
   const k = document.getElementById("meinProfilInhalt"), m = mailLokal() || {};
-  k.innerHTML = '<p class="hint">Diese Angaben bleiben nur auf deinem Handy. Nur die Mailadresse geht an die Eltern.</p>' +
+  const vs = meinVorschau();   // Papi «Ansicht als»: Felder grau, leer (die Angaben des Kindes sind nur auf seinem Handy)
+  k.innerHTML = (vs ? '<p class="note h mein-vor">👁️ Vorschau: Die Angaben von ' + esc(ABSENDER) + ' (Rufname, Mail, TWINT, IBAN) sind nur auf ' + (ER_SIE[ABSENDER] === "ihm" ? "seinem" : "ihrem") + ' Handy. Hier siehst du nur, wie es aussieht.</p>' : "") + '<p class="hint">Diese Angaben bleiben nur auf deinem Handy. Nur die Mailadresse geht an die Eltern.</p>' +
     '<label class="ink-fr">Wie willst du genannt werden?<input type="text" data-mein="ruf" maxlength="20" autocomplete="off" placeholder="' + esc(ABSENDER) + '" value="' + esc(rufGespeichert()) + '"></label><p class="hint">So erscheinst du jetzt: oben im Kopf als «<b class="mein-vs">' + esc(genitiv(rufGespeichert() || SPITZNAME[ABSENDER] || ABSENDER)) + '</b>», bei «Ich» in der Auswahl und unter deinen Rechnungen als «<b class="mein-vn">' + esc(rufname()) + '</b>». Trägst du oben einen Namen ein, gilt er an allen drei Stellen.</p>' +
     '<label class="ink-fr">Mailadresse<input type="email" data-mein="mail" maxlength="80" autocomplete="email" value="' + esc(m.name === ABSENDER ? m.mail || "" : "") + '"></label>' +
     '<label class="ink-fr">TWINT-Nummer<input type="tel" data-mein="twint" maxlength="20" inputmode="tel" autocomplete="tel" placeholder="z. B. 079 123 45 67" value="' + esc(inkTwint()) + '"></label>' +
@@ -6791,6 +6793,7 @@ function meinZeigen() {
     '<label class="ink-sw"><input type="checkbox" data-ink-trink="1"' + (inkTrink() ? " checked" : "") + '> 🍀 In den Rechnungen auf das Trinkgeld hinweisen</label>' +
     '<label class="ink-sw"><input type="checkbox" data-ruf-fr="1"' + (rufAn() ? " checked" : "") + '> 🏷️ Rufnamen für meine Freunde</label><p class="hint">Eingeschaltet erscheint in der Liste deiner Freunde unter dem Vornamen ein Feld «Rufname». Der Rufname steht dann in der Auswahl, in der Aufteilung, in den Rechnungen und in den WhatsApp-Nachrichten. Für die Kurtaxe gilt immer der richtige Name.</p>' +
     '<button type="button" class="btn main full" data-mein-ok="1">💾 Speichern</button><p class="hint mein-msg" role="status"></p>';
+  if (vs) k.querySelectorAll("input, button").forEach((x) => { x.disabled = true; if (x.type === "text" || x.type === "email" || x.type === "tel") x.value = ""; });
 }
 const genitiv = (n) => /[sxzß]$/i.test(n) ? n + "’" : n + "s";
 document.getElementById("meinAuf").addEventListener("click", (e) => { const sm = e.target.closest("details.mein-st > summary"); if (!sm) return; const d = sm.parentNode;   // Tipp des Kindes merken (vor dem Umschalten)
@@ -6977,7 +6980,7 @@ function bestZeigen() {
   infoAnwenden();
   if (TOKEN && !ABSENDER && GM_LISTEN === null && !GM_STATUS) gmLaden();
   { const ks = document.getElementById("kindStreifen"); ks.hidden = !(TOKEN && ABSENDER); document.body.classList.toggle("kind-an", !ks.hidden); if (!ks.hidden) document.getElementById("kindStreifenTxt").textContent = "👁️ Ansicht als " + ABSENDER; }
-  if (!TOKEN && !bestMsg) { k.hidden = true; k.innerHTML = ""; kn.hidden = true; return; }
+  if ((!TOKEN && !bestMsg) || (TOKEN && ABSENDER)) { k.hidden = true; k.innerHTML = ""; kn.hidden = true; return; }   // Papi «Ansicht als»: keine Papi-Verwaltung, zurück nur über «Zurück zu Papi» (seit 3.16.3.0)
   kn.classList.toggle("warn", !!(TOKEN && !ABSENDER && xmasOffen().length));
   { let an = kn.querySelector(".alarm-n"); if (!an) { an = document.createElement("span"); an.className = "alarm-n"; kn.appendChild(an); }
     const zeig = !!(TOKEN && !ABSENDER), nA = zeig ? punkteOffen() : 0;
@@ -6990,7 +6993,7 @@ function bestZeigen() {
   if (bestMsg && !(TOKEN && ABSENDER)) s += '<p class="best-msg">' + bestMsg + "</p>";   // ohne «Schliessen»: reine Meldungen verschwinden nach 10 Sekunden, solche mit Knopf beim nächsten Tipp (seit 2.120.7.0)
   clearTimeout(BM_T); if (TOKEN && bestMsg && !/<(a|button)\b/.test(bestMsg)) { const m = bestMsg; BM_T = setTimeout(() => { if (bestMsg === m) { bestMsg = ""; bestZeigen(); } }, 10000); }
   if (TOKEN) {
-    if (!TEST_MODUS) s += '<div class="field"><label>👁️ Ansicht als</label><div class="zchips" id="ansichtChips" style="flex-wrap:wrap">' + ["", ...ABS].map((n) => '<button type="button" class="zchip" data-ans="' + esc(n) + '" aria-pressed="' + (n === (ABS.indexOf(ABSENDER) >= 0 ? ABSENDER : "")) + '">' + esc(n || "Eltern") + "</button>").join("") + '</div></div><p class="hint">Zeigt dir die Startseite so, wie dieses Kind sie sieht. Nur auf diesem Handy. Die Verwaltung bleibt dabei ausgeblendet, denn die Kinder sehen sie nicht.</p>';
+    if (!TEST_MODUS) s += '<div class="field"><label>👁️ Ansicht als</label><div class="zchips" id="ansichtChips" style="flex-wrap:wrap">' + ["", ...ABS].map((n) => '<button type="button" class="zchip" data-ans="' + esc(n) + '" aria-pressed="' + (n === (ABS.indexOf(ABSENDER) >= 0 ? ABSENDER : "")) + '">' + esc(n || "Eltern") + "</button>").join("") + '</div></div><p class="hint">Zeigt dir die Startseite und «👤 Meine Verwaltung» so, wie dieses Kind sie sieht. Nur auf diesem Handy. Die Angaben im Profil des Kindes (IBAN, TWINT …) siehst du nicht, sie sind nur auf seinem Handy. Zurück kommst du mit «Zurück zu Papi» im blauen Streifen oben.</p>';
     if (ABSENDER) { k.innerHTML = s; return; }
     s += '<p class="hint">Pro Person ein Titel mit der nächsten Buchung. Die Zahl zeigt, wie viel dort noch zu tun ist, orange oder rot bei Dringendem (Konflikt, Airbnb-Sperre). ✓ heisst: alles erledigt. Darunter stehen die früheren Aufenthalte.</p>';
     s += '<div class="zt-leg"><span><i class="r"></i>dringend</span><span><i></i>offen</span><span><i class="g">✓</i>erledigt</span><span><i class="r">!</i>Hinweis</span></div><p class="hint">Dringend (rot) sind: in Airbnb sperren, ein Konflikt mit einem Airbnb-Gast, ein falsch gesperrter Abreisetag, eine Änderung, die du melden musst, und eine Endreinigung mit abgelaufener Frist oder geänderten Anteilen. Alles andere ist offen (weiss), bis du es abhakst.</p>';

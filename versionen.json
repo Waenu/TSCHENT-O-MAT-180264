@@ -2,6 +2,18 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.16.3.0",
+      "datum": "17.11.2026",
+      "titel": "Ansicht als: Meine Verwaltung des Kindes",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Papi «Ansicht als»: «👤 Meine Verwaltung» erscheint wie beim Kind. Im Profil sind die Felder grau und leer (die Angaben des Kindes sind nur auf seinem Handy).",
+        "Papi «Ansicht als»: Die Papi-Verwaltung mit den Ansicht-Chips ist ausgeblendet. Zurück geht es mit «Zurück zu Papi» im blauen Streifen."
+      ]
+    },
+    {
       "v": "3.16.2.3",
       "datum": "17.11.2026",
       "titel": "Ansicht als: Geschwister mit Namen",
