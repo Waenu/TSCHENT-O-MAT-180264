@@ -1629,7 +1629,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.17.10.2";
+let VERSION = "3.17.11.1";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1993,15 +1993,16 @@ function listeN(d) { const g = Math.max(0, Math.min(nz(S.gaeste), nz(d.freiW), G
 function listeZ() { const g = Math.min(nz(S.gaeste), GM_MAX); return g > 0 ? g + nz(S.gkk) : 0; }
 function kkZeile(i) { return i >= Math.min(nz(S.gaeste), GM_MAX); }   // Zeile «Kleinkind ohne Bett» (unter den Freunden mit Bett)
 function kkFrL() {   // Kleinkinder der Freunde im Kinderbettchen: [{i, nm, pc}] (seit 3.17.10.0, Chips seit 3.17.10.1)
-  try { if (!listeModus()) return []; const n = listeZ(), l = freundeListe(n), r = []; l.forEach((f, i) => { if (kkZeile(i) || (f.geb && ARR && istKleinkind(f.geb, ARR))) r.push({ i, nm: f.vorname ? rn(f) : "", pc: freundFarbe(i, l, n) }); }); return r; } catch (e) { return []; }
+  try { if (!listeModus()) return []; const n = listeZ(), l = freundeListe(n), r = []; l.forEach((f, i) => { if (kkZeile(i) || (f.geb && ARR && istKleinkind(f.geb, ARR))) r.push({ i, nm: f.vorname ? rn(f) : "", pc: kkFarbe(i, l, n) }); }); return r; } catch (e) { return []; }
 }
+function kkFarbe(i, l, n) { const zi = zahlendeIdx(n); if (zi && listeVoll(n)) { const r = kkZiel(i, l, zi); if (r.g === "fam") return INS_FAM; if (typeof r.g === "number") return ptFarbe(r.g, l, zi); } return freundFarbe(i, l, n); }   // Farbe der Insel, zu der das Kleinkind gehört (seit 3.17.11.0)
 function kkFreunde() { return kkFrL().map((x) => x.nm); }
-function kkFrChips() { return kkFrL().map((x) => '<span class="zchip kk-fr" role="img" aria-pressed="true" aria-label="' + esc((x.nm || "Kleinkind") + " (Freunde) im Kinderbettchen") + '"' + pcStil(x.pc) + ">" + esc(x.nm || "Kleinkind") + "<small>🛏️ Kinderbettchen</small></span>").join(""); }
+function kkFrChips() { return kkFrL().map((x) => '<span class="zchip kk-fr" role="img" aria-pressed="true" aria-label="' + esc((x.nm || "Kleinkind") + " (Freunde) im Kinderbettchen") + '"' + pcStil(x.pc) + ">" + esc(x.nm || "Kleinkind") + "<small>👶 Kinderbettchen</small></span>").join(""); }
 function kkFrei() { return Math.max(0, 2 - kkFreunde().length); }   // Kinderbettchen, die der Familie bleiben
 function kkFrHint() {
   const k = kkFreunde(); if (!k.length) return "";
   const nm = k.filter(Boolean), wer = nm.length === k.length ? nm.map(esc).join(" und ") : (k.length === 1 ? "ein Kleinkind" : "Kleinkinder");
-  return '<p class="hint">🛏️ ' + (k.length >= 2 ? "Beide Kinderbettchen sind" : "1 Kinderbettchen ist") + " durch " + wer + " (Freunde) belegt" + (k.length >= 2 ? "." : ", für die Familie bleibt noch eines.") + "</p>";
+  return '<p class="hint">👶 ' + (k.length >= 2 ? "Beide Kinderbettchen sind" : "1 Kinderbettchen ist") + " durch " + wer + " (Freunde) belegt" + (k.length >= 2 ? "." : ", für die Familie bleibt noch eines.") + "</p>";
 }
 function kkBettchen(n) { const l = freundeListe(n); let k = 0; l.forEach((f, i) => { if (kkZeile(i) || (f.geb && ARR && istKleinkind(f.geb, ARR))) k++; }); return k; }   // Kleinkinder der Freunde (auch noch leere Zeilen)
 function fkkZaehlen() { if (!listeModus() || !ARR) return 0; const n = listeZ(); return freundeListe(n).filter((f) => f.geb && istKleinkind(f.geb, ARR)).length; }
@@ -2042,7 +2043,17 @@ function obenOffen(d) {   // Liste der Freunde, «Wer gehört zusammen?» oder e
   const zi = zahlendeIdx(n); if (!zi) return false; const l = freundeListe(n);
   return zi.some((i) => l[i].geb && ARR && alterAm(l[i].geb, ARR) < 18 && parteiKopf(i, l, zi) === i && !zahlerVon(i, zi, l).length);
 }
-function ptBestOffen(n) { return parteiOffen(n) || freundeListe(n).slice(0, n).some((f) => f && f.zv); }   // Parteien noch nicht bestätigt (auch Vorschlag bei Kindern): Zahler und Parteien-Liste erst danach (seit 3.17.6.6)
+function kkZiel(i, l, zi) {   // Kleinkind der Freunde: zu wem es gehört {g: "fam" | Kopf | "o", v: Vorschlag} (seit 3.17.11.0, Wänu)
+  const f = l[i] || {}, erw = (j) => !!(l[j] && l[j].geb && alterAm(l[j].geb, ARR) >= 18);
+  if (f.kz === "fam") return { g: "fam", v: false };
+  if (typeof f.kz === "number" && zi.indexOf(f.kz) >= 0 && erw(f.kz)) { const g = insGruppe(f.kz, l, zi); if (g !== "o") return { g, v: false }; }
+  const nm = (j) => String((l[j] && l[j].name) || "").trim().toLowerCase(), e = zi.find((j) => erw(j) && nm(j) && nm(j) === nm(i));
+  if (e !== undefined) { const g = insGruppe(e, l, zi); if (g !== "o") return { g, v: true }; }
+  return { g: "o", v: false };
+}
+function kkIdx(n) { const l = freundeListe(n); return l.map((f, i) => i).filter((i) => kkZeile(i) || (l[i].geb && ARR && istKleinkind(l[i].geb, ARR))); }
+function kkStand(n) { const zi = zahlendeIdx(n); if (!zi || !listeModus()) return { offen: false, vor: false }; const l = freundeListe(n), r = kkIdx(n).map((i) => kkZiel(i, l, zi)); return { offen: r.some((x) => x.g === "o"), vor: r.some((x) => x.v) }; }
+function ptBestOffen(n) { const k = kkStand(n); return parteiOffen(n) || freundeListe(n).slice(0, n).some((f) => f && f.zv) || k.offen || k.vor; }   // Parteien noch nicht bestätigt (auch Vorschlag bei Kindern): Zahler und Parteien-Liste erst danach (seit 3.17.6.6)
 function parteiOffen(n) { const zi = zahlendeIdx(n); if (!zi) return false; const l = freundeListe(n); return zi.some((i) => ptOffen(i, l, zi)); }   // eine Partei noch nicht gewählt: Reinigung gesperrt (seit 3.9.7.0)
 function ptOffen(i, l, zi) { const z = l[i].zu; if (l[i].geb && ARR && alterAm(l[i].geb, ARR) < 18) return false;   // Kinder brauchen keine Partei, für sie zählt, wer zahlt (seit 3.17.4.0, Wänu)
   return ptZiele(i, l, zi).length > 0 && (!!l[i].zv || typeof z !== "number" || (z >= 0 && parteiKopf(i, l, zi) === i)); }   // zv = nur vorgeschlagen, noch nicht bestätigt (seit 3.10.3.0)
@@ -2142,17 +2153,17 @@ function insZeichnen() {
   const c = document.querySelector("#gmRech .gm-ins"), n = INS_N, zi = zahlendeIdx(n); if (!c) return;
   if (!zi || !zi.length) { c.innerHTML = ""; return; }
   const l = freundeListe(n), al = (j) => alterAm(l[j].geb, ARR), gr = {};
-  if (INS_SEL !== null && zi.indexOf(INS_SEL) < 0) INS_SEL = null;
+  if (INS_SEL !== null && zi.indexOf(INS_SEL) < 0 && kkIdx(n).indexOf(INS_SEL) < 0) INS_SEL = null;
   const teil = {}; zi.forEach((j) => insGruppen(j, l, zi).forEach((x) => { (gr[x.g] = gr[x.g] || []).push(j); if (x.a) teil[x.g + "|" + j] = x.a; }));
   let GI = "";   // aktuelle Insel beim Zeichnen (für den Anteil)
-  const KKI = {}, nmK = (j) => String((l[j] && l[j].name) || "").trim().toLowerCase();   // Kleinkinder der Freunde bei den Eltern (gleicher Nachname), nur zum Anzeigen (seit 3.17.10.2, Wänu)
-  kkFrL().forEach((x) => { const e = zi.find((j) => al(j) >= 18 && nmK(j) && nmK(j) === nmK(x.i)); let g = "kk"; if (e !== undefined) { const gg = insGruppe(e, l, zi); if (gg !== "o") g = gg; }
-    KKI[g] = (KKI[g] || "") + '<span class="ins-p ins-fix kk-ins"' + (g !== "kk" ? "" : ' style="--ic:' + INS_KIND + '"') + ">" + esc(x.nm || "Kleinkind") + "<small>🛏️ Kinderbettchen</small></span>"; });
+  const KKI = {};   // Kleinkinder der Freunde: Vorschlag nach Nachname (gestrichelt), verschiebbar, zahlen nichts (seit 3.17.11.0, Wänu)
+  kkIdx(n).forEach((i) => { const r = kkZiel(i, l, zi), g = r.g;
+    KKI[g] = (KKI[g] || "") + '<button type="button" class="ins-p kk-ins' + (r.v ? " geteilt" : "") + (INS_SEL === i ? " sel" : "") + '" data-insp="' + i + '"' + (g === "o" ? "" : ' style="--ic:§IC§"') + ">" + esc(rn(l[i]) || "Kleinkind") + "<small>👶 Kinderbettchen</small></button>"; });
   const pers = (j, f) => { const a = teil[GI + "|" + j]; return '<button type="button" class="ins-p' + (INS_SEL === j ? " sel" : "") + (a ? " geteilt" : "") + '" data-insp="' + j + '"' + (f ? ' style="--ic:' + f + '"' : "") + ">" + esc(vnK(l[j]) || "Freund/in " + (j + 1)) + (al(j) < 18 ? "<small>" + al(j) + " Jahre" + (a ? " · " + a : "") + "</small>" : "") + "</button>"; };
   const sort = (a) => a.sort((x, y) => (al(x) < 18) - (al(y) < 18) || x - y);
-  const insel = (key, f, t, gl, vor, vs) => (GI = String(key), "") + '<div class="ins-i' + (vs ? " vs" : "") + '" data-insi="' + key + '" style="--ic:' + f + '"><p class="ins-t">' + t + (vs ? ' <span style="font-weight:400">· Vorschlag</span>' : "") + '</p><div class="ins-ps">' + (vor || "") + sort(gl).map((j) => pers(j, f)).join("") + (KKI[key] || "").replace(/class="ins-p ins-fix kk-ins">/g, 'class="ins-p ins-fix kk-ins" style="--ic:' + f + '">') + "</div></div>";
-  let h = (INS_MSG ? '<p class="notice">' + esc(INS_MSG) + "</p>" : "") + '<p class="hint">' + (INS_SEL !== null ? "Tippe jetzt auf die Partei, zu der " + esc(rn(l[INS_SEL]) || "diese Person") + " gehört, oder auf «Eigene Partei». Nochmals auf " + esc(rn(l[INS_SEL]) || "die Person") + " tippen bricht ab." : "Tippe eine Person an und danach ihre Partei, oder zieh sie mit dem Finger hinüber. Erwachsene brauchen eine Partei. Kinder zahlen nie selbst, für sie gilt, wer für sie zahlt: Ziehst du ein Kind in eine Partei, zahlen deren Erwachsene, sonst wählst du es weiter unten. Nimmst du ein Kind in die Familie, zahlst du für es.") + "</p>";
-  if (gr.o) h += '<div class="ins-o"><p class="ins-t">🟠 Noch zuordnen</p><div class="ins-ps">' + sort(gr.o).map((j) => pers(j)).join("") + "</div></div>";
+  const insel = (key, f, t, gl, vor, vs) => (GI = String(key), "") + '<div class="ins-i' + (vs ? " vs" : "") + '" data-insi="' + key + '" style="--ic:' + f + '"><p class="ins-t">' + t + (vs ? ' <span style="font-weight:400">· Vorschlag</span>' : "") + '</p><div class="ins-ps">' + (vor || "") + sort(gl).map((j) => pers(j, f)).join("") + (KKI[key] || "").split("§IC§").join(f) + "</div></div>";
+  let h = (INS_MSG ? '<p class="notice">' + esc(INS_MSG) + "</p>" : "") + '<p class="hint">' + (INS_SEL !== null ? "Tippe jetzt auf die Partei, zu der " + esc(rn(l[INS_SEL]) || "diese Person") + " gehört, oder auf «Eigene Partei». Nochmals auf " + esc(rn(l[INS_SEL]) || "die Person") + " tippen bricht ab." : "Tippe eine Person an und danach ihre Partei, oder zieh sie mit dem Finger hinüber. Erwachsene brauchen eine Partei. Kinder zahlen nie selbst, für sie gilt, wer für sie zahlt: Ziehst du ein Kind in eine Partei, zahlen deren Erwachsene, sonst wählst du es weiter unten. Nimmst du ein Kind in die Familie, zahlst du für es. Kleinkinder im Kinderbettchen sind gratis, sie gehören einfach zu jemandem.") + "</p>";
+  if (gr.o || KKI.o) h += '<div class="ins-o"><p class="ins-t">🟠 Noch zuordnen</p><div class="ins-ps">' + sort(gr.o || []).map((j) => pers(j)).join("") + (KKI.o || "") + "</div></div>";
   const geschw = famGeschw().map((pp) => '<div class="ins-i" style="--ic:' + famFarbe(pp) + '"><p class="ins-t">' + famParteiText(pp, 1, false) + ' <span style="font-weight:400">(Partei ' + ((famParteien() || []).findIndex((q) => q.h.m[0] === pp.h.m[0]) + 1) + ')</span></p><div class="ins-ps">' + pp.namen.map((x) => '<span class="ins-p ins-fix" style="--ic:' + famFarbe(pp) + '">' + esc(x) + "</span>").join("") + "</div></div>").join("");   // Haushalte der Geschwister: eigene Insel, nicht zum Hineinziehen (seit 3.17.6.0)
   h += insel("fam", INS_FAM, "Familie (Partei 1)" + (gr.fam ? ' <span style="font-weight:400">· zahlt für ' + (gr.fam.length > 1 ? "die Kinder" : "das Kind") + "</span>" : ""), gr.fam || [], insFam());
   h += geschw;
@@ -2160,7 +2171,6 @@ function insZeichnen() {
     h += insel(k, f, "Partei von " + esc(rn(l[k]) || vnK(l[k])) + (gl.some((j) => al(j) < 18) ? ' <span style="font-weight:400">· zahlt für ' + (gl.filter((j) => al(j) < 18).length > 1 ? "die Kinder" : "das Kind") + "</span>" : ""), gl, "", gl.some((j) => l[j].zv)); });
   Object.keys(gr).filter((g) => g !== "o" && g !== "fam" && ptKoepfe(l, zi).indexOf(Number(g)) < 0).forEach((g) => {   // Kind ohne Partei: Zahler wählst du unten
     h += insel(g, INS_KIND, esc(rn(l[g])) + ' <span style="font-weight:400">· wer für ' + esc(rn(l[g])) + ' zahlt, wählst du weiter unten</span>', gr[g]); });
-  if (KKI.kk) h += '<div class="ins-i" style="--ic:' + INS_KIND + '"><p class="ins-t">Kleinkind ohne Bett</p><div class="ins-ps">' + KKI.kk + "</div></div>";
   h += '<div class="ins-neu" data-insi="neu">＋ Eigene Partei</div>';
   c.innerHTML = h; INS_MSG = "";
 }
@@ -2175,7 +2185,16 @@ function insFam() {   // feste Chips der Familie: «Ich» (wenn ich mitkomme) un
   return (ichDa() ? pill("Ich", ABSENDER ? rufname() : "") : "") + sel.map((n) => pill(n)).join("");
 }
 function insZiehen(i, t) {   // i zu t: "neu", "fam" oder Kopf einer Partei bzw. Zeile einer offenen Person; ein Kopf nimmt seine Partei mit, Kinder ohne Erwachsene kommen zur Partei von i
-  const n = INS_N, zi = zahlendeIdx(n); INS_SEL = null; if (!zi || zi.indexOf(i) < 0) { insZeichnen(); return; }
+  const n = INS_N, zi = zahlendeIdx(n); INS_SEL = null;
+  if (zi && kkIdx(n).indexOf(i) >= 0) {   // Kleinkind: gehört zur Familie oder zu einer Partei mit Erwachsenen (seit 3.17.11.0)
+    const l = freundeListe(n), a = gmEntwurf();
+    let g = t === "fam" ? "fam" : t === "neu" ? null : zi.indexOf(t) >= 0 ? insGruppe(t, l, zi) : null;
+    if (t === "neu") { INS_MSG = "Ein Kleinkind kommt immer mit jemandem. Ziehe es zur Familie oder zu einer Partei."; insZeichnen(); return; }
+    if (typeof g === "number" && !(l[g] && l[g].geb && alterAm(l[g].geb, ARR) >= 18)) g = null;
+    if (g === null || g === "o") { INS_MSG = "Ein Kleinkind kommt zur Familie oder zu einer Partei mit einer erwachsenen Person."; insZeichnen(); return; }
+    a[i] = Object.assign({}, a[i] || l[i]); a[i].kz = g; gmEntwurfSetzen(a); render(); return;
+  }
+  if (!zi || zi.indexOf(i) < 0) { insZeichnen(); return; }
   const l = freundeListe(n), erw = (j) => alterAm(l[j].geb, ARR) >= 18, a = gmEntwurf(), zz = Object.assign({}, S.zahler || {});
   const set = (j, v) => { a[j] = Object.assign({}, a[j] || l[j]); a[j].zu = v; delete a[j].zv; if (!erw(j)) delete zz[j]; };
   const hi = parteiKopf(i, l, zi), mit = zi.filter((j) => j !== i && parteiKopf(j, l, zi) === i);
@@ -2284,7 +2303,7 @@ function gmRechZeigen(d) {
   const offen = l.map((f, i) => !f.name || !f.vorname || !f.geb || !f.geschlecht ? i + 1 : 0).filter(Boolean);
   { const pb = box.querySelector(".gm-ptbox"), mj = (i) => l[i] && l[i].geb && ARR && alterAm(l[i].geb, ARR) < 18 ? 1 : 0;   // Erwachsene zuerst, Kinder zuletzt (seit 3.10.2.4)
     if (pb) [...pts].sort((x, y) => mj(+x.dataset.pi) - mj(+y.dataset.pi) || x.dataset.pi - y.dataset.pi).forEach((x) => pb.appendChild(x));
-    const ok = pb && pb.querySelector(".gm-pt-okw"); if (ok) { pb.appendChild(ok); ok.hidden = !(listeVoll(n) && freundeListe(n).some((f) => f && f.zv)); /* nach dem Entwurf, nicht nach den alten Zeilen: ein Kopf allein hat keine Zeile (3.17.7.0) */ } }
+    const ok = pb && pb.querySelector(".gm-pt-okw"); if (ok) { pb.appendChild(ok); ok.hidden = !(listeVoll(n) && (freundeListe(n).some((f) => f && f.zv) || kkStand(n).vor)); /* nach dem Entwurf, nicht nach den alten Zeilen: ein Kopf allein hat keine Zeile (3.17.7.0) */ } }
   { const pb = box.querySelector(".gm-ptbox"); if (pb) pb.hidden = offen.length > 0 || !listeVoll(n) || ![...pts].some((x) => !x.hidden); }
   INS_N = n; insZeichnen();   // erst bei gültiger Liste, sonst fehlt der Vorschlag nach Nachname (3.10.5.2)
   const st = box.querySelector(".gm-r-st");
@@ -2321,7 +2340,7 @@ function eigenHtml() {   // Chips des eigenen Haushalts, «Ich» fest (seit 3.9.
   const leute = (f.p ? [f.p] : []).concat(f.k);
   const fehlt = famErwFehlt();
   let h = '<div class="field zrech ' + (fehlt ? "missing" : "done") + '"><label>👨‍👩‍👧‍👦 Wer kommt mit?</label><div class="zchips mfg-z">' + chip('data-ich="1"', ichDa(), ABSENDER ? 'Ich<small>(' + esc(rufname()) + ")</small>" : "Ich", false) +
-    leute.map((x) => chip('data-fe="' + esc(x) + '"', sel.indexOf(x) >= 0, esc(x) + (kk.indexOf(x) >= 0 ? "<small>🛏️ Kinderbettchen</small>" : ""), sel.indexOf(x) < 0 && voll && (f.k.indexOf(x) < 0 || kk.length >= 2))).join("") +
+    leute.map((x) => chip('data-fe="' + esc(x) + '"', sel.indexOf(x) >= 0, esc(x) + (kk.indexOf(x) >= 0 ? "<small>👶 Kinderbettchen</small>" : ""), sel.indexOf(x) < 0 && voll && (f.k.indexOf(x) < 0 || kk.length >= 2))).join("") +
     '</div>' + (erwWarnZeigen() ? '<p class="hint" style="color:var(--error-line);font-weight:600">Mindestens eine erwachsene Person muss mitkommen.</p>' : "") + '<p class="hint">Tippe alle an, die mitkommen. Kommst du selbst nicht mit, tippe <span class="hl">Ich</span> ab.</p></div>';
   const enk = f.k.filter((x) => sel.indexOf(x) >= 0);
   if (enk.length || kkFrL().length) h += '<div class="field zrech done"><label>👶 Wer schläft im Kinderbettchen?</label><div class="zchips">' + kkFrChips() + enk.map((x) => chip('data-fkk="' + esc(x) + '"', kk.indexOf(x) >= 0, esc(x), kk.indexOf(x) < 0 ? kk.length >= kkFrei() : voll)).join("") + '</div>' + kkFrHint() + '<p class="hint">Kinder bis etwa 2½ Jahren, höchstens zwei (es hat zwei Kinderbettchen). Sie belegen kein Bett und zählen bei der Reinigung nicht mit. Niemand: nichts antippen.</p></div>';
@@ -2336,7 +2355,7 @@ function mfgZeigen() {
   const fpp = famParteien() || [], hf = (h) => { const pp = fpp.find((q) => q.h.m[0] === h.m[0]); return pp ? famFarbe(pp) : h === eig ? INS_FAM : ""; };
   let HF = "";
   const chip = (attr, an, html, aus) => '<button type="button" class="zchip" ' + attr + ' aria-pressed="' + (an ? "true" : "false") + '"' + (aus ? " disabled" : "") + pcStil(HF) + ">" + html + "</button>";
-  const reihe = (h) => (HF = hf(h), "") + '<div class="zchips mfg-z">' + (h === eig ? chip('data-ich="1"', ichDa(), 'Ich<small>(' + esc(rufname()) + ")</small>", false) : "") + h.m.filter((x) => x !== ABSENDER).map((x) => chip('data-mfg="' + esc(x) + '"', sel.indexOf(x) >= 0, esc(x) + (kk.indexOf(x) >= 0 ? "<small>🛏️ Kinderbettchen</small>" : ""), voll && sel.indexOf(x) < 0 && (h.e.indexOf(x) < 0 || kk.length >= 2))).join("") + "</div>";
+  const reihe = (h) => (HF = hf(h), "") + '<div class="zchips mfg-z">' + (h === eig ? chip('data-ich="1"', ichDa(), 'Ich<small>(' + esc(rufname()) + ")</small>", false) : "") + h.m.filter((x) => x !== ABSENDER).map((x) => chip('data-mfg="' + esc(x) + '"', sel.indexOf(x) >= 0, esc(x) + (kk.indexOf(x) >= 0 ? "<small>👶 Kinderbettchen</small>" : ""), voll && sel.indexOf(x) < 0 && (h.e.indexOf(x) < 0 || kk.length >= 2))).join("") + "</div>";
   const betten = (ichDa() ? 1 : 0) + sel.length - kk.length, fehlt = famErwFehlt();
   let h = '<div class="field zrech ' + ((sel.length || ichDa()) && !fehlt ? "done" : "missing") + '"><label>👨‍👩‍👧‍👦 Wer kommt mit?</label>' + reihe(eig) + hs.filter((x) => x !== eig).map(reihe).join("") +
     '<p class="mfg-bett">🛏️ ' + betten + " von " + P.maxPersonen + " Betten belegt" + (kk.length + kkFreunde().length ? ", dazu " + (kk.length + kkFreunde().length) + " Kinderbettchen" + (kkFreunde().length ? " (davon " + kkFreunde().length + " für Freunde)" : "") : "") + "</p>" +
@@ -2376,7 +2395,7 @@ function gmRechLesen(box) {   // Eingaben sofort im Entwurf sichern (auch unvoll
   const alt = gmEntwurf();
   const zus = [...box.querySelectorAll(".gm-f")].map((fs, i) => { const z = box.querySelector('.gm-pt[data-pi="' + i + '"] [data-gf="zu"]'); if (!z || z.closest(".gm-pt").hidden) return alt[i] ? alt[i].zu : undefined; return z.value !== "" ? Number(z.value) : undefined; });   // -1 = eigene Partei gewählt; Zeile versteckt (Liste kurz unvollständig): Partei behalten (seit 3.17.3.0)
   const neu = gmFormLesen(box).map((f, i) => { const o = { name: f.name, vorname: f.vorname, geb: f.geb, gebText: f.geb ? "" : f.gebText, geschlecht: f.geschlecht, nat: f.nat }; if (typeof zus[i] === "number") o.zu = zus[i]; const ru = f.ruf !== undefined ? f.ruf : alt[i] && alt[i].ruf; if (ru) o.ruf = ru; return o; });   // zu und ruf bleiben auf dem Handy, gehen nicht an den Briefkasten
-  neu.forEach((f, i) => { if (alt[i] && alt[i].zv && alt[i].zu === f.zu && !box.querySelector('.gm-pt[data-pi="' + i + '"][data-ok]')) f.zv = 1; alt[i] = f; }); gmEntwurfSetzen(alt);
+  neu.forEach((f, i) => { if (alt[i] && alt[i].zv && alt[i].zu === f.zu && !box.querySelector('.gm-pt[data-pi="' + i + '"][data-ok]')) f.zv = 1; if (alt[i] && alt[i].kz !== undefined) f.kz = alt[i].kz; alt[i] = f; });   /* kz: Kleinkind gehört zu (seit 3.17.11.0) */ gmEntwurfSetzen(alt);
 }
 
 // Ersparnis für die Familie, wenn Zimmer 1 unberührt bleibt (echte Rechnung: Unterschied zwischen «Ja» und «Nein»); nur wenn Zimmer 1 in Gebrauch ist
@@ -2580,7 +2599,7 @@ function build() {
           gmFreundWeg(Number(fx.getAttribute("data-gmfx"))); return; }
         const kx = e.target.closest("[data-gmkkx]");
         if (kx) { const i = Number(kx.getAttribute("data-gmkkx")), a = gmEntwurf(); if (a[i] && (a[i].name || a[i].vorname)) karteiMerken([a[i]]); a.splice(i, 1); gmEntwurfSetzen(a); S.gkk = Math.max(0, nz(S.gkk) - 1); GM_ENTW_GEN++; normalize(); render(); return; }
-        if (e.target.closest(".gm-pt-ok")) { const a = gmEntwurf(); a.forEach((f) => { if (f) delete f.zv; }); gmEntwurfSetzen(a); render(); return; }   // Vorschlag nach Nachname bestätigen (seit 3.10.3.0)
+        if (e.target.closest(".gm-pt-ok")) { const a = gmEntwurf(); { const n0 = listeZ(), zi0 = zahlendeIdx(n0), l0 = freundeListe(n0); if (zi0) kkIdx(n0).forEach((i) => { const r0 = kkZiel(i, l0, zi0); if (r0.v && a[i]) a[i].kz = r0.g; }); }   /* Vorschlag für Kleinkinder übernehmen (seit 3.17.11.0) */ a.forEach((f) => { if (f) delete f.zv; }); gmEntwurfSetzen(a); render(); return; }   // Vorschlag nach Nachname bestätigen (seit 3.10.3.0)
         const ab = e.target.closest("[data-gmalle]");
         if (ab) { const fs = ab.closest(".gm-f"), d = fs.querySelector(".gm-vor"), fd = ab.getAttribute("data-gmalle");
           gb.querySelectorAll(".gm-f").forEach((x) => { if (x !== fs) x.querySelector(".gm-vor").hidden = true; });
@@ -4538,6 +4557,13 @@ function anfrageText(r) {
   if (zpA && zpA.kk.length) z.push("Davon Kleinkinder ohne Bett: " + zpA.kk.length);
   if (x.GE > 0 && !listeModus() && typeof S.kinder === "number") z.push("Davon Kinder von 6 bis 15 Jahren: " + S.kinder);
   if (x.GE > 0 && !x.lock && !x.SOND) { const zn = zpA && zpA.zr >= 0 && zpA.zi.length > 1; z.push("Freund im selben Zimmer: " + x.ZE + (zn ? " (Freund/in " + (zpA.zr + 1) + ")" : "")); if (zn) ersetz.push([z.length - 1, "Freund im selben Zimmer: Ja (" + rn(zpA.l[zpA.zr]) + ")"]); }
+  if (zpA) kkIdx(zpA.n).forEach((i) => {   // Kleinkind: zu wem es gehört (seit 3.17.11.0, Wänu)
+    const r0 = kkZiel(i, zpA.l, zpA.zi); if (r0.g === "o") return;
+    const er = r0.g === "fam" ? [] : zpA.zi.filter((j) => alterAm(zpA.l[j].geb, ARR) >= 18 && parteiKopf(j, zpA.l, zpA.zi) === r0.g);
+    const und = (a) => a.length > 1 ? a.slice(0, -1).join(", ") + " und " + a[a.length - 1] : a[0];
+    z.push("Freund/in " + (i + 1) + " (Kleinkind im Kinderbettchen) gehört zu: " + (r0.g === "fam" ? "Familie" : und(er.map((j) => "Freund/in " + (j + 1)))));
+    ersetz.push([z.length - 1, rn(zpA.l[i]) + " (Kinderbettchen) gehört zu: " + (r0.g === "fam" ? "uns (Familie)" : und(er.map((j) => rn(zpA.l[j]))))]);
+  });
   if (zpA) zpA.minder.forEach((i) => {
     const zk = [...new Set(zpA.zahler[i])]; if (!zk.length) return;
     const w = (k, nm) => k === "ich" ? (nm ? "ich" : "Familie") : k === "partner" ? (nm ? partnerDa() : "Partner/in") : k === "self" ? (nm ? rn(zpA.l[i]) + " selbst" : "selbst") : nm ? rn(zpA.l[Number(k.slice(1))]) : "Freund/in " + (Number(k.slice(1)) + 1);
@@ -4717,6 +4743,7 @@ function gmFreundWeg(i) {   // Freund i aus der Liste: Adressbuch behält ihn, P
   const f = a[i]; if (f && (f.name || f.vorname)) { karteiMerken([f]); GM_WEG = [f.vorname, f.name].filter(Boolean).join(" "); }
   a.splice(i, 1);
   a.forEach((x) => { if (!x || typeof x.zu !== "number" || x.zu < 0) return; if (x.zu === i) { delete x.zu; delete x.zv; } else if (x.zu > i) x.zu--; });
+  a.forEach((x) => { if (!x || typeof x.kz !== "number") return; if (x.kz === i) delete x.kz; else if (x.kz > i) x.kz--; });   // Kleinkind gehört zu (seit 3.17.11.0)
   const zz = {}; Object.keys(S.zahler || {}).forEach((k) => { const j = Number(k); if (j === i) return; const v = (S.zahler[k] || []).filter((q) => q !== "f" + i && q !== "p" + i).map((q) => /^[fp]\d+$/.test(q) && Number(q.slice(1)) > i ? q[0] + (Number(q.slice(1)) - 1) : q); zz[j > i ? j - 1 : j] = v; });
   S.zahler = zz;
   if (typeof S.zimmerWer === "number") { if (S.zimmerWer === i) delete S.zimmerWer; else if (S.zimmerWer > i) S.zimmerWer--; }
@@ -4989,7 +5016,7 @@ function render() {
         const persZ = (j) => ({ n: rn(zpl.l[j]), a: zpl.alt[j] < 18 ? zpl.alt[j] : null, z: Z([["Übernachtung", zpl.base[j] - x.GS], ["Reinigung", zpl.gs[j]], ["Kurtaxe", zpl.kt[j]]]), s: zpl.eigen[j] });
         const fuer = (keys, gl) => { const g = {}; keys.forEach((k) => (zpl.extra[k] || []).forEach((e) => { if (gl.indexOf(e.i) < 0) g[e.i] = (g[e.i] || 0) + e.b; })); return Object.keys(g).map((ii) => ({ n: rn(zpl.l[ii]), a: zpl.alt[ii], s: g[ii] })); };
         const nn = (i) => String(zpl.l[i].name || "").trim().toLowerCase(), kkVon = {};   // Kleinkinder ohne Bett: zur Partei mit gleichem Nachnamen, sonst zum Buchenden
-        zRows.forEach((zr, k) => { if (zr.typ === "leer") return; const gl = zr.typ === "partei" ? zr.gl : [zr.i]; zpl.kk.forEach((i) => { if (kkVon[i] === undefined && nn(i) && gl.some((j) => nn(j) === nn(i))) kkVon[i] = k; }); });
+        zRows.forEach((zr, k) => { if (zr.typ === "leer") return; const gl = zr.typ === "partei" ? zr.gl : [zr.i]; zpl.kk.forEach((i) => { const r0 = kkZiel(i, zpl.l, zpl.zi); if (kkVon[i] === undefined && (typeof r0.g === "number" ? gl.indexOf(r0.g) >= 0 : nn(i) && gl.some((j) => nn(j) === nn(i)))) kkVon[i] = k; }); });
         const kkDa = (k) => zpl.kk.filter((i) => kkVon[i] === k).map((i) => ({ n: rn(zpl.l[i]), kk: true, z: [], s: 0 }));
         zRows.forEach((zr, zk) => {
           if (zr.typ === "partei") { const kk = kkDa(zk);

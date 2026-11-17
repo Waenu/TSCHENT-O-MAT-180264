@@ -139,6 +139,8 @@ Entscheide Wänu (13.11.2026 spät, nach Mockup im privaten Design-Artefakt «TS
 - 3.17.10.0 (parallel gebaut): Kinderbettchen der Freunde zählen bei der Familie mit.
 - 3.17.10.1 (parallel gebaut): Kleinkinder der Freunde im Kinderbettchen sichtbar, Platz bei «Freunde», Knopf nur bei vollen Betten.
 - 3.17.10.2 (parallel gebaut): Kleinkind der Freunde bei «Wer gehört zusammen?» in der Insel der Eltern.
+- 3.17.11.0 (parallel gebaut): Kleinkinder der Freunde bei «Wer gehört zusammen?» zuordnen (Vorschlag, verschiebbar, WhatsApp).
+- 3.17.11.1 (parallel gebaut): Kinderbettchen mit 👶. 3.17.11.0 und 3.17.11.1 am 17.11.2026 übernommen.
 - Für die Namen der Familie braucht jedes Kind einen neuen persönlichen Link aus der Verwaltung (Namen nur im Link und auf dem Handy, nie im Repo).
 
 ## Offen: Airbnb-Belegung ins App-Repo umziehen (Wänu «ja», 13.11.2026, nächste Woche)
