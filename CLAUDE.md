@@ -118,6 +118,11 @@ Entscheide Wänu (13.11.2026 spät, nach Mockup im privaten Design-Artefakt «TS
 - Nationalität in der Liste der Freunde bleibt, vorausgefüllt mit «Schweiz».
 - Nächstes Paket (in der Testversion): Liste der Freunde im Rechner (Vorname, Name, Geschlecht, Geburtsdatum, Nationalität), danach Zahler für Freunde unter 18. Einzelheiten in der CLAUDE.md der Testversion.
 
+## Übernommen aus der Testversion: 3.6.0.0 bis 3.16.2.1 (17.11.2026, Wänu «übernehmen»)
+- `index.html` und `sw.js` unverändert aus `Waenu/TSCHENT-O-MAT-Test` kopiert, Version 3.16.2.1, Versionshistorie mit allen Einträgen ab 3.6.0.0 ergänzt. Einzelheiten zu jeder Version in der CLAUDE.md der Testversion.
+- Wichtigste Neuerungen: Liste der Freunde im Rechner (Kurtaxe, Adressbuch, Rufnamen), Parteien und Zahler für Freunde unter 18, Familie mit Geschwistern, Aufteilung mit Balken, Mindestpreis gratis oder mitzahlen, «👤 Meine Verwaltung» (Aufenthalte, Listen, Geld einsammeln, Profil), Sonderbuchungen (`vorlagen` in buchungen.json), Reinigung nur nach Personen oder Parteien, Leiste mit Kurtaxe, Listen auf der Startseite ab 7 Tagen vor der Anreise, «Ansicht als» mit Chips.
+- Für die Namen der Familie braucht jedes Kind einen neuen persönlichen Link aus der Verwaltung (Namen nur im Link und auf dem Handy, nie im Repo).
+
 ## Offen: Airbnb-Belegung ins App-Repo umziehen (Wänu «ja», 13.11.2026, nächste Woche)
 - Heute: Workflow `belegung.yml` + `belegung.py` im alten Repo `Waenu/Tschentomat` (Secret `AIRBNB_ICAL`) schreibt `belegt.json`; die App liest `/Tschentomat/belegt.json`.
 - Plan (mit Wänu abgesprochen 13.11.2026, Testzeit etwa 4 Wochen, altes Repo am Schluss nur stilllegen, nicht löschen):

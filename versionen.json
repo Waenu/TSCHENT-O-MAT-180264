@@ -2,6 +2,1124 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.16.2.1",
+      "datum": "17.11.2026",
+      "titel": "«Ansicht als» mit Chips",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Verwaltung: «👁️ Ansicht als» mit Chips (Eltern und alle acht Namen) statt Auswahlliste.",
+        "Testversion: «Ansicht als» und der blaue Streifen sind ausgeblendet; die Ansicht wechselt nur noch über die orange Leiste."
+      ]
+    },
+    {
+      "v": "3.16.2.0",
+      "datum": "17.11.2026",
+      "titel": "Listen auf der Startseite erst 7 Tage vor der Anreise",
+      "arten": [
+        "Regel"
+      ],
+      "punkte": [
+        "Die Knöpfe «🧳 Anreise-Wäsche» und «✅ Reinigungs-Checkliste» erscheinen auf der Startseite erst 7 Tage vor der Anreise (vorher sofort nach der Bestätigung). Sie verschwinden wie bisher am Tag nach der Abreise.",
+        "In «👤 Meine Verwaltung» bleiben die Listen bei jedem bestätigten Aufenthalt sichtbar.",
+        "Bei mehreren Aufenthalten öffnet der Knopf auf der Startseite die Liste des Aufenthalts, der gerade ansteht. Texte in der Bestätigung und in der Anleitung angepasst."
+      ]
+    },
+    {
+      "v": "3.16.1.1",
+      "datum": "16.11.2026",
+      "titel": "Leiste mit Kurtaxe",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Mit Freunden zeigt die goldene Leiste den Betrag zum Überweisen (mit Kurtaxe), darunter klein «inkl. Kurtaxe CHF …». Gleich wie «Total mit Kurtaxe» in der Aufteilung und «💳 Zu bezahlen». Rechnung und Einnahmen unverändert."
+      ]
+    },
+    {
+      "v": "3.16.1.0",
+      "datum": "16.11.2026",
+      "titel": "Reinigung nur nach Personen oder Parteien",
+      "arten": [
+        "Regel"
+      ],
+      "punkte": [
+        "Bei «Wie werden die Reinigungskosten aufgeteilt?» gibt es nur noch «Nach Personen» und «Nach Parteien» (auch für die Pauschale bei Sonderbuchungen). «Freunde zahlen alles» und «Familie zahlt alles» entfallen.",
+        "Eine alte Wahl im Rechner ist wieder offen und muss neu gewählt werden. Gespeicherte Buchungen bleiben unverändert.",
+        "Hinweis: «Ohne Mindestpreis bleibt das Total gleich.» (mit Mindestpreis zahlen die Freunde genau ihren Teil)."
+      ]
+    },
+    {
+      "v": "3.16.0.0",
+      "datum": "16.11.2026",
+      "titel": "Rufnamen für Freunde",
+      "arten": [
+        "Neue Funktion"
+      ],
+      "punkte": [
+        "«👤 Meine Verwaltung» → Profil: Schalter «🏷️ Rufnamen für meine Freunde».",
+        "Eingeschaltet erscheint in der Liste der Freunde unter dem Vornamen ein Feld «Rufname» (freiwillig).",
+        "Der Rufname steht in den Chips (ohne Zusatz zum Nachnamen), bei «Wer gehört zusammen?», in der Aufteilung, in den Rechnungen an die Freunde und in den WhatsApp-Nachrichten; zwei gleiche Rufnamen bekommen den Anfangsbuchstaben des Nachnamens dazu.",
+        "Die Liste für die Kurtaxe enthält immer den richtigen Namen; Rufnamen bleiben nur auf dem Handy (auch im Adressbuch 📇)."
+      ]
+    },
+    {
+      "v": "3.15.0.5",
+      "datum": "16.11.2026",
+      "titel": "Profil: Hinweis zum Namen",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "«Wie willst du genannt werden?»: Der Hinweis zeigt jetzt, wie man im Kopf (z. B. «Debys») und bei «Ich» und unter den Rechnungen (z. B. «Deborah») erscheint; beides passt sich beim Tippen an."
+      ]
+    },
+    {
+      "v": "3.15.0.4",
+      "datum": "16.11.2026",
+      "titel": "Glossar: Sonderbuchungen und Mitzahlen",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Kapitel heisst neu «⭐ Sonderbuchungen».",
+        "«🧮 Wie wird gerechnet», Punkt Mindestpreis: neu «Lieber mitzahlen?» – statt gratis kann man mitzahlen (pro Person oder pro Partei), die Freunde zahlen dann weniger."
+      ]
+    },
+    {
+      "v": "3.15.0.3",
+      "datum": "16.11.2026",
+      "titel": "Mindestpreis: gratis heisst gratis",
+      "arten": [
+        "Fehler"
+      ],
+      "punkte": [
+        "Reinigung «Nach Parteien» mit Kindern in einer Partei: Die Familie zahlte bei «Gratis» trotzdem einen Rest (z. B. CHF 8.–), weil ihr Reinigungsanteil erst nach dem Mindestpreis von 1/6 auf 1/5 stieg. Jetzt rechnet der Mindestpreis mit dem richtigen Anteil: Die Familie zahlt nichts, das Total sinkt um diesen Rest, die Freunde zahlen gleich viel wie vorher.",
+        "Aufschlüsselung der Familie bei «Gratis»: Übernachtung und Reinigung wie berechnet, darunter «🎁 Mindestpreis: erlassen» (statt einer negativen Übernachtung).",
+        "«Mitzahlen pro Person/Partei» und die Hinweise «Mit 1 Freund mehr …» rechnen ebenfalls mit den Parteien."
+      ]
+    },
+    {
+      "v": "3.15.0.2",
+      "datum": "16.11.2026",
+      "titel": "Glossar: Spezialwünsche",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Neues Kapitel «⭐ Spezialwünsche und Sonderbuchung» im Glossar (nach «Lücke wegen Vorlaufzeit»): Spezialwünsche per WhatsApp anfragen, Sonderbuchung annehmen, verlassen oder ablehnen."
+      ]
+    },
+    {
+      "v": "3.15.0.1",
+      "datum": "16.11.2026",
+      "titel": "Sonderbuchung: Daten fest",
+      "arten": [
+        "Fehler"
+      ],
+      "punkte": [
+        "Mit einer angenommenen Sonderbuchung lassen sich im Kalender und bei den Angeboten keine anderen Daten mehr wählen; ein Tipp zeigt den Hinweis «Die Daten der Sonderbuchung lassen sich nicht ändern».",
+        "Neuer Knopf «↩︎ Vorlage verlassen» im Kasten der Sonderbuchung: zurück zum normalen Rechner (wie «Neu starten»).",
+        "Beim Annehmen einer Sonderbuchung zeigt der Kalender gleich den Monat des Termins."
+      ]
+    },
+    {
+      "v": "3.15.0.0",
+      "datum": "2026-11-16",
+      "titel": "Gratis oder mitzahlen",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Zahlen die Freunde zusammen mehr als den Mindestpreis, fragt der Rechner: «🎁 Gratis» (Anteil CHF 0) bzw. «🎁 Vergünstigt» (kleinerer Anteil), «🤝 Mitzahlen pro Person» oder «🤝 Mitzahlen pro Partei». Vorgewählt ist Gratis bzw. Vergünstigt (wie bisher).",
+        "Mitzahlen: Das Total bleibt gleich und wird auf alle verteilt; die Familie zahlt ihren Anteil (pro Person: jede Person mit Bett gleich; pro Partei: die Familie wie eine Partei der Freunde), die Freunde entsprechend weniger, untereinander im gleichen Verhältnis. Nie mehr als ohne Mindestpreis.",
+        "Unter jedem Knopf steht der Anteil der Familie. Anfrage mit Zeile «Mindestpreis: Familie gratis/vergünstigt» bzw. «Wir zahlen mit».",
+        "Für die Eltern ändert sich der Betrag nicht."
+      ]
+    },
+    {
+      "v": "3.14.1.3",
+      "datum": "2026-11-16",
+      "titel": "Stornofrist beim Aufenthalt",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Die Frist «Stornierung spätestens am …» (mit Freunden verbindlich) steht bei den Kindern nicht mehr auf der Startseite, sondern als Hinweis beim jeweiligen Aufenthalt in «👤 Meine Verwaltung», direkt vor «Stornierung anfragen».",
+        "In der Anleitung (📅 Stornierung) bleibt die Übersicht.",
+        "Sonderbuchungen haben wie im Rechner keine Stornofrist; der Hinweis erscheint bei ihnen nicht."
+      ]
+    },
+    {
+      "v": "3.14.1.2",
+      "datum": "2026-11-16",
+      "titel": "Verwaltung: offener Betrag beim Namen",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Im Titel jeder Person steht hinter dem Namen die Summe aller noch nicht bezahlten Buchungen (mit Kurtaxe der Freunde), z. B. «Manuel · CHF 1’240.– offen». Ohne offenen Betrag steht nichts."
+      ]
+    },
+    {
+      "v": "3.14.1.1",
+      "datum": "2026-11-16",
+      "titel": "Rechnung im Kalender mit Namen",
+      "arten": [
+        "Fehler"
+      ],
+      "punkte": [
+        "Tippt ein Kind im Kalender auf seinen Aufenthalt, zeigt «🧾 Rechnung» die Vornamen der Freunde und den Namen des Partners statt «Freund/in 1» und «Partner/in». Gleich in der Reinigungs-Checkliste.",
+        "Die Namen kommen nur aus der Liste auf dem eigenen Handy; gespeichert bleibt die Rechnung neutral."
+      ]
+    },
+    {
+      "v": "3.14.1.0",
+      "datum": "2026-11-16",
+      "titel": "Sonderbuchungen: Daten im Kalender, normale Preise",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Anreise und Abreise der Vorlage wählt Papi im Kalender («📅 Im Kalender wählen»): jede freie Nacht, auch nur eine; belegte Nächte gehen nicht.",
+        "Standard sind normale Preise wie bei einer gewöhnlichen Buchung (Familienpreis, Preis pro Freund, Reinigung durch die Eltern, Kurtaxe), nur ohne Mindestnächte und Saisonregeln. Die Buchung ist fest, Freunde sind erlaubt.",
+        "Erst mit «💲 Preise ändern» erscheinen Pauschale, Reinigung und Kurtaxe. In einer Spitzenzeit ist «Preise ändern» nötig.",
+        "Text «Übernachtung (1 Nacht)» statt «(1 Nächte)»."
+      ]
+    },
+    {
+      "v": "3.14.0.0",
+      "datum": "2026-11-16",
+      "titel": "Sonderbuchungen: Vorlagen der Eltern mit eigener Pauschale",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Verwaltung der Eltern: neuer Bereich «⭐ Sonderbuchungen». Vorlage für ein Kind mit Daten (auch 1 Nacht, das ganze Jahr), Pauschale pro Nacht für das ganze Chalet, Reinigung und Kurtaxe zum Ein- und Ausschalten. Danach WhatsApp an das Kind.",
+        "Beim Kind erscheint die Vorlage in «👤 Meine Verwaltung» (orange): «Annehmen» öffnet den Rechner mit festen Daten, das Kind wählt die Gäste und schickt die Anfrage; «Ablehnen» schickt den Eltern eine WhatsApp.",
+        "Rechnung der Sonderbuchung: Pauschale × Nächte plus Reinigung (falls gewählt), aufgeteilt wie die Reinigung (nach Personen, Parteien …). Mindestnächte, Saisonregeln, Vorbehalt und Mindestpreise gelten nicht.",
+        "Nach dem Bestätigen ist es eine normale Buchung mit ⭐ und die Vorlage verschwindet.",
+        "Die frühere versteckte Einladung ist entfernt: Eine Einladung ist jetzt eine Sonderbuchung mit Pauschale 0, ohne Reinigung und ohne Kurtaxe.",
+        "Aufschlüsselung der Reinigung nach Personen: «2 von 4 Personen» statt gekürzt «÷ 2»."
+      ]
+    },
+    {
+      "v": "3.13.0.0",
+      "datum": "2026-11-16",
+      "titel": "Listen pro Aufenthalt in «Meine Verwaltung», orange solange sie anstehen",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "In «👤 Meine Verwaltung» hat jeder bestätigte Aufenthalt seine Knöpfe «🧳 Anreise-Wäsche» (falls nötig) und «✅ Reinigungs-Checkliste» mit Stand («3 von 9 erledigt»).",
+        "Die Startseite zeigt weiter die Liste, die als nächste gebraucht wird.",
+        "Orange (Rahmen und Zähler), solange eine Liste ansteht und nicht ganz abgehakt ist: Anreise-Wäsche ab 7 Tagen vor der Anreise bis zum Anreisetag, Reinigungs-Checkliste vom Anreisetag bis zur Abreise. Gilt für den Knopf auf der Startseite, den Aufenthalt und «Meine Verwaltung» (neben dem roten Zähler).",
+        "Anleitung ergänzt."
+      ]
+    },
+    {
+      "v": "3.12.1.0",
+      "datum": "16.11.2026",
+      "titel": "Meine Verwaltung pro Aufenthalt",
+      "arten": [
+        "Funktion",
+        "Layout"
+      ],
+      "punkte": [
+        "«👤 Meine Verwaltung» zeigt pro Aufenthalt einen Klappbereich mit allem, was dazugehört: Liste der Freunde, Zu bezahlen (und Endreinigung), Geld einsammeln, Stornierung anfragen.",
+        "Aufenthalte mit offenen Aufgaben sind rot umrandet und zeigen ihre Zahl; der erste offene ist zu Beginn aufgeklappt.",
+        "Der Trinkgeld-Hinweis wird im Profil ein- und ausgeschaltet.",
+        "Die Startseite und die Ansicht der Eltern bleiben unverändert."
+      ]
+    },
+    {
+      "v": "3.12.0.1",
+      "datum": "16.11.2026",
+      "titel": "Klapp-Pfeile einheitlich, offene Aufgaben rot",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "In «Meine Verwaltung» stehen alle Klapp-Pfeile rechts und grün (Liste der Freunde, Geld einsammeln, Profil); bei «Profil» etwas weiter innen.",
+        "Auswahl «Angebote» unter «Ankommen»: grüner Pfeil und grüner Rahmen statt weiss.",
+        "Offene Aufgaben in «Meine Verwaltung» sind rot umrandet (Zu bezahlen, Endreinigung, Geld einsammeln und jeder Aufenthalt mit offenen Rechnungen), damit sofort klar ist, wo es brennt.",
+        "Der Betrag an Mami und Papi steht nur noch einmal, unter «Zu erledigen»; dort zusätzlich, wie viel die Freunde noch schulden.",
+        "«Stornierung anfragen» steht jetzt in «Meine Verwaltung» unter «🗓️ Meine Aufenthalte», pro Aufenthalt mit Datum."
+      ]
+    },
+    {
+      "v": "3.12.0.0",
+      "datum": "16.11.2026",
+      "titel": "Meine Verwaltung mit «Zu erledigen»",
+      "arten": [
+        "Funktion",
+        "Layout"
+      ],
+      "punkte": [
+        "«👤 Meine Verwaltung» hat drei Teile: «📋 Zu erledigen» (Liste der Freunde, Zahlung an die Eltern, Endreinigung der Staffel), «💰 Geld einsammeln» und «👤 Profil» (zugeklappt).",
+        "Die Startseite wird ruhiger: Diese Kästen stehen nicht mehr dort.",
+        "Solange etwas offen ist, hat der Knopf «Meine Verwaltung» einen roten Rahmen und eine rote Zahl (pro Aufgabe).",
+        "Auf der Startseite bleiben: überfällige Zahlung und Endreinigung (rot), ab 2 Tagen vor der Anreise eine rote Erinnerung, wenn die Liste der Freunde fehlt.",
+        "Die rote Meldung «Zahlung offen» nennt auch die Kurtaxe der Freunde.",
+        "Texte (Erinnerung an die Liste, Bestätigung, Anleitung) verweisen auf «Meine Verwaltung»."
+      ]
+    },
+    {
+      "v": "3.11.1.0",
+      "datum": "16.11.2026",
+      "titel": "Alle bisherigen Freunde mit 📇",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Im Feld Name und Vorname der Liste der Freunde steht hinten 📇: Ein Tipp zeigt alle bisherigen Freunde, im Feld Vorname nach Vorname sortiert, im Feld Name nach Nachname.",
+        "Ein Tipp auf einen Namen füllt die ganze Zeile aus; Freunde, die schon in der Liste stehen, fehlen. Nochmals 📇 schliesst die Liste."
+      ]
+    },
+    {
+      "v": "3.11.0.1",
+      "datum": "16.11.2026",
+      "titel": "Meine Verwaltung pro Person",
+      "arten": [
+        "Fehler",
+        "Text",
+        "Layout"
+      ],
+      "punkte": [
+        "Name, TWINT-Nummer, IBAN und Trinkgeld-Schalter werden pro Person gespeichert (in der Testversion zeigte Deborah die Angaben von Miriam).",
+        "«Vorschlag der Eltern: spätestens 5 Tage nach der Abreise.»",
+        "Wer «Geld einsammeln» aufklappt, schliesst den Rechner mit dem Kalender, wie bei den übrigen Knöpfen der Startseite."
+      ]
+    },
+    {
+      "v": "3.11.0.0",
+      "datum": "16.11.2026",
+      "titel": "Geld einsammeln und Meine Verwaltung",
+      "arten": [
+        "Neue Funktion"
+      ],
+      "punkte": [
+        "Nach der Bestätigung erscheint auf der Startseite der Kasten «💰 Geld einsammeln» mit allen kommenden Aufenthalten, jeder einzeln aufklappbar.",
+        "Pro Partei ein Knopf «Rechnung für …»: WhatsApp mit Abrechnung pro Person (Übernachtung, Reinigung, Kurtaxe), Total, Zahlungsfrist, TWINT und IBAN.",
+        "Hinweis aufs Trinkgeld für die Kasse von Marianne Werder wahlweise (zu Beginn eingeschaltet).",
+        "Abhaken, wer bezahlt hat: Bezahlte verschwinden (wieder anzeigbar). Danach steht, wie viel das Kind den Eltern überweist (Aufenthalt und Kurtaxe der Freunde). Der Eintrag bleibt, bis die Eltern die Zahlung abgehakt haben.",
+        "Neu «👤 Meine Verwaltung» für Kinder und Partner: Wie willst du genannt werden (Kopf, «Ich» in der Auswahl, Unterschrift der Rechnungen), Mailadresse, TWINT-Nummer und IBAN. Alles nur auf dem Handy, die Mailadresse geht wie bisher an die Eltern.",
+        "Verwaltung der Eltern: «📅 Zahlungsfrist der Freunde» (Tage nach der Abreise) als Vorschlag für die Kinder.",
+        "Zahlung an die Eltern zeigt jetzt auch die Kurtaxe der Freunde («💳 Zu bezahlen», Verwaltung, Erinnerung): Die Eltern zahlen sie an Adelboden Tourismus und schicken den QR-Code für die Gästekarte. Die Einnahmen bleiben ohne Kurtaxe.",
+        "Bei «Meine Familie und Geschwister» bekommen auch die Geschwister ihre Rechnung.",
+        "Anleitung: Kleinkinder von Freunden und «Geld einsammeln» ergänzt."
+      ]
+    },
+    {
+      "v": "3.10.5.2",
+      "datum": "16.11.2026",
+      "titel": "Warnung bei zu altem Kleinkind",
+      "arten": [
+        "Layout",
+        "Text",
+        "Fehler"
+      ],
+      "punkte": [
+        "Ist ein Kind in einer Kleinkind-Zeile älter als 2½ Jahre, erscheint eine rote Warnung mit seinem Vornamen und die Zeile ist rot umrandet.",
+        "Die Leiste unten zeigt dann «Bitte prüfen: Kleinkind älter als 2½ Jahre».",
+        "«Wer gehört zusammen?» erscheint erst, wenn die Liste gültig ist. Vorher kam die Frage schon bei einem zu alten Kleinkind, aber ohne Vorschlag nach Nachname."
+      ]
+    },
+    {
+      "v": "3.10.5.1",
+      "datum": "16.11.2026",
+      "titel": "«Wie möchtest du buchen?» wie alle anderen Felder",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Nach der Wahl von Staffel, Normal, Verbindlich oder Mit Vorbehalt steht nur noch die gewählte Zeile, ohne Hinweis auf die andere Art."
+      ]
+    },
+    {
+      "v": "3.10.5.0",
+      "datum": "16.11.2026",
+      "titel": "Hinweise je Wahl, Wahl wieder aufheben",
+      "arten": [
+        "Funktion",
+        "Text"
+      ],
+      "punkte": [
+        "Bei «Wer von der Familie kommt?», Zimmer, Zimmer 1, Wäsche und Reinigung steht jede Wahl gelb markiert mit einem kurzen Satz. Nach der Wahl bleibt nur die gewählte Zeile.",
+        "Den gewählten Chip nochmals antippen hebt die Wahl auf, dann erscheinen wieder alle Möglichkeiten.",
+        "Bei «Wer kommt mit?» kürzerer Hinweis."
+      ]
+    },
+    {
+      "v": "3.10.4.1",
+      "datum": "16.11.2026",
+      "titel": "Kleinkind-Knopf nur, wenn ein Bettchen frei ist",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Sind beide Kinderbettchen belegt, verschwindet «👶 Kleinkind dazu (ohne Bett)»; es steht nur noch «Beide Kinderbettchen sind belegt, weitere Kleinkinder sind nicht möglich.»"
+      ]
+    },
+    {
+      "v": "3.10.4.0",
+      "datum": "16.11.2026",
+      "titel": "Kleinkinder von Freunden ohne Bett",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Unter der Liste der Freunde gibt es «👶 Kleinkind dazu (ohne Bett)». Kleinkinder bis 2½ Jahre zählen nicht mehr bei «Freunde», belegen also kein Bett: auch mit 5 Freunden lässt sich ein Kleinkind eintragen.",
+        "Es hat 2 Kinderbettchen, Familie und Freunde zusammen; sind beide belegt, ist der Knopf gesperrt.",
+        "Ist das Kind in dieser Zeile älter als 2½ Jahre, meldet die App, dass es ein Bett braucht.",
+        "Ändert sich die Zahl der Freunde, bleiben die Kleinkinder in der Liste."
+      ]
+    },
+    {
+      "v": "3.10.3.3",
+      "datum": "16.11.2026",
+      "titel": "«Wie möchtest du buchen?»: Text angepasst",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Bei «Wie möchtest du buchen?» verweist die Staffel jetzt richtig auf «🧹 Selber reinigen» unter «💡 Anleitung & Infos» (vorher «Selbstreinigung im Kalender», das es so nicht gibt).",
+        "Bei jeder Art steht neu «Aufenthalt ist nur für die Familie möglich. Freunde sind nicht erlaubt.» bzw. «Aufenthalt ist auch mit Freunden möglich.» (Tief- und Hochsaison)."
+      ]
+    },
+    {
+      "v": "3.10.3.2",
+      "datum": "16.11.2026",
+      "titel": "Texte nachgeführt",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Überall «Chalet» statt «Wohnung».",
+        "Bestätigung nur noch mit einem Danke; Anfrage: «Bedingungen akzeptiert» als letzte Angabe vor dem Total.",
+        "Erinnerung an die Liste: «deinen Aufenthalt»; Endreinigung «Danke dir!».",
+        "Reinigung: Verweis auf «Wer gehört zusammen?», Satz «Die Familie gilt immer als ein Block» entfernt.",
+        "Liste der Freunde: Titel mit Vorname und Name, sobald eingetragen.",
+        "Zimmer und Aufteilung: Hinweise klarer formuliert; Beispiel im Glossar ohne alten Knopf «Details»."
+      ]
+    },
+    {
+      "v": "3.10.3.1",
+      "datum": "16.11.2026",
+      "titel": "«Wie möchtest du buchen?»: Text übersichtlicher",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Jede Art hat einen eigenen Absatz, gleich nach dem Namen steht, ob Freunde möglich sind (Staffel/Normal und Verbindlich/Mit Vorbehalt).",
+        "Alle Kosten der Staffel stehen an einer Stelle; der doppelte Satz zur Endreinigung fällt weg.",
+        "Nach der Wahl bleibt der gewählte Absatz und eine kurze Zeile zur anderen Art."
+      ]
+    },
+    {
+      "v": "3.10.3.0",
+      "datum": "15.11.2026",
+      "titel": "Wer gehört zusammen: Vorschlag nach Nachname",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Freunde mit gleichem Nachnamen werden als eine Partei vorgeschlagen; die älteste erwachsene Person ist der Kopf, Kinder mit gleichem Nachnamen gehören dazu.",
+        "Erwachsene mit einem Nachnamen, der nur einmal vorkommt, bekommen «Eigene Partei» vorgeschlagen.",
+        "Vorschläge sind gestrichelt und mit «Vorschlag nach Nachname, bitte prüfen» markiert. «✓ Vorschlag passt» bestätigt alle, ein Tipp auf einen Chip bestätigt die Zeile.",
+        "Bis zur Bestätigung bleibt die Anfrage gesperrt («Bitte bestätigen: Wer gehört zusammen»). Selbst gewählte Zuordnungen werden nie überschrieben."
+      ]
+    },
+    {
+      "v": "3.10.2.5",
+      "datum": "15.11.2026",
+      "titel": "Aufteilung: Anteil der Partei für ein Kind mit Bruch",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Zahlen zwei Erwachsene einer Partei für ein Kind mit, steht in der Aufteilung «Für Maya (2/4)» statt «Anteil für Maya», wie bei «Für Maya (1/4)».",
+        "Darunter klein Übernachtung und Kurtaxe dieses Anteils."
+      ]
+    },
+    {
+      "v": "3.10.2.4",
+      "datum": "15.11.2026",
+      "titel": "Wer gehört zusammen: Erwachsene zuerst",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Bei «Wer gehört zusammen?» stehen zuerst die Erwachsenen, die Kinder zuletzt.",
+        "Auch in der Übersicht der Parteien stehen die Kinder am Schluss, z. B. «Franz H., Maya H.»."
+      ]
+    },
+    {
+      "v": "3.10.2.3",
+      "datum": "15.11.2026",
+      "titel": "Zimmer-Frage mit Anfangsbuchstaben des Namens",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Auch bei «Wer schläft im selben Zimmer wie du?» stehen die Freunde als «Nadine M.»."
+      ]
+    },
+    {
+      "v": "3.10.2.2",
+      "datum": "15.11.2026",
+      "titel": "Parteien mit Anfangsbuchstaben des Namens",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Bei «Wer gehört zusammen?», in der Übersicht der Parteien und bei «Wer übernimmt die Kosten …» stehen die Freunde mit Vorname und Anfangsbuchstaben des Namens, zum Beispiel «Nadine M.»."
+      ]
+    },
+    {
+      "v": "3.10.2.1",
+      "datum": "15.11.2026",
+      "titel": "Aufteilung: Pfeil rechts und grün",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Die Zeilen der Aufteilung haben den Pfeil jetzt rechts und grün (▾ zu, ▴ offen), wie überall in der App."
+      ]
+    },
+    {
+      "v": "3.10.2.0",
+      "datum": "15.11.2026",
+      "titel": "Fragen Schritt für Schritt",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Nach dem Termin erscheint nur die erste offene Frage. Ist sie beantwortet, kommt die nächste darunter. Beantwortete Fragen bleiben sichtbar und lassen sich ändern.",
+        "Zimmer und Reinigung erscheinen erst, wenn die Liste der Freunde vollständig ist; die Reinigung erst, wenn klar ist, wer zusammengehört und wer im selben Zimmer schläft.",
+        "Die Leiste unten nennt den nächsten Schritt, zum Beispiel «Bitte ausfüllen: Liste deiner Freunde»."
+      ]
+    },
+    {
+      "v": "3.10.1.0",
+      "datum": "15.11.2026",
+      "titel": "Fragen erst nach dem Termin, Chips auch ohne Namen",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Bis Anreise und Abreise gewählt sind, sind alle Fragen ausgeblendet. Ein Hinweis sagt, was zuerst zu tun ist.",
+        "Ohne Namen (Papi, Mami, alter Link) gibt es dieselben Chips: «Ich», «Partner/in», «Kind 1», «Kind 2». Die lange Auswahlliste fällt weg.",
+        "Papi: «Ansicht als» zeigt die Namen aus seiner Liste."
+      ]
+    },
+    {
+      "v": "3.10.0.1",
+      "datum": "15.11.2026",
+      "titel": "Balken in der aufgeklappten Zeile",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Der Balken steht jetzt zuunterst in jeder aufgeklappten Zeile der Aufteilung, mit kleiner Legende.",
+        "Übernachtung, Reinigung und Kurtaxe haben in der Rechnung einen Farbpunkt wie im Balken.",
+        "«Übersicht» oben und «Details» in der Leiste fallen weg. Ein Tipp auf die Leiste springt zur Aufteilung."
+      ]
+    },
+    {
+      "v": "3.10.0.0",
+      "datum": "15.11.2026",
+      "titel": "Preis: Übersicht mit Balken, Rechnung in der Aufteilung",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "«Details» in der Leiste zeigt pro Person oder Partei einen Balken mit dem Endpreis: Übernachtung, Reinigung und Kurtaxe in eigenen Farben.",
+        "Die ganze Rechnung steht jetzt bei der Aufteilung: jede Zeile klappt auf. Zuunterst das Total, darunter die Hinweise.",
+        "Ohne Freunde heisst der Teil «So setzt sich der Preis zusammen».",
+        "Die gespeicherte Preisberechnung (Bestätigungslink, Verwaltung) bleibt unverändert."
+      ]
+    },
+    {
+      "v": "3.9.7.3",
+      "datum": "15.11.2026",
+      "titel": "Glossar nachgeführt",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Auswahlfelder und Endreinigung zeigen jetzt Chips statt Auswahllisten.",
+        "Endreinigung: Aufteilung unter Geschwistern durch die App und Erklärung «Partei».",
+        "«Absagen» heisst jetzt «Stornierung», mit dem Knopf «Stornierung anfragen».",
+        "Wie wird gerechnet: Freunde unter 18 und Kleinkinder von Freunden. Zimmer: die 2 Kinderbettchen."
+      ]
+    },
+    {
+      "v": "3.9.7.2",
+      "datum": "15.11.2026",
+      "titel": "Allein auch bei «Meine Familie und Geschwister»",
+      "arten": [
+        "Fehler"
+      ],
+      "punkte": [
+        "Ist bei «Meine Familie und Geschwister» nur «Ich» angetippt, gilt das jetzt als allein, gleich wie «Nur ich». Vorher blieb das Feld orange und die Leiste verlangte die Anzahl Personen."
+      ]
+    },
+    {
+      "v": "3.9.7.1",
+      "datum": "15.11.2026",
+      "titel": "Noch offene Wahl: Chips mit orangem Rand",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Wo noch etwas gewählt werden muss, haben die Chips einen orangen Rand, wie früher die orangen Auswahlfelder. Ist gewählt, wird der Chip grün und der orange Rand verschwindet.",
+        "Die orange Kugel bei «Wer kommt mit?» und bei «Wer gehört zusammen?» fällt weg."
+      ]
+    },
+    {
+      "v": "3.9.7.0",
+      "datum": "15.11.2026",
+      "titel": "Eigener Bereich «Wer gehört zusammen?» unter der Liste der Freunde",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Die Zuordnung zu einer Partei steht nicht mehr bei jedem Freund, sondern in einem eigenen Bereich unter der Liste. Er erscheint, sobald die Liste vollständig ist.",
+        "Die Reinigung lässt sich erst wählen, wenn jeder Freund einer Partei zugeordnet ist."
+      ]
+    },
+    {
+      "v": "3.9.6.1",
+      "datum": "15.11.2026",
+      "titel": "Eingeklappte Buchungen: Pfeil rechts, Tipp irgendwo klappt auf",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Der Pfeil steht rechts wie bei den Personen (▾ zu, ▴ offen).",
+        "Eine eingeklappte Buchung klappt bei jedem Tipp auf die Karte auf, auch auf das Datum. Offen klappt ein Tipp auf die Kopfzeile sie wieder zu."
+      ]
+    },
+    {
+      "v": "3.9.6.0",
+      "datum": "15.11.2026",
+      "titel": "Verwaltung: mehrere Buchungen einer Person einklappbar",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Hat eine Person mehrere Buchungen, ist jede Karte einklappbar. Eingeklappt bleiben Name, Zahl der offenen Punkte und Datum sichtbar.",
+        "Offen sind die aktuelle Anreise (zuoberst), Anfragen und dringende Karten; die übrigen sind eingeklappt.",
+        "Kommende Buchungen und Anfragen stehen nach Anreise sortiert, die aktuelle zuoberst."
+      ]
+    },
+    {
+      "v": "3.9.5.8",
+      "datum": "15.11.2026",
+      "titel": "Höhere Eingabefelder in der Liste der Freunde",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Name, Vorname, Geburtsdatum und Nationalität sind gleich hoch wie der Knopf 📅 und die Chips."
+      ]
+    },
+    {
+      "v": "3.9.5.7",
+      "datum": "15.11.2026",
+      "titel": "Partei mit Chips",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "In der Liste der Freunde wird «Gehört zur Partei von» mit Chips gewählt: «Eigene Partei» und die Vornamen der möglichen Personen."
+      ]
+    },
+    {
+      "v": "3.9.5.6",
+      "datum": "15.11.2026",
+      "titel": "Chips im ganzen Rechner",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Alle Fragen im Rechner mit wenigen, kurzen Möglichkeiten erscheinen als Chips, z. B. «Wie möchtest du buchen?», «Wer von der Familie kommt?», Freunde, Zimmer, Zimmer 1, Bettwäsche und Wäsche.",
+        "Lange Listen bleiben Auswahllisten.",
+        "«Parteien» ist jetzt eine nummerierte Liste statt Chips, weil man dort nichts antippen kann."
+      ]
+    },
+    {
+      "v": "3.9.5.5",
+      "datum": "15.11.2026",
+      "titel": "Reinigung mit Chips",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "«Wie werden die Reinigungskosten aufgeteilt?» hat vier Chips statt einer Auswahlliste: «Nach Personen», «Nach Parteien», «Freunde zahlen alles», «Familie zahlt alles».",
+        "Unter den Chips steht kurz, was die gewählte Möglichkeit bedeutet."
+      ]
+    },
+    {
+      "v": "3.9.5.4",
+      "datum": "15.11.2026",
+      "titel": "Rechnung in der Aufschlüsselung",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "In den aufgeklappten Zeilen von «Aufteilung unter euch» steht die Rechnung klein darunter, z. B. «2 × CHF 70.00», «CHF 240.– ÷ 2 Parteien» oder «2 × CHF 5.20» bei der Kurtaxe.",
+        "Bezeichnungen in der Aufschlüsselung linksbündig."
+      ]
+    },
+    {
+      "v": "3.9.5.3",
+      "datum": "15.11.2026",
+      "titel": "Erst die Liste, dann die Aufteilung",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Solange die Liste der Freunde nicht vollständig ist, sind «Schläft ein Freund oder eine Freundin im selben Zimmer?» und «Wie werden die Reinigungskosten aufgeteilt?» ausgegraut, mit dem Hinweis, zuerst die Liste auszufüllen."
+      ]
+    },
+    {
+      "v": "3.9.5.2",
+      "datum": "15.11.2026",
+      "titel": "Hinweis unten: erwachsene Person",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Sind nur Kinder angetippt, steht unten in Orange «Bitte wählen: Eine erwachsene Person, die mitkommt»."
+      ]
+    },
+    {
+      "v": "3.9.5.1",
+      "datum": "15.11.2026",
+      "titel": "Freunde ausgegraut ohne Erwachsenen",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Ist «Ich» abgewählt und niemand oder nur Kinder angetippt, ist das Feld «Freunde (ausserhalb der Familie)» ausgegraut, mit dem Hinweis, zuerst die Familie zu wählen."
+      ]
+    },
+    {
+      "v": "3.9.5.0",
+      "datum": "15.11.2026",
+      "titel": "«Ich» abwählbar",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Bei «Wer kommt mit?» lässt sich «Ich» abwählen, wenn du für die anderen buchst, aber selbst nicht mitkommst. Das gilt bei der eigenen Familie und mit Geschwistern.",
+        "Mindestens eine erwachsene Person muss mitkommen. Sind nur Kinder angetippt und du machst weiter, erscheint eine rote Meldung.",
+        "In der Anfrage steht z. B. «Familie: Rahel, Malik & Jon (ich komme nicht mit)». Die Namen stehen in der Reihenfolge der Familie."
+      ]
+    },
+    {
+      "v": "3.9.4.0",
+      "datum": "15.11.2026",
+      "titel": "Eigene Familie als Chips",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "«Wer von der Familie kommt?» hat nur noch zwei Einträge: «Ich und meine Familie» und «Meine Familie und Geschwister».",
+        "Bei «Ich und meine Familie» tippst du an, wer mitkommt. Du selbst bist immer dabei, sonst ist am Anfang niemand angetippt.",
+        "Darunter «Wer schläft im Kinderbettchen?» mit den angetippten Enkeln, höchstens zwei.",
+        "Preis und Rechnung bleiben gleich wie mit der bisherigen Liste."
+      ]
+    },
+    {
+      "v": "3.9.3.8",
+      "datum": "14.11.2026",
+      "titel": "«Storniert» statt «abgesagt»",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Wo ein Kind seinen Aufenthalt zurückzieht, heisst es überall «stornieren» bzw. «storniert» statt «absagen» bzw. «abgesagt», auch «Stornierung spätestens am …». Die «Absage» der Eltern auf eine Anfrage bleibt."
+      ]
+    },
+    {
+      "v": "3.9.3.7",
+      "datum": "14.11.2026",
+      "titel": "WhatsApp-Nachrichten aufgeräumt",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Alle Nachrichten der Eltern: «Hoi Name» auf eigener Zeile, danach ein Satz, die Angaben (Aufenthalt, Betrag, Frist …) je auf einer eigenen Zeile und Absätze.",
+        "Bescheid: Vorbehalt als eigener Absatz direkt nach den Angaben.",
+        "Endreinigung: «bei ihr» bzw. «bei ihm» statt «bei ihr oder ihm».",
+        "Einladung: Gruss wie bei den anderen Nachrichten der Eltern, Kinder im Kinderbettchen mit Namen.",
+        "Anfrage, Umfrage und Stornierung der Kinder enden mit «Liebe Grüsse, Name».",
+        "Umfrage: Daten in einer Zeile, «TSCHENT-O-MAT» einheitlich geschrieben.",
+        "Erinnerung an die Liste der Freunde: bitte ausfüllen und «Senden» tippen."
+      ]
+    },
+    {
+      "v": "3.9.3.6",
+      "datum": "14.11.2026",
+      "titel": "Anfrage klarer",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Eigene Zeile «Im Kinderbettchen: …» mit dem Namen, wenn klar ist, wer es ist.",
+        "«Für Gabi (8) zahlen: Therese und Rolf» statt «Kosten Gabi (8): Therese, Rolf».",
+        "«Reinigung nach Parteien: …» mit nur einem Doppelpunkt.",
+        "Ein Gesamtbetrag: «Total: CHF …, davon Kurtaxe Adelboden für die Freunde CHF …»."
+      ]
+    },
+    {
+      "v": "3.9.3.5",
+      "datum": "14.11.2026",
+      "titel": "Kinderbettchen statt «ohne Bett»",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Die Frage heisst neu «Wer schläft im Kinderbettchen?», der Chip zeigt «🛏️ Kinderbettchen» und der Zähler «dazu 1 Kinderbettchen».",
+        "Hinweis: Ganz Kleine, die bei den Eltern im Bett schlafen, kommen einfach mit und müssen nicht angegeben werden.",
+        "Überall sonst ebenfalls «im Kinderbettchen» statt «im Kinderbettchen oder bei den eigenen Eltern». Es hat zwei Kinderbettchen."
+      ]
+    },
+    {
+      "v": "3.9.3.4",
+      "datum": "14.11.2026",
+      "titel": "Preis bei voller Familie",
+      "arten": [
+        "Fehler"
+      ],
+      "punkte": [
+        "Sind bei «Meine Familie und Geschwister» alle Betten belegt, erscheint der Preis wieder. Vorher stand unten nur «Bitte wählen: Freunde», obwohl für Freunde kein Platz mehr war."
+      ]
+    },
+    {
+      "v": "3.9.3.3",
+      "datum": "14.11.2026",
+      "titel": "Enkel bei vollen Betten als Kleinkind ohne Bett",
+      "arten": [
+        "Fehler"
+      ],
+      "punkte": [
+        "Sind bei «Meine Familie und Geschwister» alle 6 Betten belegt, lassen sich Enkelkinder trotzdem antippen. Sie kommen dann gleich als «👶 ohne Bett» dazu, bis zwei. Vorher musste man zuerst jemanden abwählen."
+      ]
+    },
+    {
+      "v": "3.9.3.2",
+      "datum": "14.11.2026",
+      "titel": "Kleinkinder ohne Bett belegen keinen Platz, eine Familie pro Zeile",
+      "arten": [
+        "Fehler"
+      ],
+      "punkte": [
+        "Bei «Meine Familie und Geschwister» zählen Kleinkinder ohne Bett nicht mehr zu den 5 Personen. Ist ein Kind ohne Bett angetippt, kann eine weitere Person mitkommen, bei zwei Kindern zwei.",
+        "Bei «Wer kommt mit?» steht jede Familie in einer Zeile mit kleineren Kästchen.",
+        "Ein Kleinkind ohne Bett hat im Kästchen den Zusatz «👶 ohne Bett».",
+        "Darunter zeigt «🛏️ 6 von 6 Betten belegt, dazu 1 Kleinkind ohne Bett», wie viel Platz noch ist."
+      ]
+    },
+    {
+      "v": "3.9.3.1",
+      "datum": "14.11.2026",
+      "titel": "Aufklapp-Pfeil vor dem Namen",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "In «Aufteilung unter euch» steht der Pfeil ▾ zum Aufklappen jetzt am Anfang der ersten Zeile, vor dem Namen."
+      ]
+    },
+    {
+      "v": "3.9.3.0",
+      "datum": "14.11.2026",
+      "titel": "Eine Partei zahlt gemeinsam",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "In der Aufteilung hat jede Partei mit mehreren Personen nur noch eine Zeile, zum Beispiel «Heidi und Stefan zahlen inkl. Jan und Nadine».",
+        "Aufgeklappt steht jede Person einzeln mit Übernachtung, Reinigung und Kurtaxe."
+      ]
+    },
+    {
+      "v": "3.9.2.0",
+      "datum": "14.11.2026",
+      "titel": "Partei muss gewählt werden, Namen mit grossem Anfangsbuchstaben",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Bei «Gehört zur Partei von» steht zuerst «Bitte wählen». Die Anfrage geht erst, wenn bei jedem Freund die Partei gewählt ist («Niemandem, eigene Partei» oder ein Freund).",
+        "Eine kurze Erklärung sagt, was eine Partei ist.",
+        "Name und Vorname der Freunde beginnen automatisch mit einem Grossbuchstaben, zum Beispiel wird «müller» zu «Müller»."
+      ]
+    },
+    {
+      "v": "3.9.1.1",
+      "datum": "14.11.2026",
+      "titel": "Vorschläge erst ab dem ersten Buchstaben",
+      "arten": [
+        "Fehler"
+      ],
+      "punkte": [
+        "In der Liste der Freunde erscheinen Vorschläge aus dem Adressbuch erst, wenn ein Buchstabe getippt ist, und nur passende: bei «M» im Feld Name zum Beispiel Müller und Meier, alphabetisch."
+      ]
+    },
+    {
+      "v": "3.9.1.0",
+      "datum": "14.11.2026",
+      "titel": "Aufteilung unter euch: jede Zeile aufklappbar",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Jede Zeile der Aufteilung lässt sich antippen und zeigt die genaue Aufschlüsselung: Übernachtung, Reinigungsanteil, Kurtaxe und was jemand für Freunde unter 18 übernimmt.",
+        "Bei mehreren Familien steht der Anteil am Familienpreis, zum Beispiel «2 von 5 Personen mit Bett».",
+        "«Details» in der Leiste unten klappt die Buchungsübersicht und alle Zeilen der Aufteilung auf. Das Glossar erklärt das beim Bild der goldenen Leiste."
+      ]
+    },
+    {
+      "v": "3.9.0.1",
+      "datum": "14.11.2026",
+      "titel": "Aufteilung der Familie: wer für die Kinder zahlt",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Kommt ein Enkelkind ohne seine Eltern mit, steht in der Aufteilung zum Beispiel «Jerome zahlt für Malik».",
+        "Sonst zum Beispiel «Du zahlst», «Du und David zahlen inkl. Mael» oder «Jerome und Rahel zahlen inkl. Jon». Die Parteien unter der Auswahl heissen gleich."
+      ]
+    },
+    {
+      "v": "3.9.0.0",
+      "datum": "14.11.2026",
+      "titel": "Meine Familie und Geschwister: alle zum Antippen",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Bei «Meine Familie und Geschwister» erscheint die ganze Familie zum Antippen, höchstens 5 ausser dir. Die Frage nach der Personenzahl entfällt.",
+        "Kleinkinder ohne Bett werden direkt angetippt.",
+        "Die App bildet die Parteien selbst aus den Familien, zum Beispiel Deborah mit Mael und Jerome mit Jon.",
+        "Der Preis pro Nacht bleibt gleich. Die Aufteilung zeigt, was jede Familie zahlt: «Nach Parteien» gleich viel pro Partei, sonst nach Personen ohne Kleinkinder.",
+        "Dafür braucht jedes Kind einmal einen neuen Link aus der Verwaltung mit den Namen der ganzen Familie."
+      ]
+    },
+    {
+      "v": "3.8.0.0",
+      "datum": "14.11.2026",
+      "titel": "Parteien unter den Freunden",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Neu in der Liste der Freunde: «Gehört zur Partei von». So bilden zum Beispiel ein Paar und sein Kind eine Partei.",
+        "Gehört ein Kind zu einer Partei, zahlen deren Erwachsene für das Kind zu gleichen Teilen. Die Frage «Wer übernimmt die Kosten?» kommt nur noch bei Kindern ohne Partei.",
+        "Unter der Liste stehen die Parteien, Partei 1 ist immer die eigene Familie.",
+        "Reinigung «Nach Parteien»: jede Partei zahlt gleich viel, innerhalb der Partei teilen die Erwachsenen gleich.",
+        "Die Zuordnung bleibt auf dem Handy und geht nicht mit der Liste an die Eltern."
+      ]
+    },
+    {
+      "v": "3.7.2.3",
+      "datum": "14.11.2026",
+      "titel": "Neue Buchung, neue Liste der Freunde",
+      "arten": [
+        "Fehler"
+      ],
+      "punkte": [
+        "Wird ein Termin gelöscht und für dieselben Tage neu gebucht, stand fälschlich «Liste deiner Freunde gesendet». Jetzt erscheint wieder «Bitte sende uns nun noch die Liste deiner Freunde zu».",
+        "Beim Senden einer neuen Anfrage wird ein alter Haken für dieselben Tage entfernt."
+      ]
+    },
+    {
+      "v": "3.7.2.2",
+      "datum": "14.11.2026",
+      "titel": "Hinweis: Freund unter 18 im selben Zimmer",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Bei «Wer schläft im selben Zimmer wie du?» steht, wenn ein Freund unter 18 dabei ist: «Ist es ein Freund unter 18, zahlt den günstigeren Preis, wer für ihn zahlt.»"
+      ]
+    },
+    {
+      "v": "3.7.2.1",
+      "datum": "14.11.2026",
+      "titel": "Buchungsübersicht mit Namen der Freunde",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "In der Buchungsübersicht stehen die Vornamen der Freunde statt «Freund 1, 2 …», gespeichert wird weiter ohne Namen.",
+        "Die Reinigungsanteile dort stimmen jetzt mit der Tabelle «Aufteilung unter euch» überein, auch nach Parteien mit Freunden unter 18."
+      ]
+    },
+    {
+      "v": "3.7.2.0",
+      "datum": "14.11.2026",
+      "titel": "Wer zahlt für Freunde unter 18: direkt unter der Liste, Reinigung nach Parteien",
+      "arten": [
+        "Regel"
+      ],
+      "punkte": [
+        "Die Frage «Wer übernimmt die Kosten für …?» steht direkt unter der Liste der Freunde, sobald sie vollständig ist, also vor der Reinigung.",
+        "Wählbar sind nur Erwachsene: ich, Partner/in und die erwachsenen Freunde. Minderjährige zahlen nie selbst.",
+        "Wer für ein Kind zahlt, übernimmt Nachtpreis, Kurtaxe und Reinigungsanteil.",
+        "Reinigung «Nach Personen»: jede Person zählt gleich, auch Kinder und Enkel, nur Kleinkinder ohne Bett nicht.",
+        "Reinigung «Nach Parteien»: Familie und jeder erwachsene Freund zahlen gleich viel, Kinder gehören zu der Person, die für sie zahlt."
+      ]
+    },
+    {
+      "v": "3.7.1.0",
+      "datum": "14.11.2026",
+      "titel": "Partner/in kann Kosten für Freunde unter 18 übernehmen",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Kommt der Partner oder die Partnerin mit, erscheint er oder sie bei «Wer übernimmt die Kosten für …?» als eigener Chip, mit Namen (zum Beispiel Andreas).",
+        "Enkel erscheinen dort nie."
+      ]
+    },
+    {
+      "v": "3.7.0.6",
+      "datum": "14.11.2026",
+      "titel": "Adressbuch der Freunde: richtige Person",
+      "arten": [
+        "Fehler"
+      ],
+      "punkte": [
+        "Freunde aus einem verworfenen Entwurf kommen ins Adressbuch der Person, der der Entwurf gehörte, nicht der gerade angemeldeten Person.",
+        "Testversion: Die Adressbücher der Freunde aller Ansichten werden einmal geleert, weil sie durch den Fehler vermischt waren."
+      ]
+    },
+    {
+      "v": "3.7.0.5",
+      "datum": "14.11.2026",
+      "titel": "Kasten «Liste deiner Freunde»: Titel",
+      "arten": [
+        "Text",
+        "Layout",
+        "Fehler"
+      ],
+      "punkte": [
+        "Titel «Bitte sende uns nun noch die Liste deiner Freunde zu».",
+        "Die zweite Zeile des Titels steht bündig unter dem Text, nicht unter dem Symbol.",
+        "Name und Vorname der Freunde nehmen keine Ziffern an."
+      ]
+    },
+    {
+      "v": "3.7.0.4",
+      "datum": "14.11.2026",
+      "titel": "Vorschläge der Freunde pro Person",
+      "arten": [
+        "Fehler"
+      ],
+      "punkte": [
+        "Jede Person hat ihr eigenes Adressbuch der Freunde. Deborah sieht keine Freunde von Manuel, auch wenn mehrere Ansichten auf demselben Handy laufen."
+      ]
+    },
+    {
+      "v": "3.7.0.3",
+      "datum": "14.11.2026",
+      "titel": "Texte in Anfrage und Bestätigung",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Anfrage: «Bedingungen akzeptiert: Ja» (kürzer, kein Zeilenumbruch).",
+        "Bestätigung: Die Liste der Freunde ist schon ausgefüllt und muss nur noch mit «Senden» bestätigt werden. Mit Absätzen, damit sie besser lesbar ist."
+      ]
+    },
+    {
+      "v": "3.7.0.2",
+      "datum": "14.11.2026",
+      "titel": "Liste der Freunde gehört zu Person und Termin",
+      "arten": [
+        "Fehler"
+      ],
+      "punkte": [
+        "Die Liste der Freunde gehört zur Person und zum Termin. Ein anderer Termin oder eine andere Person beginnt mit leerer Liste, die Freunde werden vorgeschlagen.",
+        "Testversion: Die Mailabfrage lässt sich überspringen."
+      ]
+    },
+    {
+      "v": "3.7.0.1",
+      "datum": "14.11.2026",
+      "titel": "Liste der Freunde: neue Anfrage beginnt leer",
+      "arten": [
+        "Fehler"
+      ],
+      "punkte": [
+        "Nach jeder gesendeten Anfrage beginnt ein anderer Termin mit einer leeren Liste, auch wenn die Liste schon gesendet war.",
+        "«Neu starten» leert auch die Liste der Freunde. Bekannte Freunde werden weiterhin vorgeschlagen."
+      ]
+    },
+    {
+      "v": "3.7.0.0",
+      "datum": "14.11.2026",
+      "titel": "Wer zahlt für Freunde unter 18",
+      "arten": [
+        "Neu"
+      ],
+      "punkte": [
+        "Ist ein Freund unter 18 dabei, fragt der Rechner nach der Reinigung: «Wer übernimmt die Kosten für Lena (14)?» Chips: Ich, jeder erwachsene Freund, der Jugendliche selbst. Mehrere gewählt: gleich verteilt.",
+        "Wer übernommen wird, trägt keinen Reinigungsanteil. Das Total bleibt gleich.",
+        "Kleinkinder von Freunden bis 2½ Jahre stehen in der Liste, schlafen ohne Bett und sind gratis.",
+        "«Schläft ein Freund im selben Zimmer wie ich?»: Mit «Ja» tippt man an, wer es ist.",
+        "Die Tabelle «Aufteilung unter euch» zeigt auf dem Handy die Vornamen. Die WhatsApp-Anfrage nennt Zimmer und Zahler mit Vornamen. Gespeichert wird ohne Namen.",
+        "Die Knöpfe ✕ und 📅 in der Liste sind gleich gross."
+      ]
+    },
+    {
+      "v": "3.6.0.2",
+      "datum": "14.11.2026",
+      "titel": "Vorschläge beim Namen und Vornamen",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Bekannte Freunde werden beim Tippen im Feld Name und im Feld Vorname vorgeschlagen.",
+        "Ein leeres Feld zeigt beim Antippen alle bekannten Freunde (höchstens 6). Wer schon in der Liste steht, erscheint nicht nochmals."
+      ]
+    },
+    {
+      "v": "3.6.0.1",
+      "datum": "14.11.2026",
+      "titel": "Liste der Freunde: Text nach der Bestätigung",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Ist die Liste schon im Rechner ausgefüllt, heisst der Kasten auf der Startseite «Bitte sende die Liste deiner Freunde»: prüfen und auf «Senden» tippen.",
+        "Die WhatsApp-Anfrage enthält keine Zeile «Liste der Freunde» mehr."
+      ]
+    },
+    {
+      "v": "3.6.0.0",
+      "datum": "14.11.2026",
+      "titel": "Liste der Freunde im Rechner",
+      "arten": [
+        "Neu"
+      ],
+      "punkte": [
+        "Mit Freunden erscheint im Rechner die Liste der Freunde: Name, Vorname, Geburtsdatum, Geschlecht, Nationalität (vorausgefüllt mit Schweiz).",
+        "Die Frage nach Kindern von 6 bis 15 Jahren fällt weg. Die Kurtaxe rechnet die App aus dem Alter am Anreisetag (unter 6 Jahren keine Kurtaxe).",
+        "Die Anfrage geht erst, wenn die Liste vollständig ist. In der Anfrage steht nur die Anzahl und wie viele unter 18 sind, keine Namen.",
+        "Nach der Bestätigung ist der Kasten «Liste deiner Freunde» auf der Startseite schon ausgefüllt, ein Tippen sendet ihn.",
+        "Jede neue Anfrage beginnt mit einer leeren Liste. Gesendete Freunde merkt sich das Handy: Beim Vornamen schlägt die App sie vor, ein Tippen füllt Name, Geburtsdatum, Geschlecht und Nationalität aus. Mit ✕ lässt sich ein Vorschlag entfernen.",
+        "Bei Papi und Mami bleibt die bisherige Frage."
+      ]
+    },
+    {
       "v": "3.5.0.2",
       "datum": "14.11.2026",
       "titel": "Familie mit Namen (aus der Testversion übernommen)",
