@@ -1590,7 +1590,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.16.3.0";
+let VERSION = "3.16.3.1";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -4655,10 +4655,10 @@ function render() {
     return;
   }
   let who = "";
-  who += '<tr><td>' + (S.wer === "Nur ich" ? "Du zahlst" : "Familie zahlt") + '</td><td>' + chf(r.FZ) + '</td></tr>';
+  who += '<tr><td>' + (S.wer === "Nur ich" ? "Du zahlst" : "Familie zahlt") + '</td><td>' + chf2(r.FZ) + '</td></tr>';   // Aufteilung immer mit Rappen (seit 3.16.3.1, Wänu)
   // Preis pro Freund steht samt Kurtaxe; die Kurtaxe steht klein darunter (die ersten Freunde zählen als ab 16 Jahren, die letzten als Kinder von 6 bis 15 Jahren)
   const whoF = (g, betrag) => {
-    if (kt.summe <= 0) return '<tr><td>Freund ' + g + ' zahlt</td><td>' + chf(betrag) + '</td></tr>';
+    if (kt.summe <= 0) return '<tr><td>Freund ' + g + ' zahlt</td><td>' + chf2(betrag) + '</td></tr>';
     const st = kt.alt ? (kt.alt[g - 1] >= 16 ? "E" : kt.alt[g - 1] >= 6 ? "K" : "0") : (g > kt.er ? "K" : "E"), k = (st === "E" ? kt.sE : st === "K" ? kt.sK : 0) * x.nights;   // keine Namen: die Tabelle wird mit der Anfrage gespeichert
     return '<tr><td>Freund ' + g + ' zahlt <small class="ktk">davon Kurtaxe ' + chf2(k) + (st === "K" ? ' (Kind von 6 bis 15 Jahren)' : st === "0" ? ' (unter 6 Jahren)' : ' (ab 16 Jahren)') + '</small></td><td>' + chf2(betrag + k) + '</td></tr>';
   };
@@ -4684,10 +4684,10 @@ function render() {
         const t = (name) => '<tr><td>' + und(erw.map(name)) + (erw.length > 1 ? " zahlen" : " zahlt") + (kin.length ? " inkl. " + und(kin.map(name)) : "") + (kt > 0 ? ' <small class="ktk">davon Kurtaxe ' + chf2(kt) + "</small>" : "") + fremd(name) + '</td><td>' + chf2(sum) + '</td></tr>';
         who += t(nm); whoN += t(nn); zRows.push({ typ: "partei", gl, erw }); return;
       }
-      if (zpl.kk.indexOf(i) >= 0) { zRows.push({ typ: "leer" }); who += '<tr><td>' + nm(i) + ' <small class="ktk">Kleinkind ohne Bett, gratis</small></td><td>' + chf(0) + '</td></tr>'; whoN += '<tr><td>' + nn(i) + ' <small class="ktk">Kleinkind ohne Bett, gratis</small></td><td>' + chf(0) + '</td></tr>'; return; }
+      if (zpl.kk.indexOf(i) >= 0) { zRows.push({ typ: "leer" }); who += '<tr><td>' + nm(i) + ' <small class="ktk">Kleinkind ohne Bett, gratis</small></td><td>' + chf2(0) + '</td></tr>'; whoN += '<tr><td>' + nn(i) + ' <small class="ktk">Kleinkind ohne Bett, gratis</small></td><td>' + chf2(0) + '</td></tr>'; return; }
       const zk = zpl.zahler[i], cov = zpl.covered.indexOf(i) >= 0, zim = i === zpl.zr && zpl.zi.length > 1 ? ' <small class="ktk">im selben Zimmer</small>' : "";
       const wer = (k, name) => k === "ich" ? (S.wer === "Nur ich" ? "dir" : "der Familie") : k === "self" ? "selbst" : k === "partner" ? (name === nm ? esc(partnerDa()) : "Partner/in") : name(Number(k.slice(1)));
-      if (cov) { zRows.push({ typ: "leer" }); const t = (name) => '<tr><td>' + name(i) + ' <small class="ktk">übernommen von ' + zk.map((k) => wer(k, name)).join(" und ") + '</small></td><td>' + chf(0) + '</td></tr>'; who += t(nm); whoN += t(nn); return; }
+      if (cov) { zRows.push({ typ: "leer" }); const t = (name) => '<tr><td>' + name(i) + ' <small class="ktk">übernommen von ' + zk.map((k) => wer(k, name)).join(" und ") + '</small></td><td>' + chf2(0) + '</td></tr>'; who += t(nm); whoN += t(nn); return; }
       const t = (name) => '<tr><td>' + name(i) + ' zahlt' + zim + ' ' + kl(i) + ex("f" + i, name) + (zk && zk.length > 1 ? ' <small class="ktk">eigener Anteil geteilt mit ' + zk.filter((k) => k !== "self").map((k) => wer(k, name)).join(" und ") + '</small>' : "") + '</td><td>' + chf2(zpl.zahlt["f" + i]) + '</td></tr>';
       who += t(nm); whoN += t(nn); zRows.push({ typ: "eins", i });
     });
@@ -4743,8 +4743,10 @@ function render() {
         bd.push(L("Übernachtung (" + nTxt + ")" + (i === zpl.zr && zpl.zi.length > 1 ? ", im selben Zimmer" : ""), (zpl.base[i] - x.GS) / z, proN((zpl.base[i] - x.GS) / z), "su") + L("Reinigungsanteil", zpl.gs[i] / z, reTxt(zpl.gs[i] / z), "sr") + (zpl.kt[i] > 0 ? L("Kurtaxe", zpl.kt[i] / z, proN(zpl.kt[i] / z), "sk") : "") + extraL("f" + i));
         sg.push({ tot: zpl.zahlt["f" + i], r: zpl.gs[i] + exR("f" + i), k: zpl.kt[i] + exK("f" + i) });
       });
-    } else for (let g = 1; g <= x.GE; g++) { bd.push("");
+    } else for (let g = 1; g <= x.GE; g++) {   // ohne Liste (Papi): Aufschlüsselung ohne Namen (seit 3.16.3.1, Wänu)
       const st = kt.summe > 0 ? (kt.alt ? (kt.alt[g - 1] >= 16 ? "E" : kt.alt[g - 1] >= 6 ? "K" : "0") : (g > kt.er ? "K" : "E")) : "0", kk = (st === "E" ? kt.sE : st === "K" ? kt.sK : 0) * x.nights;
+      const fb = g === 1 ? r.HZ : r.WZ / (x.GE - 1), ue = fb - x.GS;
+      bd.push(L("Übernachtung (" + nTxt + ")" + (g === 1 && x.ZE === "Ja" && x.GE > 1 ? ", im selben Zimmer" : ""), ue, proN(ue), "su") + (x.GS > 0.004 ? L("Reinigungsanteil", x.GS, reTxt(x.GS), "sr") : "") + (kk > 0 ? L("Kurtaxe", kk, proN(kk), "sk") : ""));
       sg.push({ tot: (g === 1 ? r.HZ : r.WZ / (x.GE - 1)) + kk, r: x.GS, k: kk }); }
     {   // Abrechnung für «Geld einsammeln» (seit 3.11.0.0): pro Partei Personen mit Zeilen, nur auf dem Handy gespeichert
       const ps = [], Z = (a) => a.filter((q) => q[1] > 0.004);
@@ -4823,7 +4825,7 @@ function render() {
       '<span class="iban">IBAN: ' + esc(IBAN) + '</span>' +
       '<button type="button" id="copyIban">📋 IBAN kopieren</button></div>';
   const teilt = x.GE >= 1 || famAuf;   // seit 3.10.0.0 immer sichtbar: die Zeilen klappen die ganze Rechnung auf (vorher in der Buchungsübersicht)
-  const totZ = (tip > 0 ? '<tr><td>Trinkgeld für Mami <small class="ktk">freiwillig</small></td><td>' + chf(tip) + "</td></tr>" : "") + '<tr class="auf-tot"><td>Total' + (kt.summe > 0 ? " mit Kurtaxe" : "") + "</td><td>" + (kt.summe > 0 ? chf2(r.TOT + tip + kt.summe) : chf(r.TOT + tip)) + "</td></tr>";
+  const totZ = (tip > 0 ? '<tr><td>Trinkgeld für Mami <small class="ktk">freiwillig</small></td><td>' + chf2(tip) + "</td></tr>" : "") + '<tr class="auf-tot"><td>Total' + (kt.summe > 0 ? " mit Kurtaxe" : "") + "</td><td>" + chf2(r.TOT + tip + (kt.summe > 0 ? kt.summe : 0)) + "</td></tr>";
   const aufteilung = '<h3 class="split-h auf-h">' + (teilt ? "💸 Aufteilung unter euch" : "🧮 So setzt sich der Preis zusammen") + "</h3>" +
     '<p class="hint">' + (teilt ? "Das Geld der Freunde sammelt ihr selbst ein. Die Tabelle zeigt, wie viel jeder schuldet." + (kt.summe > 0 ? " Die Kurtaxe ist bei jedem Freund schon im Betrag enthalten." : "") + " " : "") + "Tippe eine Zeile an, dann siehst du die Rechnung und zuunterst einen Balken: Übernachtung, Reinigung und Kurtaxe in eigenen Farben.</p>" +
     '<table class="auf-tab"><tbody>' + who + totZ + "</tbody></table>" + notes + (x.SB ? endreinigungInfo(r) : "");
