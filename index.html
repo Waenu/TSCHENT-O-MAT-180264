@@ -56,13 +56,13 @@ if (TEST_MODUS) {
     try { tok = localStorage.getItem("tm2_token") || ""; abs = localStorage.getItem("tm2_absender") || ""; } catch (e) {}
     var jetzt = tok ? "Papi" : abs;
     var b = document.createElement("div"); b.id = "testBalken";
-    var opt = '<option value="Papi"' + (jetzt === "Papi" ? " selected" : "") + ">Papi</option>" + namen.map(function (n) { return '<option value="' + n + '"' + (jetzt === n ? " selected" : "") + ">" + n + "</option>"; }).join("");
-    if (!jetzt) opt = '<option value="" selected>wählen</option>' + opt;
-    b.innerHTML = '<div class="tb-t"><b>🧪 TESTVERSION</b><span>speichert nur hier · Nachrichten mit «🧪 TEST»</span></div><label class="tb-a">Ansicht <select id="testAnsicht" aria-label="Ansicht wählen">' + opt + "</select></label>";
+    var chips = ["Papi"].concat(namen).map(function (n) { return '<button type="button" class="tb-c" data-tans="' + n + '" aria-pressed="' + (jetzt === n) + '">' + n + "</button>"; }).join("");
+    b.innerHTML = '<div class="tb-t"><b>🧪 TESTVERSION</b><span>speichert nur hier · Nachrichten mit «🧪 TEST»</span></div><div class="tb-a"><span>Ansicht' + (jetzt ? "" : " wählen") + '</span><div class="tb-cs" role="group" aria-label="Ansicht wählen">' + chips + "</div></div>";
     document.body.insertBefore(b, document.body.firstChild);
     var st = document.createElement("div"); st.id = "testStrich"; st.setAttribute("aria-hidden", "true"); document.body.appendChild(st);
-    document.getElementById("testAnsicht").addEventListener("change", function () {
-      var v = this.value; if (!v) return;
+    b.addEventListener("click", function (ev) {
+      var c = ev.target.closest && ev.target.closest("[data-tans]"); if (!c) return;
+      var v = c.getAttribute("data-tans"); if (!v || v === jetzt) return;
       try {
         var alt = localStorage.getItem("tm2_token");   // echter Token bleibt beim Wechsel der Ansicht erhalten
         if (alt && alt !== "test") localStorage.setItem("tm2_papitoken", alt);
@@ -79,8 +79,10 @@ if (TEST_MODUS) {
   #testBalken .tb-t { display: flex; flex-direction: column; }
   #testBalken .tb-t b { font-size: 1.05rem; letter-spacing: 0.06em; }
   #testBalken .tb-t span { font-weight: 400; font-size: 0.85rem; opacity: 0.95; }
-  #testBalken .tb-a { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
-  #testBalken select { font: inherit; padding: 4px 6px; border-radius: 6px; border: 0; background: #fff; color: #5A2D00; }
+  #testBalken .tb-a { display: flex; flex-direction: column; gap: 4px; width: 100%; }
+  #testBalken .tb-cs { display: flex; flex-wrap: wrap; gap: 5px; }
+  #testBalken .tb-c { font: 600 0.85rem/1 system-ui, sans-serif; padding: 7px 10px; min-height: 34px; border-radius: 999px; border: 1.5px solid #fff; background: transparent; color: #fff; cursor: pointer; }
+  #testBalken .tb-c[aria-pressed="true"] { background: #fff; color: #5A2D00; }
   #testStrich { position: fixed; top: 0; left: 0; right: 0; height: 4px; background: #D66C00; z-index: 100001; pointer-events: none; }
   #testToast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 100002; max-width: 86vw; padding: 10px 16px; border-radius: 999px; background: #D66C00; color: #fff; font: 600 0.95rem/1.3 system-ui, sans-serif; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,.4); }
   #testToast[hidden] { display: none; }
@@ -1305,7 +1307,7 @@ if (TEST_MODUS) {
   .namefest { margin: 4px 0 0; font-weight: 700; }
   .lk-row { border-top: 1px solid var(--line, rgba(128,128,128,.3)); padding: 8px 0; text-align: left; }
   .lk-row .btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
-  .lk-row .lk-fam { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; } .lk-row .lk-fam input { width: 100%; box-sizing: border-box; } .lk-row .lk-fam .btn { align-self: flex-start; }
+  .lk-row .lk-fam { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; } .lk-row .lk-fam input { width: 100%; box-sizing: border-box; } .lk-row .lk-fam .btn { align-self: flex-start; } .lk-row .lk-fam .btn.lkf-ok { background: var(--accent); color: #fff; border-color: var(--accent); }
 
   #btnReserv .bt, #btnReservFix .bt { min-width: 0; }
   #btnReserv .rv-z, #btnReservFix .rv-z { font-size: 0.82rem; font-weight: 400; line-height: 1.25; margin-top: 3px; }
@@ -1588,7 +1590,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.16.2.1";
+let VERSION = "3.16.2.2";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -4160,6 +4162,16 @@ const ABS = KINDER_ABS.concat(PARTNER_ABS);
 // Familie mit Namen (seit 3.5.0.0): Partner/in und Kinder kommen über den persönlichen Link (…&fp=…&fk=…) und liegen nur auf dem Handy (tm2_famIch).
 // Papi trägt sie in der Verwaltung ein (tm2_famListe, nur auf seinem Handy). Nie ins Repo. In der Testversion nimmt die Ansicht die Namen aus tm2_famListe.
 function famListe() { try { const o = JSON.parse(localStorage.getItem("tm2_famListe") || "{}"); return o && typeof o === "object" ? o : {}; } catch (e) { return {}; } }
+function lkfGleich(n, pv, kv) { return JSON.stringify(famSauber({ p: pv, k: String(kv).split(",") })) === JSON.stringify(famSauber(famListe()[n])); }
+function lkfKnopf(n, pv, kv) {   // Knopf zeigt den Zustand: gespeichert oder (nochmals) speichern (seit 3.16.2.2, Wänu)
+  const g = lkfGleich(n, pv, kv), da = !!famSauber(famListe()[n]);
+  return '<button type="button" class="btn' + (g && da ? ' lkf-ok' : '') + '" data-lkfs="' + n + '">' + (g && da ? "✓ Gespeichert" : da ? "Nochmals speichern" : "Namen speichern") + "</button>";
+}
+document.addEventListener("input", (e) => {
+  const box = e.target.closest && e.target.closest(".lk-fam"); if (!box) return;
+  const i = box.querySelector("[data-lkfp]"), k = box.querySelector("[data-lkfk]"), bt = box.querySelector("[data-lkfs]"); if (!i || !k || !bt) return;
+  bt.outerHTML = lkfKnopf(bt.dataset.lkfs, i.value, k.value);
+});
 function famSauber(o) { if (!o || typeof o !== "object") return null; const p = String(o.p || "").trim().slice(0, 40), k = (Array.isArray(o.k) ? o.k : []).map((x) => String(x || "").trim().slice(0, 40)).filter(Boolean).slice(0, 6); return p || k.length ? { p, k } : null; }
 const FAM_GEN = { p: "Partner/in", k: ["Kind 1", "Kind 2"], gen: true };   // ohne Namen: dieselben Chips mit allgemeinen Bezeichnungen (seit 3.10.1.0, Wänu)
 function famNamen() {
@@ -5986,7 +5998,7 @@ function lkHtml() {
     h += '<div class="lk-row"><b>' + esc(n) + '</b> <span class="hint">' + (da ? "Link bereit" : vergeben ? "Link vergeben, hier nicht sichtbar" : "noch kein Link") + '</span><div class="btns">' +
       (da ? '<a class="btn" target="_blank" rel="noopener" href="https://wa.me/?text=' + encodeURIComponent(lkText(n)) + '">Per WhatsApp</a><button type="button" class="btn" data-lkcp="' + n + '">Kopieren</button>' : "") +
       '<button type="button" class="btn" data-lkneu="' + n + '">' + (da || vergeben ? "Neu erzeugen" : "Erzeugen") + '</button></div>' +
-      (() => { const fm = famSauber(famListe()[n]) || { p: "", k: [] }; return '<div class="lk-fam"><input type="text" data-lkfp="' + n + '" maxlength="40" autocomplete="off" placeholder="Partner/in" aria-label="Partner/in von ' + esc(n) + '" value="' + esc(fm.p) + '"><input type="text" data-lkfk="' + n + '" maxlength="200" autocomplete="off" placeholder="Kinder, mit Komma getrennt" aria-label="Kinder von ' + esc(n) + '" value="' + esc(fm.k.join(", ")) + '"><button type="button" class="btn" data-lkfs="' + n + '">Namen speichern</button></div>'; })() + '</div>';
+      (() => { const fm = famSauber(famListe()[n]) || { p: "", k: [] }; return '<div class="lk-fam"><input type="text" data-lkfp="' + n + '" maxlength="40" autocomplete="off" placeholder="Partner/in" aria-label="Partner/in von ' + esc(n) + '" value="' + esc(fm.p) + '"><input type="text" data-lkfk="' + n + '" maxlength="200" autocomplete="off" placeholder="Kinder, mit Komma getrennt" aria-label="Kinder von ' + esc(n) + '" value="' + esc(fm.k.join(", ")) + '">' + lkfKnopf(n, fm.p, fm.k.join(", ")) + '</div>'; })() + '</div>';
   });
   return h + '<p class="hint">Der Code steht nur in diesem Link und auf diesem Handy. Auf einem anderen Gerät erzeugst du den Link neu.</p><p class="hint">Namen der Familie: Sie stehen nur auf diesem Handy und im Link. Nach «Namen speichern» enthält der Link die Namen, der Code bleibt gleich. Schicke den Link dann nochmals, damit «Wer von der Familie kommt?» die Namen zeigt.</p></div>';
 }

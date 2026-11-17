@@ -63,6 +63,7 @@ Anschliessend prüfen, dass `origin/main:einstellungen.json` die neue Version tr
 2. Direkt in der laufenden App (`Waenu/TSCHENT-O-MAT-180264`) nur, was die Testversion nicht prüfen kann (Buchungen, Mails, WhatsApp, Zahlungen, speichern) oder dringende Fehlerkorrekturen. Am Anfang «📍 Laufende App» schreiben und den Grund nennen. Danach die Testversion auf denselben Stand bringen.
 3. Vor jeder Arbeit in beiden Repos den neuesten Stand holen (`git pull`), weil Wänu auch in anderen Chats ändern kann.
 4. Beide Repos im selben Chat angehängt; ein eigener Chat für die Testversion ist nicht nötig.
+5. Seit 17.11.2026 (Wänu): parallel bauen. Jede Änderung gleichzeitig in beiden Repos mit derselben Version (`index.html` und `sw.js` gleich, Versionshistorie in beiden). «push» heisst nur Testversion pushen; die laufende App liegt fertig bereit und wird erst nach «übernehmen» (bzw. ausdrücklichem Push der laufenden App) gepusht.
 
 ## Testversion und neuer Kalender (12.11.2026, übernommen als 3.2.1.2)
 - Testversion: Repo `Waenu/TSCHENT-O-MAT-Test`, Seite https://waenu.github.io/TSCHENT-O-MAT-Test/ (nur Layout-Tests, speichert und sendet nichts). Dieselbe `index.html` erkennt am Pfad «TSCHENT-O-MAT-Test» den Testmodus (`TEST_MODUS`, Skript ganz oben im `<head>`); hier in der laufenden App ist er aus. Einzelheiten in `CLAUDE.md` des Test-Repos. Neues zuerst dort bauen, nach Wänus «übernehmen» `index.html` und `sw.js` unverändert hierher kopieren (nie `manifest.json` oder die orangen Symbole).
@@ -121,6 +122,7 @@ Entscheide Wänu (13.11.2026 spät, nach Mockup im privaten Design-Artefakt «TS
 ## Übernommen aus der Testversion: 3.6.0.0 bis 3.16.2.1 (17.11.2026, Wänu «übernehmen»)
 - `index.html` und `sw.js` unverändert aus `Waenu/TSCHENT-O-MAT-Test` kopiert, Version 3.16.2.1, Versionshistorie mit allen Einträgen ab 3.6.0.0 ergänzt. Einzelheiten zu jeder Version in der CLAUDE.md der Testversion.
 - Wichtigste Neuerungen: Liste der Freunde im Rechner (Kurtaxe, Adressbuch, Rufnamen), Parteien und Zahler für Freunde unter 18, Familie mit Geschwistern, Aufteilung mit Balken, Mindestpreis gratis oder mitzahlen, «👤 Meine Verwaltung» (Aufenthalte, Listen, Geld einsammeln, Profil), Sonderbuchungen (`vorlagen` in buchungen.json), Reinigung nur nach Personen oder Parteien, Leiste mit Kurtaxe, Listen auf der Startseite ab 7 Tagen vor der Anreise, «Ansicht als» mit Chips.
+- 3.16.2.2 (parallel gebaut, 17.11.2026): Knopf der Familiennamen zeigt «✓ Gespeichert» bzw. «Nochmals speichern» (`lkfKnopf`).
 - Für die Namen der Familie braucht jedes Kind einen neuen persönlichen Link aus der Verwaltung (Namen nur im Link und auf dem Handy, nie im Repo).
 
 ## Offen: Airbnb-Belegung ins App-Repo umziehen (Wänu «ja», 13.11.2026, nächste Woche)
