@@ -1480,6 +1480,7 @@ if (TEST_MODUS) {
         <details class="sub" id="b-zahlung"><summary><span class="an-geld" aria-hidden="true"><span class="gb">💰</span><i class="mz m1"></i><i class="mz m2"></i><i class="mz m3"></i></span> Zahlung</summary><div class="bc" id="bc-zahlung"></div></details>
         <details class="sub" id="b-trinkgeld"><summary><span class="an-schwein" aria-hidden="true">🐖</span> Trinkgeld</summary><div class="bc" id="bc-trinkgeld"></div></details>
         <details class="sub" id="b-geld"><summary><span class="an-hand" aria-hidden="true"><span class="hd">🤲</span><i class="bn b1"></i><i class="bn b2"></i><i class="bn b3"></i></span> Geldverwendung</summary><div class="bc" id="bc-geld"></div></details>
+        <details class="sub" id="b-mail"><summary>📧 Mail, wenn etwas zu tun ist</summary><div class="bc"><p class="wt">Das Wichtigste</p><p>Möchtest du erinnert werden, wenn im TSCHENT-O-MAT etwas ansteht? Dann schalte unter «👤 Meine Verwaltung» › «Profil» den Schalter «📧 Mail, wenn im TSCHENT-O-MAT etwas zu tun ist» ein. Am Anfang ist er aus.</p><p>Du bekommst dann jeweils am Morgen eine Mail mit dem Absender «TSCHENT-O-MAT»:</p><ul><li>🧳 Anreise-Wäsche: 7 Tage vor der Anreise, wenn du Wäsche mitbringst</li><li>✅ Reinigungs-Checkliste: am Anreisetag</li><li>👥 Liste der Freunde: 2 Tage vor der Anreise, wenn sie noch fehlt</li><li>💳 Zahlung fällig: am Abreisetag</li><li>⏰ Zahlung überfällig: nach der Frist, danach jede Woche, bis bezahlt ist</li></ul><p>Jede Mail kommt nur einmal (ausser «überfällig»). Automatische Benachrichtigungen gibt es nur per Mail, nicht per WhatsApp. Ist der Schalter aus, erfährst du nichts davon, bis du den TSCHENT-O-MAT selbst öffnest.</p><p>Deine Mailadresse brauchen wir sowieso: Damit stellen wir dir die Gästekarten zu und melden deine Freunde für die Kurtaxe an. Ohne Mailadresse kannst du die Liste deiner Freunde nicht ausfüllen.</p></div></details>
       </div>
     </details>
     <details class="card" id="b-melden">
@@ -1596,7 +1597,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.17.0.2";
+let VERSION = "3.17.0.3";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
