@@ -2,6 +2,213 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.17.8.0",
+      "datum": "17.11.2026",
+      "titel": "Kinder jederzeit aufteilen",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Ein Kind in eine Insel ziehen heisst nur noch: diese Partei zahlt für das Kind. Es gehört nicht fest zur Partei.",
+        "«Wer bezahlt die Übernachtungen von …?» steht für jedes Kind da, die Partei aus der Insel oder dem Vorschlag ist schon gewählt. Ein zweiter Chip teilt das Kind auf, in den Inseln und bei «🤝 Parteien» erscheint es dann mit «½»."
+      ]
+    },
+    {
+      "v": "3.17.7.0",
+      "datum": "17.11.2026",
+      "titel": "Fehlt oben etwas, verschwinden die Fragen darunter",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Ist die Liste der Freunde nicht vollständig, «Wer gehört zusammen?» nicht bestätigt oder für ein Kind noch kein Zahler gewählt, sind alle Fragen darunter ausgeblendet (Zimmer, Reinigung, Vergünstigung). Sobald alles gewählt ist, erscheinen sie mit den bisherigen Antworten wieder.",
+        "Die Leiste unten nennt immer die oberste offene Frage.",
+        "Fehler behoben: Bestand eine Partei nur aus einer Person (z. B. Robert allein), fehlte der Knopf «✓ Ja, passt»."
+      ]
+    },
+    {
+      "v": "3.17.6.7",
+      "datum": "17.11.2026",
+      "titel": "Zahler-Chips gleich hoch wie alle Chips",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Bei «Wer bezahlt die Übernachtungen von …?» steht der Farbpunkt vor dem Namen und «Familie (Namen)» in einer Zeile. Die Chips sind damit gleich hoch wie alle anderen."
+      ]
+    },
+    {
+      "v": "3.17.6.6",
+      "datum": "17.11.2026",
+      "titel": "«Passt der Vorschlag?» deutlicher, Zahler erst nach der Bestätigung",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Bei «Wer gehört zusammen?» steht über dem Knopf die Frage «Passt der Vorschlag?», der Knopf heisst «✓ Ja, passt» und hat einen orangen Rand, solange nicht bestätigt ist.",
+        "«🤝 Parteien» und «Wer bezahlt die Übernachtungen von …?» erscheinen erst, wenn die Parteien bestätigt sind."
+      ]
+    },
+    {
+      "v": "3.17.6.5",
+      "datum": "17.11.2026",
+      "titel": "Chips wachsen mit der Schriftgrösse",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Chips, Kreise bei «Wer gehört zusammen?» und die Felder der Liste der Freunde werden mit der Schrift «gross» (AAA) höher; bei «klein» und «mittel» bleiben sie gleich hoch wie bisher."
+      ]
+    },
+    {
+      "v": "3.17.6.4",
+      "datum": "17.11.2026",
+      "titel": "Namen-Chips gleich hoch wie alle Chips",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Die Namen bei «Wer kommt mit?» und die Kreise bei «Wer gehört zusammen?» sind gleich hoch und gleich gross geschrieben wie alle anderen Chips (z. B. Ja/Nein)."
+      ]
+    },
+    {
+      "v": "3.17.6.3",
+      "datum": "17.11.2026",
+      "titel": "Preis verschwindet, wenn wieder etwas offen ist; kleinere Kreise bei den Inseln",
+      "arten": [
+        "Fehler",
+        "Layout"
+      ],
+      "punkte": [
+        "Stand der Preis schon und wurde danach etwas wieder offen (z. B. Zahler eines Kindes abgewählt, Liste unvollständig, Partei offen, Zimmer offen), zeigt die Leiste jetzt wieder «Bitte wählen: …» statt des alten Preises.",
+        "Die Kreise bei «Wer gehört zusammen?» sind gleich gross wie bei «Wer kommt mit?»."
+      ]
+    },
+    {
+      "v": "3.17.6.2",
+      "datum": "17.11.2026",
+      "titel": "Jeder Haushalt der Geschwister mit eigener Farbe",
+      "arten": [
+        "Fehler"
+      ],
+      "punkte": [
+        "Kamen zwei Geschwister mit Familie mit, hatten beide Haushalte dieselbe Farbe. Jetzt bekommt jeder Haushalt seine eigene."
+      ]
+    },
+    {
+      "v": "3.17.6.1",
+      "datum": "17.11.2026",
+      "titel": "Inseln: «für das Kind» oder «für die Kinder»",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Bei einem Kind steht in der Insel «zahlt für das Kind», ab zwei Kindern «zahlt für die Kinder»."
+      ]
+    },
+    {
+      "v": "3.17.6.0",
+      "datum": "17.11.2026",
+      "titel": "Farben der Parteien von Anfang an",
+      "arten": [
+        "Funktion",
+        "Layout"
+      ],
+      "punkte": [
+        "«Wer kommt mit?»: Dein Haushalt ist beim Antippen gold, jeder Haushalt der Geschwister bekommt seine Farbe, sobald jemand von ihm angetippt ist.",
+        "Liste der Freunde: Jeder Kasten hat links die Farbe seiner Partei, gleicher Nachname gleiche Farbe. Bei «Wer gehört zusammen?» korrigierst du, die Farbe zieht mit.",
+        "Bei Geschwistern hat jeder Haushalt seine eigene Insel (Partei 2, 3 …).",
+        "Gleiche Farben auch in «Parteien der Familie», «🤝 Parteien» und in der Aufteilung.",
+        "WhatsApp-Anfrage: Zahler für Kinder nach Parteien gruppiert, z. B. «ich, Robert & Heide und Kurt»."
+      ]
+    },
+    {
+      "v": "3.17.5.0",
+      "datum": "17.11.2026",
+      "titel": "Übernachtungen von Kindern: Zahler pro Partei",
+      "arten": [
+        "Regel",
+        "Text"
+      ],
+      "punkte": [
+        "Die Frage heisst «🛏️ Wer bezahlt die Übernachtungen von …?». Gemeint sind Nachtpreis und Kurtaxe, die Reinigung kommt danach.",
+        "Zur Wahl stehen Parteien statt Personen: Familie, dann jede Partei der Freunde mit Farbpunkt.",
+        "Mehrere gewählt: Jede Partei zahlt gleich viel, in der Partei teilen die Erwachsenen. Die eigene Zeile für Partner/in fällt weg.",
+        "Der Hinweis zur Reinigung erklärt, wie Kinder der Freunde zählen. Das Total bleibt gleich."
+      ]
+    },
+    {
+      "v": "3.17.4.0",
+      "datum": "17.11.2026",
+      "titel": "Kinder brauchen keine Partei mehr",
+      "arten": [
+        "Regel",
+        "Text"
+      ],
+      "punkte": [
+        "Kinder von Freunden müssen bei «Wer gehört zusammen?» nicht mehr zugeordnet werden. Für sie zählt nur, wer für sie zahlt.",
+        "Ein Kind ohne Partei steht in einer grauen Insel. Wählst du unten, wer zahlt, springt es in die Insel der Zahler.",
+        "Zahlen mehrere aus verschiedenen Parteien, steht das Kind in jeder Zahler-Insel mit gestricheltem Kreis und seinem Anteil, z. B. «½».",
+        "Ziehst du ein Kind in eine Partei, zahlen deren Erwachsene. Nimmst du es in die Familie, zahlst du.",
+        "Erklärung unter dem Titel angepasst. Am Preis ändert sich nichts."
+      ]
+    },
+    {
+      "v": "3.17.3.1",
+      "datum": "17.11.2026",
+      "titel": "Familie-Insel mit allen, die mitkommen",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Die goldene Insel «Familie (Partei 1)» zeigt neben «Ich» alle, die bei «Wer kommt mit?» angetippt sind, zum Beispiel Partner/in und Kinder."
+      ]
+    },
+    {
+      "v": "3.17.3.0",
+      "datum": "17.11.2026",
+      "titel": "Freund aus der Liste entfernen",
+      "arten": [
+        "Funktion",
+        "Fehler"
+      ],
+      "punkte": [
+        "Jeder Freund in der Liste hat oben rechts ein ✕. Erstes Tippen fragt «Entfernen?», zweites Tippen entfernt ihn, zum Beispiel nach einer Stornierung.",
+        "Der Freund bleibt im Adressbuch 📇, die Zahl der Freunde sinkt um eins. Parteien, Zahler und Zimmer rücken richtig nach.",
+        "Fehler behoben: Wurde die Liste kurz unvollständig (z. B. neues Kleinkind), gingen die Parteien verloren."
+      ]
+    },
+    {
+      "v": "3.17.2.0",
+      "datum": "17.11.2026",
+      "titel": "Familie als Insel, Farben der Parteien überall",
+      "arten": [
+        "Funktion",
+        "Layout"
+      ],
+      "punkte": [
+        "Bei «Wer gehört zusammen?» ist die Familie die goldene Insel «Familie (Partei 1)». Kinder deiner Freunde kannst du dorthin ziehen oder tippen, dann zahlst du für sie.",
+        "Erwachsene Freunde lassen sich nicht in die Familie ziehen.",
+        "Die Liste «🤝 Parteien» zeigt die Nummern in den Farben der Inseln.",
+        "In der Aufteilung hat jede Zeile links die Farbe ihrer Partei, auch aufgeklappt."
+      ]
+    },
+    {
+      "v": "3.17.1.0",
+      "datum": "17.11.2026",
+      "titel": "Wer gehört zusammen: Parteien als farbige Inseln",
+      "arten": [
+        "Funktion",
+        "Layout"
+      ],
+      "punkte": [
+        "Bei «🤝 Wer gehört zusammen?» ist jede Partei eine farbige Insel, gleicher Nachname ergibt den Vorschlag.",
+        "Person antippen und danach ihre Partei, oder mit dem Finger hinüberziehen.",
+        "«＋ Eigene Partei» trennt eine Person ab. Wer zieht, nimmt die Kinder seiner Partei mit.",
+        "Wer noch keine Partei hat, steht oben bei «Noch zuordnen»."
+      ]
+    },
+    {
       "v": "3.17.0.3",
       "datum": "17.11.2026",
       "titel": "Glossar: Mail, wenn etwas zu tun ist",

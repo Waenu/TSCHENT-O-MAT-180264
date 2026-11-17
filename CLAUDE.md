@@ -131,6 +131,7 @@ Entscheide Wänu (13.11.2026 spät, nach Mockup im privaten Design-Artefakt «TS
 - 3.16.3.0 (parallel gebaut): Papi «Ansicht als» zeigt «👤 Meine Verwaltung» des Kindes (Profil grau, leer), Papi-Verwaltung dabei ausgeblendet, zurück über «Zurück zu Papi».
 - 3.16.2.3 (parallel gebaut): Papi «Ansicht als» zeigt bei MFG die Geschwister mit Namen (`famAlle()` aus `tm2_famListe`). Kinder brauchen dafür einen Link mit `&fa=` (ab 3.9.0.0 erzeugt).
 - 3.16.2.2 (parallel gebaut, 17.11.2026): Knopf der Familiennamen zeigt «✓ Gespeichert» bzw. «Nochmals speichern» (`lkfKnopf`).
+- 3.17.1.0 bis 3.17.8.0 (17.11.2026, Wänu «übernimm»): `index.html` unverändert aus der Testversion (sw.js gleich geblieben). Inseln «Wer gehört zusammen?», Farben der Parteien, Zahler pro Partei, Fragen erst wenn oben alles gewählt ist, Kinder jederzeit aufteilen. Einzelheiten in der CLAUDE.md der Testversion.
 - Für die Namen der Familie braucht jedes Kind einen neuen persönlichen Link aus der Verwaltung (Namen nur im Link und auf dem Handy, nie im Repo).
 
 ## Offen: Airbnb-Belegung ins App-Repo umziehen (Wänu «ja», 13.11.2026, nächste Woche)
