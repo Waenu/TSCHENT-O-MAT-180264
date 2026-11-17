@@ -1438,6 +1438,7 @@ if (TEST_MODUS) {
             <div class="exf"><span class="zchips ex-chips"><span class="zchip ex-miss">Ja</span><span class="zchip ex-miss">Nein</span></span><span>oranger Rand: noch wählen</span></div>
             <div class="exf"><span class="zchips ex-chips"><span class="zchip" aria-pressed="true">Ja</span><span class="zchip">Nein</span></span><span>grün: gewählt</span></div>
           </div>
+          <p>Tippst du einen gewählten Chip nochmals an, ist die Wahl wieder aufgehoben.</p>
           <p>Graue Chips sind noch gesperrt, bis die Frage davor beantwortet ist. Erst wenn alles gewählt ist, erscheint unten der Preis.</p>
         </div></details>
         <p class="gl-thema">Wer und wo</p>
@@ -1590,7 +1591,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.16.3.1";
+let VERSION = "3.17.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -6789,6 +6790,7 @@ function meinZeigen() {
   k.innerHTML = (vs ? '<p class="note h mein-vor">👁️ Vorschau: Die Angaben von ' + esc(ABSENDER) + ' (Rufname, Mail, TWINT, IBAN) sind nur auf ' + (ER_SIE[ABSENDER] === "ihm" ? "seinem" : "ihrem") + ' Handy. Hier siehst du nur, wie es aussieht.</p>' : "") + '<p class="hint">Diese Angaben bleiben nur auf deinem Handy. Nur die Mailadresse geht an die Eltern.</p>' +
     '<label class="ink-fr">Wie willst du genannt werden?<input type="text" data-mein="ruf" maxlength="20" autocomplete="off" placeholder="' + esc(ABSENDER) + '" value="' + esc(rufGespeichert()) + '"></label><p class="hint">So erscheinst du jetzt: oben im Kopf als «<b class="mein-vs">' + esc(genitiv(rufGespeichert() || SPITZNAME[ABSENDER] || ABSENDER)) + '</b>», bei «Ich» in der Auswahl und unter deinen Rechnungen als «<b class="mein-vn">' + esc(rufname()) + '</b>». Trägst du oben einen Namen ein, gilt er an allen drei Stellen.</p>' +
     '<label class="ink-fr">Mailadresse<input type="email" data-mein="mail" maxlength="80" autocomplete="email" value="' + esc(m.name === ABSENDER ? m.mail || "" : "") + '"></label>' +
+    '<label class="ink-sw"><input type="checkbox" data-meld="1"' + (meldAn() ? " checked" : "") + '> 📧 Mail, wenn im TSCHENT-O-MAT etwas zu tun ist</label><p class="hint">Du bekommst eine Mail, sobald etwas ansteht: Anreise-Wäsche (7 Tage vor der Anreise), Reinigungs-Checkliste (am Anreisetag), fehlende Liste der Freunde, fällige und überfällige Zahlung. Automatische Benachrichtigungen gibt es nur per Mail, nicht per WhatsApp. Ist der Schalter aus, erfährst du nichts davon, bis du den TSCHENT-O-MAT selbst öffnest.</p><p class="hint meld-msg" role="status"></p>' +
     '<label class="ink-fr">TWINT-Nummer<input type="tel" data-mein="twint" maxlength="20" inputmode="tel" autocomplete="tel" placeholder="z. B. 079 123 45 67" value="' + esc(inkTwint()) + '"></label>' +
     '<label class="ink-fr">IBAN (für Überweisungen deiner Freunde)<input type="text" data-mein="iban" maxlength="42" autocomplete="off" placeholder="CH00 0000 0000 0000 0000 0" value="' + esc(inkIban()) + '"></label>' +
     '<p class="hint">TWINT-Nummer und IBAN stehen in den Rechnungen an deine Freunde («💰 Geld einsammeln»).</p>' +
@@ -6805,6 +6807,21 @@ document.getElementById("btnMein").addEventListener("click", () => {
   const k = document.getElementById("meinKasten"), an = k.hidden, kn = document.getElementById("btnMein");
   if (an) { setHilfe(false); hilfeZuklappen(); setRechner(false); setChem(false); meinZeigen(); }
   k.hidden = !an; kn.classList.toggle("on", an); kn.setAttribute("aria-expanded", an ? "true" : "false");
+});
+function meldAn() { try { return localStorage.getItem("tm2_meld:" + ABSENDER) === "1"; } catch (e) { return false; } }   // Mail-Benachrichtigungen (seit 3.17.0.0, Wänu)
+document.getElementById("meinProfil").addEventListener("change", async (e) => {
+  if (!e.target.matches("[data-meld]")) return;
+  const cb = e.target, an = cb.checked, msg = document.querySelector("#meinProfil .meld-msg"), m = mailLokal() || {};
+  if (an && !TEST_MODUS && !(m.name === ABSENDER && m.mail)) { cb.checked = false; if (msg) msg.textContent = "⚠️ Bitte zuerst oben die Mailadresse eintragen und «💾 Speichern» tippen."; return; }
+  cb.disabled = true; if (msg) msg.textContent = "⏳ Wird gespeichert …";
+  try {
+    if (an && !TEST_MODUS && !m.gesendet) await gmPost({ a: "mail", name: ABSENDER, mail: m.mail });   // Mailadresse sicher im Briefkasten
+    const j = await gmPost({ a: "melden", name: ABSENDER, an: an, test: TEST_MODUS });
+    if (j && j.ok === false) throw new Error(j.fehler || "Fehler");
+    try { localStorage.setItem("tm2_meld:" + ABSENDER, an ? "1" : "0"); } catch (er) {}
+    if (msg) msg.textContent = an ? "✅ Eingeschaltet. Du bekommst eine Mail, sobald etwas zu tun ist." + (TEST_MODUS ? " (Testversion: Die Mails gehen an die Eltern.)" : "") : "✅ Ausgeschaltet.";
+  } catch (er) { cb.checked = !an; if (msg) msg.textContent = "⚠️ Das hat nicht geklappt: " + (er.message || er) + " Bitte später nochmals versuchen."; }
+  cb.disabled = false;
 });
 document.getElementById("meinProfil").addEventListener("change", (e) => { if (e.target.matches("[data-ruf-fr]")) { try { localStorage.setItem("tm2_rufFr:" + ABSENDER, e.target.checked ? "1" : "0"); } catch (er) {} INK_SIG = ""; render(); return; }   // Rufnamen der Freunde (seit 3.16.0.0)
   if (!e.target.matches("[data-ink-trink]")) return; try { localStorage.setItem("tm2_inkTrink:" + ABSENDER, e.target.checked ? "1" : "0"); } catch (er) {} INK_SIG = ""; inkZeigen(); });
