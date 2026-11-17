@@ -261,6 +261,7 @@ if (TEST_MODUS) {
   .zchips.mfg-z { margin-bottom: 6px; }   /* Namen-Chips gleich hoch wie alle Chips (seit 3.17.6.4, Wänu; vorher kleiner in einer Zeile) */
   .mfg-bett { font-size: .9em; margin: 4px 0 2px; }
   .zchip[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+  .zchip.kk-fr { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; cursor: default; }   /* Kleinkind der Freunde im Kinderbettchen, fest (seit 3.17.10.1) */
   .zchip[style*="--pc"][aria-pressed="true"] { background: var(--pc); border-color: var(--pc); color: #fff; } .zchip[style*="--pc:#C9A227"][aria-pressed="true"] { color: #111; }   /* Farbe der Partei schon beim Antippen (seit 3.17.6.0) */
   .gm-f[style*="--pc"] { box-shadow: inset 6px 0 0 var(--pc); }
   .field.chipfeld > select { display: none; } .rein-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 6px; } .rein-chips .zchip:disabled { opacity: .45; cursor: default; }
@@ -271,7 +272,7 @@ if (TEST_MODUS) {
   .field.missing .zchip:not(:disabled):not([aria-pressed="true"]), .gm-pt.missing .zchip:not(:disabled):not([aria-pressed="true"]) { border-color: var(--missing-line); }
   .gm-ptbox { border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px 4px; margin: 8px 0; } .gm-ptbox .gm-pt { padding: 6px 0; border-top: 1px solid rgba(127,127,127,.25); } .gm-ptbox .gm-pt-n { font-weight: 700; } .gm-ptbox[hidden], .gm-ptbox .gm-pt[hidden] { display: none; }
   .gm-pt.vorschlag .zchip[aria-pressed="true"] { background: transparent; color: var(--accent); border: 2px dashed var(--accent); } .gm-pt-okw { margin: 6px 0 8px; } .gm-pt-frage { margin: 0 0 6px; font-weight: 700; } .gm-pt-okw .gm-pt-ok { border: 2px solid var(--missing-line); }   /* «Passt der Vorschlag?» mit orangem Rand (seit 3.17.6.6) */   /* Vorschlag nach Nachname (seit 3.10.3.0) */
-  .gm-pt select { display: none; } .gm-f { position: relative; } .gm-kkx { position: absolute; top: -26px; right: 8px; min-width: 40px; min-height: 40px; padding: 0 10px; border: 1px solid var(--line); border-radius: 20px; background: var(--bg, #111); color: inherit; font-size: 1.05rem; cursor: pointer; } .gm-kkx.frag { background: var(--error-line, #c0392b); border-color: var(--error-line, #c0392b); color: #fff; font-weight: 700; font-size: .95rem; }   /* ✕ rund, beim Freund mit Rückfrage «Entfernen?» (seit 3.17.3.0) */ .gm-kkdazu { margin: 6px 0 10px; } .hp { display: block; height: .6em; } .gm-pt .zchips { margin: 4px 0; }   /* Partei als Chips (seit 3.9.5.7) */
+  .gm-pt select { display: none; } .gm-f { position: relative; } .gm-kkx { position: absolute; top: 8px; transform: translateY(-100%); right: 8px; min-width: 40px; min-height: 40px; padding: 0 10px; border: 1px solid var(--line); border-radius: 20px; background: var(--bg, #111); color: inherit; font-size: 1.05rem; cursor: pointer; } .gm-kkx.frag { background: var(--error-line, #c0392b); border-color: var(--error-line, #c0392b); color: #fff; font-weight: 700; font-size: .95rem; }   /* ✕ rund, beim Freund mit Rückfrage «Entfernen?» (seit 3.17.3.0) */ .gm-kkdazu { margin: 6px 0 10px; } .hp { display: block; height: .6em; } .gm-pt .zchips { margin: 4px 0; }   /* Partei als Chips (seit 3.9.5.7) */
   .gm-ptbox .gm-pt { display: none !important; }   /* Zeilen bleiben für die Werte, sichtbar sind die Inseln (seit 3.17.1.0) */
   .gm-ins { margin: 6px 0 10px; } .ins-i, .ins-o, .ins-neu { border-radius: 10px; padding: 6px 8px 8px; margin: 0 0 8px; }
   .ins-i { border: 2px solid var(--ic); background: color-mix(in srgb, var(--ic) 16%, transparent); } .ins-i.vs { border-style: dashed; }
@@ -614,13 +615,13 @@ if (TEST_MODUS) {
   .cal-leg .l-fest { border-color: var(--fest-line); background: var(--fest-bg); }
   .cal-leg .l-ruhe { border-color: var(--ruhe-line); background: var(--ruhe-bg); }
   .cal-leg .l-spitz { border-color: var(--spitz-line); background: var(--spitz-bg); }
-  a.btn, button.btn, span.btn { font: inherit; font-weight: 700; color: var(--accent); background: transparent; border: 2px solid var(--accent); border-radius: 6px; min-height: 48px; padding: 8px 14px; cursor: pointer; display: inline-flex; align-items: center; text-decoration: none; }
+  a.btn, button.btn, span.btn { font: inherit; font-weight: 700; color: var(--accent); background: transparent; border: 2px solid var(--accent); border-radius: 6px; min-height: 48px; padding: 8px 14px; cursor: pointer; display: flex; align-items: center; text-decoration: none; box-sizing: border-box; width: 100%; justify-content: center; text-align: center; flex: 1 1 max-content; min-width: min(100%, max-content); }   /* Knöpfe volle Breite, Text mittig; nebeneinander nur, wenn alle einzeilig Platz haben (seit 3.17.8.1, Wänu) */
   .btn.off, button.btn:disabled { opacity: 0.45; cursor: not-allowed; }
   .pay .btns { display: flex; flex-direction: column; gap: 10px; align-self: stretch; width: 100%; }
   .pay .btns .btn, .pay > button, .pay > .btns > button { width: 100%; box-sizing: border-box; justify-content: center; text-align: center; gap: 10px; min-height: 52px; border-radius: 6px; }
   .pay > button { align-self: stretch; display: flex; align-items: center; }
   .pay .field { align-self: stretch; width: 100%; }
-  .wa { flex: none; }
+  .wa { flex: none; } .btn > .bt { flex: 0 1 auto; min-width: 0; }   /* Text neben dem Symbol so breit wie die längste Zeile, Symbol sitzt direkt daneben (seit 3.17.8.1) */
   #trinkOk { width: 100%; min-height: 52px; box-sizing: border-box; font: inherit; font-weight: 700; color: var(--accent); background: transparent; border: 2px solid var(--accent); border-radius: 6px; padding: 8px 14px; cursor: pointer; }
   .note { background: var(--note-bg); border-radius: 6px; padding: 10px 12px; font-size: var(--t-text); margin: 0; }
 
@@ -913,8 +914,8 @@ if (TEST_MODUS) {
   .todo-d, .todo-d > summary, .todo-d .todo-box { color: var(--fg); font-size: .9rem; }
   .todo-d > summary { cursor: pointer; font-weight: 700; min-height: 44px; display: flex; align-items: center; gap: 6px; }
   .cp-zeile { display: flex; flex-wrap: wrap; gap: .4rem .5rem; align-items: center; margin: .3rem 0; }
-  .cp-zeile code { flex: 1 1 150px; min-width: 0; font-size: .72rem; line-height: 1.3; word-break: normal; overflow-wrap: break-word; }
-  .cp-zeile .btn { flex: none; width: auto; padding: .35rem .6rem; }
+  .cp-zeile code { flex: 1 1 max-content; min-width: min(100%, max-content); font-size: .72rem; line-height: 1.3; word-break: normal; overflow-wrap: break-word; }
+  .cp-zeile { flex-direction: column; align-items: stretch; } .cp-zeile .btn { padding: .35rem .6rem; }   /* Kopieren wie alle Knöpfe: neben dem Text nur, wenn beides einzeilig passt, sonst volle Breite darunter (seit 3.17.8.2) */
   #btnAnreise[hidden], #btnCheck[hidden] { display: none; }
   .jahr-g { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
   #ovJahrIn { gap: 10px; padding-bottom: 8px; }
@@ -984,6 +985,10 @@ if (TEST_MODUS) {
   #bestKasten .ps-in { padding-bottom: 6px; }
   #bestKasten .ps-hist { margin-top: 10px; display: flex; flex-direction: column; }
   #bestKasten .ps-hist > b { font-size: .9rem; margin-bottom: 2px; }
+  #bestKasten .ps-zr { display: flex; align-items: stretch; border-bottom: 1px solid rgba(127,127,127,0.3); }
+  #bestKasten .ps-zr > .ps-z { border-bottom: 0; flex: 1 1 auto; min-width: 0; }
+  #bestKasten .ps-del { flex: 0 0 auto; min-width: 44px; min-height: 36px; background: none; border: 0; color: inherit; font-size: 1rem; cursor: pointer; opacity: .75; }
+  #bestKasten .ps-del:hover, #bestKasten .ps-del:focus-visible { opacity: 1; }
   #bestKasten .ps-z { display: flex; align-items: center; gap: 8px; width: 100%; min-height: 36px; padding: 4px 6px; background: none; border: 0; border-bottom: 1px solid rgba(127,127,127,0.3); color: inherit; font: inherit; font-size: .9rem; text-align: left; cursor: pointer; }
   #bestKasten .ps-h { color: var(--gruen); font-weight: 700; width: 1.4em; text-align: center; }
   #bestKasten .todo-grau { opacity: .55; }
@@ -1398,6 +1403,22 @@ if (TEST_MODUS) {
   .fv-fuss { position: sticky; bottom: -16px; z-index: 2; background: var(--bg); padding: 4px 0 16px; margin-bottom: -16px; }
   .fv-ctl { display: flex; gap: 8px; margin-top: 4px; }
   .fv-ctl button { flex: 1 1 0; min-width: 0; align-self: stretch; text-align: center; padding: 8px 6px; }
+
+  /* Einheitliche Rahmen und Knöpfe (seit 3.17.8.1, Wänu: «immer gewisse Regeln einhalten»): Rahmen innen 12 px, Rahmen untereinander 10 px */
+  :root { --rp: 12px; --rg: 10px; }
+  .note.h, .notice, .card, .pay, .gm-k .gm-f, .gm-ptbox, .zielbox, .todo-box, .afr-box, #bestKasten .vk, #bestKasten .ps-offen, .vh, .fs-karte, .fv-cap, .exsel, .rt-z, .kf-form, .ink-b.mein-teil { padding: var(--rp) !important; margin-left: 0 !important; margin-right: 0 !important; box-sizing: border-box; }
+  .card { gap: var(--rg); }
+  .mein-st-b > * { margin-top: var(--rg) !important; } .mein-st-b > *:first-child { margin-top: 0 !important; }
+  .mein-st-b > .absage, #absageBox { margin-top: var(--rg); } #absageBox > p, #absageBox > .hinweis, .mein-st .absage p { margin-left: 0; margin-right: 0; padding-left: 0; }
+  :is(.note.h, .notice, .pay) + :is(.note.h, .notice, .pay, .btn) { margin-top: var(--rg); }
+  :has(> .btn ~ .btn) { flex-wrap: wrap; }
+  /* Ausnahmen: Kalenderblase, Streifen «Zurück zu Papi», kleine Symbolknöpfe */
+  #calBlase a.btn, #calBlase button.btn, #kindStreifen .btn { display: inline-flex; width: auto; flex: 0 1 auto; min-width: 0; }
+  /* Listen-Knöpfe wie «Bezahlt am»: Text mittig, Zahl rechts */
+  .li-k .li-b { position: relative; flex-direction: column; justify-content: center; text-align: center; gap: 2px; padding-left: 44px; padding-right: 44px; }
+  #bestKasten .vk-acts { display: flex; flex-wrap: wrap; gap: var(--rg); }   /* zwei Knöpfe nebeneinander nur, wenn beide einzeilig passen */
+  .gm-key { display: flex; flex-direction: column; gap: 8px; } .gm-key input { width: 100%; box-sizing: border-box; min-height: 48px; }
+  .li-k .li-b .alarm-n { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); margin: 0; }
 </style>
 
 </head>
@@ -1608,7 +1629,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.17.8.0";
+let VERSION = "3.17.10.2";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1740,6 +1761,7 @@ function derive(s) {
   const VERB = s.art === ART_V && s.verbOK === true;
   const STAF = s.art === ART_S && s.selbstOK === true;
   const frei = (LG || VERB || STAF) ? 0 : Math.max(0, P.maxPersonen - FP);
+  const freiW = frei > 0 ? Math.min(frei + Math.max(0, nz(s.fkk) - (nz(s.gaeste) > 0 ? nz(s.gkk) : 0)), 7) : 0;   // wählbar bei «Freunde»: Kleinkinder in der Liste brauchen kein Bett (seit 3.17.10.1, Wänu)
   const GE = Math.min(Math.max(0, nz(s.gaeste) + (nz(s.gaeste) > 0 ? nz(s.gkk) : 0) - nz(s.fkk)), frei);   // gkk: Zeilen «Kleinkind ohne Bett» unter den Freunden (seit 3.10.4.0)   // fkk: Kleinkinder der Freunde (unter 2½, ohne Bett, gratis; seit 3.7.0.0)
   const PT = FP + GE;
   const voll = base + GE > P.sparMaxPers;
@@ -1774,9 +1796,9 @@ function derive(s) {
     else FA = RE * ER / (ER + GE);
   }
   const GS = GE > 0 ? (RE - FA) / GE : 0;
-  if (SOND && !SOND.pa) return { SOND0: true, VERB, LG, LUE, lock, voll, base, kkMax, kkMin, kkFix, KK, sp, sparLock, sparGrund, FP, ER, frei, GE, PT, ZE, SO, SM, SB, LR, FN0, FN, GN, HN, WN, PN, nights, UE, AF, AG, RE, FA, GS };   // Sonderbuchung mit normalen Preisen (seit 3.14.1.0): nur ohne Mindestnächte
-  if (SOND) return sondPatch({ VERB, LG, LUE, lock, voll, base, kkMax, kkMin, kkFix, KK, sp, sparLock, sparGrund, FP, ER, frei, GE, PT, ZE, SO, SM, SB, LR, FN0, FN, GN, HN, WN, PN, nights, UE, AF, AG, RE, FA, GS }, s);
-  return { VERB, LG, LUE, lock, voll, base, kkMax, kkMin, kkFix, KK, sp, sparLock, sparGrund, FP, ER, frei, GE, PT, ZE, SO, SM, SB, LR, FN0, FN, GN, HN, WN, PN, nights, UE, AF, AG, RE, FA, GS };
+  if (SOND && !SOND.pa) return { SOND0: true, VERB, LG, LUE, lock, voll, base, kkMax, kkMin, kkFix, KK, sp, sparLock, sparGrund, FP, ER, frei, freiW, GE, PT, ZE, SO, SM, SB, LR, FN0, FN, GN, HN, WN, PN, nights, UE, AF, AG, RE, FA, GS };   // Sonderbuchung mit normalen Preisen (seit 3.14.1.0): nur ohne Mindestnächte
+  if (SOND) return sondPatch({ VERB, LG, LUE, lock, voll, base, kkMax, kkMin, kkFix, KK, sp, sparLock, sparGrund, FP, ER, frei, freiW, GE, PT, ZE, SO, SM, SB, LR, FN0, FN, GN, HN, WN, PN, nights, UE, AF, AG, RE, FA, GS }, s);
+  return { VERB, LG, LUE, lock, voll, base, kkMax, kkMin, kkFix, KK, sp, sparLock, sparGrund, FP, ER, frei, freiW, GE, PT, ZE, SO, SM, SB, LR, FN0, FN, GN, HN, WN, PN, nights, UE, AF, AG, RE, FA, GS };
 }
 
 // Lücke mit Freunden: kleinste Zahl Freunde, bei der die Übernachtungen den Mindestbetrag erreichen (zu Normalpreisen: Freund 70, Zimmer 1 gebucht)
@@ -1801,8 +1823,8 @@ function check(s, d) {
   if (s.staffelOffen === true && s.art === ART_N && d.GE === 0 && !(d.LUE && P.lueckeGastNacht > 0)) return "In einer laufenden Staffel ist «Normal» nur mit Freunden möglich. Bitte Freunde wählen oder die Staffel.";
   if (s.festMin === true && P.festMinGaeste > 0 && d.GE < P.festMinGaeste) return "Im " + festTxt() + " mindestens " + P.festMinGaeste + " Gäste (höchstens " + P.maxPersonen + " Personen mit Bett)";
   if (d.LUE && P.lueckeGastNacht > 0 && d.GE > 0 && d.nights < P.lueckeGastMinNaechte) return "Mit Freunden in der Lücke mindestens " + P.lueckeGastMinNaechte + " Nächte. Bitte mehr Nächte wählen oder ohne Freunde buchen.";
-  if (s.gaeste > d.frei && d.frei === 0) return "Kein Platz mehr für Freunde. Bitte Freunde neu wählen.";
-  if (s.gaeste > d.frei) return "Nur noch " + d.frei + " Freund frei. Bitte Freunde neu wählen.";
+  if (s.gaeste > d.freiW && d.frei === 0) return "Kein Platz mehr für Freunde. Bitte Freunde neu wählen.";
+  if (s.gaeste > d.freiW) return "Nur noch " + d.frei + " Freund frei. Bitte Freunde neu wählen.";
   if (d.SM && s.selbst === "Ja" && ARR && istStaffelStart(ARR) && W_OPTS.indexOf(s.waesche) < 0) return "Bitte wählen: Wie kommt die benutzte Wäsche zurück";
   if (d.GE > 0 && s.kinderPflicht === true && typeof s.kinder !== "number") return "Bitte wählen: Kinder von 6 bis 15 Jahren unter den Freunden";
   if (d.GE > 0 && !d.lock && !d.voll && !d.SOND && !isYN(s.zimmer)) return "Bitte wählen: Freund oder Freundin im selben Zimmer";
@@ -1967,9 +1989,20 @@ const alterAm = (geb, tag) => { const a = Number(tag.slice(0, 4)) - Number(geb.s
 function freundeListe(n) { const a = gmEntwurf(); return Array.from({ length: Math.max(0, n) }, (_, i) => a[i] || {}); }   // immer n Einträge, fehlende leer
 const KK_MONATE = 30;   // Freunde bis 2½ Jahre: Kleinkind ohne Bett, gratis (seit 3.7.0.0)
 function istKleinkind(geb, tag) { const g = new Date(geb + "T12:00:00"); g.setMonth(g.getMonth() + KK_MONATE); return dkey(g.getFullYear(), g.getMonth(), g.getDate()) > tag; }
-function listeN(d) { const g = Math.max(0, Math.min(nz(S.gaeste), nz(d.frei), GM_MAX)); return g > 0 ? g + nz(S.gkk) : 0; }   // Zeilen der Liste: Freunde (mit Bett) + Kleinkinder ohne Bett (seit 3.10.4.0)
+function listeN(d) { const g = Math.max(0, Math.min(nz(S.gaeste), nz(d.freiW), GM_MAX)); return g > 0 ? g + nz(S.gkk) : 0; }   // Zeilen der Liste: Freunde (mit Bett) + Kleinkinder ohne Bett (seit 3.10.4.0)
 function listeZ() { const g = Math.min(nz(S.gaeste), GM_MAX); return g > 0 ? g + nz(S.gkk) : 0; }
 function kkZeile(i) { return i >= Math.min(nz(S.gaeste), GM_MAX); }   // Zeile «Kleinkind ohne Bett» (unter den Freunden mit Bett)
+function kkFrL() {   // Kleinkinder der Freunde im Kinderbettchen: [{i, nm, pc}] (seit 3.17.10.0, Chips seit 3.17.10.1)
+  try { if (!listeModus()) return []; const n = listeZ(), l = freundeListe(n), r = []; l.forEach((f, i) => { if (kkZeile(i) || (f.geb && ARR && istKleinkind(f.geb, ARR))) r.push({ i, nm: f.vorname ? rn(f) : "", pc: freundFarbe(i, l, n) }); }); return r; } catch (e) { return []; }
+}
+function kkFreunde() { return kkFrL().map((x) => x.nm); }
+function kkFrChips() { return kkFrL().map((x) => '<span class="zchip kk-fr" role="img" aria-pressed="true" aria-label="' + esc((x.nm || "Kleinkind") + " (Freunde) im Kinderbettchen") + '"' + pcStil(x.pc) + ">" + esc(x.nm || "Kleinkind") + "<small>🛏️ Kinderbettchen</small></span>").join(""); }
+function kkFrei() { return Math.max(0, 2 - kkFreunde().length); }   // Kinderbettchen, die der Familie bleiben
+function kkFrHint() {
+  const k = kkFreunde(); if (!k.length) return "";
+  const nm = k.filter(Boolean), wer = nm.length === k.length ? nm.map(esc).join(" und ") : (k.length === 1 ? "ein Kleinkind" : "Kleinkinder");
+  return '<p class="hint">🛏️ ' + (k.length >= 2 ? "Beide Kinderbettchen sind" : "1 Kinderbettchen ist") + " durch " + wer + " (Freunde) belegt" + (k.length >= 2 ? "." : ", für die Familie bleibt noch eines.") + "</p>";
+}
 function kkBettchen(n) { const l = freundeListe(n); let k = 0; l.forEach((f, i) => { if (kkZeile(i) || (f.geb && ARR && istKleinkind(f.geb, ARR))) k++; }); return k; }   // Kleinkinder der Freunde (auch noch leere Zeilen)
 function fkkZaehlen() { if (!listeModus() || !ARR) return 0; const n = listeZ(); return freundeListe(n).filter((f) => f.geb && istKleinkind(f.geb, ARR)).length; }
 function zahlendeIdx(n) { if (!listeModus() || !ARR || !n) return null; const l = freundeListe(n); if (l.some((f) => !f.geb)) return null; return l.map((f, i) => istKleinkind(f.geb, ARR) ? -1 : i).filter((i) => i >= 0); }
@@ -2112,9 +2145,12 @@ function insZeichnen() {
   if (INS_SEL !== null && zi.indexOf(INS_SEL) < 0) INS_SEL = null;
   const teil = {}; zi.forEach((j) => insGruppen(j, l, zi).forEach((x) => { (gr[x.g] = gr[x.g] || []).push(j); if (x.a) teil[x.g + "|" + j] = x.a; }));
   let GI = "";   // aktuelle Insel beim Zeichnen (für den Anteil)
+  const KKI = {}, nmK = (j) => String((l[j] && l[j].name) || "").trim().toLowerCase();   // Kleinkinder der Freunde bei den Eltern (gleicher Nachname), nur zum Anzeigen (seit 3.17.10.2, Wänu)
+  kkFrL().forEach((x) => { const e = zi.find((j) => al(j) >= 18 && nmK(j) && nmK(j) === nmK(x.i)); let g = "kk"; if (e !== undefined) { const gg = insGruppe(e, l, zi); if (gg !== "o") g = gg; }
+    KKI[g] = (KKI[g] || "") + '<span class="ins-p ins-fix kk-ins"' + (g !== "kk" ? "" : ' style="--ic:' + INS_KIND + '"') + ">" + esc(x.nm || "Kleinkind") + "<small>🛏️ Kinderbettchen</small></span>"; });
   const pers = (j, f) => { const a = teil[GI + "|" + j]; return '<button type="button" class="ins-p' + (INS_SEL === j ? " sel" : "") + (a ? " geteilt" : "") + '" data-insp="' + j + '"' + (f ? ' style="--ic:' + f + '"' : "") + ">" + esc(vnK(l[j]) || "Freund/in " + (j + 1)) + (al(j) < 18 ? "<small>" + al(j) + " Jahre" + (a ? " · " + a : "") + "</small>" : "") + "</button>"; };
   const sort = (a) => a.sort((x, y) => (al(x) < 18) - (al(y) < 18) || x - y);
-  const insel = (key, f, t, gl, vor, vs) => (GI = String(key), "") + '<div class="ins-i' + (vs ? " vs" : "") + '" data-insi="' + key + '" style="--ic:' + f + '"><p class="ins-t">' + t + (vs ? ' <span style="font-weight:400">· Vorschlag</span>' : "") + '</p><div class="ins-ps">' + (vor || "") + sort(gl).map((j) => pers(j, f)).join("") + "</div></div>";
+  const insel = (key, f, t, gl, vor, vs) => (GI = String(key), "") + '<div class="ins-i' + (vs ? " vs" : "") + '" data-insi="' + key + '" style="--ic:' + f + '"><p class="ins-t">' + t + (vs ? ' <span style="font-weight:400">· Vorschlag</span>' : "") + '</p><div class="ins-ps">' + (vor || "") + sort(gl).map((j) => pers(j, f)).join("") + (KKI[key] || "").replace(/class="ins-p ins-fix kk-ins">/g, 'class="ins-p ins-fix kk-ins" style="--ic:' + f + '">') + "</div></div>";
   let h = (INS_MSG ? '<p class="notice">' + esc(INS_MSG) + "</p>" : "") + '<p class="hint">' + (INS_SEL !== null ? "Tippe jetzt auf die Partei, zu der " + esc(rn(l[INS_SEL]) || "diese Person") + " gehört, oder auf «Eigene Partei». Nochmals auf " + esc(rn(l[INS_SEL]) || "die Person") + " tippen bricht ab." : "Tippe eine Person an und danach ihre Partei, oder zieh sie mit dem Finger hinüber. Erwachsene brauchen eine Partei. Kinder zahlen nie selbst, für sie gilt, wer für sie zahlt: Ziehst du ein Kind in eine Partei, zahlen deren Erwachsene, sonst wählst du es weiter unten. Nimmst du ein Kind in die Familie, zahlst du für es.") + "</p>";
   if (gr.o) h += '<div class="ins-o"><p class="ins-t">🟠 Noch zuordnen</p><div class="ins-ps">' + sort(gr.o).map((j) => pers(j)).join("") + "</div></div>";
   const geschw = famGeschw().map((pp) => '<div class="ins-i" style="--ic:' + famFarbe(pp) + '"><p class="ins-t">' + famParteiText(pp, 1, false) + ' <span style="font-weight:400">(Partei ' + ((famParteien() || []).findIndex((q) => q.h.m[0] === pp.h.m[0]) + 1) + ')</span></p><div class="ins-ps">' + pp.namen.map((x) => '<span class="ins-p ins-fix" style="--ic:' + famFarbe(pp) + '">' + esc(x) + "</span>").join("") + "</div></div>").join("");   // Haushalte der Geschwister: eigene Insel, nicht zum Hineinziehen (seit 3.17.6.0)
@@ -2124,6 +2160,7 @@ function insZeichnen() {
     h += insel(k, f, "Partei von " + esc(rn(l[k]) || vnK(l[k])) + (gl.some((j) => al(j) < 18) ? ' <span style="font-weight:400">· zahlt für ' + (gl.filter((j) => al(j) < 18).length > 1 ? "die Kinder" : "das Kind") + "</span>" : ""), gl, "", gl.some((j) => l[j].zv)); });
   Object.keys(gr).filter((g) => g !== "o" && g !== "fam" && ptKoepfe(l, zi).indexOf(Number(g)) < 0).forEach((g) => {   // Kind ohne Partei: Zahler wählst du unten
     h += insel(g, INS_KIND, esc(rn(l[g])) + ' <span style="font-weight:400">· wer für ' + esc(rn(l[g])) + ' zahlt, wählst du weiter unten</span>', gr[g]); });
+  if (KKI.kk) h += '<div class="ins-i" style="--ic:' + INS_KIND + '"><p class="ins-t">Kleinkind ohne Bett</p><div class="ins-ps">' + KKI.kk + "</div></div>";
   h += '<div class="ins-neu" data-insi="neu">＋ Eigene Partei</div>';
   c.innerHTML = h; INS_MSG = "";
 }
@@ -2225,8 +2262,9 @@ function gmRechZeigen(d) {
     const p = fs[i] && fs[i].querySelector(".gm-alt"); const zuAlt = kkZeile(i) && f.geb && ARR && !istKleinkind(f.geb, ARR); if (p) p.classList.toggle("gm-warn", !!zuAlt); if (fs[i]) fs[i].classList.toggle("gm-alt-rot", !!zuAlt); if (p) p.textContent = zuAlt ? "⚠️ " + (f.vorname || "Dieses Kind") + " ist älter als 2½ Jahre und braucht ein Bett. Zähle " + (f.geschlecht === "m" ? "ihn" : f.geschlecht === "w" ? "sie" : "das Kind") + " oben bei «Freunde» mit und entferne diese Zeile mit ✕." : f.geb && ARR ? (istKleinkind(f.geb, ARR) ? "Kleinkind am Anreisetag: ohne Bett, gratis" : alterAm(f.geb, ARR) + (alterAm(f.geb, ARR) === 1 ? " Jahr" : " Jahre") + " am Anreisetag" + (alterAm(f.geb, ARR) < 18 ? ", minderjährig" : "")) : ""; });
   fs.forEach((el, i) => { const f = freundFarbe(i, l, n); if (f) el.style.setProperty("--pc", f); else el.style.removeProperty("--pc"); });   // Farbe der Partei schon in der Liste (seit 3.17.6.0)
   { const kb = box.querySelector("[data-gmkk]"), kh = box.querySelector(".gm-kkh"), belegt = nz(S.kk) + kkBettchen(n);
-    if (kb) kb.hidden = belegt >= 2;   // beide Bettchen belegt: Knopf weg, nur der Hinweis (seit 3.10.4.1, Wänu)
-    if (kh) kh.textContent = belegt > 2 ? "Es hat nur 2 Kinderbettchen, Familie und Freunde zusammen. Bitte ein Kleinkind entfernen." : belegt >= 2 ? "👶 Beide Kinderbettchen sind belegt, weitere Kleinkinder sind nicht möglich." : "Bringt ein Freund ein Kind bis 2½ Jahre mit? Es schläft im Kinderbettchen, braucht kein Bett und ist gratis. Es hat 2 Kinderbettchen, Familie und Freunde zusammen."; }
+    const voll = nz(d && d.GE) >= nz(d && d.frei) || nz(S.gaeste) >= GM_MAX;   // Knopf nur, wenn alle Betten wirklich belegt sind (Kleinkinder in der Liste ohne Bett; seit 3.17.10.1, Wänu)
+    if (kb) kb.hidden = belegt >= 2 || !voll;   // beide Bettchen belegt: Knopf weg, nur der Hinweis (seit 3.10.4.1, Wänu)
+    if (kh) kh.textContent = belegt > 2 ? "Es hat nur 2 Kinderbettchen, Familie und Freunde zusammen. Bitte ein Kleinkind entfernen." : belegt >= 2 ? "👶 Beide Kinderbettchen sind belegt, weitere Kleinkinder sind nicht möglich." : !voll ? "" : "Alle Betten sind belegt. Ein Kind bis 2½ Jahre kannst du trotzdem dazunehmen, es schläft im Kinderbettchen und ist gratis. Es hat 2 Kinderbettchen, Familie und Freunde zusammen."; if (kh) kh.hidden = !kh.textContent; }
   const zi = zahlendeIdx(n);   // Feld «Gehört zur Partei von» (seit 3.8.0.0): nur erwachsene Freunde ohne eigene Zuordnung als Ziel
   const pts = box.querySelectorAll(".gm-ptbox .gm-pt");
   fs.forEach((el0, i) => {
@@ -2286,7 +2324,7 @@ function eigenHtml() {   // Chips des eigenen Haushalts, «Ich» fest (seit 3.9.
     leute.map((x) => chip('data-fe="' + esc(x) + '"', sel.indexOf(x) >= 0, esc(x) + (kk.indexOf(x) >= 0 ? "<small>🛏️ Kinderbettchen</small>" : ""), sel.indexOf(x) < 0 && voll && (f.k.indexOf(x) < 0 || kk.length >= 2))).join("") +
     '</div>' + (erwWarnZeigen() ? '<p class="hint" style="color:var(--error-line);font-weight:600">Mindestens eine erwachsene Person muss mitkommen.</p>' : "") + '<p class="hint">Tippe alle an, die mitkommen. Kommst du selbst nicht mit, tippe <span class="hl">Ich</span> ab.</p></div>';
   const enk = f.k.filter((x) => sel.indexOf(x) >= 0);
-  if (enk.length) h += '<div class="field zrech done"><label>👶 Wer schläft im Kinderbettchen?</label><div class="zchips">' + enk.map((x) => chip('data-fkk="' + esc(x) + '"', kk.indexOf(x) >= 0, esc(x), kk.indexOf(x) < 0 ? kk.length >= 2 : voll)).join("") + '</div><p class="hint">Kinder bis etwa 2½ Jahren, höchstens zwei (es hat zwei Kinderbettchen). Sie belegen kein Bett und zählen bei der Reinigung nicht mit. Niemand: nichts antippen.</p></div>';
+  if (enk.length || kkFrL().length) h += '<div class="field zrech done"><label>👶 Wer schläft im Kinderbettchen?</label><div class="zchips">' + kkFrChips() + enk.map((x) => chip('data-fkk="' + esc(x) + '"', kk.indexOf(x) >= 0, esc(x), kk.indexOf(x) < 0 ? kk.length >= kkFrei() : voll)).join("") + '</div>' + kkFrHint() + '<p class="hint">Kinder bis etwa 2½ Jahren, höchstens zwei (es hat zwei Kinderbettchen). Sie belegen kein Bett und zählen bei der Reinigung nicht mit. Niemand: nichts antippen.</p></div>';
   return h;
 }
 function mfgZeigen() {
@@ -2301,11 +2339,11 @@ function mfgZeigen() {
   const reihe = (h) => (HF = hf(h), "") + '<div class="zchips mfg-z">' + (h === eig ? chip('data-ich="1"', ichDa(), 'Ich<small>(' + esc(rufname()) + ")</small>", false) : "") + h.m.filter((x) => x !== ABSENDER).map((x) => chip('data-mfg="' + esc(x) + '"', sel.indexOf(x) >= 0, esc(x) + (kk.indexOf(x) >= 0 ? "<small>🛏️ Kinderbettchen</small>" : ""), voll && sel.indexOf(x) < 0 && (h.e.indexOf(x) < 0 || kk.length >= 2))).join("") + "</div>";
   const betten = (ichDa() ? 1 : 0) + sel.length - kk.length, fehlt = famErwFehlt();
   let h = '<div class="field zrech ' + ((sel.length || ichDa()) && !fehlt ? "done" : "missing") + '"><label>👨‍👩‍👧‍👦 Wer kommt mit?</label>' + reihe(eig) + hs.filter((x) => x !== eig).map(reihe).join("") +
-    '<p class="mfg-bett">🛏️ ' + betten + " von " + P.maxPersonen + " Betten belegt" + (kk.length ? ", dazu " + kk.length + " Kinderbettchen" : "") + "</p>" +
+    '<p class="mfg-bett">🛏️ ' + betten + " von " + P.maxPersonen + " Betten belegt" + (kk.length + kkFreunde().length ? ", dazu " + (kk.length + kkFreunde().length) + " Kinderbettchen" + (kkFreunde().length ? " (davon " + kkFreunde().length + " für Freunde)" : "") : "") + "</p>" +
     (erwWarnZeigen() ? '<p class="hint" style="color:var(--error-line);font-weight:600">Mindestens eine erwachsene Person muss mitkommen.</p>' : "") +
     '<p class="hint">Bitte antippen, höchstens ' + MFG_MAX() + ' Personen mit Bett' + (ichDa() ? " ausser dir" : "") + ' (' + P.maxPersonen + " Betten). Kommst du selbst nicht mit, tippe «Ich» ab. Kleinkinder im Kinderbettchen kommen dazu, bis zwei (es hat zwei Kinderbettchen). Sind alle Betten belegt, kommt ein Enkelkind beim Antippen gleich ins Kinderbettchen. Den Preis pro Nacht zahlt ihr wie immer gemeinsam, die App teilt ihn unter euren Familien auf.</p></div>";
   const enk = [].concat(...hs.map((x) => x.e)).filter((x) => sel.indexOf(x) >= 0);
-  if (enk.length) h += '<div class="field zrech done"><label>👶 Wer schläft im Kinderbettchen?</label><div class="zchips">' + enk.map((x) => chip('data-mkk="' + esc(x) + '"', kk.indexOf(x) >= 0, esc(x), kk.indexOf(x) < 0 ? kk.length >= 2 : voll)).join("") + '</div><p class="hint">Kinder bis etwa 2½ Jahren, höchstens zwei. Sie belegen kein Bett und zählen bei der Reinigung nicht mit, darum hat dann jemand mehr Platz. Ganz Kleine, die bei euch im Bett schlafen, kommen einfach mit, du musst sie oben nicht antippen.</p></div>';
+  if (enk.length || kkFrL().length) h += '<div class="field zrech done"><label>👶 Wer schläft im Kinderbettchen?</label><div class="zchips">' + kkFrChips() + enk.map((x) => (HF = hf(hs.find((q) => q.m.indexOf(x) >= 0) || eig), "") + chip('data-mkk="' + esc(x) + '"', kk.indexOf(x) >= 0, esc(x), kk.indexOf(x) < 0 ? kk.length >= kkFrei() : voll)).join("") + '</div>' + kkFrHint() + '<p class="hint">Kinder bis etwa 2½ Jahren, höchstens zwei. Sie belegen kein Bett und zählen bei der Reinigung nicht mit, darum hat dann jemand mehr Platz. Ganz Kleine, die bei euch im Bett schlafen, kommen einfach mit, du musst sie oben nicht antippen.</p></div>';
   const fp = famParteien();
   if (fp && fp.length > 1) h += '<div class="field zrech done"><label>🤝 Parteien der Familie</label><ol class="pt-info">' + fp.map((pp, i) => '<li><span class="pt-nr" style="background:' + famFarbe(pp) + ';color:' + (pp.eigen ? "#111" : "#fff") + '">' + (i + 1) + "</span><span>" + (i === 0 ? famParteiText(pp, 0, false).replace(/^Du/, "Ich (" + esc(rufname()) + ")") : famParteiText(pp, i, false)) + "</span></li>").join("") + "</ol></div>";
   mb.innerHTML = h;
@@ -2374,8 +2412,8 @@ const FIELDS = [
     hint: () => "Kinder bis etwa 2½ Jahren, höchstens zwei (es hat zwei Kinderbettchen). Sie belegen kein Bett und zählen bei der Reinigung nicht mit.",
     visible: (d) => d.kkMax > 0 && !d.kkFix && !mfgAktiv() && !eigenAktiv(), opts: (d) => range(d.kkMin, d.kkMax) },
   { id: "gaeste", label: "🧑‍🤝‍🧑 Freunde (ausserhalb der Familie)", type: "num",
-    hint: (d) => (d.frei === 0 ? "Es ist kein Platz mehr frei." : (d.frei === 1 ? "Es ist noch 1 Platz frei." : "Noch " + d.frei + " Plätze frei.") + " Maximal " + P.maxPersonen + " Personen mit Bett.") + ((d.LUE && P.lueckeGastNacht > 0) ? (d.nights >= P.lueckeGastMinNaechte ? " In der Lücke sind Freunde möglich, schon ein Freund genügt." : " In der Lücke gehen Freunde ab " + P.lueckeGastMinNaechte + " Nächten. Bitte mehr Nächte wählen oder ohne Freunde buchen.") : "") + (S.festMin ? " Im " + festTxt() + " sind mindestens " + P.festMinGaeste + " Freunde nötig" + (d.frei < P.festMinGaeste ? ", mit dieser Familiengrösse ist das nicht möglich." : ", damit sich die Woche für alle lohnt (Gesamtpreis mindestens " + chf(P.mindestpreisWoche) + " pro 7 Nächte).") : ""),
-    visible: (d) => d.frei > 0 && !(d.LUE && P.lueckeGastNacht > 0 && d.nights < P.lueckeGastMinNaechte), opts: (d) => (S.staffelOffen && S.art === ART_N && !S.festMin && !(d.LUE && P.lueckeGastNacht > 0)) ? range(1, d.frei) : (S.festMin && d.frei >= P.festMinGaeste) ? range(P.festMinGaeste, d.frei) : (d.LUE && P.lueckeGastNacht > 0 ? [0].concat(range(lueckeGaesteMin(d), d.frei)) : range(0, d.frei)) },
+    hint: (d) => (d.frei === 0 ? "Es ist kein Platz mehr frei." : (d.frei === 1 ? "Es ist noch 1 Platz frei." : "Noch " + d.frei + " Plätze frei.") + " Maximal " + P.maxPersonen + " Personen mit Bett. Kleinkinder bis 2½ Jahre zählst du mit, sie schlafen im Kinderbettchen.") + ((d.LUE && P.lueckeGastNacht > 0) ? (d.nights >= P.lueckeGastMinNaechte ? " In der Lücke sind Freunde möglich, schon ein Freund genügt." : " In der Lücke gehen Freunde ab " + P.lueckeGastMinNaechte + " Nächten. Bitte mehr Nächte wählen oder ohne Freunde buchen.") : "") + (S.festMin ? " Im " + festTxt() + " sind mindestens " + P.festMinGaeste + " Freunde nötig" + (d.frei < P.festMinGaeste ? ", mit dieser Familiengrösse ist das nicht möglich." : ", damit sich die Woche für alle lohnt (Gesamtpreis mindestens " + chf(P.mindestpreisWoche) + " pro 7 Nächte).") : ""),
+    visible: (d) => d.frei > 0 && !(d.LUE && P.lueckeGastNacht > 0 && d.nights < P.lueckeGastMinNaechte), opts: (d) => (S.staffelOffen && S.art === ART_N && !S.festMin && !(d.LUE && P.lueckeGastNacht > 0)) ? range(1, d.freiW) : (S.festMin && d.frei >= P.festMinGaeste) ? range(P.festMinGaeste, d.freiW) : (d.LUE && P.lueckeGastNacht > 0 ? [0].concat(range(lueckeGaesteMin(d), d.freiW)) : range(0, d.freiW)) },
   { id: "kinder", label: "🎟️ Wie viele deiner Freunde sind Kinder von 6 bis 15 Jahren?", type: "num",
     hint: () => "Für Freunde fällt in Adelboden die Kurtaxe an, die Gästekarte ist inbegriffen: " + chf2(P.kurtaxe + P.kurtaxeBeherb) + " pro Nacht ab 16 Jahren, " + chf2(P.kurtaxeKind) + " für Kinder von 6 bis 15 Jahren, Kinder unter 6 Jahren zahlen nichts. Es zählt das Alter am Anreisetag. Die Kurtaxe kommt am Schluss zum Preis dazu. Für die Familie ist sie mit der Jahrespauschale der Eltern abgegolten." + (nz(S.kinder) > 0 ? " ⚠️ {{Minderjährig}}: Freunde unter 18 sind minderjährig. Kläre mit ihren Eltern, wer für sie zahlt. Bei der Reinigung «nach Personen» zählen sie voll." : ""),
     visible: (d) => d.GE > 0 && !listeModus(), opts: (d) => range(0, d.GE) },
@@ -2430,7 +2468,7 @@ function normalize() {
   let d = derive(S);
   if (d.LUE && P.lueckeGastNacht > 0 && typeof S.gaeste === "number" && S.gaeste > 0 && S.gaeste < lueckeGaesteMin(d)) { S.gaeste = 0; meld("gaeste", "In der Lücke gehen Freunde ab " + P.lueckeGastMinNaechte + " Nächten. Die Freunde wurden automatisch auf 0 gesetzt."); d = derive(S); }
   if (d.LUE && P.lueckeGastNacht > 0 && d.nights < P.lueckeGastMinNaechte && S.gaeste !== 0) { S.gaeste = 0; d = derive(S); }   // Feld ist ausgeblendet: keine Freunde, nichts zu wählen
-  if (typeof S.gaeste === "number" && S.gaeste > d.frei) {
+  if (typeof S.gaeste === "number" && S.gaeste > d.freiW) {
     if (d.LG) { S.gaeste = 0; meld("gaeste", "Bei der ganzen Lücke sind keine Freunde möglich. Die Freunde wurden automatisch auf 0 gesetzt."); }
     else if (d.frei === 0) { S.gaeste = 0; meld("gaeste", "Kein Platz mehr für Freunde. Die Freunde wurden automatisch auf 0 gesetzt."); }
     else { S.gaeste = null; meld("gaeste", "Es ist nur noch Platz für " + d.frei + " " + gastWort(d.frei) + ". Bitte die Freunde neu wählen."); }
@@ -2492,20 +2530,20 @@ function build() {
         const tg = (arr, v, max) => { const l = (arr || []).slice(), i = l.indexOf(v); if (i >= 0) l.splice(i, 1); else if (l.length < max) l.push(v); return l; };
         if (a) {
           const v = a.getAttribute("data-mfg"), sel = S.mfg || [], kk = S.mfgKK || [], enk = [].concat(...famAlle().map((h) => h.e));
-          if (sel.indexOf(v) < 0 && sel.length - kk.length >= MFG_MAX() && enk.indexOf(v) >= 0 && kk.length < 2) { S.mfg = sel.concat([v]); S.mfgKK = kk.concat([v]); }   // Betten voll: Enkel kommt als Kleinkind ohne Bett dazu (seit 3.9.3.3)
+          if (sel.indexOf(v) < 0 && sel.length - kk.length >= MFG_MAX() && enk.indexOf(v) >= 0 && kk.length < kkFrei()) { S.mfg = sel.concat([v]); S.mfgKK = kk.concat([v]); }   // Betten voll: Enkel kommt als Kleinkind ohne Bett dazu (seit 3.9.3.3)
           else S.mfg = tg(sel, v, MFG_MAX() + kk.length);
           normalize(); render();
         }
-        if (k) { S.mfgKK = tg(S.mfgKK, k.getAttribute("data-mkk"), 2); normalize(); render(); }
+        if (k) { S.mfgKK = tg(S.mfgKK, k.getAttribute("data-mkk"), kkFrei()); normalize(); render(); }
         if (e.target.closest("[data-ich]")) { S.ichMit = !ichDa(); normalize(); render(); return; }   // «Ich» abwählbar (seit 3.9.5.0)
         const fe = e.target.closest("[data-fe]"), fk = e.target.closest("[data-fkk]");   // eigener Haushalt (seit 3.9.4.0)
         if (fe) {
           const v = fe.getAttribute("data-fe"), sel = S.famSel || [], kk = S.famKK || [], enk = (famNamen() || { k: [] }).k;
-          if (sel.indexOf(v) < 0 && sel.length - kk.length >= MFG_MAX() && enk.indexOf(v) >= 0 && kk.length < 2) { S.famSel = sel.concat([v]); S.famKK = kk.concat([v]); }
+          if (sel.indexOf(v) < 0 && sel.length - kk.length >= MFG_MAX() && enk.indexOf(v) >= 0 && kk.length < kkFrei()) { S.famSel = sel.concat([v]); S.famKK = kk.concat([v]); }
           else S.famSel = tg(sel, v, MFG_MAX() + kk.length);
           normalize(); render();
         }
-        if (fk) { S.famKK = tg(S.famKK, fk.getAttribute("data-fkk"), 2); normalize(); render(); }
+        if (fk) { S.famKK = tg(S.famKK, fk.getAttribute("data-fkk"), kkFrei()); normalize(); render(); }
       });
     }
     if (f.id === "zimmer" || f.id === "gaeste") {   // Chips für Zimmer und Zahler (seit 3.7.0.0); Zahler direkt unter der Liste der Freunde (seit 3.7.2.0)
@@ -3881,7 +3919,19 @@ function angebotFit() {   // Schrift der geschlossenen Angebote-Auswahl so verkl
   const w = c.measureText(o.text).width, frei = sel.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - 30;   // 30 px: Platz für den Pfeil
   if (w > frei && frei > 0) sel.style.fontSize = Math.max(base * 0.7, base * frei / w).toFixed(2) + "px";
 }
-window.addEventListener("resize", () => { try { angebotFit(); } catch (e) {} try { kalTitelNeu(); } catch (e) {} });
+window.addEventListener("resize", () => { try { angebotFit(); } catch (e) {} try { kalTitelNeu(); } catch (e) {} knopfSymLater(); });
+// Knöpfe mit Symbol (z. B. WhatsApp): Text in <span class="bt"> mit der Breite der längsten Zeile, damit Symbol und Text gemeinsam mittig stehen (seit 3.17.8.1, Wänu)
+function knopfSym() {
+  document.querySelectorAll(".btn > svg").forEach((sv) => {
+    const b = sv.parentElement; let sp = b.querySelector(":scope > .bt");
+    if (!sp) { const ns = [...b.childNodes].filter((n) => n.nodeType === 3 ? n.textContent.trim() : n.nodeType === 1 && n.tagName !== "svg"); if (!ns.length) return; sp = document.createElement("span"); sp.className = "bt"; b.insertBefore(sp, ns[0]); ns.forEach((n) => sp.appendChild(n)); }
+    sp.style.width = ""; if (!b.offsetParent) return;
+    const r = document.createRange(); r.selectNodeContents(sp); const w = r.getBoundingClientRect().width; if (w) sp.style.width = Math.ceil(w) + 1 + "px";
+  });
+}
+let KS_T = 0; function knopfSymLater() { if (KS_T) return; KS_T = requestAnimationFrame(() => { KS_T = 0; try { knopfSym(); } catch (e) {} }); }
+new MutationObserver(knopfSymLater).observe(document.documentElement, { childList: true, subtree: true });
+document.addEventListener("toggle", knopfSymLater, true); document.addEventListener("click", () => setTimeout(knopfSymLater, 50), true);
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { try { angebotFit(); } catch (e) {} });
 let ANG_KOPF = [], ANG_I = 0;
 setInterval(() => {   // Beschriftung der geschlossenen Auswahl alle 60 Sekunden wechseln (seit 3.2.1.5, vorher 4 s), weich überblendet
@@ -6571,7 +6621,7 @@ function persTitel(key, name, zeile, n, rot, mitMarke, offen, inhalt) {
 }
 function histZeile(x) {   // frühere Buchung als schmale Zeile, die letzte zuoberst
   const off = zahlOffen(x) || waescheOffen(x);
-  return '<button type="button" class="ps-z" data-vk="' + esc(bKey(x)) + '" data-zk="' + esc(x.arr) + '" aria-label="Im Kalender zeigen"><span class="ps-h' + (off ? " off" : "") + '">' + (off ? "🟧" : "✓") + "</span><span>" + esc(fmtTag(x.arr)) + " bis " + esc(fmtTag(x.dep)) + " · " + naechteTxt(x) + (x.betrag > 0 ? " · " + esc(chf(x.betrag)) : "") + "</span></button>";
+  return '<div class="ps-zr"><button type="button" class="ps-z" data-vk="' + esc(bKey(x)) + '" data-zk="' + esc(x.arr) + '" aria-label="Im Kalender zeigen"><span class="ps-h' + (off ? " off" : "") + '">' + (off ? "🟧" : "✓") + "</span><span>" + esc(fmtTag(x.arr)) + " bis " + esc(fmtTag(x.dep)) + " · " + naechteTxt(x) + (x.betrag > 0 ? " · " + esc(chf(x.betrag)) : "") + '</span></button><button type="button" class="ps-del" data-bweg="' + esc(bKey(x)) + '|a" aria-label="Aufenthalt endgültig löschen">🗑️</button></div>';
 }
 function persBlock(name) {
   const h = heuteKey(), alle = BUCH.filter((x) => x.name === name);

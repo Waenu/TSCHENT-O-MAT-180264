@@ -132,6 +132,13 @@ Entscheide Wänu (13.11.2026 spät, nach Mockup im privaten Design-Artefakt «TS
 - 3.16.2.3 (parallel gebaut): Papi «Ansicht als» zeigt bei MFG die Geschwister mit Namen (`famAlle()` aus `tm2_famListe`). Kinder brauchen dafür einen Link mit `&fa=` (ab 3.9.0.0 erzeugt).
 - 3.16.2.2 (parallel gebaut, 17.11.2026): Knopf der Familiennamen zeigt «✓ Gespeichert» bzw. «Nochmals speichern» (`lkfKnopf`).
 - 3.17.1.0 bis 3.17.8.0 (17.11.2026, Wänu «übernimm»): `index.html` unverändert aus der Testversion (sw.js gleich geblieben). Inseln «Wer gehört zusammen?», Farben der Parteien, Zahler pro Partei, Fragen erst wenn oben alles gewählt ist, Kinder jederzeit aufteilen. Einzelheiten in der CLAUDE.md der Testversion.
+- 3.17.8.1 (parallel gebaut): einheitliche Rahmen (12 px innen, 10 px dazwischen) und Knöpfe in voller Breite, Text mittig.
+- 3.17.8.2 (parallel gebaut): «Kopieren» ohne Ausnahme, volle Breite.
+- 3.17.9.0 (parallel gebaut): frühere Aufenthalte in der Verwaltung mit 🗑️ endgültig löschbar.
+- 3.17.9.1 (parallel gebaut): Kinderbettchen-Chips in der Farbe der Familie.
+- 3.17.10.0 (parallel gebaut): Kinderbettchen der Freunde zählen bei der Familie mit.
+- 3.17.10.1 (parallel gebaut): Kleinkinder der Freunde im Kinderbettchen sichtbar, Platz bei «Freunde», Knopf nur bei vollen Betten.
+- 3.17.10.2 (parallel gebaut): Kleinkind der Freunde bei «Wer gehört zusammen?» in der Insel der Eltern.
 - Für die Namen der Familie braucht jedes Kind einen neuen persönlichen Link aus der Verwaltung (Namen nur im Link und auf dem Handy, nie im Repo).
 
 ## Offen: Airbnb-Belegung ins App-Repo umziehen (Wänu «ja», 13.11.2026, nächste Woche)

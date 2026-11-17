@@ -2,6 +2,92 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.17.10.2",
+      "datum": "17.11.2026",
+      "titel": "Kleinkind bei «Wer gehört zusammen?» bei den Eltern",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Ein Kleinkind der Freunde steht bei «Wer gehört zusammen?» fest in der Insel der Erwachsenen mit gleichem Nachnamen (mit «🛏️ Kinderbettchen»), sonst in einer eigenen grauen Insel."
+      ]
+    },
+    {
+      "v": "3.17.10.1",
+      "datum": "17.11.2026",
+      "titel": "Kleinkinder der Freunde im Kinderbettchen sichtbar",
+      "arten": [
+        "Fehler"
+      ],
+      "punkte": [
+        "Bei «Wer schläft im Kinderbettchen?» steht das Kleinkind der Freunde als fester Chip in der Farbe seiner Partei.",
+        "Kleinkinder in der Liste brauchen kein Bett: Bei «Freunde» ist dafür ein Platz mehr wählbar.",
+        "Der Knopf «Kleinkind dazu» erscheint nur, wenn alle Betten wirklich belegt sind."
+      ]
+    },
+    {
+      "v": "3.17.10.0",
+      "datum": "17.11.2026",
+      "titel": "Kinderbettchen der Freunde zählen bei der Familie mit",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Bringen Freunde ein Kleinkind mit, bleibt der Familie bei «Wer schläft im Kinderbettchen?» nur noch das freie Bettchen (bei zwei Kleinkindern keines).",
+        "Hinweis «1 Kinderbettchen ist durch … (Freunde) belegt»; bei «Meine Familie und Geschwister» zählt die Bettenzeile die Bettchen der Freunde mit.",
+        "Der Knopf «Kleinkind dazu (ohne Bett)» erscheint nur noch, wenn bei «Freunde» kein Platz mehr frei ist. Sonst zählst du ein Kleinkind bei «Freunde» mit; die App erkennt es am Geburtsdatum."
+      ]
+    },
+    {
+      "v": "3.17.9.1",
+      "datum": "17.11.2026",
+      "titel": "Kinderbettchen in der Farbe der Familie",
+      "arten": [
+        "Fehler"
+      ],
+      "punkte": [
+        "Bei «Wer schläft im Kinderbettchen?» hat jedes Kind die Farbe seiner Familie (vorher alle in der Farbe der letzten Familie)."
+      ]
+    },
+    {
+      "v": "3.17.9.0",
+      "datum": "17.11.2026",
+      "titel": "Frühere Aufenthalte löschbar",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "In der Verwaltung hat jeder frühere Aufenthalt rechts ein 🗑️. Nach einer Rückfrage wird er endgültig gelöscht (gleich wie «Endgültig löschen» bei kommenden Aufenthalten)."
+      ]
+    },
+    {
+      "v": "3.17.8.2",
+      "datum": "17.11.2026",
+      "titel": "«Kopieren» und ✕ der Freunde-Liste",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "«📋 Kopieren» (Verwaltung und Anleitung) steht immer in voller Breite unter dem Text, der kopiert wird.",
+        "Das ✕ zum Entfernen eines Freundes oder Kleinkindes sitzt höher, auf dem Rahmen, und wird vom Eingabefeld nicht mehr verdeckt."
+      ]
+    },
+    {
+      "v": "3.17.8.1",
+      "datum": "17.11.2026",
+      "titel": "Einheitliche Rahmen und Knöpfe",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Alle Rahmen haben innen denselben Abstand, Rahmen untereinander ebenfalls. Rahmen in Rahmen sind auf jeder Ebene gleich eingerückt.",
+        "Knöpfe haben die volle Breite mit dem Text in der Mitte, wie «✅ Bezahlt am …». Nebeneinander stehen Knöpfe nur, wenn alle in eine Zeile passen.",
+        "Die Knöpfe «Anreise-Wäsche» und «Reinigungs-Checkliste» in «Meine Verwaltung» sind wie alle anderen Knöpfe mittig beschriftet.",
+        "Bei Knöpfen mit Symbol (z. B. WhatsApp) steht das Symbol direkt neben dem Text und beide zusammen in der Mitte, auch wenn der Text zwei Zeilen braucht.",
+        "Ausnahmen: Chips, kleine Symbolknöpfe, Kopfleiste, «↑ Menü», «Zurück zu Papi» und die Kalenderblase."
+      ]
+    },
+    {
       "v": "3.17.8.0",
       "datum": "17.11.2026",
       "titel": "Kinder jederzeit aufteilen",
