@@ -2,6 +2,18 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.17.0.1",
+      "datum": "17.11.2026",
+      "titel": "Liste der Freunde erst mit Mailadresse",
+      "arten": [
+        "Regel"
+      ],
+      "punkte": [
+        "Rechner: Die Liste der Freunde erscheint erst, wenn eine gültige Mailadresse gespeichert ist. Sie kann gleich dort eingetragen werden.",
+        "Hinweis: Die Mailadresse braucht es für die Zustellung der Gästekarten und die Anmeldung der Kurtaxe. Leiste «Bitte eintragen: Deine Mailadresse»."
+      ]
+    },
+    {
       "v": "3.17.0.0",
       "datum": "17.11.2026",
       "titel": "Mail, wenn etwas zu tun ist",

@@ -123,6 +123,7 @@ Entscheide Wänu (13.11.2026 spät, nach Mockup im privaten Design-Artefakt «TS
 - `index.html` und `sw.js` unverändert aus `Waenu/TSCHENT-O-MAT-Test` kopiert, Version 3.16.2.1, Versionshistorie mit allen Einträgen ab 3.6.0.0 ergänzt. Einzelheiten zu jeder Version in der CLAUDE.md der Testversion.
 - Wichtigste Neuerungen: Liste der Freunde im Rechner (Kurtaxe, Adressbuch, Rufnamen), Parteien und Zahler für Freunde unter 18, Familie mit Geschwistern, Aufteilung mit Balken, Mindestpreis gratis oder mitzahlen, «👤 Meine Verwaltung» (Aufenthalte, Listen, Geld einsammeln, Profil), Sonderbuchungen (`vorlagen` in buchungen.json), Reinigung nur nach Personen oder Parteien, Leiste mit Kurtaxe, Listen auf der Startseite ab 7 Tagen vor der Anreise, «Ansicht als» mit Chips.
 - 3.16.3.2 (parallel gebaut): Glossar «Auswahlfelder»: nochmals antippen hebt die Wahl auf.
+- 3.17.0.1 (parallel gebaut): Liste der Freunde erst mit gültiger Mailadresse (Kasten mit Mailfeld im Rechner).
 - 3.17.0.0 (parallel gebaut): Mail-Benachrichtigungen. Schalter im Profil, Versand täglich 8 Uhr durch `scripts/gaestemeldung.gs` (`taeglich`, einmal `einrichten` ausführen). Einzelheiten in der CLAUDE.md der Testversion.
 - 3.16.3.1 (parallel gebaut): Aufteilung immer mit Rappen; Papi ohne Ansicht kann die Freunde-Zeilen aufklappen (ohne Namen).
 - 3.16.3.0 (parallel gebaut): Papi «Ansicht als» zeigt «👤 Meine Verwaltung» des Kindes (Profil grau, leer), Papi-Verwaltung dabei ausgeblendet, zurück über «Zurück zu Papi».
