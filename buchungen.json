@@ -21,14 +21,11 @@
       "pers": 4,
       "betrag": 1080,
       "rechnung": "Gesendet am Mi 18.11.2026, 09:10 Uhr. App-Version 3.17.11.2.\nAnreise\tMittwoch 25.11.2026\nAbreise\tSonntag 29.11.2026 (4 Nächte)\nFamilie\tIch, Partner/in und 2 Kinder\nFreunde\t3\nDavon Kleinkinder ohne Bett\t1\nFreund/in 3 (Kleinkind im Kinderbettchen) gehört zu: Freund/in 1 und Freund/in 2\nZimmer 1 unberührt\tNein\nReinigung nach Parteien\tjede Partei zahlt gleich viel\nBedingungen akzeptiert\tJa\nTotal\tCHF 1’121.60, davon Kurtaxe Adelboden für die Freunde CHF 41.60\n#Preisberechnung\nFamilie pro Nacht\tCHF 70.–\nFreund/in 1 pro Nacht\tCHF 70.–\nFreund/in 2 pro Nacht\tCHF 70.–\nFreund/in 3 Kleinkind ohne Bett, gratis\tCHF 0.–\nÜbernachtung (4 Nächte)\tCHF 840.–\nReinigung\tCHF 240.–\nReinigung: Anteil Familie\tCHF 120.00\nReinigung: Partei Freund/in 1, Freund/in 2 je CHF 60.00\tCHF 120.00\nKurtaxe Adelboden (dazu) 2 Freunde ab 16 Jahren zu CHF 5.20 pro Nacht, 4 Nächte\tCHF 41.60\nTotal mit Kurtaxe\tCHF 1’121.60\n#Aufteilung unter den Freunden\nFamilie zahlt\tCHF 400.00\nFreund/in 1 und Freund/in 2 zahlen davon Kurtaxe CHF 41.60\tCHF 721.60\nFreund/in 3 Kleinkind ohne Bett, gratis\tCHF 0.00\nReinigung aufgeteilt: Nach Parteien: jede Partei zahlt gleich viel.",
-      "bestaetigt": "2026-11-18T09:11"
+      "bestaetigt": "2026-11-18T09:11",
+      "bescheid": "2026-11-18T09:11"
     }
   ],
   "logbuch": [
-    {
-      "t": "2026-10-28T22:21",
-      "text": "Entfernt: Miriam, Mo 10.05.2027 bis Do 13.05.2027"
-    },
     {
       "t": "2026-10-29T16:36",
       "text": "Entfernt: Miriam, Fr 27.11.2026 bis Mo 30.11.2026"
@@ -824,6 +821,10 @@
     {
       "t": "2026-11-18T09:11",
       "text": "Bestätigt: Deborah, Mi 25.11.2026 bis So 29.11.2026, CHF 1080"
+    },
+    {
+      "t": "2026-11-18T09:11",
+      "text": "Bescheid gegeben: Deborah, Mi 25.11.2026 bis So 29.11.2026"
     }
   ],
   "reinigung": []
