@@ -24,14 +24,11 @@
       "bestaetigt": "2026-11-18T09:11",
       "bescheid": "2026-11-18T09:11",
       "kurtaxeAm": "2026-11-18T09:14",
-      "pimlical": "2026-11-18T09:14"
+      "pimlical": "2026-11-18T09:14",
+      "gesperrt": "2026-11-18T09:14"
     }
   ],
   "logbuch": [
-    {
-      "t": "2026-10-29T16:59",
-      "text": "Bestätigt: Deborah, Mi 14.07.2027 bis Mi 21.07.2027, CHF 1640, verbindlich"
-    },
     {
       "t": "2026-10-29T16:59",
       "text": "Bescheid gegeben: Miriam, Fr 27.11.2026 bis Mo 30.11.2026"
@@ -827,6 +824,10 @@
     {
       "t": "2026-11-18T09:14",
       "text": "In Pimlical eingetragen: Deborah, Mi 25.11.2026 bis So 29.11.2026"
+    },
+    {
+      "t": "2026-11-18T09:14",
+      "text": "In Airbnb gesperrt: Deborah, Mi 25.11.2026 bis So 29.11.2026"
     }
   ],
   "reinigung": []
