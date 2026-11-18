@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.17.12.9",
+      "datum": "2026-11-18",
+      "titel": "Glossar: Datenschutz",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Neues Kapitel «🔒 Datenschutz» unter «Mail, wenn etwas zu tun ist»: was nur auf dem Handy bleibt, was im Briefkasten der Eltern liegt, was öffentlich einsehbar ist, Telefonnummern, persönlicher Link und Löschen."
+      ]
+    },
+    {
       "v": "3.17.12.8",
       "datum": "2026-11-18",
       "titel": "Trinkgeld: Aufrunden als Frage, Feld nur für das Trinkgeld",

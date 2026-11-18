@@ -151,6 +151,8 @@ Entscheide Wänu (13.11.2026 spät, nach Mockup im privaten Design-Artefakt «TS
 - 3.17.12.6 (parallel gebaut): Meine Verwaltung ohne äusseren Rahmen, Kopfzeile pro Aufenthalt wie bei Papi, Rahmen feuerrot.
 - 3.17.12.7 (parallel gebaut): Fehler «Wer gehört zusammen» mit nur einem Freund behoben; Knopf «Meine Verwaltung» feuerrot bzw. blau, wenn alles erledigt.
 - 3.17.12.8 (parallel gebaut): Trinkgeld: Aufrunden als Frage mit Knopf, Feld nur für das Trinkgeld mit Vorschau, Rückfrage bei Beträgen über dem fälligen Betrag.
+- 3.17.12.9 (parallel gebaut): Glossar-Kapitel «🔒 Datenschutz». Bei Änderungen am Datenfluss nachführen.
+- Entscheid Wänu (18.11.2026): Vornamen der Airbnb-Gäste bleiben öffentlich in `gaeste.json` (keine Änderung am Datenschutz der App, auch nicht an der Versionsgeschichte). Nicht erneut vorschlagen.
 - Für die Namen der Familie braucht jedes Kind einen neuen persönlichen Link aus der Verwaltung (Namen nur im Link und auf dem Handy, nie im Repo).
 
 ## Offen: Airbnb-Belegung ins App-Repo umziehen (Wänu «ja», 13.11.2026, nächste Woche)
