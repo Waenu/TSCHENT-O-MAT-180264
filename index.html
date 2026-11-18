@@ -901,6 +901,15 @@ if (TEST_MODUS) {
   .vh ul { margin: 4px 0 0; padding-left: 20px; }
   .vh .arten { display: flex; flex-wrap: wrap; gap: 6px; margin: 2px 0 4px; }
   .vh .art { font-size: .72rem; font-weight: 700; padding: 1px 9px; border-radius: 999px; border: 1.5px solid currentColor; }
+  .vtag { border: 1px solid var(--line, #8886); border-radius: 6px; background: var(--surface); }
+  .vtag > summary { min-height: 0; border: 0; padding: 0; background: none; color: inherit; white-space: normal; font-size: 1.1rem; align-items: flex-start; margin: 0; }
+  .vtag[open] > summary { background: none; color: inherit; margin-bottom: 4px; }
+  .vtag > summary::after { align-self: center; }
+  .vtag .vb { display: block; font-weight: 400; opacity: .7; font-size: .8rem; }
+  .vtag .vt > .arten { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 0; }
+  .vtag .art { font-size: .72rem; font-weight: 700; padding: 1px 9px; border-radius: 999px; border: 1.5px solid currentColor; }
+  .vtag > .vh { margin-top: 8px; background: transparent; }
+  .vtag > .vh > summary { font-size: .95rem; }
   .art-neu { color: #2E9E5B; } .art-fun { color: #3B7DC4; } .art-feh { color: #E07B1A; } .art-lay { color: #8E63C9; } .art-txt { color: #8A9490; }
   .afr { position: fixed; inset: 0; z-index: 100000; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; padding: 16px; box-sizing: border-box; }
   .afr-box { background: var(--surface); color: var(--fg); border: 2px solid var(--line); border-radius: 16px; padding: 18px; width: 100%; max-width: 420px; box-sizing: border-box; }
@@ -1406,7 +1415,7 @@ if (TEST_MODUS) {
 
   /* Einheitliche Rahmen und Knöpfe (seit 3.17.8.1, Wänu: «immer gewisse Regeln einhalten»): Rahmen innen 12 px, Rahmen untereinander 10 px */
   :root { --rp: 12px; --rg: 10px; }
-  .note.h, .notice, .card, .pay, .gm-k .gm-f, .gm-ptbox, .zielbox, .todo-box, .afr-box, #bestKasten .vk, #bestKasten .ps-offen, .vh, .fs-karte, .fv-cap, .exsel, .rt-z, .kf-form, .ink-b.mein-teil { padding: var(--rp) !important; margin-left: 0 !important; margin-right: 0 !important; box-sizing: border-box; }
+  .note.h, .notice, .card, .pay, .gm-k .gm-f, .gm-ptbox, .zielbox, .todo-box, .afr-box, #bestKasten .vk, #bestKasten .ps-offen, .vh, .fs-karte, .fv-cap, .exsel, .rt-z, .kf-form, .ink-b.mein-teil, .vtag { padding: var(--rp) !important; margin-left: 0 !important; margin-right: 0 !important; box-sizing: border-box; }
   .card { gap: var(--rg); }
   .mein-st-b > * { margin-top: var(--rg) !important; } .mein-st-b > *:first-child { margin-top: 0 !important; }
   .mein-st-b > .absage, #absageBox { margin-top: var(--rg); } #absageBox > p, #absageBox > .hinweis, .mein-st .absage p { margin-left: 0; margin-right: 0; padding-left: 0; }
@@ -1629,7 +1638,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.17.11.1";
+let VERSION = "3.17.11.2";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -5979,10 +5988,20 @@ document.addEventListener("toggle", (e) => {
 (function () {
   const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const ART = { Neu: "neu", Funktion: "fun", Fehler: "feh", Layout: "lay", Text: "txt" };
-  const arten = (v) => {   // Marken: aus «arten», sonst aus der Versionsnummer (x.x.x.x: 4. Stelle Text, 3. Layout, 2. Funktion)
+  const artL = (v) => {   // Marken: aus «arten», sonst aus der Versionsnummer (x.x.x.x: 4. Stelle Text, 3. Layout, 2. Funktion)
     let l = Array.isArray(v.arten) ? v.arten : null;
     if (!l) { const m = /^\d+\.(\d+)\.(\d+)\.(\d+)$/.exec(v.v || ""); if (m) l = [+m[3] > 0 ? "Text" : +m[2] > 0 ? "Layout" : "Funktion"]; }
-    return l && l.length ? '<div class="arten">' + l.filter((a) => ART[a]).map((a) => '<span class="art art-' + ART[a] + '">' + esc(a) + "</span>").join("") + "</div>" : "";
+    return (l || []).filter((a) => ART[a]);
+  };
+  const artHtml = (l) => l.length ? '<div class="arten">' + l.map((a) => '<span class="art art-' + ART[a] + '">' + esc(a) + "</span>").join("") + "</div>" : "";
+  const arten = (v) => artHtml(artL(v));
+  // 3.17.11.2: pro Tag eine Gruppe (aufeinanderfolgende Einträge mit gleichem Datum), neuester Tag offen
+  const tage = (l) => { const g = []; l.forEach((v) => { const d = dat(v.datum); const z = g[g.length - 1]; if (z && z.d === d) z.l.push(v); else g.push({ d, l: [v] }); }); return g; };
+  const tagHtml = (t, i) => {
+    const n = t.l.length, alle = Object.keys(ART).filter((a) => t.l.some((v) => artL(v).indexOf(a) >= 0));
+    const von = t.l[n - 1].v, bis = t.l[0].v;
+    return '<details class="vtag"' + (i === 0 ? " open" : "") + '><summary><span class="vt">' + (t.d ? esc(t.d) : "Ältere Versionen") + ' <span class="d">· ' + n + (n === 1 ? " Änderung" : " Änderungen") + '</span><small class="vb">' + esc(n === 1 ? bis : von + " bis " + bis) + '</small>' + artHtml(alle) + '</span></summary>' +
+      t.l.map((v) => '<details class="vh"><summary><span class="vt">' + esc(v.v) + ' · ' + esc(v.titel) + '</span></summary>' + arten(v) + '<ul>' + v.punkte.map((p) => "<li>" + esc(p) + "</li>").join("") + "</ul></details>").join("") + "</details>";
   };
   const dat = (d) => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(d || ""); return m ? m[3] + "." + m[2] + "." + m[1] : ""; };
   document.getElementById("btnVerHist").addEventListener("click", async () => {
@@ -5994,7 +6013,7 @@ document.addEventListener("toggle", (e) => {
       const r = await fetch("versionen.json?v=" + Date.now(), { cache: "no-store" });
       const j = await r.json();
       html = '<p class="hint"><b>Idee und Konzept: Wänu<br>Umsetzung: Claude KI</b></p><p class="hint">Ziffern: 1. neue Funktionen, 2. funktionelle Änderungen, 3. Layout, 4. Texte und Tippfehler. Marken: Neu, Funktion, Fehler (behoben), Layout, Text.</p>' +
-        j.versionen.map((v, i) => '<details class="vh"' + (i === 0 ? " open" : "") + '><summary><span class="vt">' + esc(v.v) + ' <span class="d">' + esc(dat(v.datum)) + '</span> · ' + esc(v.titel) + '</span></summary>' + arten(v) + '<ul>' + v.punkte.map((p) => "<li>" + esc(p) + "</li>").join("") + "</ul></details>").join("");
+        tage(j.versionen).map(tagHtml).join("");
     } catch (e) { html = '<p class="hint">Die Historie konnte nicht geladen werden.</p>'; }
     ziel.innerHTML = '<button type="button" class="ov-back" data-ov="ovVer">← Zurück</button><h2>Versionshistorie</h2>' + html;
   });

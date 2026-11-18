@@ -2,6 +2,18 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.17.11.2",
+      "datum": "2026-11-18",
+      "titel": "Versionshistorie pro Tag",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Die Versionshistorie fasst die Änderungen pro Tag zusammen: eine Zeile pro Tag mit Zahl der Änderungen, Versionen von … bis … und den Marken des Tages.",
+        "Antippen zeigt die einzelnen Versionen des Tages, jede wie bisher aufklappbar. Der neueste Tag ist offen."
+      ]
+    },
+    {
       "v": "3.17.11.1",
       "datum": "2026-11-17",
       "titel": "Kinderbettchen mit Babygesicht",
