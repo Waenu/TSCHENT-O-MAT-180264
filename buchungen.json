@@ -25,15 +25,10 @@
       "bescheid": "2026-11-18T09:11",
       "kurtaxeAm": "2026-11-18T09:14",
       "pimlical": "2026-11-18T09:14",
-      "gesperrt": "2026-11-18T09:14",
-      "bezahlt": "2026-11-18T09:15"
+      "gesperrt": "2026-11-18T09:14"
     }
   ],
   "logbuch": [
-    {
-      "t": "2026-10-29T17:23",
-      "text": "Bestätigt: Manuel, Do 19.11.2026 bis So 22.11.2026, CHF 825"
-    },
     {
       "t": "2026-10-29T17:26",
       "text": "Entfernt: Manuel, Do 19.11.2026 bis So 22.11.2026"
@@ -829,6 +824,10 @@
     {
       "t": "2026-11-18T09:15",
       "text": "Zahlung eingegangen: Deborah, Mi 25.11.2026 bis So 29.11.2026, CHF 1080"
+    },
+    {
+      "t": "2026-11-18T09:15",
+      "text": "Wieder offen: Zahlung eingegangen: Deborah, Mi 25.11.2026 bis So 29.11.2026"
     }
   ],
   "reinigung": []
