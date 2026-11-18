@@ -25,7 +25,7 @@ Eine höhere Stelle setzt die tieferen auf 0. Stand beim Schreiben: 3.0.0.0.
 ## Versionsänderung (Ablauf)
 1. In `index.html` genau eine Stelle `let VERSION = "…"` ändern (vorher prüfen, dass sie genau einmal vorkommt).
 2. In `einstellungen.json` `"version": "…"` auf Bytes-Ebene ersetzen, Dateigrösse 3024 prüfen.
-3. In `versionen.json` oben einen Eintrag einfügen (UTF-8, `ensure_ascii=False`, Einrückung 2, Zeilenumbruch am Ende). `arten` z. B. «Layout», «Fehler», «Text».
+3. In `versionen.json` oben einen Eintrag einfügen (UTF-8, `ensure_ascii=False`, Einrückung 2, Zeilenumbruch am Ende). `arten` z. B. «Layout», «Fehler», «Text». `datum` immer als «JJJJ-MM-TT» (z. B. «2026-11-18»); die Historie zeigt nur dieses Format (`dat()`), «18.11.2026» erscheint ohne Datum (bis 18.11.2026 bei 3.5.0.2 bis 3.17.11.1 passiert, korrigiert).
 4. Syntax prüfen: das längste `<script>` aus `index.html` extrahieren und mit `new Function(...)` parsen.
 
 ## Push

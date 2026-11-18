@@ -3,7 +3,7 @@
   "versionen": [
     {
       "v": "3.17.11.1",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Kinderbettchen mit Babygesicht",
       "arten": [
         "Layout"
@@ -14,7 +14,7 @@
     },
     {
       "v": "3.17.11.0",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Kleinkinder der Freunde zuordnen",
       "arten": [
         "Funktion"
@@ -27,7 +27,7 @@
     },
     {
       "v": "3.17.10.2",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Kleinkind bei «Wer gehört zusammen?» bei den Eltern",
       "arten": [
         "Layout"
@@ -38,7 +38,7 @@
     },
     {
       "v": "3.17.10.1",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Kleinkinder der Freunde im Kinderbettchen sichtbar",
       "arten": [
         "Fehler"
@@ -51,7 +51,7 @@
     },
     {
       "v": "3.17.10.0",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Kinderbettchen der Freunde zählen bei der Familie mit",
       "arten": [
         "Funktion"
@@ -64,7 +64,7 @@
     },
     {
       "v": "3.17.9.1",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Kinderbettchen in der Farbe der Familie",
       "arten": [
         "Fehler"
@@ -75,7 +75,7 @@
     },
     {
       "v": "3.17.9.0",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Frühere Aufenthalte löschbar",
       "arten": [
         "Funktion"
@@ -86,7 +86,7 @@
     },
     {
       "v": "3.17.8.2",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "«Kopieren» und ✕ der Freunde-Liste",
       "arten": [
         "Layout"
@@ -98,7 +98,7 @@
     },
     {
       "v": "3.17.8.1",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Einheitliche Rahmen und Knöpfe",
       "arten": [
         "Layout"
@@ -113,7 +113,7 @@
     },
     {
       "v": "3.17.8.0",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Kinder jederzeit aufteilen",
       "arten": [
         "Funktion"
@@ -125,7 +125,7 @@
     },
     {
       "v": "3.17.7.0",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Fehlt oben etwas, verschwinden die Fragen darunter",
       "arten": [
         "Funktion"
@@ -138,7 +138,7 @@
     },
     {
       "v": "3.17.6.7",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Zahler-Chips gleich hoch wie alle Chips",
       "arten": [
         "Layout"
@@ -149,7 +149,7 @@
     },
     {
       "v": "3.17.6.6",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "«Passt der Vorschlag?» deutlicher, Zahler erst nach der Bestätigung",
       "arten": [
         "Layout"
@@ -161,7 +161,7 @@
     },
     {
       "v": "3.17.6.5",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Chips wachsen mit der Schriftgrösse",
       "arten": [
         "Layout"
@@ -172,7 +172,7 @@
     },
     {
       "v": "3.17.6.4",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Namen-Chips gleich hoch wie alle Chips",
       "arten": [
         "Layout"
@@ -183,7 +183,7 @@
     },
     {
       "v": "3.17.6.3",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Preis verschwindet, wenn wieder etwas offen ist; kleinere Kreise bei den Inseln",
       "arten": [
         "Fehler",
@@ -196,7 +196,7 @@
     },
     {
       "v": "3.17.6.2",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Jeder Haushalt der Geschwister mit eigener Farbe",
       "arten": [
         "Fehler"
@@ -207,7 +207,7 @@
     },
     {
       "v": "3.17.6.1",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Inseln: «für das Kind» oder «für die Kinder»",
       "arten": [
         "Text"
@@ -218,7 +218,7 @@
     },
     {
       "v": "3.17.6.0",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Farben der Parteien von Anfang an",
       "arten": [
         "Funktion",
@@ -234,7 +234,7 @@
     },
     {
       "v": "3.17.5.0",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Übernachtungen von Kindern: Zahler pro Partei",
       "arten": [
         "Regel",
@@ -249,7 +249,7 @@
     },
     {
       "v": "3.17.4.0",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Kinder brauchen keine Partei mehr",
       "arten": [
         "Regel",
@@ -265,7 +265,7 @@
     },
     {
       "v": "3.17.3.1",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Familie-Insel mit allen, die mitkommen",
       "arten": [
         "Layout"
@@ -276,7 +276,7 @@
     },
     {
       "v": "3.17.3.0",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Freund aus der Liste entfernen",
       "arten": [
         "Funktion",
@@ -290,7 +290,7 @@
     },
     {
       "v": "3.17.2.0",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Familie als Insel, Farben der Parteien überall",
       "arten": [
         "Funktion",
@@ -305,7 +305,7 @@
     },
     {
       "v": "3.17.1.0",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Wer gehört zusammen: Parteien als farbige Inseln",
       "arten": [
         "Funktion",
@@ -320,7 +320,7 @@
     },
     {
       "v": "3.17.0.3",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Glossar: Mail, wenn etwas zu tun ist",
       "arten": [
         "Text"
@@ -331,7 +331,7 @@
     },
     {
       "v": "3.17.0.2",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Testversion: kurzer oranger Balken",
       "arten": [
         "Layout"
@@ -342,7 +342,7 @@
     },
     {
       "v": "3.17.0.1",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Liste der Freunde erst mit Mailadresse",
       "arten": [
         "Regel"
@@ -354,7 +354,7 @@
     },
     {
       "v": "3.17.0.0",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Mail, wenn etwas zu tun ist",
       "arten": [
         "Funktion"
@@ -367,7 +367,7 @@
     },
     {
       "v": "3.16.3.2",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Glossar: Wahl aufheben",
       "arten": [
         "Text"
@@ -378,7 +378,7 @@
     },
     {
       "v": "3.16.3.1",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Aufteilung: immer mit Rappen, Papi sieht die Aufschlüsselung",
       "arten": [
         "Layout"
@@ -390,7 +390,7 @@
     },
     {
       "v": "3.16.3.0",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Ansicht als: Meine Verwaltung des Kindes",
       "arten": [
         "Funktion"
@@ -402,7 +402,7 @@
     },
     {
       "v": "3.16.2.3",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Ansicht als: Geschwister mit Namen",
       "arten": [
         "Fehler"
@@ -413,7 +413,7 @@
     },
     {
       "v": "3.16.2.2",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Namen speichern zeigt den Zustand",
       "arten": [
         "Layout"
@@ -425,7 +425,7 @@
     },
     {
       "v": "3.16.2.1",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "«Ansicht als» mit Chips",
       "arten": [
         "Layout"
@@ -437,7 +437,7 @@
     },
     {
       "v": "3.16.2.0",
-      "datum": "17.11.2026",
+      "datum": "2026-11-17",
       "titel": "Listen auf der Startseite erst 7 Tage vor der Anreise",
       "arten": [
         "Regel"
@@ -450,7 +450,7 @@
     },
     {
       "v": "3.16.1.1",
-      "datum": "16.11.2026",
+      "datum": "2026-11-16",
       "titel": "Leiste mit Kurtaxe",
       "arten": [
         "Layout"
@@ -461,7 +461,7 @@
     },
     {
       "v": "3.16.1.0",
-      "datum": "16.11.2026",
+      "datum": "2026-11-16",
       "titel": "Reinigung nur nach Personen oder Parteien",
       "arten": [
         "Regel"
@@ -474,7 +474,7 @@
     },
     {
       "v": "3.16.0.0",
-      "datum": "16.11.2026",
+      "datum": "2026-11-16",
       "titel": "Rufnamen für Freunde",
       "arten": [
         "Neue Funktion"
@@ -488,7 +488,7 @@
     },
     {
       "v": "3.15.0.5",
-      "datum": "16.11.2026",
+      "datum": "2026-11-16",
       "titel": "Profil: Hinweis zum Namen",
       "arten": [
         "Text"
@@ -499,7 +499,7 @@
     },
     {
       "v": "3.15.0.4",
-      "datum": "16.11.2026",
+      "datum": "2026-11-16",
       "titel": "Glossar: Sonderbuchungen und Mitzahlen",
       "arten": [
         "Text"
@@ -511,7 +511,7 @@
     },
     {
       "v": "3.15.0.3",
-      "datum": "16.11.2026",
+      "datum": "2026-11-16",
       "titel": "Mindestpreis: gratis heisst gratis",
       "arten": [
         "Fehler"
@@ -524,7 +524,7 @@
     },
     {
       "v": "3.15.0.2",
-      "datum": "16.11.2026",
+      "datum": "2026-11-16",
       "titel": "Glossar: Spezialwünsche",
       "arten": [
         "Text"
@@ -535,7 +535,7 @@
     },
     {
       "v": "3.15.0.1",
-      "datum": "16.11.2026",
+      "datum": "2026-11-16",
       "titel": "Sonderbuchung: Daten fest",
       "arten": [
         "Fehler"
@@ -642,7 +642,7 @@
     },
     {
       "v": "3.12.1.0",
-      "datum": "16.11.2026",
+      "datum": "2026-11-16",
       "titel": "Meine Verwaltung pro Aufenthalt",
       "arten": [
         "Funktion",
@@ -657,7 +657,7 @@
     },
     {
       "v": "3.12.0.1",
-      "datum": "16.11.2026",
+      "datum": "2026-11-16",
       "titel": "Klapp-Pfeile einheitlich, offene Aufgaben rot",
       "arten": [
         "Layout"
@@ -672,7 +672,7 @@
     },
     {
       "v": "3.12.0.0",
-      "datum": "16.11.2026",
+      "datum": "2026-11-16",
       "titel": "Meine Verwaltung mit «Zu erledigen»",
       "arten": [
         "Funktion",
@@ -689,7 +689,7 @@
     },
     {
       "v": "3.11.1.0",
-      "datum": "16.11.2026",
+      "datum": "2026-11-16",
       "titel": "Alle bisherigen Freunde mit 📇",
       "arten": [
         "Funktion"
@@ -701,7 +701,7 @@
     },
     {
       "v": "3.11.0.1",
-      "datum": "16.11.2026",
+      "datum": "2026-11-16",
       "titel": "Meine Verwaltung pro Person",
       "arten": [
         "Fehler",
@@ -716,7 +716,7 @@
     },
     {
       "v": "3.11.0.0",
-      "datum": "16.11.2026",
+      "datum": "2026-11-16",
       "titel": "Geld einsammeln und Meine Verwaltung",
       "arten": [
         "Neue Funktion"
@@ -735,7 +735,7 @@
     },
     {
       "v": "3.10.5.2",
-      "datum": "16.11.2026",
+      "datum": "2026-11-16",
       "titel": "Warnung bei zu altem Kleinkind",
       "arten": [
         "Layout",
@@ -750,7 +750,7 @@
     },
     {
       "v": "3.10.5.1",
-      "datum": "16.11.2026",
+      "datum": "2026-11-16",
       "titel": "«Wie möchtest du buchen?» wie alle anderen Felder",
       "arten": [
         "Text"
@@ -761,7 +761,7 @@
     },
     {
       "v": "3.10.5.0",
-      "datum": "16.11.2026",
+      "datum": "2026-11-16",
       "titel": "Hinweise je Wahl, Wahl wieder aufheben",
       "arten": [
         "Funktion",
@@ -775,7 +775,7 @@
     },
     {
       "v": "3.10.4.1",
-      "datum": "16.11.2026",
+      "datum": "2026-11-16",
       "titel": "Kleinkind-Knopf nur, wenn ein Bettchen frei ist",
       "arten": [
         "Layout"
@@ -786,7 +786,7 @@
     },
     {
       "v": "3.10.4.0",
-      "datum": "16.11.2026",
+      "datum": "2026-11-16",
       "titel": "Kleinkinder von Freunden ohne Bett",
       "arten": [
         "Funktion"
@@ -800,7 +800,7 @@
     },
     {
       "v": "3.10.3.3",
-      "datum": "16.11.2026",
+      "datum": "2026-11-16",
       "titel": "«Wie möchtest du buchen?»: Text angepasst",
       "arten": [
         "Text"
@@ -812,7 +812,7 @@
     },
     {
       "v": "3.10.3.2",
-      "datum": "16.11.2026",
+      "datum": "2026-11-16",
       "titel": "Texte nachgeführt",
       "arten": [
         "Text"
@@ -828,7 +828,7 @@
     },
     {
       "v": "3.10.3.1",
-      "datum": "16.11.2026",
+      "datum": "2026-11-16",
       "titel": "«Wie möchtest du buchen?»: Text übersichtlicher",
       "arten": [
         "Text"
@@ -841,7 +841,7 @@
     },
     {
       "v": "3.10.3.0",
-      "datum": "15.11.2026",
+      "datum": "2026-11-15",
       "titel": "Wer gehört zusammen: Vorschlag nach Nachname",
       "arten": [
         "Funktion"
@@ -855,7 +855,7 @@
     },
     {
       "v": "3.10.2.5",
-      "datum": "15.11.2026",
+      "datum": "2026-11-15",
       "titel": "Aufteilung: Anteil der Partei für ein Kind mit Bruch",
       "arten": [
         "Text"
@@ -867,7 +867,7 @@
     },
     {
       "v": "3.10.2.4",
-      "datum": "15.11.2026",
+      "datum": "2026-11-15",
       "titel": "Wer gehört zusammen: Erwachsene zuerst",
       "arten": [
         "Layout"
@@ -879,7 +879,7 @@
     },
     {
       "v": "3.10.2.3",
-      "datum": "15.11.2026",
+      "datum": "2026-11-15",
       "titel": "Zimmer-Frage mit Anfangsbuchstaben des Namens",
       "arten": [
         "Layout"
@@ -890,7 +890,7 @@
     },
     {
       "v": "3.10.2.2",
-      "datum": "15.11.2026",
+      "datum": "2026-11-15",
       "titel": "Parteien mit Anfangsbuchstaben des Namens",
       "arten": [
         "Layout"
@@ -901,7 +901,7 @@
     },
     {
       "v": "3.10.2.1",
-      "datum": "15.11.2026",
+      "datum": "2026-11-15",
       "titel": "Aufteilung: Pfeil rechts und grün",
       "arten": [
         "Layout"
@@ -912,7 +912,7 @@
     },
     {
       "v": "3.10.2.0",
-      "datum": "15.11.2026",
+      "datum": "2026-11-15",
       "titel": "Fragen Schritt für Schritt",
       "arten": [
         "Funktion"
@@ -925,7 +925,7 @@
     },
     {
       "v": "3.10.1.0",
-      "datum": "15.11.2026",
+      "datum": "2026-11-15",
       "titel": "Fragen erst nach dem Termin, Chips auch ohne Namen",
       "arten": [
         "Funktion"
@@ -938,7 +938,7 @@
     },
     {
       "v": "3.10.0.1",
-      "datum": "15.11.2026",
+      "datum": "2026-11-15",
       "titel": "Balken in der aufgeklappten Zeile",
       "arten": [
         "Layout"
@@ -951,7 +951,7 @@
     },
     {
       "v": "3.10.0.0",
-      "datum": "15.11.2026",
+      "datum": "2026-11-15",
       "titel": "Preis: Übersicht mit Balken, Rechnung in der Aufteilung",
       "arten": [
         "Funktion"
@@ -965,7 +965,7 @@
     },
     {
       "v": "3.9.7.3",
-      "datum": "15.11.2026",
+      "datum": "2026-11-15",
       "titel": "Glossar nachgeführt",
       "arten": [
         "Text"
@@ -979,7 +979,7 @@
     },
     {
       "v": "3.9.7.2",
-      "datum": "15.11.2026",
+      "datum": "2026-11-15",
       "titel": "Allein auch bei «Meine Familie und Geschwister»",
       "arten": [
         "Fehler"
@@ -990,7 +990,7 @@
     },
     {
       "v": "3.9.7.1",
-      "datum": "15.11.2026",
+      "datum": "2026-11-15",
       "titel": "Noch offene Wahl: Chips mit orangem Rand",
       "arten": [
         "Layout"
@@ -1002,7 +1002,7 @@
     },
     {
       "v": "3.9.7.0",
-      "datum": "15.11.2026",
+      "datum": "2026-11-15",
       "titel": "Eigener Bereich «Wer gehört zusammen?» unter der Liste der Freunde",
       "arten": [
         "Funktion"
@@ -1014,7 +1014,7 @@
     },
     {
       "v": "3.9.6.1",
-      "datum": "15.11.2026",
+      "datum": "2026-11-15",
       "titel": "Eingeklappte Buchungen: Pfeil rechts, Tipp irgendwo klappt auf",
       "arten": [
         "Layout"
@@ -1026,7 +1026,7 @@
     },
     {
       "v": "3.9.6.0",
-      "datum": "15.11.2026",
+      "datum": "2026-11-15",
       "titel": "Verwaltung: mehrere Buchungen einer Person einklappbar",
       "arten": [
         "Funktion"
@@ -1039,7 +1039,7 @@
     },
     {
       "v": "3.9.5.8",
-      "datum": "15.11.2026",
+      "datum": "2026-11-15",
       "titel": "Höhere Eingabefelder in der Liste der Freunde",
       "arten": [
         "Layout"
@@ -1050,7 +1050,7 @@
     },
     {
       "v": "3.9.5.7",
-      "datum": "15.11.2026",
+      "datum": "2026-11-15",
       "titel": "Partei mit Chips",
       "arten": [
         "Layout"
@@ -1061,7 +1061,7 @@
     },
     {
       "v": "3.9.5.6",
-      "datum": "15.11.2026",
+      "datum": "2026-11-15",
       "titel": "Chips im ganzen Rechner",
       "arten": [
         "Layout"
@@ -1074,7 +1074,7 @@
     },
     {
       "v": "3.9.5.5",
-      "datum": "15.11.2026",
+      "datum": "2026-11-15",
       "titel": "Reinigung mit Chips",
       "arten": [
         "Layout"
@@ -1086,7 +1086,7 @@
     },
     {
       "v": "3.9.5.4",
-      "datum": "15.11.2026",
+      "datum": "2026-11-15",
       "titel": "Rechnung in der Aufschlüsselung",
       "arten": [
         "Layout"
@@ -1098,7 +1098,7 @@
     },
     {
       "v": "3.9.5.3",
-      "datum": "15.11.2026",
+      "datum": "2026-11-15",
       "titel": "Erst die Liste, dann die Aufteilung",
       "arten": [
         "Layout"
@@ -1109,7 +1109,7 @@
     },
     {
       "v": "3.9.5.2",
-      "datum": "15.11.2026",
+      "datum": "2026-11-15",
       "titel": "Hinweis unten: erwachsene Person",
       "arten": [
         "Text"
@@ -1120,7 +1120,7 @@
     },
     {
       "v": "3.9.5.1",
-      "datum": "15.11.2026",
+      "datum": "2026-11-15",
       "titel": "Freunde ausgegraut ohne Erwachsenen",
       "arten": [
         "Layout"
@@ -1131,7 +1131,7 @@
     },
     {
       "v": "3.9.5.0",
-      "datum": "15.11.2026",
+      "datum": "2026-11-15",
       "titel": "«Ich» abwählbar",
       "arten": [
         "Funktion"
@@ -1144,7 +1144,7 @@
     },
     {
       "v": "3.9.4.0",
-      "datum": "15.11.2026",
+      "datum": "2026-11-15",
       "titel": "Eigene Familie als Chips",
       "arten": [
         "Funktion"
@@ -1158,7 +1158,7 @@
     },
     {
       "v": "3.9.3.8",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "«Storniert» statt «abgesagt»",
       "arten": [
         "Text"
@@ -1169,7 +1169,7 @@
     },
     {
       "v": "3.9.3.7",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "WhatsApp-Nachrichten aufgeräumt",
       "arten": [
         "Text"
@@ -1186,7 +1186,7 @@
     },
     {
       "v": "3.9.3.6",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Anfrage klarer",
       "arten": [
         "Text"
@@ -1200,7 +1200,7 @@
     },
     {
       "v": "3.9.3.5",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Kinderbettchen statt «ohne Bett»",
       "arten": [
         "Text"
@@ -1213,7 +1213,7 @@
     },
     {
       "v": "3.9.3.4",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Preis bei voller Familie",
       "arten": [
         "Fehler"
@@ -1224,7 +1224,7 @@
     },
     {
       "v": "3.9.3.3",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Enkel bei vollen Betten als Kleinkind ohne Bett",
       "arten": [
         "Fehler"
@@ -1235,7 +1235,7 @@
     },
     {
       "v": "3.9.3.2",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Kleinkinder ohne Bett belegen keinen Platz, eine Familie pro Zeile",
       "arten": [
         "Fehler"
@@ -1249,7 +1249,7 @@
     },
     {
       "v": "3.9.3.1",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Aufklapp-Pfeil vor dem Namen",
       "arten": [
         "Layout"
@@ -1260,7 +1260,7 @@
     },
     {
       "v": "3.9.3.0",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Eine Partei zahlt gemeinsam",
       "arten": [
         "Funktion"
@@ -1272,7 +1272,7 @@
     },
     {
       "v": "3.9.2.0",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Partei muss gewählt werden, Namen mit grossem Anfangsbuchstaben",
       "arten": [
         "Funktion"
@@ -1285,7 +1285,7 @@
     },
     {
       "v": "3.9.1.1",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Vorschläge erst ab dem ersten Buchstaben",
       "arten": [
         "Fehler"
@@ -1296,7 +1296,7 @@
     },
     {
       "v": "3.9.1.0",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Aufteilung unter euch: jede Zeile aufklappbar",
       "arten": [
         "Funktion"
@@ -1309,7 +1309,7 @@
     },
     {
       "v": "3.9.0.1",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Aufteilung der Familie: wer für die Kinder zahlt",
       "arten": [
         "Text"
@@ -1321,7 +1321,7 @@
     },
     {
       "v": "3.9.0.0",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Meine Familie und Geschwister: alle zum Antippen",
       "arten": [
         "Funktion"
@@ -1336,7 +1336,7 @@
     },
     {
       "v": "3.8.0.0",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Parteien unter den Freunden",
       "arten": [
         "Funktion"
@@ -1351,7 +1351,7 @@
     },
     {
       "v": "3.7.2.3",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Neue Buchung, neue Liste der Freunde",
       "arten": [
         "Fehler"
@@ -1363,7 +1363,7 @@
     },
     {
       "v": "3.7.2.2",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Hinweis: Freund unter 18 im selben Zimmer",
       "arten": [
         "Text"
@@ -1374,7 +1374,7 @@
     },
     {
       "v": "3.7.2.1",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Buchungsübersicht mit Namen der Freunde",
       "arten": [
         "Layout"
@@ -1386,7 +1386,7 @@
     },
     {
       "v": "3.7.2.0",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Wer zahlt für Freunde unter 18: direkt unter der Liste, Reinigung nach Parteien",
       "arten": [
         "Regel"
@@ -1401,7 +1401,7 @@
     },
     {
       "v": "3.7.1.0",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Partner/in kann Kosten für Freunde unter 18 übernehmen",
       "arten": [
         "Funktion"
@@ -1413,7 +1413,7 @@
     },
     {
       "v": "3.7.0.6",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Adressbuch der Freunde: richtige Person",
       "arten": [
         "Fehler"
@@ -1425,7 +1425,7 @@
     },
     {
       "v": "3.7.0.5",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Kasten «Liste deiner Freunde»: Titel",
       "arten": [
         "Text",
@@ -1440,7 +1440,7 @@
     },
     {
       "v": "3.7.0.4",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Vorschläge der Freunde pro Person",
       "arten": [
         "Fehler"
@@ -1451,7 +1451,7 @@
     },
     {
       "v": "3.7.0.3",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Texte in Anfrage und Bestätigung",
       "arten": [
         "Text"
@@ -1463,7 +1463,7 @@
     },
     {
       "v": "3.7.0.2",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Liste der Freunde gehört zu Person und Termin",
       "arten": [
         "Fehler"
@@ -1475,7 +1475,7 @@
     },
     {
       "v": "3.7.0.1",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Liste der Freunde: neue Anfrage beginnt leer",
       "arten": [
         "Fehler"
@@ -1487,7 +1487,7 @@
     },
     {
       "v": "3.7.0.0",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Wer zahlt für Freunde unter 18",
       "arten": [
         "Neu"
@@ -1503,7 +1503,7 @@
     },
     {
       "v": "3.6.0.2",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Vorschläge beim Namen und Vornamen",
       "arten": [
         "Layout"
@@ -1515,7 +1515,7 @@
     },
     {
       "v": "3.6.0.1",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Liste der Freunde: Text nach der Bestätigung",
       "arten": [
         "Text"
@@ -1527,7 +1527,7 @@
     },
     {
       "v": "3.6.0.0",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Liste der Freunde im Rechner",
       "arten": [
         "Neu"
@@ -1543,7 +1543,7 @@
     },
     {
       "v": "3.5.0.2",
-      "datum": "14.11.2026",
+      "datum": "2026-11-14",
       "titel": "Familie mit Namen (aus der Testversion übernommen)",
       "arten": [
         "Neu"
