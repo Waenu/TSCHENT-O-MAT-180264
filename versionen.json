@@ -2,6 +2,122 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.17.12.8",
+      "datum": "2026-11-18",
+      "titel": "Trinkgeld: Aufrunden als Frage, Feld nur für das Trinkgeld",
+      "arten": [
+        "Layout",
+        "Fehler"
+      ],
+      "punkte": [
+        "«Aufrunden auf CHF …?» mit Knopf «Ja, aufrunden (+ CHF …)» statt grauem Vorschlag im Feld.",
+        "Darunter «Oder eigenes Trinkgeld:» mit Feld «CHF». Schon beim Tippen erscheint, wie viel du insgesamt überweist.",
+        "Ist die Eingabe grösser als der fällige Betrag, fragt die App nach, ob das Total gemeint ist."
+      ]
+    },
+    {
+      "v": "3.17.12.7",
+      "datum": "2026-11-18",
+      "titel": "Meine Verwaltung: Farben und ein Freund allein",
+      "arten": [
+        "Fehler",
+        "Layout"
+      ],
+      "punkte": [
+        "Mit nur einem erwachsenen Freund blieb der Rechner bei «Bitte bestätigen: Wer gehört zusammen» stehen, ohne Knopf zum Bestätigen. Wo es nichts zu wählen gibt, ist jetzt nichts mehr zu bestätigen.",
+        "Knopf «Meine Verwaltung»: Rahmen feuerrot, wenn etwas offen ist, blau, wenn alles erledigt ist."
+      ]
+    },
+    {
+      "v": "3.17.12.6",
+      "datum": "2026-11-18",
+      "titel": "Meine Verwaltung wie bei Papi",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Kein äusserer Rahmen mehr um die Aufenthalte.",
+        "Jeder Aufenthalt hat eine Kopfzeile wie bei Papi: zu mit Rahmen (rot, wenn etwas offen ist), offen grün gefüllt.",
+        "Rote Rahmen der Aufgaben in Feuerrot wie in der Verwaltung von Papi."
+      ]
+    },
+    {
+      "v": "3.17.12.5",
+      "datum": "2026-11-18",
+      "titel": "Trinkgeld: Aufrunden im Feld",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Aufrunden steht als Vorschlag im Feld: «Aufrunden auf CHF … oder anderer Betrag». Leer lassen und «Übernehmen» rundet auf.",
+        "Feld in voller Breite, «✓ Übernehmen» darunter.",
+        "Ist schon ein Trinkgeld gewählt, lässt es sich mit «Kein Trinkgeld» wieder entfernen."
+      ]
+    },
+    {
+      "v": "3.17.12.4",
+      "datum": "2026-11-18",
+      "titel": "Meine Verwaltung ohne blauen Rahmen",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "«👤 Meine Verwaltung» ohne blauen Rahmen, wie die Verwaltung der Eltern.",
+        "Aufenthalte ohne offene Aufgabe mit schlichtem grauem Rahmen; rot und orange bleiben, wo etwas ansteht."
+      ]
+    },
+    {
+      "v": "3.17.12.3",
+      "datum": "2026-11-18",
+      "titel": "Trinkgeld als Feld, IBAN beim Bezahlen",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Trinkgeld ohne vorgegebene Beträge: ein Feld zum Eintippen mit «✓ Übernehmen», ohne Beispielbetrag.",
+        "«Aufrunden» nur, wenn der Betrag nicht schon rund ist (CHF 422.– auf 430.–, 439.– auf 440.–; bei 420.– kein Knopf).",
+        "«💳 Zu bezahlen» zeigt die IBAN mit «📋 IBAN kopieren» direkt in der Karte."
+      ]
+    },
+    {
+      "v": "3.17.12.2",
+      "datum": "2026-11-18",
+      "titel": "Rechner ohne Geldverwendung",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Im Rechner unter «💰 Zahlung» fällt «🤲 Geldverwendung» weg; der Text steht weiter in «💡 Anleitung & Infos»."
+      ]
+    },
+    {
+      "v": "3.17.12.1",
+      "datum": "2026-11-18",
+      "titel": "Trinkgeld: Aufrunden und Herzchen",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Neuer Chip «Aufrunden» beim Trinkgeld: rundet auf die nächsten CHF 10.– auf (ist der Betrag schon rund, CHF 10.– mehr); passt sich an, wenn sich der Betrag ändert.",
+        "Dankeschön: Wer ein Trinkgeld wählt, sieht Herzchen vom Himmel fallen und «Danke! Mami freut sich 💛» (nicht bei «Bewegung aus»)."
+      ]
+    },
+    {
+      "v": "3.17.12.0",
+      "datum": "2026-11-18",
+      "titel": "Trinkgeld beim Bezahlen",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Das Trinkgeld für Mami wählt das Kind jetzt in der Karte «💳 Zu bezahlen» (Meine Verwaltung und rote Meldung auf der Startseite): Chips CHF 20.–, 50.–, 100.– oder «Anderer Betrag», darunter der Betrag, der zu überweisen ist. Nur auf dem Handy gespeichert, pro Aufenthalt.",
+        "Im Rechner gibt es das Feld «Trinkgeld» nicht mehr; Anfrage und gespeicherte Preisberechnung ohne Trinkgeld.",
+        "«💰 Geld einsammeln»: Schalter für den Trinkgeld-Hinweis in den Rechnungen auch direkt beim Aufenthalt.",
+        "Papi: Beim Verbuchen einer Zahlung der Hinweis, dass ein höherer Betrag vermutlich ein Trinkgeld ist.",
+        "Glossar «🐖 Trinkgeld» nachgeführt."
+      ]
+    },
+    {
       "v": "3.17.11.2",
       "datum": "2026-11-18",
       "titel": "Versionshistorie pro Tag",

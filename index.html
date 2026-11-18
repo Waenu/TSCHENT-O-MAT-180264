@@ -472,7 +472,7 @@ if (TEST_MODUS) {
   .pay strong { font-size: var(--t-title); }
   .pay .rot-txt { color: var(--spitz-line); }
   .ink-opt label { display: flex; flex-direction: column; gap: 4px; font-weight: 700; margin-top: 8px; } .ink-opt input { min-height: 48px; font: inherit; color: var(--fg); padding: 8px 12px; border: 2px solid var(--line); border-radius: 6px; background: var(--surface); }
-  .bigbtn.rot-rand { border-color: var(--error-line); box-shadow: 0 0 0 1px var(--error-line); } #btnMein .alarm-n { margin-left: auto; font-size: 1rem; padding: 2px 10px; } .alarm-n.rot { background: #E5534B; color: #fff; }
+  .bigbtn.rot-rand { border-color: #C62828; box-shadow: 0 0 0 1px #C62828; } #btnMein.ok-rand { border-color: var(--marke); }   /* feuerrot wie bei Papi, alles erledigt blau (seit 3.17.12.7) */ #btnMein .alarm-n { margin-left: auto; font-size: 1rem; padding: 2px 10px; } .alarm-n.rot { background: #E5534B; color: #fff; }
   .mein-sek { margin: 6px 0 14px; } .mein-h { margin: 4px 0 8px; font-size: 1.1rem; } #meinTodo > .note, #meinTodo > div > .note, #meinTodo .gm-k { margin-top: 8px; } #meinProfil > summary { cursor: pointer; font-weight: 700; padding: 8px 14px; }
   .note.h.brennt, details.note.h.brennt { border-color: var(--error-line); }
   .sond-f .sond-d { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; } .sond-f input[type=date], .sond-f input[type=text] { width: 100%; min-height: 44px; } .sond-f .ink-sw { display: block; margin: 8px 0; } .sond-msg { font-weight: 600; } .sond-dat { margin: 4px 0 8px; font-weight: 600; } .sond-pa { margin-left: 8px; } .vorl .btns { margin-top: 8px; } .sond-h { border-color: var(--accent); } .gm-ruf-h { margin: 6px 0 2px; } .sond-rot { color: var(--error-line); margin: 8px 0 0; }
@@ -782,7 +782,16 @@ if (TEST_MODUS) {
   #btnBuch[hidden], #btnAnsichten[hidden] { display: none; }
   .bigbtn.blau { color: var(--marke); border-color: var(--marke); }
   .bigbtn.blau.on { background: var(--marke); color: var(--accent-fg); }
-  #bestKasten.note.h { border: 0; border-radius: 6px; padding: 14px 16px; }   /* seit 2.112.1.0 ohne blauen Rahmen wie die anderen Bereiche */
+  #bestKasten.note.h { border: 0; border-radius: 6px; padding: 14px 16px; }
+  #meinKasten.note.h { border: 0; border-radius: 6px; }   /* seit 3.17.12.4 wie die Verwaltung von Papi: kein blauer Rahmen */
+  #meinAuf > .mein-st.note.h:not(.brennt):not(.steht) { border-color: rgba(127,127,127,.35); }
+  /* seit 3.17.12.6 wie die Verwaltung von Papi: kein äusserer Rahmen, Kopfzeile pro Aufenthalt als Balken, innere Kästen feuerrot */
+  #meinAuf > details.mein-st.note.h { border: 0 !important; background: none !important; padding: 0 !important; margin: 0 0 14px !important; }
+  #meinAuf > details.mein-st > summary, #meinAuf > details.mein-st[open] > summary { border: 2px solid var(--accent); border-radius: 6px; background: var(--surface); padding: 6px 12px; min-height: 54px; }
+  #meinAuf > details.mein-st[open] > summary { background: var(--accent); color: var(--accent-fg); margin-bottom: 10px; }
+  #meinAuf > details.mein-st.brennt:not([open]) > summary { border-color: #C62828; } #meinAuf > details.mein-st.steht:not([open]) > summary { border-color: #E5A100; }
+  #meinAuf > details.mein-st[open] > summary::after { color: inherit; }
+  #meinKasten .brennt, #meinKasten .ink-b.brennt { border-color: #C62828 !important; }   /* Rahmen nur in Farbe, wenn etwas ansteht (rot/orange) */   /* seit 2.112.1.0 ohne blauen Rahmen wie die anderen Bereiche */
   #ver { user-select: none; -webkit-user-select: none; touch-action: manipulation; }
   .bigbtn.on { background: var(--accent); color: var(--accent-fg); }
   #hilfe { display: flex; flex-direction: column; gap: 12px; }
@@ -1302,6 +1311,21 @@ if (TEST_MODUS) {
   @keyframes geldKipp { 0%, 14%, 62%, 100% { transform: rotate(0); } 24%, 46% { transform: rotate(-68deg); } 54% { transform: rotate(-52deg); } }
   @keyframes geldMuenze { 0%, 22% { opacity: 0; transform: translate(0, 0) rotate(0); } 26% { opacity: 1; } 40% { opacity: 1; transform: translate(-.45em, 1.1em) rotate(200deg); } 46%, 100% { opacity: 0; transform: translate(-.55em, 1.5em) rotate(260deg); } }
   @media (prefers-reduced-motion: reduce) { .an-geld .gb, .an-geld .mz { animation: none; } }
+/* Trinkgeld bei «💳 Zu bezahlen» (seit 3.17.12.0) */
+  .trk { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line, #8886); }
+  .trk-t { margin: 0 0 6px; } .trk-t small { opacity: .75; }
+  .trk-c { display: flex; flex-wrap: wrap; gap: 8px; }
+  .trk-a { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; } .trk-a input { width: 100%; box-sizing: border-box; min-height: max(48px, 3rem); } .trk-a input::placeholder { font-size: .85em; }
+  .trk-weg { background: none; border: 0; color: inherit; opacity: .75; text-decoration: underline; padding: 6px 0; min-height: 0; font-size: .9em; }
+  .trk-sum { margin: 8px 0 0; }
+  .trk-iban { margin-top: 10px; } .trk-iban p { margin: 0 0 8px; }
+  .trk-c { margin-bottom: 8px; } .trk-a { margin-top: 0; }
+  .trk-q { margin: 8px 0 6px; } .trk-in { display: flex; align-items: center; gap: 8px; } .trk-in > span { font-weight: 700; } .trk-in input { flex: 1 1 auto; min-width: 0; }
+  .trk-vor { margin: 0; font-weight: 600; } .trk-frage { display: flex; flex-direction: column; gap: 8px; } .trk-frage p { margin: 0; color: var(--missing-line); font-weight: 600; }
+  .trk-c .zchip small { display: block; font-weight: 400; font-size: .78em; opacity: .85; }
+  #herzRegen { position: fixed; inset: 0; z-index: 100000; pointer-events: none; overflow: hidden; }
+  #herzRegen .hz { position: absolute; top: 0; line-height: 1; will-change: transform, opacity; }
+  #herzRegen .hz-danke { position: absolute; left: 50%; top: 42%; padding: 14px 22px; border-radius: 999px; background: var(--fg); color: var(--bg); font-weight: 800; font-size: 1.2rem; white-space: nowrap; box-shadow: 0 4px 18px rgba(0,0,0,.35); }
 /* Trinkgeld: eine Münze fällt ins Sparschwein, das Schweinchen schnuppert und wackelt (nur bei «Bewegung: alles», nur transform und opacity) */
   .an-schwein { position: relative; display: inline-block; transform-origin: 40% 85%; animation: anSchwein 5s ease-in-out infinite; }
   .an-schwein::after { content: ""; position: absolute; left: 45%; top: -.1em; width: .3em; height: .3em; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #FFF2A8, #F0B400 70%); box-shadow: 0 0 0 1px #A87400; opacity: 0; animation: anSchweinMuenze 5s ease-in infinite; pointer-events: none; }
@@ -1638,7 +1662,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.17.11.2";
+let VERSION = "3.17.12.8";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2075,6 +2099,7 @@ function ptVorschlag(n) {   // Vorschlag nach Nachname (Wänu 15.11.2026): gleic
     let h = ad[0]; if (typeof l[h].zu === "number" && l[h].zu >= 0 && !l[h].zv) h = l[h].zu;   // Kopf schon selbst einer anderen Partei zugeordnet: dorthin
     g.forEach((i) => { if (typeof l[i].zu === "number") return; l[i].zu = i === h ? -1 : h; l[i].zv = 1; neu = true; });
   });
+  zi.forEach((i) => { if (l[i].zv && erw(i) && !ptZiele(i, l, zi).length) { delete l[i].zv; neu = true; } });   // nichts zu wählen (z. B. ein einziger erwachsener Freund): kein Vorschlag zum Bestätigen, sonst sperrt die Leiste ohne sichtbaren Knopf (seit 3.17.12.7)
   if (neu) { const a = gmEntwurf(); l.forEach((f, i) => { a[i] = f; }); gmEntwurfSetzen(a); }
   return neu;
 }   // Partei muss gewählt sein (seit 3.9.2.0)
@@ -2756,6 +2781,64 @@ function konfFrei(b) {   // freie Strecken im Termin als [von, bis) (bis = Abrei
 const strecken = (l) => l.map((r) => fmtTag(r[0]) + " bis " + fmtTag(r[1])).join(" und ");
 function konfBelegt(b) { const n = konfNaechte(b), o = []; n.forEach((k) => { const l = o[o.length - 1]; if (l && l[1] === k) l[1] = addDays(k, 1); else o.push([k, addDays(k, 1)]); }); return o; }
 function ktVon(b) { const m = /\nKurtaxe Adelboden[^\t\n]*\tCHF ([\d'’.]+)/.exec((b && b.rechnung) || ""); const v = m ? Number(m[1].replace(/['’]/g, "")) : 0; return isFinite(v) && v > 0 ? v : 0; }   // Kurtaxe der Freunde aus dem Schnappschuss der Anfrage (seit 3.11.0.0)
+// Trinkgeld für Mami bei «💳 Zu bezahlen» (seit 3.17.12.0): nur auf dem Handy, pro Aufenthalt
+function trinkB() { try { const o = JSON.parse(localStorage.getItem("tm2_trinkB:" + ABSENDER) || "{}"); return o && typeof o === "object" ? o : {}; } catch (e) { return {}; } }
+function trinkSetzen(k, n) { const o = trinkB(); if (n === "auf" || n > 0) o[k] = n; else delete o[k]; try { localStorage.setItem("tm2_trinkB:" + ABSENDER, JSON.stringify(o)); } catch (e) {} }
+function aufZiel(s) { return Math.ceil(Math.round(s * 100) / 1000 - 1e-9) * 10; }   // Aufrunden auf die nächsten CHF 10.– (ist der Betrag schon rund, gibt es nichts aufzurunden) (seit 3.17.12.3)
+function aufrundbar(s) { return aufZiel(s) - s > 0.004; }
+function trinkBetrag(b) { const v = trinkB()[bKey(b)]; if (v === "auf") return Math.max(0, Math.round((aufZiel(zahlSumme(b)) - zahlSumme(b)) * 100) / 100); return +v || 0; }
+function trinkHtml(b) {
+  if (!ABSENDER || MAMI) return "";
+  const k = bKey(b), v = trinkB()[k], n = trinkBetrag(b), auf = v === "auf" && n > 0, s = zahlSumme(b);
+  let vs = false; try { vs = meinVorschau(); } catch (e) {}
+  const dis = vs ? " disabled" : "";
+  let h = '<div class="trk" data-trk-k="' + esc(k) + '" data-trk-s="' + s + '"><p class="trk-t"><span class="an-schwein" aria-hidden="true">🐖</span> <b>Trinkgeld für Mami</b> <small>freiwillig</small> ' + symBtn("b-trinkgeld", "ℹ️") + "</p>";
+  const ar = aufrundbar(s) && !auf;   // seit 3.17.12.8 (Wänu): Aufrunden als Frage mit Knopf, darunter das Feld nur für das Trinkgeld mit Vorschau
+  if (ar) h += '<p class="trk-q">Aufrunden auf <b>' + esc(chf2(aufZiel(s))) + '</b>?</p><button type="button" class="btn" data-trk="r"' + dis + ">✓ Ja, aufrunden (+ " + esc(chf2(aufZiel(s) - s)) + ")</button>";
+  h += '<p class="trk-q">' + (ar ? "Oder eigenes Trinkgeld:" : n > 0 ? "Anderes Trinkgeld:" : "Eigenes Trinkgeld:") + '</p><div class="trk-a"><div class="trk-in"><span>CHF</span><input type="text" class="betrag" inputmode="numeric" autocomplete="off" maxlength="4" aria-label="Trinkgeld in CHF" data-trk-in="1" value="' + (!auf && n > 0 && n === Math.round(n) ? n : "") + '"' + dis + '></div><p class="trk-vor" hidden></p><div class="trk-frage" hidden></div><button type="button" class="btn" data-trk-ok="1"' + dis + ">✓ Übernehmen</button></div>";
+  if (n > 0) h += '<p class="trk-sum">Zu überweisen: ' + esc(chf2(s)) + " + Trinkgeld " + esc(chf2(n)) + (auf ? " (aufgerundet)" : "") + " = <b>" + esc(chf2(s + n)) + '</b> 🙏</p><button type="button" class="trk-weg" data-trk="weg"' + dis + ">Kein Trinkgeld</button>";
+  return h + "</div>";
+}
+function ibanHtml() { return IBAN ? '<div class="trk-iban"><p>IBAN: <b>' + esc(IBAN) + '</b></p><button type="button" class="btn" data-ibankopie="1">📋 IBAN kopieren</button></div>' : ""; }   // seit 3.17.12.3 auch in «💳 Zu bezahlen»
+function trinkNeu() { try { aufentZeigen(); } catch (e) {} }
+// Dankeschön: Herzchen fallen vom Himmel (Web Animations, damit «Bewegung: nur Wichtiges» sie nicht anhält; bei «Bewegung aus» und «Bewegung reduzieren» nicht) (seit 3.17.12.1)
+function herzRegen() {
+  try { if (document.documentElement.classList.contains("aus") || matchMedia("(prefers-reduced-motion: reduce)").matches) return; } catch (e) {}
+  const alt = document.getElementById("herzRegen"); if (alt) alt.remove();
+  const w = document.createElement("div"); w.id = "herzRegen"; w.setAttribute("aria-hidden", "true");
+  const H = ["❤️", "💛", "🧡", "💖", "💕", "💗"], hoch = window.innerHeight || 800;
+  for (let i = 0; i < 28; i++) {
+    const h = document.createElement("span"); h.className = "hz"; h.textContent = H[i % H.length];
+    h.style.left = (Math.random() * 94 + 1) + "vw"; h.style.fontSize = (18 + Math.random() * 18) + "px"; w.appendChild(h);
+    const dx = (Math.random() - .5) * 80, dr = (Math.random() - .5) * 120, dauer = 2200 + Math.random() * 1600;
+    h.animate([{ transform: "translate(0, -60px) rotate(0deg)", opacity: 0 }, { opacity: 1, offset: .1 }, { opacity: 1, offset: .8 }, { transform: "translate(" + dx + "px, " + (hoch + 60) + "px) rotate(" + dr + "deg)", opacity: 0 }], { duration: dauer, delay: Math.random() * 900, easing: "cubic-bezier(.3,.1,.7,1)", fill: "both" });
+  }
+  const t = document.createElement("div"); t.className = "hz-danke"; t.textContent = "Danke! Mami freut sich 💛"; w.appendChild(t);
+  t.animate([{ opacity: 0, transform: "translate(-50%, -50%) scale(.8)" }, { opacity: 1, transform: "translate(-50%, -50%) scale(1)", offset: .15 }, { opacity: 1, offset: .8 }, { opacity: 0, transform: "translate(-50%, -50%) scale(1)" }], { duration: 3200, easing: "ease-out", fill: "both" });
+  document.body.appendChild(w); setTimeout(() => { if (w.parentNode) w.remove(); }, 4800);
+}
+document.addEventListener("click", (e) => {
+  const c = e.target.closest(".trk [data-trk], .trk [data-trk-ok], .trk [data-trk-tot], .trk [data-trk-voll]"); if (!c || c.disabled) return;
+  const box = c.closest(".trk"), k = box.getAttribute("data-trk-k"), vor = trinkB()[k];
+  if (c.getAttribute("data-trk") === "weg") { trinkSetzen(k, 0); trinkNeu(); return; }
+  const setz = (neu) => { trinkSetzen(k, neu); trinkNeu(); if ((neu === "auf" || neu > 0) && neu !== vor) herzRegen(); };
+  if (c.getAttribute("data-trk") === "r") { setz("auf"); return; }
+  const sum = +box.getAttribute("data-trk-s") || 0;
+  if (c.hasAttribute("data-trk-tot")) { const t = +c.getAttribute("data-trk-tot"), tip = Math.round((t - sum) * 100) / 100; setz(aufrundbar(sum) && Math.abs(t - aufZiel(sum)) < 0.005 ? "auf" : tip); return; }   // als Total gemeint
+  if (c.hasAttribute("data-trk-voll")) { setz(+c.getAttribute("data-trk-voll")); return; }   // wirklich als Trinkgeld gemeint
+  if (c.hasAttribute("data-trk-ok")) { const i = box.querySelector("[data-trk-in]"), roh = ((i && i.value) || "").trim(); if (roh === "") return;
+    const neu = Math.min(9999, parseInt(roh, 10) || 0);
+    if (neu > sum && sum > 0) {   // Schutz: mehr als der fällige Betrag, vermutlich das Total gemeint (seit 3.17.12.8)
+      const f = box.querySelector(".trk-frage"), v = box.querySelector(".trk-vor"); if (v) v.hidden = true;
+      if (f) { f.innerHTML = "<p>Meinst du total <b>" + esc(chf2(neu)) + "</b>, also Trinkgeld " + esc(chf2(neu - sum)) + '?</p><button type="button" class="btn" data-trk-tot="' + neu + '">✓ Ja, total ' + esc(chf2(neu)) + '</button><button type="button" class="btn" data-trk-voll="' + neu + '">Nein, ' + esc(chf2(neu)) + " Trinkgeld</button>"; f.hidden = false; c.hidden = true; }   // während der Rückfrage kein «Übernehmen»
+      return; }
+    setz(neu); return; }
+});
+document.addEventListener("input", (e) => { if (!(e.target && e.target.matches && e.target.matches("[data-trk-in]"))) return; e.target.value = e.target.value.replace(/\D/g, "").slice(0, 4);
+  const box = e.target.closest(".trk"), v = box && box.querySelector(".trk-vor"), f = box && box.querySelector(".trk-frage"), sum = box ? +box.getAttribute("data-trk-s") || 0 : 0, n = parseInt(e.target.value, 10) || 0;   // Vorschau beim Tippen (seit 3.17.12.8)
+  if (f) f.hidden = true; const ok = box && box.querySelector("[data-trk-ok]"); if (ok) ok.hidden = false;
+  if (v) { v.textContent = n > 0 ? "Trinkgeld " + chf2(n) + " → du überweist " + chf2(sum + n) : ""; v.hidden = !n; } });
+document.addEventListener("keydown", (e) => { if (e.key === "Enter" && e.target && e.target.matches && e.target.matches("[data-trk-in]")) { const o = e.target.closest(".trk").querySelector("[data-trk-ok]"); if (o) o.click(); } });
 function zahlSumme(b) { return (b.betrag > 0 ? b.betrag : 0) + ktVon(b); }   // an die Eltern: Aufenthalt und Kurtaxe der Freunde (Wänu: die Kurtaxe überweisen die Eltern an Adelboden Tourismus)
 function chfZ(b) { const k = ktVon(b); return k ? chf2(zahlSumme(b)) : chf(b.betrag); }
 function chfZk(b) { const k = ktVon(b); return chfZ(b) + (k ? " (inkl. Kurtaxe der Freunde " + chf2(k) + ")" : ""); }
@@ -3178,7 +3261,7 @@ function begriffeFuellen() {
   const offen = Array.from(document.querySelectorAll("details.mehr[open]")).map((d) => d.parentElement && d.parentElement.id);   // aufgeklappte «Mehr erfahren» bleiben beim Neuaufbau offen
   const ruhe = RUHE.length ? ruheTxt() : "";
   const set = (id, html) => { const e = document.getElementById(id); if (e) e.innerHTML = html; };
-  set("bc-trinkgeld", "<p>Es war ein Anliegen von Mami, dass die Kinder günstiger nach Adelboden gehen können. Dafür macht sie viel Arbeit: Fahrt, Reinigung und Wäsche, siehe «Endreinigung» " + symBtn("b-endrein", "🪣") + ".</p><p>Auch Papi packt selbstverständlich mit an: Er reinigt, repariert und hält das Chalet in Schuss.</p><p>Wer möchte, gibt Mami deshalb ein Trinkgeld. Das ist freiwillig, aber ein schönes Zeichen der Wertschätzung. Gebt, was euch passt: Es freut sie, und ihr dürft grosszügig sein 😉</p><p>Wenn ihr unter «Trinkgeld für Mami» einen Betrag eintragt, wird er zum Preis dazugerechnet und extra ausgewiesen.</p>");
+  set("bc-trinkgeld", "<p>Es war ein Anliegen von Mami, dass die Kinder günstiger nach Adelboden gehen können. Dafür macht sie viel Arbeit: Fahrt, Reinigung und Wäsche, siehe «Endreinigung» " + symBtn("b-endrein", "🪣") + ".</p><p>Auch Papi packt selbstverständlich mit an: Er reinigt, repariert und hält das Chalet in Schuss.</p><p>Wer möchte, gibt Mami deshalb ein Trinkgeld. Das ist freiwillig, aber ein schönes Zeichen der Wertschätzung. Gebt, was euch passt: Es freut sie, und ihr dürft grosszügig sein 😉</p><p>Das Trinkgeld wählst du, wenn du bezahlst: In «👤 Meine Verwaltung» steht bei deinem Aufenthalt unter «💳 Zu bezahlen» die Zeile «🐖 Trinkgeld für Mami». Ist der Betrag krumm, kannst du ihn mit einem Tippen auf die nächsten CHF 10.– aufrunden. Oder du gibst ein eigenes Trinkgeld ein: Schon beim Tippen siehst du, wie viel du insgesamt überweist. Das bleibt nur auf deinem Handy.</p>");
   set("bc-zahlung", "<p>Die Familie überweist den ganzen Betrag, auch wenn Freunde dabei sind, samt Kurtaxe der Freunde. Die Eltern zahlen die Kurtaxe an Adelboden Tourismus und schicken euch den QR-Code für die Gästekarte. Spätestens " + ZAHL_TAGE + " Tage nach dem letzten Ferientag, ohne Aufforderung.</p><p>" + esc(BANK) + "</p><p>Bitte mit Name und Datum der Ferien überweisen.</p><p>Ist die Zahlung nach Ablauf der Frist nicht verbucht, erscheint auf deinem Handy eine rote Meldung. Sie lässt sich nicht wegklicken und verschwindet erst, wenn die Eltern die Zahlung verbucht haben. Ab " + ERINNERUNG_AB + " Tagen nach der Abreise schicken dir die Eltern zusätzlich eine WhatsApp als Erinnerung. Bei Aufenthalten, die nichts kosten, gibt es keine Meldung.</p>");
   (function () {
     let h = "<p>Die Möglichkeiten, wie dein Aufenthalt günstiger wird. Die Einzelheiten stehen jeweils beim Symbol.</p><ul>";
@@ -4865,7 +4948,7 @@ function render() {
   mfgZeigen(); gmRechZeigen(d); zahlUiZeigen(d);
   const r = calc(Object.assign({}, S, { kinderPflicht: !listeModus() }));
   mitzZeigen(r, d);
-  const tip = Math.max(0, parseInt(TRINK, 10) || 0);
+  const tip = 0;   // Trinkgeld seit 3.17.12.0 nicht mehr im Rechner, sondern bei «💳 Zu bezahlen» (trinkHtml)
   const res = document.getElementById("result");
   const bar = document.getElementById("bar");
   const lab = document.getElementById("barLab"), val = document.getElementById("barVal");
@@ -5117,12 +5200,7 @@ function render() {
     aufS +
     anfrageKasten(r) +
     '<h3 class="split-h">' + symBtn('b-zahlung', '💰') + ' Zahlung</h3>' +
-    '<div class="acc">' + symBtn('b-trinkgeld', '<span class="an-schwein">🐖</span>') + '<button type="button" class="acc-t" id="trinkTgl" data-body="trinkBody" aria-expanded="' + (TRINK_OFFEN ? 'true' : 'false') + '" aria-controls="trinkBody">Trinkgeld' + (tip > 0 ? ' ' + chf(tip) + ' 🙏' : '') + '</button></div>' +
-    '<div class="field" id="trinkBody"' + (TRINK_OFFEN ? '' : ' hidden') + '><label for="trink">Trinkgeld für Mami</label><input id="trink" class="betrag" type="text" inputmode="numeric" autocomplete="off" placeholder="freiwillig, z. B. 20" value="' + esc(TRINK) + '">' +
-      '<button type="button" class="wbtn" id="trinkOk">✓ Übernehmen</button></div>' +
     zahlung +
-    '<details><summary>' + symBtn('b-geld', '<span class="an-hand" ><span class="hd">🤲</span><i class="bn b1"></i><i class="bn b2"></i><i class="bn b3"></i></span>') + ' Geldverwendung</summary><div class="rows">' + GELD_TEXT +
-    '</div></details>' +
     '<div class="marke" id="marke"><span data-z="0">ankommen</span><span class="pt">·</span><span data-z="1">durchatmen</span><span class="pt">·</span><span data-z="2">geniessen</span></div>';
 }
 
@@ -5403,8 +5481,8 @@ function aufentZeigen() {
     zb.hidden = vorab.length === 0 && erRuhig.length === 0;
     const inkL = inkLokal(), freundOffen = (b) => { const e = inkL[bKey(b)]; if (!e) return 0; const ok = e.ok || {}; return e.p.reduce((a, pp, k) => a + (ok[k] ? 0 : pp.t), 0); };
     zb.dataset.gen = String((+zb.dataset.gen || 0) + 1);
-    zb.innerHTML = vorab.map((b) => '<div class="note h brennt" data-bk="' + esc(bKey(b)) + '"><b>💳 Zu bezahlen:</b> Für deinen Aufenthalt vom ' + esc(fmtTag(b.arr)) + " bis " + esc(fmtTag(b.dep)) + " sind <b>" + esc(chfZ(b)) + "</b>" + (ktVon(b) ? " (inkl. Kurtaxe der Freunde " + esc(chf2(ktVon(b))) + ")" : "") + " fällig, spätestens am " + esc(fmtTag(zahlFrist(b))) + ". Du kannst auch schon vorher überweisen, die Bankverbindung steht unter «Zahlung» " + symBtn("b-zahlung", "💰") + "." + (freundOffen(b) > 0.004 ? "<br><small>Von deinen Freunden noch offen: " + esc(chf2(freundOffen(b))) + " (siehe «💰 Geld einsammeln»).</small>" : "") + "</div>").join("") + erRuhig.map(ERH).join("");
-    ZLH = zl.map((b) => '<div class="note h rot-warn"><b>💳 Zahlung offen:</b> Für deinen Aufenthalt vom ' + esc(fmtTag(b.arr)) + ' bis ' + esc(fmtTag(b.dep)) + ' sind <b>' + esc(chfZ(b)) + '</b>' + (ktVon(b) ? ' (inkl. Kurtaxe der Freunde ' + esc(chf2(ktVon(b))) + ')' : '') + ' fällig. Die Frist war am ' + esc(fmtTag(zahlFrist(b))) + '. Bitte überweise jetzt, die Bankverbindung steht unter «Zahlung» ' + symBtn("b-zahlung", "💰") + '. Sobald Papi die Zahlung verbucht hat, verschwindet diese Meldung.</div>').join("");
+    zb.innerHTML = vorab.map((b) => '<div class="note h brennt" data-bk="' + esc(bKey(b)) + '"><b>💳 Zu bezahlen:</b> Für deinen Aufenthalt vom ' + esc(fmtTag(b.arr)) + " bis " + esc(fmtTag(b.dep)) + " sind <b>" + esc(chfZ(b)) + "</b>" + (ktVon(b) ? " (inkl. Kurtaxe der Freunde " + esc(chf2(ktVon(b))) + ")" : "") + " fällig, spätestens am " + esc(fmtTag(zahlFrist(b))) + ". Du kannst auch schon vorher überweisen." + ibanHtml() + trinkHtml(b) + (freundOffen(b) > 0.004 ? "<br><small>Von deinen Freunden noch offen: " + esc(chf2(freundOffen(b))) + " (siehe «💰 Geld einsammeln»).</small>" : "") + "</div>").join("") + erRuhig.map(ERH).join("");
+    ZLH = zl.map((b) => '<div class="note h rot-warn"><b>💳 Zahlung offen:</b> Für deinen Aufenthalt vom ' + esc(fmtTag(b.arr)) + ' bis ' + esc(fmtTag(b.dep)) + ' sind <b>' + esc(chfZ(b)) + '</b>' + (ktVon(b) ? ' (inkl. Kurtaxe der Freunde ' + esc(chf2(ktVon(b))) + ')' : '') + ' fällig. Die Frist war am ' + esc(fmtTag(zahlFrist(b))) + '. Bitte überweise jetzt. Sobald Papi die Zahlung verbucht hat, verschwindet diese Meldung.' + ibanHtml() + trinkHtml(b) + '</div>').join("");
     const zr = document.getElementById("zahlRot"); zr.hidden = !zl.length && !erRot.length;
     zr.innerHTML = erRot.map(ERH).join("") + ZLH;
     meinKnopf();
@@ -6572,7 +6650,7 @@ document.getElementById("bestKasten").addEventListener("click", async (e) => {
   if (!b || !ZT_TXT[feld]) return;
   if (done) { if (!(await appFrage("«" + ZT_TXT[feld] + "» bei " + b.name + " (" + fmtTag(b.arr) + " bis " + fmtTag(b.dep) + ") wieder als offen markieren?", "Ja, wieder offen"))) return; }
   else if (feld === "endreinBezahlt") { if (!(await appFrage("Endreinigung der Staffel von " + b.name + " (" + chf(P.reinigung) + ") als eingegangen verbuchen?", "Ja, verbuchen"))) return; }
-  else if (feld === "bezahlt") { if (!(await appFrage("Zahlung von " + b.name + " (" + chfZk(b) + ", " + fmtTag(b.arr) + " bis " + fmtTag(b.dep) + ") als eingegangen verbuchen?", "Ja, verbuchen"))) return; }
+  else if (feld === "bezahlt") { if (!(await appFrage("Zahlung von " + b.name + " (" + chfZk(b) + ", " + fmtTag(b.arr) + " bis " + fmtTag(b.dep) + ") als eingegangen verbuchen? Ist mehr eingegangen als verlangt, ist es vermutlich ein Trinkgeld für Mami.", "Ja, verbuchen"))) return; }
   else if (feld === "waescheZurueck") { if (!(await appFrage("Ist die Wäsche von " + b.name + " (" + fmtTag(b.arr) + " bis " + fmtTag(b.dep) + ") zurück bei euch?", "Ja, ist zurück"))) return; }
   ztSetzen(key, feld, !done);
 });
@@ -6950,7 +7028,7 @@ function inkZeigen() {
   l.forEach((b) => {
     const key = bKey(b), e = lok[key], ok = e.ok || {}, of = offenF(b), nBez = e.p.filter((pp, k) => ok[k]).length, alle = nBez === e.p.length, kt = ktVon(b) || e.kt || 0, an = (b.betrag > 0 ? b.betrag : 0) + kt;
     const stand = alle ? "✅ Alle Freunde haben bezahlt" : nBez + " von " + e.p.length + " bezahlt, offen " + esc(chf2(of));
-    h += mm ? '<div class="note h ink-b mein-teil' + (alle ? "" : " brennt") + '" data-ink="' + esc(key) + '"><p class="mein-t"><b>💰 Geld einsammeln</b><br><small>' + stand + "</small></p>" + (alle ? "" : '<p class="hint">Schick jedem seine Rechnung per WhatsApp und hake ab, wer bezahlt hat.</p>' + zahlInfo)
+    h += mm ? '<div class="note h ink-b mein-teil' + (alle ? "" : " brennt") + '" data-ink="' + esc(key) + '"><p class="mein-t"><b>💰 Geld einsammeln</b><br><small>' + stand + "</small></p>" + (alle ? "" : '<p class="hint">Schick jedem seine Rechnung per WhatsApp und hake ab, wer bezahlt hat.</p><label class="ink-sw"><input type="checkbox" data-ink-trink="1"' + (inkTrink() ? " checked" : "") + '> 🍀 In den Rechnungen auf das Trinkgeld hinweisen</label>' + zahlInfo)
       : '<details class="ink-b' + (alle ? "" : " brennt") + '" data-ink="' + esc(key) + '"' + (auf.has(key) ? " open" : "") + '><summary><b>' + esc(fmtTag(b.arr)) + " bis " + esc(fmtTag(b.dep)) + "</b><br><small>" + stand + "</small></summary>";
     if (b.betrag > 0 && e.tot > 0 && Math.abs(b.betrag - e.tot) > 0.5) h += '<p class="note h ink-warn">⚠️ Die Eltern haben den Preis angepasst (beim Anfragen ' + esc(chf2(e.tot)) + ", jetzt " + esc(chf2(b.betrag)) + "). Die Beträge unten stammen noch von deiner Anfrage. Prüf sie, bevor du sie verschickst.</p>";
     if (!alle) h += '<label class="ink-fr">📅 Bis wann sollen deine Freunde dir zahlen?<input type="date" data-ink-frist="' + esc(key) + '" value="' + esc(inkFrist(e)) + '"></label><p class="hint">Dieses Datum steht in den Rechnungen. Vorschlag der Eltern: spätestens ' + freundTage() + (freundTage() === 1 ? " Tag" : " Tage") + " nach der Abreise. Du selbst zahlst den Eltern bis " + esc(fmtTag(zahlFrist(b))) + ".</p>";
@@ -6990,7 +7068,7 @@ function meinKnopf() {
   const an = meinModus(); kn.hidden = !an; if (!an && k) k.hidden = true;
   meinVerteilen();
   const n = an ? MEIN_N.gm + MEIN_N.zb + MEIN_N.ink : 0, o = an ? MEIN_N.li : 0;
-  kn.classList.toggle("rot-rand", n > 0); kn.classList.toggle("or-rand", !n && o > 0);
+  kn.classList.toggle("rot-rand", n > 0); kn.classList.toggle("or-rand", !n && o > 0); kn.classList.toggle("ok-rand", !n && !o);
   let b = kn.querySelector(".alarm-n.rot"); if (!b) { b = document.createElement("span"); b.className = "alarm-n rot"; kn.appendChild(b); }
   b.textContent = String(n); b.hidden = !n; b.title = n + (n === 1 ? " offene Aufgabe" : " offene Aufgaben");
   let bo = kn.querySelector(".alarm-n.or-n"); if (!bo) { bo = document.createElement("span"); bo.className = "alarm-n or-n"; kn.appendChild(bo); }
@@ -7872,7 +7950,7 @@ document.getElementById("bestKasten").addEventListener("click", async (e) => {
   const wz = e.target.closest("[data-wz]");
   if (wz) { const k1 = wz.getAttribute("data-wz"), b1 = BUCH.find((x) => bKey(x) === k1); if (b1 && (await appFrage("Ist die Wäsche von " + b1.name + " (" + fmtTag(b1.arr) + " bis " + fmtTag(b1.dep) + ") zurück bei euch?", "Ja, ist zurück"))) waescheZurueck(k1); return; }
   const bz = e.target.closest("[data-bez]");
-  if (bz) { const k0 = bz.getAttribute("data-bez"), b0 = BUCH.find((x) => bKey(x) === k0); if (b0 && (await appFrage("Zahlung von " + b0.name + " (CHF " + b0.betrag + ", " + fmtTag(b0.arr) + " bis " + fmtTag(b0.dep) + ") als eingegangen verbuchen?", "Ja, verbuchen"))) zahlungVerbuchen(k0); return; }
+  if (bz) { const k0 = bz.getAttribute("data-bez"), b0 = BUCH.find((x) => bKey(x) === k0); if (b0 && (await appFrage("Zahlung von " + b0.name + " (CHF " + b0.betrag + ", " + fmtTag(b0.arr) + " bis " + fmtTag(b0.dep) + ") als eingegangen verbuchen? Ist mehr eingegangen als verlangt, ist es vermutlich ein Trinkgeld für Mami.", "Ja, verbuchen"))) zahlungVerbuchen(k0); return; }
   const f = (a) => { const el = e.target.closest("[" + a + "]"); return el ? el.getAttribute(a) : null; };
   const find = (l, key) => l.find((x) => bKey(x) === key);
   if (e.target.closest("[data-zu]")) { bestMsg = ""; bestFehler = ""; bestZeigen(); return; }

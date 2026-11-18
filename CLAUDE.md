@@ -142,6 +142,15 @@ Entscheide Wänu (13.11.2026 spät, nach Mockup im privaten Design-Artefakt «TS
 - 3.17.11.0 (parallel gebaut): Kleinkinder der Freunde bei «Wer gehört zusammen?» zuordnen (Vorschlag, verschiebbar, WhatsApp).
 - 3.17.11.1 (parallel gebaut): Kinderbettchen mit 👶. 3.17.11.0 und 3.17.11.1 am 17.11.2026 übernommen.
 - 3.17.11.2 (parallel gebaut): Versionshistorie pro Tag zusammengefasst (Marken des Tages, Versionen aufklappbar).
+- 3.17.12.0 (parallel gebaut): Trinkgeld nicht mehr im Rechner, sondern beim Bezahlen in der Karte «💳 Zu bezahlen» (Chips, Summe zum Überweisen).
+- 3.17.12.1 (parallel gebaut): Trinkgeld-Chip «Aufrunden» und Herzchen als Dankeschön.
+- 3.17.12.2 (parallel gebaut): Geldverwendung nicht mehr im Rechner.
+- 3.17.12.3 (parallel gebaut): Trinkgeld als Eingabefeld, Aufrunden nur bei krummen Beträgen, IBAN in «💳 Zu bezahlen».
+- 3.17.12.4 (parallel gebaut): Meine Verwaltung ohne blauen Rahmen.
+- 3.17.12.5 (parallel gebaut): Trinkgeld: Aufrunden als Vorschlag im Feld, Knopf «Übernehmen» darunter, «Kein Trinkgeld».
+- 3.17.12.6 (parallel gebaut): Meine Verwaltung ohne äusseren Rahmen, Kopfzeile pro Aufenthalt wie bei Papi, Rahmen feuerrot.
+- 3.17.12.7 (parallel gebaut): Fehler «Wer gehört zusammen» mit nur einem Freund behoben; Knopf «Meine Verwaltung» feuerrot bzw. blau, wenn alles erledigt.
+- 3.17.12.8 (parallel gebaut): Trinkgeld: Aufrunden als Frage mit Knopf, Feld nur für das Trinkgeld mit Vorschau, Rückfrage bei Beträgen über dem fälligen Betrag.
 - Für die Namen der Familie braucht jedes Kind einen neuen persönlichen Link aus der Verwaltung (Namen nur im Link und auf dem Handy, nie im Repo).
 
 ## Offen: Airbnb-Belegung ins App-Repo umziehen (Wänu «ja», 13.11.2026, nächste Woche)
