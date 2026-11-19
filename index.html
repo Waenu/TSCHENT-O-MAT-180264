@@ -1159,7 +1159,7 @@ if (TEST_MODUS) {
   @container (max-width: 5.2em) { .ub-b .ub-l1 { display: none; } .ub-b .ub-k1 { display: inline; } }
   .ub-b.kk { height: 12px; opacity: .8; } .ub-b.mat { outline: 2px dashed #E5A100; outline-offset: 2px; }
   .ub-c { text-align: center; font-weight: 700; padding: 3px 0; margin: 0 1px; border-radius: 6px; background: var(--note-bg); } .ub-c.voll { background: #FFE58A; color: #4a3800; }
-  .ub-l { margin: 4px 0 0; } .ub-tt { margin: 0 0 4px; } details.ub-k { margin: 8px 0 0; } .mein-teil.ub-teil { border: 2px solid var(--marke) !important; padding: 8px 12px !important; } .ub-teil > details.ub-k { margin: 0; } .ub-teil > details.ub-k > summary { border: 0 !important; background: none !important; color: inherit !important; padding: 2px 0 !important; }   /* blauer Rahmen in «Meine Verwaltung» (seit 3.20.0.5) */ details.ub-k > summary { font-weight: 700; }
+  .ub-l { margin: 4px 0 0; } .ub-tt { margin: 0 0 4px; } details.ub-k { margin: 8px 0 0; } .mein-teil.ub-teil { border: 2px solid var(--marke) !important; padding: 8px 12px !important; } .ub-teil > details.ub-k, .re-teil > details.rechd { margin: 0; } .re-teil > details.rechd > summary { min-height: 0; padding: 2px 0; } .ub-teil > details.ub-k > summary { border: 0 !important; background: none !important; color: inherit !important; padding: 2px 0 !important; }   /* blauer Rahmen in «Meine Verwaltung» (seit 3.20.0.5) */ details.ub-k > summary { font-weight: 700; }
   #calBlase[data-mon="hoch"] { border: 2px solid var(--hoch-line); }
   #calBlase[data-mon="fest"] { border: 2px solid var(--fest-line); }
   #calBlase[data-mon="spitz"] { border: 2px solid var(--spitz-line); }
@@ -1709,7 +1709,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.20.1.3";
+let VERSION = "3.20.1.4";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -7383,7 +7383,7 @@ function meinKnopf() {
   bo.textContent = String(o); bo.hidden = !o; bo.title = o + (o === 1 ? " Liste steht an" : " Listen stehen an");
 }
 // Pro Aufenthalt ein Klappbereich (seit 3.12.1.0, Wänu): Liste der Freunde, Zu bezahlen, Geld einsammeln, Stornierung. Die Kästen werden wie bisher gezeichnet und hier nach Aufenthalt verteilt.
-var MEIN_GEN = {}, MEIN_TEILE = {};
+var MEIN_GEN = {}, MEIN_TEILE = {}, RE_CACHE = {};
 var MEIN_ST_AUF = null;
 var MEIN_TYPEN = [["vo", "vorlBox", "data-bk"], ["gm", "gmBox", "data-gmk"], ["zb", "zahlBox", "data-bk"], ["ink", "inkBox", "data-ink"], ["ab", "absageBox", "data-bk"]];
 // Vorlagen der Eltern beim Kind (Sonderbuchungen, seit 3.14.0.0): annehmen öffnet den Rechner mit festen Daten, ablehnen schickt eine WhatsApp
@@ -7422,7 +7422,8 @@ function meinVerteilen() {
   MEIN_TEILE.li = liTeile(); const voN = (MEIN_TEILE.vo || []).filter((x) => x.el.classList.contains("steht")).length; MEIN_N.li = MEIN_TEILE.li.reduce((s, x) => s + x.o, 0) + voN;   // offene Vorlagen zählen orange (seit 3.14.0.0)
   MEIN_TEILE.sf = stornoBuch().map((b) => { const el = document.createElement("p"); el.className = "hint mein-teil sf-h"; el.innerHTML = "📌 Mit Freunden verbindlich: Stornierung spätestens am <b>" + esc(fmtTag(addDays(b.arr, -STORNO_TAGE))) + "</b>. " + symBtn("b-storno", "📅"); return { k: bKey(b), el: el }; });   // Stornofrist beim Aufenthalt (seit 3.14.1.3)
   MEIN_TEILE.ub = BUCH.filter((b) => eigenN(b.name) && b.dep >= heuteKey()).map((b) => { const h = ubKlapp(b); if (!h) return null; const el = document.createElement("div"); el.className = "mein-teil ub-teil"; el.innerHTML = h; return { k: bKey(b), el }; }).filter(Boolean);   // Buchungsübersicht pro Aufenthalt (seit 3.20.0.0)
-  const ORD = ["vo", "ub", "gm", "zb", "ink", "li", "sf", "ab"];
+  MEIN_TEILE.re = BUCH.filter((b) => eigenN(b.name) && b.dep >= heuteKey() && b.rechnung).map((b) => { const k = bKey(b), h = rechDetails(b.rechnung, b.bestaetigt, true, b), c = RE_CACHE[k]; if (c && c.h === h) return { k, el: c.el }; const el = document.createElement("div"); el.className = "mein-teil ub-teil re-teil"; el.innerHTML = h; RE_CACHE[k] = { h, el }; return { k, el }; });   // Preisberechnung pro Aufenthalt wie bei Papi (seit 3.20.1.4, Meldung 13); gleiches HTML = gleiches Element, damit Aufgeklapptes offen bleibt
+  const ORD = ["vo", "ub", "re", "gm", "zb", "ink", "li", "sf", "ab"];
   const keys = [...new Set(ORD.flatMap((t) => (MEIN_TEILE[t] || []).map((x) => x.k)))].sort((p, q) => (p.split("|")[1] < q.split("|")[1] ? -1 : 1));
   const zahl = (k) => (MEIN_TEILE.gm || []).filter((x) => x.k === k && x.el.classList.contains("gm-offen")).length + (MEIN_TEILE.zb || []).filter((x) => x.k === k).length + (MEIN_TEILE.ink || []).filter((x) => x.k === k && x.el.classList.contains("brennt")).length;
   const orz = (k) => MEIN_TEILE.li.filter((x) => x.k === k).reduce((s, x) => s + x.o, 0) + (MEIN_TEILE.vo || []).filter((x) => x.k === k && x.el.classList.contains("steht")).length;
