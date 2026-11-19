@@ -10,7 +10,7 @@
  *   SCHLUESSEL  frei gewählter Schlüssel; nur wer ihn kennt, kann die Listen lesen und löschen
  *
  * Aufrufe (immer POST, Inhalt JSON als Text):
- *   { a: "senden",   buchung: "Name|JJJJ-MM-TT|JJJJ-MM-TT", freunde: [ {name, vorname, geb, geschlecht, nat}, ... ] }
+ *   { a: "senden",   buchung: "Name|JJJJ-MM-TT|JJJJ-MM-TT", freunde: [ {name, vorname, geb, geschlecht, nat, an?, ab?}, ... ] }
  *   { a: "liste",    k: SCHLUESSEL }                      -> alle Listen
  *   { a: "loeschen", k: SCHLUESSEL, buchung: "…" }        -> Liste dieser Buchung entfernen
  *   { a: "mail",     name: "Jerome", mail: "…" }            -> Mailadresse eines Kindes oder Partners speichern
@@ -80,7 +80,8 @@ function senden(a) {
   if (!max) return { ok: false, fehler: "Zu dieser Buchung gibt es keine Freunde zu melden." };
   const fr = (Array.isArray(a.freunde) ? a.freunde : []).slice(0, max).map((f) => ({
     name: txt(f.name, 60), vorname: txt(f.vorname, 60), geb: /^\d{4}-\d{2}-\d{2}$/.test(f.geb) ? f.geb : "",
-    geschlecht: f.geschlecht === "w" || f.geschlecht === "m" ? f.geschlecht : "", nat: txt(f.nat, 40) || "Schweiz" }));
+    geschlecht: f.geschlecht === "w" || f.geschlecht === "m" ? f.geschlecht : "", nat: txt(f.nat, 40) || "Schweiz",
+    an: /^\d{4}-\d{2}-\d{2}$/.test(f.an) && f.an >= teile[1] && f.an < teile[2] ? f.an : "", ab: /^\d{4}-\d{2}-\d{2}$/.test(f.ab) && f.ab <= teile[2] && f.ab > teile[1] ? f.ab : "" }));   // eigene An- und Abreise (App 3.19.0.0); leer = wie die Familie
   if (!fr.length || fr.some((f) => !f.name || !f.vorname || !f.geb || !f.geschlecht)) return { ok: false, fehler: "Bitte alle Felder ausfüllen." };
   const jetzt = Utilities.formatDate(new Date(), "Europe/Zurich", "yyyy-MM-dd'T'HH:mm");
   const b = blatt(), werte = b.getDataRange().getValues();
@@ -91,7 +92,9 @@ function senden(a) {
   if (mail) {
     const d = (k) => k.slice(8, 10) + "." + k.slice(5, 7) + "." + k.slice(0, 4);
     const text = "Gästemeldung von " + teile[0] + " für den Aufenthalt vom " + d(teile[1]) + " bis " + d(teile[2]) + (i > 0 ? " (geänderte Liste)" : "") + ":\n\n" +
-      fr.map((f, n) => (n + 1) + ". " + f.name + " " + f.vorname + ", geboren " + d(f.geb) + ", " + (f.geschlecht === "w" ? "weiblich" : "männlich") + ", " + f.nat).join("\n") +
+      fr.map((f, n) => { const an = f.an || teile[1], ab = f.ab || teile[2], nn = Math.round((new Date(ab) - new Date(an)) / 86400000);
+        return (n + 1) + ". " + f.name + " " + f.vorname + "\n   Geburtsdatum: " + d(f.geb) + "\n   Geschlecht: " + (f.geschlecht === "w" ? "weiblich" : "männlich") + "\n   Nationalität: " + f.nat +
+          "\n   Aufenthalt: " + d(an) + " bis " + d(ab) + "\n   Nächte: " + nn; }).join("\n\n") +   // gegliedert, mit Nächten (seit App 3.19.0.3)
       "\n\nDie Liste steht auch im TSCHENT-O-MAT in der Verwaltung bei " + teile[0] + ".";
     MailApp.sendEmail(mail, "TSCHENT-O-MAT: Gästemeldung " + teile[0] + ", " + d(teile[1]), text);
   }
