@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.20.1.5",
+      "datum": "2026-11-19",
+      "titel": "Staffel: Frage an die Geschwister steht in der Anfrage",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Staffel: Die Frage an die Geschwister («Kommt jemand von euch nach mir …?», mit dem nächsten bekannten Termin) steht als Absatz am Schluss der WhatsApp-Anfrage. Der Knopf «Umfrage starten» ist weg."
+      ]
+    },
+    {
       "v": "3.20.1.4",
       "datum": "2026-11-19",
       "titel": "Preisberechnung in «Meine Verwaltung»",
