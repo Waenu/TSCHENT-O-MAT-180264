@@ -1155,6 +1155,8 @@ if (TEST_MODUS) {
   .ub-n { grid-column: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 6px; } .ub-w .ub-n { position: sticky; left: 0; z-index: 1; background: var(--surface); } .ub-w .ub-b { justify-content: flex-start; padding-left: 10px; } .ub-bt { font-size: .78rem; color: var(--muted); white-space: normal; line-height: 1.2; }
   .ub-t { text-align: center; font-size: .72rem; line-height: 1.2; color: var(--muted); }
   .ub-b { height: 24px; border-radius: 12px; background: var(--pc); color: #10201c; font-size: .72rem; font-weight: 700; display: flex; align-items: center; justify-content: center; white-space: nowrap; overflow: hidden; }
+  .ub-b { container-type: inline-size; } .ub-b .ub-k1 { display: none; }
+  @container (max-width: 5.2em) { .ub-b .ub-l1 { display: none; } .ub-b .ub-k1 { display: inline; } }
   .ub-b.kk { height: 12px; opacity: .8; } .ub-b.mat { outline: 2px dashed #E5A100; outline-offset: 2px; }
   .ub-c { text-align: center; font-weight: 700; padding: 3px 0; margin: 0 1px; border-radius: 6px; background: var(--note-bg); } .ub-c.voll { background: #FFE58A; color: #4a3800; }
   .ub-l { margin: 4px 0 0; } .ub-tt { margin: 0 0 4px; } details.ub-k { margin: 8px 0 0; } .mein-teil.ub-teil { border: 2px solid var(--marke) !important; padding: 8px 12px !important; } .ub-teil > details.ub-k { margin: 0; } .ub-teil > details.ub-k > summary { border: 0 !important; background: none !important; color: inherit !important; padding: 2px 0 !important; }   /* blauer Rahmen in «Meine Verwaltung» (seit 3.20.0.5) */ details.ub-k > summary { font-weight: 700; }
@@ -1707,7 +1709,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.20.1.1";
+let VERSION = "3.20.1.2";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1783,7 +1785,7 @@ const REINIG = [
 ];
 let FR_MOEGL = false;   // Freunde bei diesem Termin möglich (wird in render gesetzt, seit 3.18.3.0)
 const EIGEN_TXT = () => FR_MOEGL ? "Ich, meine Familie, Freunde" : EIGEN;
-const CHIP_KURZ = (fid, o) => fid === "wer" && o === EIGEN ? EIGEN_TXT() : fid === "reinig" && REINIG.indexOf(o) >= 0 ? REINIG_KURZ[REINIG.indexOf(o)] : fid === "waesche" ? (o === W_BR ? "Persönlich bringen" : o === W_SE ? "Per Post" : o) : o.indexOf(": ") > 0 ? o.slice(0, o.indexOf(": ")) : o;   // Text auf dem Chip (seit 3.9.5.6)
+const CHIP_KURZ = (fid, o) => fid === "art" && o === ART_V ? "Verbindlich" : fid === "art" && o === ART_P ? "Mit Vorbehalt" : fid === "wer" && o === EIGEN ? EIGEN_TXT() : fid === "reinig" && REINIG.indexOf(o) >= 0 ? REINIG_KURZ[REINIG.indexOf(o)] : fid === "waesche" ? (o === W_BR ? "Persönlich bringen" : o === W_SE ? "Per Post" : o) : o.indexOf(": ") > 0 ? o.slice(0, o.indexOf(": ")) : o;   // Text auf dem Chip (seit 3.9.5.6)
 const CHIP_WAHL = (fid, o) => { return "";   // seit 3.10.5.0: die gewählte Bedeutung steht im Hinweis darunter (gelb markiert)
  if (!o || fid === "waesche") return ""; const i = o.indexOf(": "); if (i < 0) return ""; const w = o.slice(i + 2); return w.charAt(0).toUpperCase() + w.slice(1) + "."; };   // Bedeutung der Wahl klein darunter
 const REINIG_KURZ = ["Nach Personen", "Nach Parteien", "Freunde zahlen alles", "Familie zahlt alles"];
@@ -1957,7 +1959,7 @@ function ubHtml(o) {   // o = {arr, dep, fp (Familie mit Bett), fam: [{nm, pc, k
   let r = 1, h = '<div class="ub' + (breit ? " ub-w" : "") + '"><div class="ub-g" style="grid-template-columns:var(--ub-nw) repeat(' + (2 * D) + "," + (breit ? "17px" : "minmax(0,1fr)") + ')">';
   h += '<div class="ub-n ub-h" style="grid-row:1"></div>' + tage.map((k, j) => '<div class="ub-t" style="grid-row:1;grid-column:' + (2 + 2 * j) + '/span 2">' + esc(fmtTag(k).split(" ")[0]) + "<br>" + Number(k.slice(8)) + ".</div>").join("");
   z.forEach((p) => { r++; const a = Math.max(0, tage.indexOf(p.an)), b = tage.indexOf(p.ab) < 0 ? D - 1 : tage.indexOf(p.ab), n = b - a;
-    h += '<div class="ub-n" style="grid-row:' + r + '">' + (p.kk ? "👶 " : "") + esc(p.nm) + '</div><div class="ub-b' + (p.kk ? " kk" : "") + (p.mat ? " mat" : "") + '" style="grid-row:' + r + ";grid-column:" + (3 + 2 * a) + "/" + (3 + 2 * b) + ";--pc:" + (p.pc || INS_KIND) + '">' + (p.kk ? "" : n >= 3 || !breit ? n + (n === 1 ? " Nacht" : n >= 3 ? " Nächte" : "") : n) + "</div>"; });
+    h += '<div class="ub-n" style="grid-row:' + r + '">' + (p.kk ? "👶 " : "") + esc(p.nm) + '</div><div class="ub-b' + (p.kk ? " kk" : "") + (p.mat ? " mat" : "") + '" style="grid-row:' + r + ";grid-column:" + (3 + 2 * a) + "/" + (3 + 2 * b) + ";--pc:" + (p.pc || INS_KIND) + '">' + (p.kk ? "" : '<span class="ub-l1">' + n + (n === 1 ? " Nacht" : " Nächte") + '</span><span class="ub-k1">' + n + "</span>") + "</div>"; });   // Text nach Platz im Balken (seit 3.20.1.2, Container-Abfrage)
   r++; h += '<div class="ub-n ub-bt" style="grid-row:' + r + '">🛏️ Betten pro Nacht</div>';
   for (let j = 0; j < N; j++) { const c = fp + da(tage[j]).length; h += '<div class="ub-c' + (c > P.maxPersonen ? " voll" : "") + '" style="grid-row:' + r + ";grid-column:" + (3 + 2 * j) + '/span 2">' + c + "</div>"; }
   h += "</div></div>";

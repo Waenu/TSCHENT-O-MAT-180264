@@ -2,6 +2,19 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.20.1.2",
+      "datum": "2026-11-19",
+      "titel": "«Wer ist wann da?» mit «2 Nächte», Buchungsart als Chips",
+      "arten": [
+        "Fehler",
+        "Layout"
+      ],
+      "punkte": [
+        "«👥 Wer ist wann da?»: Balken zeigen «2 Nächte», wenn es Platz hat, sonst nur die Zahl (vorher bei 2 Nächten immer nur «2»).",
+        "Hochsaison: «Wie möchtest du buchen?» als Chips «Verbindlich» und «Mit Vorbehalt» statt als Auswahlliste."
+      ]
+    },
+    {
       "v": "3.20.1.1",
       "datum": "2026-11-19",
       "titel": "Eingabefelder flach wie die Chips",
