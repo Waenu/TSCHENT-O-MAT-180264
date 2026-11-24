@@ -2,6 +2,374 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.21.0.0",
+      "datum": "2026-11-24",
+      "titel": "Gesendete Anfrage in «Meine Verwaltung», klarere Luftmatratze, Zahlung blau",
+      "arten": [
+        "Neu",
+        "Fehler",
+        "Layout"
+      ],
+      "punkte": [
+        "«👤 Meine Verwaltung»: Eine per WhatsApp gesendete Anfrage steht sofort als «📨 Anfrage gesendet, noch nicht bestätigt» beim Aufenthalt (oranger Rahmen). Mit «🗑️ Anfrage löschen» lässt sie sich auf dem eigenen Handy löschen, falls die WhatsApp nicht rausging. Nach der Bestätigung erscheint der Aufenthalt wie gewohnt als bestätigt.",
+        "Verwaltung der Eltern: Anfrage mit Luftmatratze: Knopf «✖ Ganze Anfrage ablehnen»; nach «Nein» zur Luftmatratze bleibt nur «↩︎ Ohne Luftmatratze zurückschicken», damit das Kind nicht fälschlich eine ganze Absage bekommt.",
+        "Verwaltung der Eltern: Ist nur noch die Zahlung nach der Abreise offen, ist die Karte blau mit «⏳ Wartet auf die Zahlung» statt grün; grün erst nach dem Zahlungseingang.",
+        "«Wer gehört zusammen?»: Der Kopf einer Partei lässt sich auf «＋ Eigene Partei» ziehen; die übrigen bleiben zusammen, die nächste erwachsene Person wird ihr Kopf (vorher geschah nichts)."
+      ]
+    },
+    {
+      "v": "3.20.1.5",
+      "datum": "2026-11-19",
+      "titel": "Staffel: Frage an die Geschwister steht in der Anfrage",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Staffel: Die Frage an die Geschwister («Kommt jemand von euch nach mir …?», mit dem nächsten bekannten Termin) steht als Absatz am Schluss der WhatsApp-Anfrage. Der Knopf «Umfrage starten» ist weg."
+      ]
+    },
+    {
+      "v": "3.20.1.4",
+      "datum": "2026-11-19",
+      "titel": "Preisberechnung in «Meine Verwaltung»",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "«👤 Meine Verwaltung»: Bei jedem kommenden Aufenthalt steht nach «👥 Wer ist wann da?» die «🧾 Preisberechnung» zum Aufklappen, gleich wie bei den Eltern (Aufteilung mit Farben, Zeilen aufklappbar, Vornamen der Freunde nur auf dem eigenen Handy)."
+      ]
+    },
+    {
+      "v": "3.20.1.3",
+      "datum": "2026-11-19",
+      "titel": "Kürzere Hinweise, IBAN erst nach der Bestätigung",
+      "arten": [
+        "Layout",
+        "Text"
+      ],
+      "punkte": [
+        "«Meine Familie und Geschwister»: «Alle 6 Betten und die Luftmatratze belegt» gelb hervorgehoben wie bei den Freunden.",
+        "Staffel: Hinweis unter den Anfrage-Knöpfen nur noch «Kommt jemand von den Geschwistern nach dir? Frag im «Adelboden Airbnb Chat».» (die Endreinigung steht im Kasten darüber).",
+        "Rechner: Kasten «💰 Zahlung» ohne IBAN; sie steht nach der Bestätigung in «👤 Meine Verwaltung» bei «💳 Zu bezahlen».",
+        "Trinkgeld: ohne Vorschlag zum Aufrunden heisst es «Wie viel Trinkgeld?» statt «Eigenes Trinkgeld:»."
+      ]
+    },
+    {
+      "v": "3.20.1.2",
+      "datum": "2026-11-19",
+      "titel": "«Wer ist wann da?» mit «2 Nächte», Buchungsart als Chips",
+      "arten": [
+        "Fehler",
+        "Layout"
+      ],
+      "punkte": [
+        "«👥 Wer ist wann da?»: Balken zeigen «2 Nächte», wenn es Platz hat, sonst nur die Zahl (vorher bei 2 Nächten immer nur «2»).",
+        "Hochsaison: «Wie möchtest du buchen?» als Chips «Verbindlich» und «Mit Vorbehalt» statt als Auswahlliste."
+      ]
+    },
+    {
+      "v": "3.20.1.1",
+      "datum": "2026-11-19",
+      "titel": "Eingabefelder flach wie die Chips",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Eingabefelder der Liste der Freunde, Mailadresse und Trinkgeld flach mit Rahmen und Hintergrund wie die Chips (vorher erhabener Rand)."
+      ]
+    },
+    {
+      "v": "3.20.1.0",
+      "datum": "2026-11-19",
+      "titel": "Preisberechnung wie beim Buchen",
+      "arten": [
+        "Funktion",
+        "Layout"
+      ],
+      "punkte": [
+        "Die gespeicherte Preisberechnung zeigt zuoberst die Aufteilung wie im Rechner: jede Zeile in der Farbe ihrer Partei, antippen zeigt Übernachtung, Reinigung und Kurtaxe mit Rechnung und Balken.",
+        "Die übrigen Angaben stehen eingeklappt unter «📋 Ganze Berechnung».",
+        "In der Verwaltung der Eltern stehen die Vornamen der Freunde, sobald ihre Liste da ist (vorher «Freund/in 1, 2 …»).",
+        "Gilt in der Verwaltung, im Kalender (🧾) und in «Meine Verwaltung».",
+        "Neue Anfragen speichern die Teilbeträge pro Zeile mit (ohne Namen); ältere werden aus den Zeilen zurückgerechnet.",
+        "Farben in «Wer ist wann da?» und in der Preisberechnung gleich."
+      ]
+    },
+    {
+      "v": "3.20.0.7",
+      "datum": "2026-11-18",
+      "titel": "Rahmen einheitlich, roter Rahmen feuerrot",
+      "arten": [
+        "Layout",
+        "Fehler"
+      ],
+      "punkte": [
+        "Alle Rahmen mit gleich runden Ecken (Kästen, Knöpfe, Eingabefelder, Inseln, Kalender).",
+        "Rote Rahmen überall feuerrot.",
+        "«Von deinen Freunden noch offen» stimmt sofort nach dem Abhaken in «Geld einsammeln» (vorher erst nach dem Neuzeichnen)."
+      ]
+    },
+    {
+      "v": "3.20.0.6",
+      "datum": "2026-11-18",
+      "titel": "Rahmen um «Wer ist wann da?»",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "«Meine Verwaltung»: «Wer ist wann da?» als Kasten mit blauem Rahmen um alles, auch aufgeklappt."
+      ]
+    },
+    {
+      "v": "3.20.0.5",
+      "datum": "2026-11-18",
+      "titel": "«Wer ist wann da?» bei den Eltern richtig",
+      "arten": [
+        "Fehler",
+        "Layout"
+      ],
+      "punkte": [
+        "Verwaltung der Eltern: Nächte, Kleinkinder und Betten pro Nacht kommen jetzt richtig aus der Anfrage (vorher alle Freunde für den ganzen Aufenthalt, Kleinkinder mit Bett).",
+        "Farben nach Parteien wie beim Kind, Kleinkinder grau.",
+        "«Meine Verwaltung»: «Wer ist wann da?» mit blauem Rahmen."
+      ]
+    },
+    {
+      "v": "3.20.0.4",
+      "datum": "2026-11-18",
+      "titel": "Kleinkinder müssen zugeteilt werden",
+      "arten": [
+        "Fehler"
+      ],
+      "punkte": [
+        "«Wer gehört zusammen?»: «Passt der Vorschlag?» erscheint auch, wenn ein Kleinkind noch nicht zugeteilt ist.",
+        "Nach «Ja, passt» mit offenen Kleinkindern kommt die Meldung «👶 Bitte Kleinkinder zuteilen: …» mit den Namen.",
+        "Leiste unten: «Bitte zuteilen: Kleinkinder im Kinderbettchen»."
+      ]
+    },
+    {
+      "v": "3.20.0.3",
+      "datum": "2026-11-18",
+      "titel": "Hinweis zur Luftmatratze wie die übrigen Hervorhebungen",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Der Text zur Luftmatratze ist gelb markiert wie «Ich» und die Auswahl in den Hinweisen, statt als Kasten"
+      ]
+    },
+    {
+      "v": "3.20.0.2",
+      "datum": "2026-11-18",
+      "titel": "Hinweis zur Luftmatratze gelb",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Bei «Freunde» steht der Hinweis «🛏️ Luftmatratze: Das 7. Bett ist eine Ausnahme …» gelb hinterlegt, wie in der Liste der Freunde"
+      ]
+    },
+    {
+      "v": "3.20.0.1",
+      "datum": "2026-11-18",
+      "titel": "«Betten pro Nacht» in der Buchungsübersicht",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Die Zeile unter den Personen heisst jetzt «🛏️ Betten pro Nacht»: jede Zahl gilt für die Nacht zwischen zwei Tagen"
+      ]
+    },
+    {
+      "v": "3.20.0.0",
+      "datum": "2026-11-18",
+      "titel": "Buchungsübersicht «Wer ist wann da?»",
+      "arten": [
+        "Neu"
+      ],
+      "punkte": [
+        "Übersicht pro Aufenthalt: Tage als Spalten, eine farbige Zeile pro Person (Farben der Parteien), darunter die Betten pro Nacht",
+        "Gelb: alle 6 Betten belegt, gestrichelt: wer auf der Luftmatratze schläft",
+        "Im Rechner unter der Liste der Freunde, in «Meine Verwaltung» beim Aufenthalt, im Kalender beim eigenen Aufenthalt und bei Papi in der Verwaltung",
+        "Ab 10 Nächten seitwärts wischen, die Namen bleiben links stehen"
+      ]
+    },
+    {
+      "v": "3.19.0.6",
+      "datum": "2026-11-18",
+      "titel": "Texte beim Aufenthalt der Freunde und bei der Anfrage",
+      "arten": [
+        "Text",
+        "Layout"
+      ],
+      "punkte": [
+        "Hinweis beim Aufenthalt eines Freundes mit seinem Namen, z. B. «Kommt Fränzu später oder reist er früher ab?»",
+        "Kasten vor der Anfrage: «Ich bin mit den Bedingungen 📜 und der Zahlung 💰 einverstanden»",
+        "Unter der Aufteilung keine Hinweise mehr zur Reinigung (steht schon in den Zeilen); «Zimmer 1 und rotes Bad unberührt» steht jetzt in der Aufschlüsselung der Familie"
+      ]
+    },
+    {
+      "v": "3.19.0.5",
+      "datum": "2026-11-18",
+      "titel": "Anleitung nachgeführt",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "«Wie wird gerechnet»: eigene Daten der Freunde mit 📅 und kleinem Kalender, eigene Nächte in der Rechnung, Parteien als farbige Inseln bei «Wer gehört zusammen?».",
+        "«Zimmer»: Luftmatratze mit gelber Markierung, «Wer bleibt zuhause?» und Checkliste zur Abreise.",
+        "«Datenschutz»: Die Liste der Freunde enthält auch An- und Abreise."
+      ]
+    },
+    {
+      "v": "3.19.0.4",
+      "datum": "2026-11-18",
+      "titel": "Kurtaxe mit eigenen Nächten, Aufenthalt wie das Geburtsdatum",
+      "arten": [
+        "Fehler",
+        "Layout"
+      ],
+      "punkte": [
+        "Fehler: Total und Leiste rechneten die Kurtaxe der Freunde mit eigenen Daten noch für alle Nächte. Jetzt für die eigenen Nächte, gleich wie die Aufteilung.",
+        "Preisberechnung mit Zeile «Freunde mit eigener An- und Abreise: N Nächte weniger».",
+        "Aufenthalt in der Liste der Freunde als Feld mit 📅 hinten, gleich wie das Geburtsdatum, mit kurzer Erklärung.",
+        "Anfrage per WhatsApp: Leerzeile zwischen den Freunden mit eigenen Daten."
+      ]
+    },
+    {
+      "v": "3.19.0.3",
+      "datum": "2026-11-18",
+      "titel": "Eigene Nächte der Freunde überall",
+      "arten": [
+        "Fehler"
+      ],
+      "punkte": [
+        "Rechnung für Freunde (Geld einsammeln): mit eigenen Daten stehen dort ihr Aufenthalt und ihre eigenen Nächte, nicht mehr die Nächte der ganzen Gruppe.",
+        "Liste der Freunde in «👤 Meine Verwaltung»: pro Freund Aufenthalt und Zahl der Nächte.",
+        "Verwaltung der Eltern: bei jedem Freund Aufenthalt und Nächte.",
+        "Mail der Gästemeldung gegliedert (eine Angabe pro Zeile) und mit Nächten."
+      ]
+    },
+    {
+      "v": "3.19.0.2",
+      "datum": "2026-11-18",
+      "titel": "Eigene Daten der Freunde im kleinen Kalender",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Eigene An- und Abreise eines Freundes wählst du in einem kleinen Kalender: nur die Tage eures Aufenthalts sind antippbar, alles andere ist ausgegraut. Erster Tipp = Anreise, zweiter Tipp = Abreise.",
+        "Bei «Freunde» steht die gestrichelte Zahl (Luftmatratze) wieder in derselben Zeile."
+      ]
+    },
+    {
+      "v": "3.19.0.1",
+      "datum": "2026-11-18",
+      "titel": "Anleitung: Freunde mit eigenen Daten und Luftmatratze",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "«Wie wird gerechnet»: neuer Punkt «Freunde mit eigenen Daten» (eigene An- und Abreise, Preis und Kurtaxe pro eigene Nacht, Betten pro Nacht).",
+        "«Zimmer»: neuer Punkt «Luftmatratze» (7. Bett, wenn in einer Nacht alle 6 Betten belegt sind, Freigabe durch die Eltern)."
+      ]
+    },
+    {
+      "v": "3.19.0.0",
+      "datum": "2026-11-18",
+      "titel": "Freunde mit eigener An- und Abreise",
+      "arten": [
+        "Neu"
+      ],
+      "punkte": [
+        "In der Liste der Freunde steht bei jedem «📅 Wie die Familie». Mit «Ändern» wählt man eigene Anreise und Abreise, immer während des Aufenthalts und mindestens 2 Nächte.",
+        "Preis und Kurtaxe zählen die eigenen Nächte, die Reinigung bleibt gleich. Keine neue Preisregel.",
+        "Betten zählen pro Nacht: Die Luftmatratze ist nur in Nächten mit mehr als 6 Personen nötig, die Anfrage nennt diese Nächte.",
+        "Anfrage, Aufteilung, Rechnungen und Gästemeldung enthalten die eigenen Daten.",
+        "Bei einer normalen Buchung heisst die Frage «👥 Wer kommt mit?» und der Chip «Ich, meine Familie, Freunde»."
+      ]
+    },
+    {
+      "v": "3.18.2.3",
+      "datum": "2026-11-18",
+      "titel": "Trinkgeld «Übernommen», Luftmatratze in der Checkliste",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Trinkgeld: Nach dem Übernehmen heisst der Knopf «✓ Übernommen», beim Ändern des Betrags wieder «✓ Übernehmen».",
+        "Checkliste zur Abreise: Bei freigegebener Luftmatratze der Punkt «🛏️ Luftmatratze auf Dichtheit prüfen. Alles in Ordnung: entleeren und versorgen. Sonst den Eltern melden.»"
+      ]
+    },
+    {
+      "v": "3.18.2.2",
+      "datum": "2026-11-18",
+      "titel": "Luftmatratze: Gast markiert, Zurückgeschicktes orange",
+      "arten": [
+        "Layout",
+        "Funktion"
+      ],
+      "punkte": [
+        "In der Liste der Freunde steht beim Gast auf der Luftmatratze gelb hinterlegt «🛏️ … schläft auf der Luftmatratze».",
+        "Eine zurückgeschickte Anfrage ist in der Verwaltung orange (Person und Karte) und zählt als offen.",
+        "Neu bei der zurückgeschickten Anfrage: «↩️ Zurücknehmen (wieder Anfrage)» und «🗑️ Löschen»."
+      ]
+    },
+    {
+      "v": "3.18.2.1",
+      "datum": "2026-11-18",
+      "titel": "Luftmatratze: Knopf «Wer bleibt zuhause?», Anfrage bleibt bei Papi sichtbar",
+      "arten": [
+        "Fehler",
+        "Layout"
+      ],
+      "punkte": [
+        "Beim Kind steht bei der Meldung der Knopf «🛏️ Wer bleibt zuhause?». Er öffnet «👤 Meine Verwaltung» mit den Namen. Nach der Wahl verschwindet die Meldung.",
+        "Auch Anfragen von vor dieser Version zeigen die Namen der Freunde. Wer von der Familie kommt, wählt das Kind dann nochmals.",
+        "In der Verwaltung der Eltern bleibt die zurückgeschickte Anfrage sichtbar: «↩︎ Zurückgeschickt: Luftmatratze nicht freigegeben», mit Knopf «Nachricht schicken»."
+      ]
+    },
+    {
+      "v": "3.18.2.0",
+      "datum": "2026-11-18",
+      "titel": "Luftmatratze abgelehnt: Wer bleibt zuhause?",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Geben die Eltern die Luftmatratze nicht frei, erscheint beim Kind auf der Startseite «🛏️ Luftmatratze geht leider nicht» mit einem Chip pro Person: jeder Freund mit Bett und einzeln wählbare Personen der Familie.",
+        "Ein Tipp öffnet den Rechner mit der alten Anfrage, ohne diese Person, alles neu gerechnet (Preis, Kurtaxe, Reinigung, Zahler). Das Kind prüft und schickt die Anfrage nochmals.",
+        "Die Nachricht der Eltern sagt, wie es geht. Eine neue Anfrage mit gleichem Termin gilt nicht mehr als abgelehnt."
+      ]
+    },
+    {
+      "v": "3.18.1.0",
+      "datum": "2026-11-18",
+      "titel": "Luftmatratze in der Verwaltung freigeben",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Bei einer Anfrage mit Luftmatratze fragt die Verwaltung «🛏️ Luftmatratze (7. Bett) freigeben?» mit Ja und Nein. «Bestätigen» geht erst nach der Wahl.",
+        "Ja: Bestätigen wie bisher, die Bestätigung sagt «Die Luftmatratze ist freigegeben».",
+        "Nein: Knopf «Ohne Luftmatratze zurückschicken». Die Anfrage geht zurück, die Nachricht bittet, sie mit einer Person weniger nochmals zu schicken."
+      ]
+    },
+    {
+      "v": "3.18.0.0",
+      "datum": "2026-11-18",
+      "titel": "Luftmatratze als 7. Bett",
+      "arten": [
+        "Neu"
+      ],
+      "punkte": [
+        "Die Luftmatratze ist das 7. Bett, immer als Ausnahme: für Freunde und auch für die Familie allein, in jeder Zeit (auch Lücke, Staffel und Skirennen).",
+        "Bei «Freunde» ist die letzte Zahl gestrichelt, wenn sie die Luftmatratze braucht. Bei «Meine Familie und Geschwister» lassen sich 7 Personen mit Bett antippen.",
+        "Der Rechner rechnet normal weiter. In der Anfrage steht «Luftmatratze: bitte freigeben», die Eltern sagen zu oder ab.",
+        "In der Verwaltung trägt die Anfrage das Zeichen «🛏️ Luftmatratze». Meldung bei zu vielen Freunden: «Nur noch N Plätze frei»."
+      ]
+    },
+    {
       "v": "3.17.12.9",
       "datum": "2026-11-18",
       "titel": "Glossar: Datenschutz",
