@@ -2,6 +2,19 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.23.0.0",
+      "datum": "2026-11-24",
+      "titel": "Namen der Familie auf jedem Gerät",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Die Vornamen der Familie stehen jetzt in der Datei familie.json. Jedes Gerät liest sie beim Start: Laptop, Mami und Kinder sehen dieselben Namen und Geschwister.",
+        "Papi speichert die Namen wie bisher unter «Persönliche Links». Mit Token geht die ganze Liste von seinem Handy zusätzlich ins Repo.",
+        "Ohne Verbindung gilt der zuletzt geladene Stand. Der Persönliche Link bleibt als Reserve."
+      ]
+    },
+    {
       "v": "3.22.2.0",
       "datum": "2026-11-24",
       "titel": "Namen der Familie in der gespeicherten Berechnung und in «Wer ist wann da?»",

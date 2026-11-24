@@ -1600,7 +1600,7 @@ if (TEST_MODUS) {
         <details class="sub" id="b-daten"><summary>🔒 Datenschutz</summary><div class="bc"><p class="wt">Das Wichtigste</p><p>Der TSCHENT-O-MAT ist unsere private Familien-App. Was nur dich betrifft, bleibt auf deinem Handy. Was wir für Buchung, Zahlung und Kurtaxe brauchen, verlässt dein Handy. Hier steht ehrlich, was wo liegt und wer es sehen kann.</p><details class="mehr"><summary>Mehr erfahren</summary>
 <p class="wt">📱 Nur auf deinem Handy</p><p>Das sehen wir nicht, auch Papi nicht in seiner Verwaltung:</p><ul><li>dein Rufname</li><li>deine IBAN und deine TWINT-Nummer für die Rechnungen an deine Freunde</li><li>das Adressbuch deiner Freunde</li><li>dein Trinkgeld, deine Haken in den Listen und «Geld einsammeln»</li></ul><p>Deine IBAN und deine TWINT-Nummer stehen nur in den Rechnungen, die du selbst per WhatsApp an deine Freunde schickst. Löschst du die Daten des Browsers oder wechselst du das Handy, sind diese Angaben weg. Wer dein Handy benutzt, kann sie sehen.</p>
 <p class="wt">✉️ Im Briefkasten der Eltern (privat)</p><p>Der Briefkasten liegt in unserem Google-Konto. Nur wir Eltern sehen ihn:</p><ul><li>deine Mailadresse und ob du Mails zu offenen Aufgaben willst</li><li>die Liste deiner Freunde mit Name, Vorname, Geschlecht, Geburtsdatum, Nationalität und Aufenthalt (An- und Abreise)</li></ul><p>Die Liste der Freunde brauchen wir für die Gästekarten und die Kurtaxe. Dafür melden wir deine Freunde bei Adelboden Tourismus an, das ist Vorschrift. Sonst geben wir nichts weiter.</p>
-<p class="wt">🌐 Öffentlich einsehbar</p><p>Der TSCHENT-O-MAT liegt bei GitHub. Seine Dateien sind öffentlich: Wer die Adresse kennt und weiss, wo er suchen muss, kann sie lesen. Dort stehen:</p><ul><li>deine Aufenthalte mit Vorname, Anreise, Abreise, Zahl der Personen und Betrag</li><li>die Preisberechnung mit den Vornamen deiner Familie, aber ohne die Namen deiner Freunde</li><li>der Kalender mit den Vornamen und Daten der Aufenthalte</li><li>die IBAN der Eltern. Auf eine IBAN kann man nur einzahlen, nicht abheben.</li></ul><p>Dort stehen keine Nachnamen, keine Geburtsdaten, keine Mailadressen und keine Telefonnummern. Die Liste deiner Freunde steht nie dort.</p>
+<p class="wt">🌐 Öffentlich einsehbar</p><p>Der TSCHENT-O-MAT liegt bei GitHub. Seine Dateien sind öffentlich: Wer die Adresse kennt und weiss, wo er suchen muss, kann sie lesen. Dort stehen:</p><ul><li>deine Aufenthalte mit Vorname, Anreise, Abreise, Zahl der Personen und Betrag</li><li>die Preisberechnung mit den Vornamen deiner Familie, aber ohne die Namen deiner Freunde</li><li>die Vornamen der Familie (Partner/in und Enkel) in der Datei familie.json, damit sie auf jedem Gerät erscheinen</li><li>der Kalender mit den Vornamen und Daten der Aufenthalte</li><li>die IBAN der Eltern. Auf eine IBAN kann man nur einzahlen, nicht abheben.</li></ul><p>Dort stehen keine Nachnamen, keine Geburtsdaten, keine Mailadressen und keine Telefonnummern. Die Liste deiner Freunde steht nie dort.</p>
 <p class="wt">📞 Telefonnummern</p><p>Der TSCHENT-O-MAT speichert keine Telefonnummern. Tippst du auf einen WhatsApp-Knopf, öffnet sich WhatsApp, und du wählst selbst, an wen die Nachricht geht. Was du per WhatsApp schickst, läuft über WhatsApp wie jede andere Nachricht.</p>
 <p class="wt">🔑 Dein persönlicher Link</p><p>Dein Link enthält einen Code und die Namen deiner Familie. Wer ihn hat, kann den TSCHENT-O-MAT in deinem Namen benutzen und Anfragen schicken. Gib ihn darum nicht weiter. Die Vornamen deiner Familie stehen mit deiner Buchung in der Preisberechnung, wie oben beschrieben.</p>
 <p class="wt">🗑️ Löschen</p><p>Möchtest du, dass wir etwas löschen, zum Beispiel deine Mailadresse oder die Liste deiner Freunde nach dem Aufenthalt? Sag es uns, wir machen das gerne.</p></details></div></details>
@@ -1720,7 +1720,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.22.2.0";
+let VERSION = "3.23.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -4737,7 +4737,19 @@ const PARTNER_ABS = ["David", "Rahel", "Andreas", "Sarah"];   // Partner der Kin
 const ABS = KINDER_ABS.concat(PARTNER_ABS);
 // Familie mit Namen (seit 3.5.0.0): Partner/in und Kinder kommen über den persönlichen Link (…&fp=…&fk=…) und liegen nur auf dem Handy (tm2_famIch).
 // Papi trägt sie in der Verwaltung ein (tm2_famListe, nur auf seinem Handy). Nie ins Repo. In der Testversion nimmt die Ansicht die Namen aus tm2_famListe.
-function famListe() { try { const o = JSON.parse(localStorage.getItem("tm2_famListe") || "{}"); return o && typeof o === "object" ? o : {}; } catch (e) { return {}; } }
+// Seit 3.23.0.0: die Namen stehen auch in familie.json im Repo (Vornamen, Entscheid Wänu 24.11.2026), damit jedes Gerät sie kennt (Laptop, Mami, Kinder).
+// FAM_REPO = Liste aus dem Repo (Zwischenspeicher tm2_famRepo), die lokale Liste von Papi (tm2_famListe) hat Vorrang.
+let FAM_REPO = (() => { try { const o = JSON.parse(localStorage.getItem("tm2_famRepo") || "{}"); return o && typeof o === "object" ? o : {}; } catch (e) { return {}; } })();
+function famRepoLaden() {
+  return fetch("familie.json?v=" + Date.now(), { cache: "no-store" }).then((r) => r.ok ? r.json() : null).then((j) => {
+    if (!j || typeof j.liste !== "object" || !j.liste) return;
+    const neu = JSON.stringify(j.liste); if (neu === JSON.stringify(FAM_REPO)) return;
+    FAM_REPO = j.liste; try { localStorage.setItem("tm2_famRepo", neu); } catch (e) {}
+    try { if (typeof render === "function") render(); } catch (e) {}
+    try { if (TOKEN && typeof bestZeigen === "function") bestZeigen(); } catch (e) {}
+  }).catch(() => {});
+}
+function famListe() { let l = {}; try { const o = JSON.parse(localStorage.getItem("tm2_famListe") || "{}"); l = o && typeof o === "object" ? o : {}; } catch (e) {} return Object.assign({}, FAM_REPO, l); }
 function lkfGleich(n, pv, kv) { return JSON.stringify(famSauber({ p: pv, k: String(kv).split(",") })) === JSON.stringify(famSauber(famListe()[n])); }
 function lkfKnopf(n, pv, kv) {   // Knopf zeigt den Zustand: gespeichert oder (nochmals) speichern (seit 3.16.2.2, Wänu)
   const g = lkfGleich(n, pv, kv), da = !!famSauber(famListe()[n]);
@@ -4756,7 +4768,7 @@ function famNamen() {
     if (MAMI) f = null;
     else if (TOKEN) f = ABSENDER ? famSauber(famListe()[ABSENDER]) : null;   // Papi: «Ansicht als» mit den Namen aus seiner Liste (seit 3.10.1.0)
     else if (TEST_MODUS) f = ABSENDER ? famSauber(famListe()[ABSENDER]) : null;
-    else f = famSauber(JSON.parse(localStorage.getItem("tm2_famIch") || "null"));
+    else f = (ABSENDER ? famSauber(FAM_REPO[ABSENDER]) : null) || famSauber(JSON.parse(localStorage.getItem("tm2_famIch") || "null"));   // Repo-Liste zuerst (seit 3.23.0.0), sonst Daten aus dem Link
   } catch (e) { f = null; }
   return f || FAM_GEN;
 }
@@ -4780,7 +4792,7 @@ function famAlle() {   // ganze Familie als Haushalte [{m: [Kind, Partner, Enkel
   try { if (MAMI || (TOKEN && !ABSENDER)) return []; } catch (e) { return []; }
   let roh = [];
   // Papi «Ansicht als» nimmt die Haushalte aus seiner Liste wie die Testversion (seit 3.16.2.3)
-  if (TEST_MODUS || TOKEN) { const fl = famListe(); roh = KINDER_ABS.map((k) => { const f = famSauber(fl[k]) || famSauber(fl[PAAR[k]] ? Object.assign({}, fl[PAAR[k]], { p: k }) : null); return { k, p: f ? f.p : "", e: f ? f.k : [] }; }); }
+  if (TEST_MODUS || TOKEN || Object.keys(FAM_REPO).length) { const fl = famListe(); roh = KINDER_ABS.map((k) => { const f = famSauber(fl[k]) || famSauber(fl[PAAR[k]] ? Object.assign({}, fl[PAAR[k]], { p: k }) : null); return { k, p: f ? f.p : "", e: f ? f.k : [] }; }); }
   else { try { const a = JSON.parse(localStorage.getItem("tm2_famAlle") || "[]"); roh = Array.isArray(a) ? a : []; } catch (e) { roh = []; } }
   return roh.filter((h) => h && h.k).map((h) => { const e = (Array.isArray(h.e) ? h.e : []).map(String).filter(Boolean).slice(0, 6); return { m: [String(h.k)].concat(h.p ? [String(h.p)] : [], e), e }; });
 }
@@ -6769,6 +6781,29 @@ async function ghIdeen(fn) {   // Liste «Geplant und Ideen» (ideen.json) ände
   }
   throw new Error("Speichern fehlgeschlagen.");
 }
+famRepoLaden();
+async function ghFamilie(lokal, name, fo) {   // familie.json im Repo nachführen: alle Namen von Papis Handy, dazu die Änderung für «name» (seit 3.23.0.0)
+  const url = "https://api.github.com/repos/" + GH_REPO + "/contents/familie.json";
+  const kopf = { Authorization: "Bearer " + TOKEN, Accept: "application/vnd.github+json" };
+  for (let versuch = 0; versuch < 2; versuch++) {
+    const g = await fetch(url + "?ref=main&t=" + Date.now(), { headers: kopf, cache: "no-store" });
+    let sha, j = { liste: {} };
+    if (g.status === 404) sha = undefined;
+    else if (g.status === 401 || g.status === 403) throw new Error("Das Token wird nicht akzeptiert. Es ist ungültig oder abgelaufen.");
+    else if (!g.ok) throw new Error("GitHub antwortet mit Fehler " + g.status + ".");
+    else { const d = await g.json(); sha = d.sha; try { j = JSON.parse(unb64(d.content)); } catch (e) {} }
+    if (!j || typeof j.liste !== "object" || !j.liste) j = { liste: {} };
+    Object.keys(lokal).forEach((k) => { const x = famSauber(lokal[k]); if (x) j.liste[k] = x; });
+    if (fo) j.liste[name] = fo; else delete j.liste[name];
+    const r = await fetch(url, { method: "PUT", headers: Object.assign({ "Content-Type": "application/json" }, kopf),
+      body: JSON.stringify({ message: "Familiennamen aktualisiert (App)", content: b64(JSON.stringify(j, null, 2) + "\n"), sha, branch: "main" }) });
+    if (r.ok) return j.liste;
+    if ((r.status === 409 || r.status === 422) && versuch === 0) continue;
+    if (r.status === 401 || r.status === 403) throw new Error("Das Token darf in " + GH_REPO + " nicht schreiben.");
+    throw new Error("Speichern fehlgeschlagen (Fehler " + r.status + ").");
+  }
+  throw new Error("Speichern fehlgeschlagen.");
+}
 async function ghAendern(fn) {
   const url = "https://api.github.com/repos/" + GH_REPO + "/contents/" + GH_DATEI;
   const kopf = { Authorization: "Bearer " + TOKEN, Accept: "application/vnd.github+json" };
@@ -8442,8 +8477,15 @@ document.getElementById("bestKasten").addEventListener("click", async (e) => {
     const box = e.target.closest(".lk-fam"), pv = box.querySelector("[data-lkfp]").value, kv = box.querySelector("[data-lkfk]").value;
     const o = famListe(), fo = famSauber({ p: pv, k: kv.split(",") });
     if (fo) o[lkf] = fo; else delete o[lkf];
-    try { localStorage.setItem("tm2_famListe", JSON.stringify(o)); } catch (er) {}
-    bestMsg = fo ? "Namen für " + lkf + " gespeichert." + (INV[lkf] ? " Der Link enthält sie jetzt." : "") : "Namen für " + lkf + " entfernt."; bestZeigen(); return;
+    let lok = {}; try { lok = JSON.parse(localStorage.getItem("tm2_famListe") || "{}") || {}; } catch (er) {}
+    if (fo) lok[lkf] = fo; else delete lok[lkf];
+    try { localStorage.setItem("tm2_famListe", JSON.stringify(lok)); } catch (er) {}
+    let rp = "";
+    if (TOKEN && TOKEN !== "test") {   // zusätzlich ins Repo, damit alle Geräte die Namen kennen (seit 3.23.0.0)
+      try { const l = await ghFamilie(lok, lkf, fo); FAM_REPO = l; try { localStorage.setItem("tm2_famRepo", JSON.stringify(l)); } catch (er) {} rp = " Auch im Repo gespeichert: Laptop und Kinder kennen die Namen."; }
+      catch (er) { rp = " Im Repo nicht gespeichert: " + er.message; }
+    }
+    bestMsg = (fo ? "Namen für " + lkf + " gespeichert." + (INV[lkf] ? " Der Link enthält sie jetzt." : "") : "Namen für " + lkf + " entfernt.") + rp; bestZeigen(); return;
   }
   if (lkc) { kopiere(lkText(lkc), e.target.closest("[data-lkcp]"), "Kopiert"); return; }
   if (lkn || e.target.closest("[data-lkalle]")) {
