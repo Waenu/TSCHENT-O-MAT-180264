@@ -1720,7 +1720,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.24.0.0";
+let VERSION = "3.24.0.1";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -4756,7 +4756,7 @@ function famRepoLaden() {
     try { if (TOKEN && typeof bestZeigen === "function") bestZeigen(); } catch (e) {}
   }).catch(() => {});
 }
-function famListe() { let l = {}; try { const o = JSON.parse(localStorage.getItem("tm2_famListe") || "{}"); l = o && typeof o === "object" ? o : {}; } catch (e) {} return Object.assign({}, FAM_REPO, l); }
+function famListe() { let l = {}; try { const o = JSON.parse(localStorage.getItem("tm2_famListe") || "{}"); l = o && typeof o === "object" ? o : {}; } catch (e) {} Object.keys(l).forEach((k) => { if (!famSauber(l[k])) delete l[k]; }); return Object.assign({}, FAM_REPO, l); }   // leere lokale Einträge überschreiben das Repo nicht (seit 3.24.0.1)
 function lkfGleich(n, pv, kv) { return JSON.stringify(famSauber({ p: pv, k: String(kv).split(",") })) === JSON.stringify(famSauber(famListe()[n])); }
 function lkfKnopf(n, pv, kv) {   // Knopf zeigt den Zustand: gespeichert oder (nochmals) speichern (seit 3.16.2.2, Wänu)
   const g = lkfGleich(n, pv, kv), da = !!famSauber(famListe()[n]);
