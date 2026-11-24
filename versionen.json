@@ -2,6 +2,21 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.22.2.0",
+      "datum": "2026-11-24",
+      "titel": "Namen der Familie in der gespeicherten Berechnung und in «Wer ist wann da?»",
+      "arten": [
+        "Funktion",
+        "Layout",
+        "Text"
+      ],
+      "punkte": [
+        "Die Vornamen der Familie stehen jetzt mit der Buchung in der gespeicherten Preisberechnung. Dadurch zeigen Papi, der Kalender und «Meine Verwaltung» überall die Namen statt «Familie, Partei 2», in der Aufteilung («Jerome & Rahel zahlen») und in «Wer ist wann da?».",
+        "In «Wer ist wann da?» kürzt die App die Namen bei wenig Platz auf die ersten zwei Buchstaben («Je & Ra»).",
+        "Glossar «Datenschutz» nachgeführt: Die Vornamen der Familie stehen öffentlich auf GitHub, nicht aber Nachnamen, Geburtsdaten oder die Namen der Freunde."
+      ]
+    },
+    {
       "v": "3.22.1.8",
       "datum": "2026-11-24",
       "titel": "Luftmatratze bei «Freunde» als braunes +1",
