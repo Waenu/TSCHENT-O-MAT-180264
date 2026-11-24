@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.21.2.1",
+      "datum": "2026-11-24",
+      "titel": "«Ich» oder Partner bleibt immer angewählt",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "«Ich» lässt sich nur abwählen, wenn der Partner oder die Partnerin angewählt ist, und umgekehrt. Ein kurzer Hinweis sagt, was zuerst anzutippen ist."
+      ]
+    },
+    {
       "v": "3.21.2.0",
       "datum": "2026-11-24",
       "titel": "Bei «Meine Familie und Geschwister» kommt jemand aus dem eigenen Haushalt mit",
