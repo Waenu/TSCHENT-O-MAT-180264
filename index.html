@@ -123,7 +123,7 @@ if (TEST_MODUS) {
     --line: #CBD8D5;
     --schraff: #A5BAB5;   /* Schraffur belegter Tage */
     --missing-bg: #FFEBC9;
-    --missing-line: #D8962B;
+    --missing-line: #D8962B; --fam: #6F4426;
     --done-bg: #DCE8F6;
     --done-line: #2F6DB0;
     --error-bg: #FAD7D7;
@@ -157,7 +157,7 @@ if (TEST_MODUS) {
       --line: #2B4341;
       --schraff: #5F8580;
       --missing-bg: #4B3813;
-      --missing-line: #C98C25;
+      --missing-line: #C98C25; --fam: #7E5A40;
       --done-bg: #16304D;
       --done-line: #6AA6E3;
       --error-bg: #4C1F1F;
@@ -187,7 +187,7 @@ if (TEST_MODUS) {
     --line: #2B4341;
       --schraff: #5F8580;
     --missing-bg: #4B3813;
-    --missing-line: #C98C25;
+    --missing-line: #C98C25; --fam: #7E5A40;
     --done-bg: #16304D;
     --done-line: #6AA6E3;
     --error-bg: #4C1F1F;
@@ -264,9 +264,9 @@ if (TEST_MODUS) {
   .zchip[aria-pressed="true"] { background: var(--missing-line); color: #1F1300; border-color: var(--missing-line); }   /* gewählt: voll orange, Knöpfe bleiben grün (seit 3.21.1.1, Punkt 27) */
   .zchip[aria-pressed="true"]::after { content: "✓"; position: absolute; top: -8px; right: -8px; width: 18px; height: 18px; border-radius: 50%; background: var(--fg); color: var(--bg); font-size: 11px; line-height: 18px; text-align: center; font-weight: 700; pointer-events: none; }   /* Häkchen-Abzeichen über der Ecke (seit 3.21.1.1, Wänu Variante 4) */
   .zchip[style*="--pc"]:not(:disabled):not([aria-pressed="true"]), .field.missing .zchip[style*="--pc"]:not(:disabled):not([aria-pressed="true"]) { border-color: var(--pc); }   /* Namen-Chips: nichts gewählt = Rahmen in der Farbe des Haushalts */
-  .gm-pt.vorschlag .zchip::after { display: none; }
+  .gm-pt.vorschlag .zchip::after { display: none; } .zchips.kkb .zchip:not([aria-pressed="true"]):not(.kk-fr) { border-color: var(--line) !important; }   /* Kinderbettchen ist freiwillig: ohne Wahl kein farbiger Rahmen (seit 3.21.2.2) */
   .zchip.kk-fr { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; cursor: default; }   /* Kleinkind der Freunde im Kinderbettchen, fest (seit 3.17.10.1) */
-  .zchip[style*="--pc"][aria-pressed="true"] { background: var(--pc); border-color: var(--pc); color: #fff; } .zchip[style*="--pc:var(--missing-line)"][aria-pressed="true"] { color: #1F1300; }   /* Farbe der Partei schon beim Antippen (seit 3.17.6.0) */
+  .zchip[style*="--pc"][aria-pressed="true"] { background: var(--pc); border-color: var(--pc); color: #fff; } .zchip[style*="--pc:var(--fam)"][aria-pressed="true"] { color: #fff; }   /* Farbe der Partei schon beim Antippen (seit 3.17.6.0) */
   .gm-f[style*="--pc"] { box-shadow: inset 6px 0 0 var(--pc); }
   .mat-weg .zchips { margin-top: 8px; }
 .mat-f { margin: 10px 0 0; }
@@ -1718,7 +1718,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.21.2.1";
+let VERSION = "3.21.2.2";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2313,7 +2313,7 @@ function gmEntwurfUebernehmen() {   // beim Senden der Anfrage: Liste unter die 
   karteiMerken(fr);
 }
 var INS_SEL = null, INS_N = 0, INS_ZOG = false, INS_MSG = "", KK_MSG = false;   // KK_MSG: «Ja, passt» mit offenen Kleinkindern (seit 3.20.0.4)   // Parteien als Inseln (seit 3.17.1.0, Wänu): Person antippen und dann ihre Partei, oder mit dem Finger hinüberziehen
-const INS_F = ["#3B82F6", "#22A06B", "#8B5CF6", "#E0679B", "#EF6B4A", "#0EA5E9", "#84CC16"], INS_FAM = "var(--missing-line)", INS_KIND = "#8A8A8A";   // eigener Haushalt türkis (seit 3.21.1.2, Gold nur für Spezialpreis und Positives), Kinder ohne Partei grau (seit 3.17.2.0)
+const INS_F = ["#3B82F6", "#22A06B", "#8B5CF6", "#E0679B", "#EF6B4A", "#0EA5E9", "#84CC16"], INS_FAM = "var(--fam)", INS_KIND = "#8A8A8A";   // eigener Haushalt braun (seit 3.21.2.2; vorher türkis, dann orange), Kinder ohne Partei grau (seit 3.17.2.0)
 function ptKoepfe(l, zi) { return [...new Set(zi.filter((i) => alterAm(l[i].geb, ARR) >= 18).map((i) => parteiKopf(i, l, zi)))]; }   // Reihenfolge wie die Liste «🤝 Parteien»
 function famGeschw() { return (famParteien() || []).filter((pp) => !pp.eigen); }   // Haushalte der Geschwister, die mitkommen (seit 3.17.6.0)
 function famIdx(kopf) { return famAlle().filter((h) => h.m.indexOf(ABSENDER) < 0).findIndex((h) => h.m[0] === kopf); }   // feste Farbe pro Geschwister-Haushalt, auch bevor er gewählt ist (seit 3.21.1.3)
@@ -2548,7 +2548,7 @@ function gmRechZeigen(d) {
   const koepfe = [...new Set(zi.filter((i) => alterAm(l[i].geb, ARR) >= 18).map((i) => parteiKopf(i, l, zi)))];
   const glieder = (h) => zi.filter((j) => alterAm(l[j].geb, ARR) >= 18 ? parteiKopf(j, l, zi) === h : !!kG(j, h)).sort((x, y) => (alterAm(l[x].geb, ARR) < 18) - (alterAm(l[y].geb, ARR) < 18) || x - y).map((j) => esc(alterAm(l[j].geb, ARR) < 18 ? kG(j, h) : vnK(l[j])));
   const fpp = famParteien(), famT = fpp ? fpp.map((pp, k) => (k === 0 ? famParteiText(pp, 0, false).replace(/^Du/, "Ich (" + esc(rufname()) + ")") : famParteiText(pp, k, false)) + (k === 0 ? famK.map((v) => ", " + esc(v)).join("") : "")) : [fam];   // Familie mit Parteien (seit 3.9.0.0)
-  ps.innerHTML = '<p><b>🤝 Parteien</b></p><ol class="pt-info">' + famT.map((t, k) => '<li><span class="pt-nr" style="background:' + (fpp ? famFarbe(fpp[k]) : INS_FAM) + ';color:' + (!fpp || fpp[k].eigen ? "#111" : "#fff") + '">' + (k + 1) + "</span><span>" + t + "</span></li>").join("") + koepfe.map((h, k) => '<li><span class="pt-nr" style="background:' + (ptFarbe(h, l, zi) || "var(--line)") + ';color:#fff">' + (k + 1 + famT.length) + "</span><span>" + glieder(h).join(", ") + "</span></li>").join("") + "</ol>";   // nur Information, keine Chips (seit 3.9.5.6)
+  ps.innerHTML = '<p><b>🤝 Parteien</b></p><ol class="pt-info">' + famT.map((t, k) => '<li><span class="pt-nr" style="background:' + (fpp ? famFarbe(fpp[k]) : INS_FAM) + ';color:#fff">' + (k + 1) + "</span><span>" + t + "</span></li>").join("") + koepfe.map((h, k) => '<li><span class="pt-nr" style="background:' + (ptFarbe(h, l, zi) || "var(--line)") + ';color:#fff">' + (k + 1 + famT.length) + "</span><span>" + glieder(h).join(", ") + "</span></li>").join("") + "</ol>";   // nur Information, keine Chips (seit 3.9.5.6)
 }
 function gmVorZeigen(fs, feld, alle) {   // alle: Knopf 📇 im Feld zeigt alle bisherigen Freunde, sortiert nach diesem Feld (seit 3.11.1.0)   // Vorschläge aus dem Adressbuch: erst ab dem ersten Buchstaben, nur Treffer mit diesem Anfang (seit 3.9.1.1; vorher zeigte ein leeres Feld alle)
   const d = fs.querySelector(".gm-vor"), wert = (n) => fs.querySelector('[data-gf="' + n + '"]').value.trim().toLowerCase();
@@ -2574,7 +2574,7 @@ function eigenHtml() {   // Chips des eigenen Haushalts, «Ich» fest (seit 3.9.
     leute.map((x) => chip('data-fe="' + esc(x) + '"', sel.indexOf(x) >= 0, esc(x) + (kk.indexOf(x) >= 0 ? "<small>👶 Kinderbettchen</small>" : ""), sel.indexOf(x) < 0 && voll && (f.k.indexOf(x) < 0 || kk.length >= 2))).join("") +
     '</div>' + (erwWarnZeigen() ? '<p class="hint" style="color:var(--error-line);font-weight:600">Mindestens eine erwachsene Person muss mitkommen.</p>' : "") + '<p class="hint">Tippe alle an, die mitkommen. Kommst du selbst nicht mit, tippe <span class="hl">Ich</span> ab.</p></div>';
   const enk = f.k.filter((x) => sel.indexOf(x) >= 0);
-  if (enk.length || kkFrL().length) h += '<div class="field zrech done"><label>👶 Wer schläft im Kinderbettchen?</label><div class="zchips">' + kkFrChips() + enk.map((x) => chip('data-fkk="' + esc(x) + '"', kk.indexOf(x) >= 0, esc(x), kk.indexOf(x) < 0 ? kk.length >= kkFrei() : voll)).join("") + '</div>' + kkFrHint() + '<p class="hint">Kinder bis etwa 2½ Jahren, höchstens zwei (es hat zwei Kinderbettchen). Sie belegen kein Bett und zählen bei der Reinigung nicht mit. Niemand: nichts antippen.</p></div>';
+  if (enk.length || kkFrL().length) h += '<div class="field zrech done"><label>👶 Wer schläft im Kinderbettchen?</label><div class="zchips kkb">' + kkFrChips() + enk.map((x) => chip('data-fkk="' + esc(x) + '"', kk.indexOf(x) >= 0, esc(x), kk.indexOf(x) < 0 ? kk.length >= kkFrei() : voll)).join("") + '</div>' + kkFrHint() + '<p class="hint">Kinder bis etwa 2½ Jahren, höchstens zwei (es hat zwei Kinderbettchen). Sie belegen kein Bett und zählen bei der Reinigung nicht mit. Niemand: nichts antippen.</p></div>';
   return h;
 }
 function mfgZeigen() {
@@ -2593,9 +2593,9 @@ function mfgZeigen() {
     (erwWarnZeigen() ? '<p class="hint" style="color:var(--error-line);font-weight:600">' + (erwWer() ? 'Mindestens ' + esc(erwWer()) + ' muss mitkommen. Die Anfrage läuft auf deinen Namen.' : 'Du musst mitkommen, die Anfrage läuft auf deinen Namen.') + '</p>' : "") +
     '<p class="hint">Bitte antippen, höchstens ' + MFG_MAX() + ' Personen mit Bett' + (ichDa() ? " ausser dir" : "") + ' (' + P.maxPersonen + " Betten und als Ausnahme die Luftmatratze). Kommst du selbst nicht mit, tippe «Ich» ab. Kleinkinder im Kinderbettchen kommen dazu, bis zwei (es hat zwei Kinderbettchen). Sind alle Betten belegt, kommt ein Enkelkind beim Antippen gleich ins Kinderbettchen. Den Preis pro Nacht zahlt ihr wie immer gemeinsam, die App teilt ihn unter euren Familien auf.</p></div>";
   const enk = [].concat(...hs.map((x) => x.e)).filter((x) => sel.indexOf(x) >= 0);
-  if (enk.length || kkFrL().length) h += '<div class="field zrech done"><label>👶 Wer schläft im Kinderbettchen?</label><div class="zchips">' + kkFrChips() + enk.map((x) => (HF = hf(hs.find((q) => q.m.indexOf(x) >= 0) || eig), "") + chip('data-mkk="' + esc(x) + '"', kk.indexOf(x) >= 0, esc(x), kk.indexOf(x) < 0 ? kk.length >= kkFrei() : voll)).join("") + '</div>' + kkFrHint() + '<p class="hint">Kinder bis etwa 2½ Jahren, höchstens zwei. Sie belegen kein Bett und zählen bei der Reinigung nicht mit, darum hat dann jemand mehr Platz. Ganz Kleine, die bei euch im Bett schlafen, kommen einfach mit, du musst sie oben nicht antippen.</p></div>';
+  if (enk.length || kkFrL().length) h += '<div class="field zrech done"><label>👶 Wer schläft im Kinderbettchen?</label><div class="zchips kkb">' + kkFrChips() + enk.map((x) => (HF = hf(hs.find((q) => q.m.indexOf(x) >= 0) || eig), "") + chip('data-mkk="' + esc(x) + '"', kk.indexOf(x) >= 0, esc(x), kk.indexOf(x) < 0 ? kk.length >= kkFrei() : voll)).join("") + '</div>' + kkFrHint() + '<p class="hint">Kinder bis etwa 2½ Jahren, höchstens zwei. Sie belegen kein Bett und zählen bei der Reinigung nicht mit, darum hat dann jemand mehr Platz. Ganz Kleine, die bei euch im Bett schlafen, kommen einfach mit, du musst sie oben nicht antippen.</p></div>';
   const fp = famParteien();
-  if (fp && fp.length > 1) h += '<div class="field zrech done"><label>🤝 Parteien der Familie</label><ol class="pt-info">' + fp.map((pp, i) => '<li><span class="pt-nr" style="background:' + famFarbe(pp) + ';color:' + (pp.eigen ? "#111" : "#fff") + '">' + (i + 1) + "</span><span>" + (i === 0 ? famParteiText(pp, 0, false).replace(/^Du/, "Ich (" + esc(rufname()) + ")") : famParteiText(pp, i, false)) + "</span></li>").join("") + "</ol></div>";
+  if (fp && fp.length > 1) h += '<div class="field zrech done"><label>🤝 Parteien der Familie</label><ol class="pt-info">' + fp.map((pp, i) => '<li><span class="pt-nr" style="background:' + famFarbe(pp) + ';color:#fff">' + (i + 1) + "</span><span>" + (i === 0 ? famParteiText(pp, 0, false).replace(/^Du/, "Ich (" + esc(rufname()) + ")") : famParteiText(pp, i, false)) + "</span></li>").join("") + "</ol></div>";
   mb.innerHTML = h; mitkMsg(mb);
 }
 function zahlUiZeigen(d) {   // Chips: wer im selben Zimmer schläft, wer die Kosten für Freunde unter 18 übernimmt (seit 3.7.0.0)
