@@ -5046,7 +5046,7 @@ function anfrageText(r) {
     for (let i = 0; i < listeN(x); i++) { const f = zpA.l[i]; if (!f) continue;
       const al = f.geb && ARR ? alterAm(f.geb, ARR) : NaN, kk = kkS.indexOf(i) >= 0, td = fDat(f);
       blk.push((i + 1) + ". " + rn(f) + (kk ? " (Kleinkind im Kinderbettchen)" : al >= 0 && al < 18 ? " (" + al + ")" : ""));
-      blk.push("   Aufenthalt: " + (td.eigen ? fmtTag(td.an) + " bis " + fmtTag(td.ab) + " (" + diffDays(td.an, td.ab) + " Nächte)" : "wie die Familie"));
+      blk.push("   Aufenthalt: " + (td.eigen ? fmtTag(td.an) + " bis " + fmtTag(td.ab) + " (" + diffDays(td.an, td.ab) + (diffDays(td.an, td.ab) === 1 ? " Nacht" : " Nächte") + ")" : "wie die Familie"));
       (frZ[i] || []).forEach((q) => blk.push("   " + q)); blk.push(""); }
     const out = []; z.forEach((q, k) => { if (!weg.has(k)) out.push(q); if (k === iFrE && blk.length) { out.push(""); out.push(...blk); } });
     return out.join("\n");
