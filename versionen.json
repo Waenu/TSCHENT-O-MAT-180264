@@ -2,6 +2,20 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.22.1.7",
+      "datum": "2026-11-24",
+      "titel": "Pfeile im Rahmen, Familie in der WhatsApp-Anfrage gegliedert",
+      "arten": [
+        "Layout",
+        "Text",
+        "Fehler"
+      ],
+      "punkte": [
+        "Aufgeklappte Zeilen der Aufteilung: Bei grosser Schrift war die Tabelle breiter als der Rahmen, die Pfeile standen auf dem Rand. Die Zeilen dürfen jetzt umbrechen.",
+        "WhatsApp-Anfrage: Die Haushalte der Familie mit eigenen Daten stehen wie die Freunde als Blöcke mit Namen, «Aufenthalt:» und einer Leerzeile dazwischen."
+      ]
+    },
+    {
       "v": "3.22.1.6",
       "datum": "2026-11-24",
       "titel": "Namen statt «Partei N», WhatsApp-Rechnung gegliedert",

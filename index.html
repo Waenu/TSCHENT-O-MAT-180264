@@ -417,7 +417,7 @@ if (TEST_MODUS) {
   .auf-tab tr[style*="--pc"] > td:first-child { box-shadow: inset 5px 0 0 var(--pc); padding-left: 12px; }   /* Farbe der Partei (seit 3.17.2.0) */
   tr.auf-z { cursor: pointer; } tr.auf-z > td:last-child { white-space: nowrap; } tr.auf-z > td:last-child::after { content: "▾"; display: inline-block; width: 1.4em; text-align: right; font-weight: 700; color: var(--accent); } .auf-tab tr:not(.auf-z):not(.auf-d) > td:last-child { padding-right: 1.4em; } .auf-tab tr.auf-d ul { margin-right: 1.4em; }   /* Beträge bündig unter dem Pfeil */ tr.auf-z.auf > td:last-child::after { content: "▴"; color: inherit; }   /* Pfeil rechts und grün wie überall (seit 3.10.2.1) */
   tr.auf-d td { padding-top: 0; } tr.auf-d ul { list-style: none; margin: 0; padding: 0 0 6px 12px; border-left: 3px solid var(--line, #444); }
-  tr.auf-d li { display: flex; justify-content: space-between; gap: 10px; font-size: 0.9em; padding: 3px 0; } tr.auf-d li > span:last-child { white-space: nowrap; } tr.auf-d li > span:first-child { text-align: left; flex: 1; }   /* Rechnung klein darunter linksbündig (seit 3.9.5.4) */
+  tr.auf-d li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0 10px; font-size: 0.9em; padding: 3px 0; } tr.auf-d li > span:last-child { white-space: nowrap; margin-left: auto; }   /* Umbruch erlaubt: bei grosser Schrift wird die Tabelle sonst breiter als der Rahmen (seit 3.22.1.7) */ tr.auf-d li > span:first-child { text-align: left; flex: 1; }   /* Rechnung klein darunter linksbündig (seit 3.9.5.4) */
   table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
   th, td { padding: 8px 0; border-top: 1px solid var(--line); text-align: left; }
   td:last-child, th:last-child { text-align: right; }
@@ -1719,7 +1719,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.22.1.6";
+let VERSION = "3.22.1.7";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -4914,7 +4914,7 @@ function anfrageText(r) {
   const famTxt = famNamen().gen ? "" : fw && fw.l !== MFG ? "Familie: " + famLabel() + kkZ : mfgAktiv() && (S.mfg || []).length ? "Familie: " + famLabel() + kkZ : "";   // Namen nur in der WhatsApp, gespeichert (Bestätigungslink → buchungen.json) bleibt die neutrale Zeile (seit 3.5.0.1)
   const hdErs = [];   // eigene Daten der Haushalte (seit 3.22.0.0): neutral im Schnappschuss, mit Namen in der WhatsApp
   if (hDatAktiv()) (famParteien() || []).forEach((pp, k) => { const tq = hDat(pp.kopf); if (!tq.eigen) return; const nn = diffDays(tq.an, tq.ab), zt = fmtTag(tq.an) + " bis " + fmtTag(tq.ab) + " (" + nn + (nn === 1 ? " Nacht" : " Nächte") + ")";
-    z.push("Aufenthalt Familie, Partei " + (k + 1) + ": " + zt + " · " + pp.n + (pp.n === 1 ? " Person" : " Personen") + " mit Bett"); hdErs.push([z.length - 1, "   " + (pp.eigen ? "Wir" : pp.namen.join(", ")) + ": " + zt]); });
+    z.push("Aufenthalt Familie, Partei " + (k + 1) + ": " + zt + " · " + pp.n + (pp.n === 1 ? " Person" : " Personen") + " mit Bett"); hdErs.push([z.length - 1, "\n   " + (pp.eigen ? "Wir" : pp.namen.join(", ")) + "\n   Aufenthalt: " + zt]); });   // Block mit Leerzeile wie die Freunde (seit 3.22.1.7)
   const zpA = zahlPlan(r, x), ersetz = [], BLK = !!(zpA && listeModus()), weg = new Set(), frZ = {};   // BLK: Freunde als nummerierte Blöcke in der WhatsApp (seit 3.21.1.0, Meldung 16)   // Namen nur in der WhatsApp, gespeichert wird die neutrale Zeile (seit 3.7.0.0)
   z.push("Freunde: " + (listeModus() ? listeN(x) : x.GE));
   if (zpA && zpA.kk.length) z.push("Davon Kleinkinder ohne Bett: " + zpA.kk.length);
@@ -4967,7 +4967,7 @@ function anfrageText(r) {
   if (x.SB) { const nt = naechsterTermin(); z.push(""); z.push("An meine Geschwister: Kommt jemand von euch nach mir, noch bevor die Eltern kommen? So können wir uns die Endreinigungskosten teilen 😉"); if (nt) z.push(nt); }   // Umfrage der Staffel als Absatz am Ende der Anfrage, nach dem Schnappschuss (seit 3.20.1.5, Meldung 26)
   if (famTxt) z[iFam] = famTxt;
   ersetz.forEach(([k, t]) => { z[k] = t; });
-  if (!famNamen().gen) hdErs.forEach(([k, q]) => { z[k] = q; });
+  if (!famNamen().gen) hdErs.forEach(([k, q], i) => { z[k] = q + (i === hdErs.length - 1 ? "\n" : ""); });
   if (BLK) {   // nur der Text der WhatsApp, der Schnappschuss oben bleibt im alten Aufbau (andere Stellen lesen ihn)
     const kkS = kkIdx(zpA.n), blk = [];
     for (let i = 0; i < listeN(x); i++) { const f = zpA.l[i]; if (!f) continue;
