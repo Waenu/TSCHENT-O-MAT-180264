@@ -1722,7 +1722,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.25.0.2";
+let VERSION = "3.26.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1996,14 +1996,14 @@ function ubHausRows() {   // Personen mit eigenen Daten je eine Zeile (seit 3.24
   return famLeute().filter((x) => !x.kk && pDat(x.nm).eigen).map((x) => { const t = pDat(x.nm), pp = fp.find((q) => q.kopf === x.kopf), nm = x.nm === ichKey() ? (ABSENDER ? rufname() : "Ich") : x.nm; return { nm, nk: ubKurz(nm), an: t.an, ab: t.ab, pc: pp ? famFarbe(pp) : INS_FAM, w: 1 }; });
 }
 function ubRechDaten(d) {   // Daten der Übersicht aus dem Rechner (Liste der Freunde)
-  if (!ARR || !DEP) return null; const hr = ubHausRows(), n = listeModus() ? listeN(d) : 0; if (!n && !hr.length) return null;
+  if (!ARR || !DEP) return null; const hr = ubHausRows(), n = listeModus() ? listeN(d) : 0; if (!n && !hr.length && nz(d.FP) < 2) return null;   // auch ohne Freunde ab 2 Personen mit Bett (seit 3.26.0.0)
   const l = rohListe(), rows = Array.from({ length: n }, (_, i) => { const f = l[i] || {}, t = fDat(f), kk = kkZeile(i) || !!(f.geb && istKleinkind(f.geb, ARR)); return { nm: rn(f) || "Freund/in " + (i + 1), an: t.an, ab: t.ab, pc: freundFarbe(i, l, n) || INS_KIND, kk }; });
   return { arr: ARR, dep: DEP, fp: Math.max(0, nz(d.FP) - hr.reduce((a, q) => a + q.w, 0)), fam: ubFam(d), rows: hr.concat(rows) };
 }
 function ubRechZeigen(d) {   // im Rechner unter der Liste der Freunde
   const g = document.getElementById("gmRech"); if (!g) return; let u = document.getElementById("ubRech");
   if (!u) { u = document.createElement("div"); u.id = "ubRech"; u.className = "note h ub-box"; } { const v = document.getElementById("ptSum") || document.getElementById("zahlRech") || g; if (v.nextElementSibling !== u) v.after(u); }   /* nach Zahlern und Parteien (seit 3.22.1.3) */
-  const o = !g.hidden || hDatAktiv() ? ubRechDaten(d) : null, sig = o ? JSON.stringify(o) : "";
+  const frN = listeModus() ? listeN(d) : 0, o = !frN || !g.hidden || hDatAktiv() ? ubRechDaten(d) : null, sig = o ? JSON.stringify(o) : "";
   u.hidden = !o; if (u.dataset.sig === sig) return; u.dataset.sig = sig;
   u.innerHTML = o ? '<p class="ub-tt"><b>👥 Wer ist wann da?</b></p>' + ubHtml(o) : "";
 }
@@ -2022,17 +2022,19 @@ function ubBuchung(b) {   // Übersicht einer gespeicherten Buchung: eigenes Han
   if (eig) { const s = ubLokal()[k]; if (s && s.rows && s.rows.length) return ubHtml(s); }
   let fam = [{ nm: "Familie (" + (Number(b.pers) || 1) + ")", pc: INS_FAM }], fp = Number(b.pers) || 1;
   const sNam = rechTeile(b.rechnung).namen, nmP = (i) => { const p = sNam && sNam[i]; return p ? p.erw.concat(p.kinder) : []; }, nmR = (l) => ({ nm: l.join(" & "), nk: ubKurz(l.join(" & ")) });   // Namen aus der gespeicherten Berechnung (seit 3.22.2.0)
-  if (sNam && sNam.length) { const l = [].concat(...sNam.map((p, i) => nmP(i))); if (l.length) fam = [Object.assign(nmR(l), { pc: INS_FAM })]; }
+  const rt = rechTeile(b.rechnung), kkS2 = new Set(rt.kk || []);   // pro Person eine Zeile, Kinderbettchen schmal (seit 3.26.0.0)
+  const famPers = (skipNm, skipPi) => [].concat(...(sNam || []).map((p, i) => skipPi.has(i) ? [] : nmP(i).filter((nm) => !skipNm.has(nm)).map((nm) => ({ nm, nk: ubKurz(nm), pc: famParteiFarbe(rt, i + 1), kk: kkS2.has(nm) }))));
+  if (sNam && sNam.length && [].concat(...sNam.map((p, i) => nmP(i))).length) fam = famPers(new Set(), new Set());
   const hr = [], rq = String(b.rechnung || ""), dq = (t) => { const m = /(\d{1,2})\.(\d{1,2})\.(\d{4})/.exec(t); return m ? dkey(Number(m[3]), Number(m[2]) - 1, Number(m[1])) : ""; };   // Haushalte mit eigenen Daten aus der Anfrage (seit 3.22.1.0, Punkt 30)
   const pz = [];   // Personen mit eigenen Daten (seit 3.24.0.0): «Aufenthalt Person, Partei N, Name: … bis … (n Nächte) · mit Bett»
   rq.split("\n").forEach((z) => { const m = /^Aufenthalt Person, Partei (\d+), (.+?)[:\t] ?(.+?) bis (.+?) \(\d+ N[^)]*\)/.exec(z.trim()); if (m) pz.push({ pi: Number(m[1]) - 1, nm: m[2] === "Ich" ? String(b.name || "Ich").split(/[ ,&]/)[0] : m[2], an: dq(m[3]), ab: dq(m[4]) }); });
   if (pz.length) pz.forEach((q) => hr.push({ nm: q.nm, nk: ubKurz(q.nm), an: q.an, ab: q.ab, pc: famParteiFarbe(rechTeile(rq), q.pi + 1), w: 1, pi: q.pi, person: true }));
   else rq.split("\n").forEach((z) => { const m = /^Aufenthalt Familie, Partei (\d+)[:\t] ?(.+?) bis (.+?) \(\d+ N[^)]*\)(?: · (\d+) Person)?/.exec(z.trim()); if (!m) return; const w = Number(m[4]) || 0;
     const nl = nmP(Number(m[1]) - 1); hr.push(Object.assign({ nm: "Familie, Partei " + m[1] + (w ? " (" + w + ")" : "") }, nl.length ? nmR(nl) : {}, { an: dq(m[2]), ab: dq(m[3]), pc: famParteiFarbe(rechTeile(rq), Number(m[1])), w, pi: Number(m[1]) - 1 })); });
-  if (hr.length) { const rest = fp - hr.reduce((a, q) => a + q.w, 0), rl = pz.length ? [].concat(...(sNam || []).map((p, i) => nmP(i))).filter((n) => !hr.some((q) => q.nm === n)) : [].concat(...(sNam || []).map((p, i) => hr.some((q) => q.pi === i) ? [] : nmP(i))); fp = Math.max(0, rest); fam = rest > 0 ? [Object.assign({ nm: "Familie (" + rest + ")", pc: INS_FAM }, rl.length ? nmR(rl) : {})] : []; }
+  if (hr.length) { const rest = fp - hr.reduce((a, q) => a + q.w, 0), pf = sNam && sNam.length ? famPers(pz.length ? new Set(hr.map((q) => q.nm)) : new Set(), pz.length ? new Set() : new Set(hr.map((q) => q.pi))) : null; fp = Math.max(0, rest); fam = rest > 0 ? (pf && pf.length ? pf : [{ nm: "Familie (" + rest + ")", pc: INS_FAM }]) : []; }
   const gl = eig ? (gmLokal()[k] || {}).freunde : (GM_LISTEN && GM_LISTEN[k] ? GM_LISTEN[k].freunde : null);
   if (Array.isArray(gl) && gl.length) return ubHtml({ arr: b.arr, dep: b.dep, fp, fam, rows: hr.concat(ubAusListe(gl, b)) });
-  const n = freundeVon(b); if (!n) return hr.length ? ubHtml({ arr: b.arr, dep: b.dep, fp, fam, rows: hr }) : "";
+  const n = freundeVon(b); if (!n) return hr.length || (Number(b.pers) || 1) >= 2 ? ubHtml({ arr: b.arr, dep: b.dep, fp, fam, rows: hr }) : "";   // auch ohne Freunde ab 2 Personen (seit 3.26.0.0)
   const r = String(b.rechnung || ""), dt = (t) => { const m = /(\d{1,2})\.(\d{1,2})\.(\d{4})/.exec(t); return m ? dkey(Number(m[3]), Number(m[2]) - 1, Number(m[1])) : ""; };
   // Kleinkinder und Parteien aus der gespeicherten Anfrage (Zeilen mit Tabulator, seit 3.20.0.5): sonst stimmten Nächte, Betten und Farben bei Papi nicht
   const kkS = new Set(), nr = (t) => (t.match(/Freund\/in (\d+)/g) || []).map((x) => Number(x.slice(10)) - 1);
@@ -4943,7 +4945,7 @@ function schnappBer(who, det, notes, mitAufteilung, teile, farb) {
   rows(det);
   if (mitAufteilung && who) { L.push("#Aufteilung unter den Freunden"); rows(who); }
   if (teile && teile.length) { L.push("#Teile"); teile.forEach((t) => L.push(t)); if (farb && farb.length > 1) L.push("~\tF\t" + farb.join("\t")); }   // seit 3.21.1.4: feste Farbe pro Familien-Partei (-1 = eigener Haushalt, sonst Platz des Geschwister-Haushalts), ohne Namen   // seit 3.20.1.0: Übernachtung, Reinigung, Kurtaxe pro Zeile (ohne Namen)
-  const nn = famSnapNamen(); if (nn && nn.length) L.push("~\tN\t" + nn.join("\t"));
+  const nn = famSnapNamen(); if (nn && nn.length) { L.push("~\tN\t" + nn.join("\t")); const kkN = [].concat(S.famKK || [], S.mfgKK || []); if (kkN.length) L.push("~\tK\t" + kkN.join("\t")); }   /* Namen der Kinderbettchen-Kinder für «Wer ist wann da?» (seit 3.26.0.0) */
   htmlText(notes).split("\n").map((t) => t.trim()).filter(Boolean).forEach((t) => L.push(t));
   return L;
 }
@@ -6901,11 +6903,12 @@ function vkChips(x, anfrage) {
 // Preisberechnung einer gespeicherten Buchung wie im Rechner (seit 3.20.1.0, Wänu): Aufteilung farbig und aufklappbar, Rest unter «📋 Ganze Berechnung»
 const rechV = (t) => { const m = /(−|-)?\s*CHF\s*([\d’'.,]+)/.exec(String(t || "")); if (!m) return NaN; const v = Number(m[2].replace(/[’',]/g, "").replace(/\.$/, "")); return m[1] ? -v : v; };
 function rechTeile(r) {   // Abschnitte der gespeicherten Berechnung
-  const o = { kopf: "", det: [], ber: [], auf: [], teile: [], notes: [], farb: null, namen: null }; let cur = "det";
+  const o = { kopf: "", det: [], ber: [], auf: [], teile: [], notes: [], farb: null, namen: null, kk: null }; let cur = "det";
   String(r || "").split("\n").forEach((t, i) => { t = t.trim(); if (!t) return;
     if (i === 0 && /^Gesendet am /.test(t)) { o.kopf = t; return; }
     if (t[0] === "#") { cur = /^#Preisberechnung/.test(t) ? "ber" : /^#Aufteilung/.test(t) ? "auf" : /^#Teile/.test(t) ? "teile" : cur; return; }
     if (/^~\tN\t/.test(t)) { o.namen = t.split("\t").slice(2).map((p) => { const q = p.split("|"); return { erw: (q[0] || "").split(", ").filter(Boolean), kinder: (q[1] || "").split(", ").filter(Boolean) }; }); return; }   // Namen der Familie pro Partei (seit 3.22.2.0, Wänu: Familiennamen im Repo sind in Ordnung)
+    if (/^~\tK\t/.test(t)) { o.kk = t.split("\t").slice(2).filter(Boolean); return; }   // Kinderbettchen-Kinder (seit 3.26.0.0)
     if (/^~\tF\t/.test(t)) { o.farb = t.split("\t").slice(2).map(Number); return; }   // Farben der Familien-Parteien (seit 3.21.1.4)
     if (/^~\t/.test(t)) { o.teile.push(t.split("\t").slice(1).map(Number)); return; }
     const k = t.indexOf("\t"); if (k < 0) { o.notes.push(t); return; }
