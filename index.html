@@ -1719,7 +1719,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.22.1.5";
+let VERSION = "3.22.1.6";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -6828,12 +6828,33 @@ function rechFrInfo(r) {   // Parteien der Freunde aus der gespeicherten Aufteil
   const farbe = (i) => kk.has(i) ? INS_KIND : pt[i] === -1 ? INS_FAM : i in pt ? INS_F[(pt[i] + shift) % INS_F.length] : "";
   return { pt, kk, shift, farbe, np };
 }
+function famAllePapi() {   // Haushalte aus Papis Liste, auch ohne «Ansicht als» (famAlle() bleibt dort leer)
+  const fl = famListe(), roh = KINDER_ABS.map((k) => { const f = famSauber(fl[k]) || famSauber(fl[PAAR[k]] ? Object.assign({}, fl[PAAR[k]], { p: k }) : null); return { k, p: f ? f.p : "", e: f ? f.k : [] }; });
+  return roh.filter((h) => h && h.k).map((h) => { const e = (Array.isArray(h.e) ? h.e : []).map(String).filter(Boolean).slice(0, 6); return { m: [String(h.k)].concat(h.p ? [String(h.p)] : [], e), e }; });
+}
+function famParteiName(b) {   // «Familie, Partei N» durch Namen ersetzen (seit 3.22.1.6, Wänu): nur auf dem Handy, gespeichert bleibt alles neutral; die feste Reihenfolge steht in der Zeile «~ F» der Berechnung
+  try {
+    if (!b || !b.name || typeof b.rechnung !== "string") return null;
+    const papi = !!TOKEN && !ABSENDER, kind = !!ABSENDER && eigenN(b.name) && !TOKEN;
+    if (!papi && !kind) return null;
+    const alle = papi ? famAllePapi() : famAlle(); if (!alle.length) return null;
+    const gs = alle.filter((h) => h.m.indexOf(b.name) < 0), farb = rechTeile(b.rechnung).farb;
+    return (n, zahlt) => {
+      const v = farb && n - 1 < farb.length ? farb[n - 1] : n > 1 ? n - 2 : -1;
+      if (v < 0 || isNaN(v)) return "Ich (" + esc(b.name) + ")" + (zahlt ? " zahlt" : "");
+      const h = gs[v]; if (!h) return "";
+      const erw = h.m.filter((x) => h.e.indexOf(x) < 0); if (!erw.length) return "";
+      return esc(erw.join(" & ")) + (zahlt ? (erw.length > 1 ? " zahlen" : " zahlt") : "");
+    };
+  } catch (e) { return null; }
+}
 function rechNameFn(b) {   // Vornamen statt «Freund/in N»: eigenes Handy (Liste) oder Papi (Liste aus dem Briefkasten); gespeichert bleibt alles neutral
   if (!b) return null; const k = bKey(b); let l = null, p = "";
   if (ABSENDER && eigenN(b.name) && !TOKEN) { const e = gmLokal()[k]; l = e && Array.isArray(e.freunde) ? e.freunde : null; const fn = famNamen(); if (fn && !fn.gen) p = fn.p; }
   else if (TOKEN && !ABSENDER) { const g = GM_LISTEN && GM_LISTEN[k]; l = g && Array.isArray(g.freunde) ? g.freunde : null; const f = famSauber(famListe()[b.name]); if (f) p = f.p; }   // Papi (seit 3.20.1.0)
-  if (!(l && l.length) && !p) return null;
-  return (t) => { t = String(t).replace(/Freund\/in (\d+)/g, (m, n) => { const f = l && l[Number(n) - 1]; return f && f.vorname ? esc(String(rufVon(f) || f.vorname)) : m; }); return p ? t.replace(/Partner\/in/g, esc(p)) : t; };   // HTML: Namen escapen
+  const fp = famParteiName(b);
+  if (!(l && l.length) && !p && !fp) return null;
+  return (t) => { if (fp) t = String(t).replace(/Familie, Partei (\d+)( zahlt)?/g, (m, n, z) => fp(Number(n), !!z) || m); t = String(t).replace(/Freund\/in (\d+)/g, (m, n) => { const f = l && l[Number(n) - 1]; return f && f.vorname ? esc(String(rufVon(f) || f.vorname)) : m; }); return p ? t.replace(/Partner\/in/g, esc(p)) : t; };   // HTML: Namen escapen
 }
 function rechAufHtml(r, b) {   // Aufteilung wie im Rechner; null, wenn nichts zu zeigen ist
   const o = rechTeile(r); if (!o.det.length && !o.ber.length) return null;
@@ -7391,16 +7412,23 @@ let FREUND_TAGE = null;   // Regel von Papi (buchungen.json, freundTage): Freund
 const freundTage = () => FREUND_TAGE !== null ? FREUND_TAGE : Math.max(0, ZAHL_TAGE - 2);
 const inkEltern = () => PARTNER_ABS.indexOf(ABSENDER) >= 0 ? "Marianne und Silvan" : "Mami und Papi";   // aus Sicht des Kindes wie die Anrede «Hallo Mami und Papi» bzw. «Hallo Marianne und Silvan»
 function inkFrist(e) { return e.frist || addDays(e.dep, freundTage()); }
+function inkPos(q, ei, n) {   // eine Position der Rechnung (seit 3.22.1.6, Wänu): «Übernachtungen: 5 Nächte à CHF 70.00 = CHF 350.00»; nur bei Umbruch kommt der Betrag in eine neue Zeile, danach immer eine Leerzeile
+  const eine = (lab, txt) => { const t = ei + lab + ": " + txt; return t.length <= 40 ? [t] : [ei + lab + ":", ei + txt]; };
+  let l;
+  if (q[0] === "Übernachtung") { const pro = n > 1 ? Math.round(q[1] / n * 100) / 100 : 0, nT = n + " " + (n === 1 ? "Nacht" : "Nächte"); l = n > 1 && Math.abs(pro * n - q[1]) < 0.005 ? eine("Übernachtungen", nT + " à " + chf2(pro) + " = " + chf2(q[1])) : eine("Übernachtung (" + nT + ")", chf2(q[1])); }
+  else l = eine(q[0], chf2(q[1]));
+  return l.concat("");
+}
 function inkText(e, pp) {   // lockerer Text, Aufstellung pro Person
   const tw = inkTwint(), ib = inkIban(), viele = pp.an.length > 1 || pp.fam || pp.pers.length > 1, nN = e.nights + " " + (e.nights === 1 ? "Nacht" : "Nächte");
   const z = ["Hoi " + inkUnd(pp.an) + " 👋", "", "Hier " + (viele ? "eure" : "deine") + " Kosten für unseren Aufenthalt im Chalet Tschenten in Adelboden, " + fmtTag(e.arr) + " bis " + fmtTag(e.dep) + " (" + nN + "):", ""];
   const nr = pp.pers.length > 1, ei = nr ? "   " : "";   // mehrere Personen: nummeriert, Angaben eingerückt wie die Mail der Gästemeldung (seit 3.21.1.0, Meldung 16)
-  if (pp.fam) { z.push("*" + inkUnd(pp.mit) + "*"); pp.z.forEach((q) => z.push(q[0] + ": " + chf2(q[1]))); z.push(""); }
+  if (pp.fam) { z.push("*" + inkUnd(pp.mit) + "*"); pp.z.forEach((q) => inkPos(q, "", e.nights).forEach((t) => z.push(t))); if (z[z.length - 1] !== "") z.push(""); }
   pp.pers.forEach((pe, pi) => {
     z.push("*" + (nr ? (pi + 1) + ". " : "") + pe.n + (pe.a !== null && pe.a !== undefined && !pe.kk ? " (" + pe.a + ")" : "") + "*");
     if (pe.kk) z.push(ei + "Kleinkind ohne Bett: gratis 🎉");
-    else { const au = pe.au && pe.au.n !== e.nights ? pe.au : null; if (au) z.push(ei + "Aufenthalt: " + fmtTag(au.an) + " bis " + fmtTag(au.ab)); pe.z.forEach((q) => z.push(ei + q[0] + (q[0] === "Übernachtung" ? " (" + (au ? au.nt : nN) + ")" : "") + ": " + chf2(q[1]))); if (nr && pe.z.length > 1) z.push(ei + "Zusammen: " + chf2(pe.s)); }
-    z.push("");
+    else { const au = pe.au && pe.au.n !== e.nights ? pe.au : null; if (au) z.push(ei + "Aufenthalt: " + fmtTag(au.an) + " bis " + fmtTag(au.ab)); pe.z.forEach((q) => inkPos(q, ei, au ? au.n : e.nights).forEach((t) => z.push(t))); if (nr && pe.z.length > 1) z.push(ei + "Zusammen: " + chf2(pe.s)); }
+    if (z[z.length - 1] !== "") z.push("");
   });
   pp.fuer.forEach((f) => { z.push("*Anteil für " + f.n + " (" + f.a + ")*: " + chf2(f.s)); z.push(""); });
   z.push("*Total: " + chf2(pp.t) + "*" + (pp.t0 !== undefined && pp.t - pp.t0 > 0.004 ? " (auf 5 Rappen aufgerundet)" : ""), "");
