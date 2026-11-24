@@ -1,3 +1,52 @@
 {
-  "liste": {}
+  "liste": {
+    "Jerome": {
+      "p": "Rahel",
+      "k": [
+        "Malik",
+        "Jon"
+      ]
+    },
+    "Deborah": {
+      "p": "David",
+      "k": [
+        "Mael",
+        "Yara"
+      ]
+    },
+    "Miriam": {
+      "p": "Andreas",
+      "k": [
+        "Chline Mönsch"
+      ]
+    },
+    "Manuel": {
+      "p": "Sarah",
+      "k": []
+    },
+    "David": {
+      "p": "Deborah",
+      "k": [
+        "Mael",
+        "Yara"
+      ]
+    },
+    "Rahel": {
+      "p": "Jerome",
+      "k": [
+        "Malik",
+        "Jon"
+      ]
+    },
+    "Andreas": {
+      "p": "Miriam",
+      "k": [
+        "Chline Mönsch"
+      ]
+    },
+    "Sarah": {
+      "p": "Manuel",
+      "k": []
+    }
+  }
 }
