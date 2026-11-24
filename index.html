@@ -1718,7 +1718,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.21.1.4";
+let VERSION = "3.21.2.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1910,7 +1910,7 @@ function lueckeGaesteMin(d, patch) {
 function check(s, d) {
   if (typeof s.nights !== "number") return "Bitte wählen: Anreise und Abreise im Kalender";
   if ((s.verbOK === true || s.selbstOK === true) && artOpts().indexOf(s.art) < 0) return "Bitte wählen: Wie möchtest du buchen?";
-  if (famErwFehlt() && (eigenAktiv() ? (S.famSel || []) : mfgAktiv() ? (S.mfg || []) : []).length) return "Bitte wählen: Eine erwachsene Person, die mitkommt";   // nur Kinder angetippt (Wänu 15.11.2026, orange)
+  if (famErwFehlt() && (eigenAktiv() ? (S.famSel || []) : mfgAktiv() ? (S.mfg || []) : []).length) return mfgAktiv() ? "Bitte wählen: " + (erwWer() ? "Du oder " + eigeneErw().join(" oder ") : "Ich") : "Bitte wählen: Eine erwachsene Person, die mitkommt";   // nur Kinder angetippt (Wänu 15.11.2026, orange)
   if ((s.luecke ? LWERL : WERL).indexOf(s.wer) < 0) return "Bitte wählen: Wer von der Familie kommt";
   if (s.wer === MFG && typeof s.fam !== "number") return "Bitte wählen: Anzahl Personen der Familie";
   if (d.kkMax > 0 && !d.kkFix && typeof s.kk !== "number") return "Bitte wählen: Kleinkinder im Kinderbettchen";
@@ -2590,7 +2590,7 @@ function mfgZeigen() {
   const betten = (ichDa() ? 1 : 0) + sel.length - kk.length, fehlt = famErwFehlt();
   let h = '<div class="field zrech ' + ((sel.length || ichDa()) && !fehlt ? "done" : "missing") + '"><label>👨‍👩‍👧‍👦 Wer kommt mit?</label>' + reihe(eig) + hs.filter((x) => x !== eig).map(reihe).join("") +
     '<p class="mfg-bett">🛏️ ' + (betten > P.maxPersonen ? '<span class="hgelb">Alle ' + P.maxPersonen + " Betten und die Luftmatratze belegt (Ausnahme, die Eltern sagen zu oder ab)</span>" : betten + " von " + P.maxPersonen + " Betten belegt") + (kk.length + kkFreunde().length ? ", dazu " + (kk.length + kkFreunde().length) + " Kinderbettchen" + (kkFreunde().length ? " (davon " + kkFreunde().length + " für Freunde)" : "") : "") + "</p>" +
-    (erwWarnZeigen() ? '<p class="hint" style="color:var(--error-line);font-weight:600">Mindestens eine erwachsene Person muss mitkommen.</p>' : "") +
+    (erwWarnZeigen() ? '<p class="hint" style="color:var(--error-line);font-weight:600">' + (erwWer() ? 'Mindestens ' + esc(erwWer()) + ' muss mitkommen. Die Anfrage läuft auf deinen Namen.' : 'Du musst mitkommen, die Anfrage läuft auf deinen Namen.') + '</p>' : "") +
     '<p class="hint">Bitte antippen, höchstens ' + MFG_MAX() + ' Personen mit Bett' + (ichDa() ? " ausser dir" : "") + ' (' + P.maxPersonen + " Betten und als Ausnahme die Luftmatratze). Kommst du selbst nicht mit, tippe «Ich» ab. Kleinkinder im Kinderbettchen kommen dazu, bis zwei (es hat zwei Kinderbettchen). Sind alle Betten belegt, kommt ein Enkelkind beim Antippen gleich ins Kinderbettchen. Den Preis pro Nacht zahlt ihr wie immer gemeinsam, die App teilt ihn unter euren Familien auf.</p></div>";
   const enk = [].concat(...hs.map((x) => x.e)).filter((x) => sel.indexOf(x) >= 0);
   if (enk.length || kkFrL().length) h += '<div class="field zrech done"><label>👶 Wer schläft im Kinderbettchen?</label><div class="zchips">' + kkFrChips() + enk.map((x) => (HF = hf(hs.find((q) => q.m.indexOf(x) >= 0) || eig), "") + chip('data-mkk="' + esc(x) + '"', kk.indexOf(x) >= 0, esc(x), kk.indexOf(x) < 0 ? kk.length >= kkFrei() : voll)).join("") + '</div>' + kkFrHint() + '<p class="hint">Kinder bis etwa 2½ Jahren, höchstens zwei. Sie belegen kein Bett und zählen bei der Reinigung nicht mit, darum hat dann jemand mehr Platz. Ganz Kleine, die bei euch im Bett schlafen, kommen einfach mit, du musst sie oben nicht antippen.</p></div>';
@@ -4737,10 +4737,12 @@ const MFG_MAX = () => MAXP() - (ichDa() ? 1 : 0);   // ausser «Ich» höchstens
 let ERW_WARN = false;   // rote Meldung erst, wenn nur Kinder angetippt sind und weitergemacht wird (Wänu 15.11.2026)
 function erwWarnZeigen() { const sel = eigenAktiv() ? (S.famSel || []) : mfgAktiv() ? (S.mfg || []) : []; return ERW_WARN && famErwFehlt() && sel.length > 0; }
 document.addEventListener("click", (e) => { if (ERW_WARN || !famErwFehlt() || e.target.closest("#mfgRech")) return; const sel = eigenAktiv() ? (S.famSel || []) : mfgAktiv() ? (S.mfg || []) : []; if (sel.length) { ERW_WARN = true; render(); } }, true);
+function eigeneErw() { const h = famAlle().find((x) => x.m.indexOf(ABSENDER) >= 0); return h ? h.m.filter((x) => x !== ABSENDER && h.e.indexOf(x) < 0) : []; }   // Erwachsene im eigenen Haushalt ausser mir (Partner/in)
+function erwWer() { const l = mfgAktiv() ? eigeneErw() : []; return l.length ? "du oder " + l.join(" oder ") : ""; }   // «du oder David»; leer = alte Meldung
 function famErwFehlt() {   // «Ich» abgewählt und kein anderer Erwachsener dabei (Wänu 15.11.2026: nicht erlaubt)
   if (ichDa()) return false;
   if (eigenAktiv()) { const pn = (famNamen() || {}).p; return !(pn && (S.famSel || []).indexOf(pn) >= 0); }
-  if (mfgAktiv()) { const enk = [].concat(...famAlle().map((h) => h.e)); return !(S.mfg || []).some((x) => enk.indexOf(x) < 0); }
+  if (mfgAktiv()) return !eigeneErw().some((x) => (S.mfg || []).indexOf(x) >= 0);   // seit 3.21.2.0: aus dem eigenen Haushalt muss «Ich» oder eine erwachsene Person mitkommen (Wänu 24.11.2026)
   return false;
 }
 function famLabel() {   // Text für WhatsApp und Übersicht: «Ich, Rahel & Malik» oder «Rahel, Malik & Jon (ich komme nicht mit)»
@@ -5118,7 +5120,7 @@ function render() {
     if (f.id === "wer") { const lb = document.querySelector("#f-wer > label"); if (lb) lb.textContent = FR_MOEGL ? "👥 Wer kommt mit?" : "👨‍👩‍👧‍👦 Wer von der Familie kommt?"; }   // Normalbuchung mit Freunden (seit 3.18.3.0)
     if (f.id === "selbst") { hEl.textContent = ""; const r = document.createElement("span"); r.className = "rot"; r.textContent = "Selbst reinigen geht nur ohne Freunde (für euch Kinder mit Partner/in und Kindern). Mit Freunden reinigen immer die Eltern."; hEl.appendChild(r); hEl.appendChild(document.createTextNode(" " + f.hint(d))); }
     else if (vorab) hEl.textContent = "Wähle zuerst Anreise und Abreise im Kalender. Dann siehst du, was möglich ist.";
-    else if (famAus) hEl.textContent = "Wähle zuerst, wer von der Familie mitkommt. Mindestens eine erwachsene Person muss dabei sein.";
+    else if (famAus) hEl.textContent = mfgAktiv() ? "Wähle zuerst, wer von der Familie mitkommt. " + (erwWer() ? "Mindestens " + erwWer() + " muss dabei sein." : "Du musst dabei sein.") : "Wähle zuerst, wer von der Familie mitkommt. Mindestens eine erwachsene Person muss dabei sein.";
     else if (listeAus) hEl.textContent = "Fülle zuerst die Liste deiner Freunde aus. Danach geht es hier weiter.";
     else if (ptAus) hEl.textContent = "Lege zuerst bei «Wer gehört zusammen?» fest, wer zu wem gehört. Danach geht es hier weiter.";
     else hEl.innerHTML = esc(f.hint(d)).replace(/\{\{(.+?)\}\}/g, (m, w) => '<span class="hl">' + w + "</span>" + (f.id === "art" && w === "Mit Vorbehalt" ? filmKnopf() : "")).replace(/\[\[(.+?)\]\]/g, '<span class="hgelb">$1</span>').replace(/\n\n/g, '<span class="hp"></span>').replace(/\n/g, "<br>");   // Absätze im Hinweis (seit 3.10.3.1), [[…]] gelb hervorgehoben (seit 3.20.0.2)   // {{Wort}} im Hinweis = hervorgehoben, hinter «Mit Vorbehalt» das Film-Symbol
