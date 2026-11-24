@@ -2,6 +2,19 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.22.1.8",
+      "datum": "2026-11-24",
+      "titel": "Luftmatratze bei «Freunde» als braunes +1",
+      "arten": [
+        "Layout",
+        "Text"
+      ],
+      "punkte": [
+        "Der Chip für die Luftmatratze heisst «+1» und ist beim Antippen braun gefüllt. Die Zahl davor füllt sich orange mit, so sieht man sofort: Betten plus Luftmatratze.",
+        "Hinweis unter «Freunde»: «Das braune +1 ist die Luftmatratze, nur als Ausnahme.»"
+      ]
+    },
+    {
       "v": "3.22.1.7",
       "datum": "2026-11-24",
       "titel": "Pfeile im Rahmen, Familie in der WhatsApp-Anfrage gegliedert",
