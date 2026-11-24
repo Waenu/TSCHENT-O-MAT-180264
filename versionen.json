@@ -2,6 +2,20 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.21.1.1",
+      "datum": "2026-11-24",
+      "titel": "Chips mit sanften Ecken und Häkchen",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Chips sind eckig mit sanfter Rundung wie die Kästen, auch bei «Wer gehört zusammen?».",
+        "Gewählte Chips sind orange gefüllt und tragen oben rechts ein Häkchen. Grün sind nur noch die Knöpfe.",
+        "Namen-Chips zeigen den Rahmen in der Farbe des Haushalts, solange niemand gewählt ist; gewählt sind sie in dieser Farbe gefüllt, mit Häkchen.",
+        "Anleitung «Auswahlfelder» nachgeführt."
+      ]
+    },
+    {
       "v": "3.21.1.0",
       "datum": "2026-11-24",
       "titel": "Beträge auf 5 Rappen, Freunde übersichtlich in der Anfrage",

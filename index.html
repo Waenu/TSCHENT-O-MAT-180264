@@ -256,12 +256,15 @@ if (TEST_MODUS) {
   .gm-k .gm-in { position: relative; display: block; } .gm-k .gm-in input { width: 100%; box-sizing: border-box; padding-right: 54px; } .gm-k .gm-in .gm-ab { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); width: 46px; height: 40px; border: 0; background: transparent; font-size: 1.35rem; line-height: 1; cursor: pointer; padding: 0; }
   .gm-k .gm-vor.gm-alle { max-height: 55vh; overflow-y: auto; border: 1px solid var(--line); border-radius: 6px; padding: 6px; } .gm-k .gv-k { margin: 0 0 2px; }
   .gm-k .gm-geb .btn, .gm-k .gm-vor .gv-x { min-height: max(48px, 3rem); flex: none; width: 64px; min-width: 64px; padding: 0; justify-content: center; }   /* ✕ und 📅 gleich gross (seit 3.7.0.0) */
-  .zchips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .zchip { min-height: max(44px, 2.75rem); padding: 4px 14px; border-radius: max(22px, 1.375rem); border: 2px solid var(--line); background: var(--surface); color: var(--fg); font: inherit; font-weight: 600; cursor: pointer; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.15; }
+  .zchips { display: flex; flex-wrap: wrap; gap: 10px 8px; padding: 8px 8px 0 0; }
+  .zchip { position: relative; min-height: max(44px, 2.75rem); padding: 4px 14px; border-radius: 6px; border: 2px solid var(--line); background: var(--surface); color: var(--fg); font: inherit; font-weight: 600; cursor: pointer; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.15; }
   .zchip small { font-weight: 400; font-size: .75em; opacity: .85; }
   .zchips.mfg-z { margin-bottom: 6px; }   /* Namen-Chips gleich hoch wie alle Chips (seit 3.17.6.4, Wänu; vorher kleiner in einer Zeile) */
   .mfg-bett { font-size: .9em; margin: 4px 0 2px; }
-  .zchip[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+  .zchip[aria-pressed="true"] { background: var(--missing-line); color: #1F1300; border-color: var(--missing-line); }   /* gewählt: voll orange, Knöpfe bleiben grün (seit 3.21.1.1, Punkt 27) */
+  .zchip[aria-pressed="true"]::after { content: "✓"; position: absolute; top: -8px; right: -8px; width: 18px; height: 18px; border-radius: 50%; background: var(--fg); color: var(--bg); font-size: 11px; line-height: 18px; text-align: center; font-weight: 700; pointer-events: none; }   /* Häkchen-Abzeichen über der Ecke (seit 3.21.1.1, Wänu Variante 4) */
+  .zchips:not(:has(.zchip[aria-pressed="true"])) .zchip[style*="--pc"]:not(:disabled) { border-color: var(--pc); }   /* Namen-Chips: nichts gewählt = Rahmen in der Farbe des Haushalts */
+  .gm-pt.vorschlag .zchip::after { display: none; }
   .zchip.kk-fr { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; cursor: default; }   /* Kleinkind der Freunde im Kinderbettchen, fest (seit 3.17.10.1) */
   .zchip[style*="--pc"][aria-pressed="true"] { background: var(--pc); border-color: var(--pc); color: #fff; } .zchip[style*="--pc:#C9A227"][aria-pressed="true"] { color: #111; }   /* Farbe der Partei schon beim Antippen (seit 3.17.6.0) */
   .gm-f[style*="--pc"] { box-shadow: inset 6px 0 0 var(--pc); }
@@ -270,11 +273,11 @@ if (TEST_MODUS) {
 .mat-f .mat-q { margin: 0 0 6px; font-weight: 600; }
 .mat-f.missing .zchip { border-color: var(--missing-line); }
 .zchip.matra { border-style: dashed !important; } #chips-gaeste { gap: 6px; } #chips-gaeste .zchip { min-width: max(44px, 2.75rem); padding: 4px 6px; } .matra-h { color: var(--missing-line); font-weight: 600; }
-  .field.chipfeld > select { display: none; } .rein-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 6px; } .rein-chips .zchip:disabled { opacity: .45; cursor: default; }
+  .field.chipfeld > select { display: none; } .rein-chips { display: flex; flex-wrap: wrap; gap: 10px 8px; padding: 8px 8px 0 0; margin: 4px 0 6px; } .rein-chips .zchip:disabled { opacity: .45; cursor: default; }
   .rein-wahl { margin: 2px 0 4px; font-weight: 600; }   /* Fragen als Chips (seit 3.9.5.5 Reinigung, seit 3.9.5.6 alle kurzen) */
   .pt-info { list-style: none; margin: 4px 0 8px; padding: 0; } .pt-info li { display: flex; gap: 8px; align-items: baseline; padding: 3px 0; color: var(--muted); }
   .pt-info .pt-nr { flex: 0 0 auto; min-width: 1.5em; height: 1.5em; line-height: 1.5em; text-align: center; border-radius: 50%; background: var(--line); color: var(--fg); font-size: .8em; font-weight: 700; }   /* Parteien: nur Information, nicht antippbar (seit 3.9.5.6) */
-  /* Noch zu wählen: Chips mit orangem Rand statt 🟠, gewählt = grün (seit 3.9.7.1, Wänu; wie früher die orangen Auswahlfelder) */
+  /* Noch zu wählen: Chips mit orangem Rand statt 🟠, gewählt = orange mit ✓ seit 3.21.1.1 (seit 3.9.7.1, Wänu; wie früher die orangen Auswahlfelder) */
   .field.missing .zchip:not(:disabled):not([aria-pressed="true"]), .gm-pt.missing .zchip:not(:disabled):not([aria-pressed="true"]) { border-color: var(--missing-line); }
   .gm-ptbox { border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px 4px; margin: 8px 0; } .gm-ptbox .gm-pt { padding: 6px 0; border-top: 1px solid rgba(127,127,127,.25); } .gm-ptbox .gm-pt-n { font-weight: 700; } .gm-ptbox[hidden], .gm-ptbox .gm-pt[hidden] { display: none; }
   .gm-pt.vorschlag .zchip[aria-pressed="true"] { background: transparent; color: var(--accent); border: 2px dashed var(--accent); } .gm-pt-okw { margin: 6px 0 8px; } .gm-pt-frage { margin: 0 0 6px; font-weight: 700; } .gm-pt-okw .gm-pt-ok { border: 2px solid var(--missing-line); }   /* «Passt der Vorschlag?» mit orangem Rand (seit 3.17.6.6) */   /* Vorschlag nach Nachname (seit 3.10.3.0) */
@@ -284,7 +287,7 @@ if (TEST_MODUS) {
   .ins-i { border: 2px solid var(--ic); background: color-mix(in srgb, var(--ic) 16%, transparent); } .ins-i.vs { border-style: dashed; }
   .ins-o { border: 2px dashed var(--missing-line); background: var(--missing-bg); } .ins-neu { border: 2px dashed var(--line); text-align: center; padding: 12px 8px; cursor: pointer; }
   .ins-t { font-size: .85rem; margin: 0 0 6px; font-weight: 700; } .ins-ps { display: flex; flex-wrap: wrap; gap: 8px; }   /* gleich gross wie alle Chips (seit 3.17.6.4) */
-  .ins-p { min-width: 0; min-height: max(44px, 2.75rem); border-radius: max(22px, 1.375rem); padding: 4px 14px; font-weight: 600; border: 2px solid var(--ic, var(--line)); background: var(--card, transparent); color: inherit; font: inherit; font-weight: 600; line-height: 1.15; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
+  .ins-p { min-width: 0; min-height: max(44px, 2.75rem); border-radius: 6px; padding: 4px 14px; font-weight: 600; border: 2px solid var(--ic, var(--line)); background: var(--card, transparent); color: inherit; font: inherit; font-weight: 600; line-height: 1.15; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
   .ins-fix { display: inline-flex; flex-direction: column; justify-content: center; cursor: default; touch-action: auto; text-align: center; } .ins-p small { display: block; font-size: .85em; font-weight: 400; opacity: .8; } .ins-p.geteilt { border-style: dashed; } .zz-n { font-weight: 400; }   /* Punkt vor dem Namen, eine Zeile (seit 3.17.6.7) */ .zz-pt { display: inline-block; width: .7em; height: .7em; border-radius: 50%; background: var(--pc); margin-right: .35em; vertical-align: .05em; } .ins-p.sel { outline: 3px solid var(--accent); outline-offset: 2px; } .ins-p.weg { opacity: .3; }
   .ins-ziel { outline: 3px solid var(--accent); outline-offset: 2px; } .ins-gh { position: fixed; z-index: 9999; pointer-events: none; opacity: .9; margin: 0; }
   .gm-pt.missing select { background-color: var(--missing-bg) !important; border-color: var(--missing-line) !important; }
@@ -1547,8 +1550,9 @@ if (TEST_MODUS) {
           <p>Gewählt wird mit Chips zum Antippen. Die Farben zeigen, wo ihr steht:</p>
           <div class="exfields">
             <div class="exf"><span class="zchips ex-chips"><span class="zchip ex-miss">Ja</span><span class="zchip ex-miss">Nein</span></span><span>oranger Rand: noch wählen</span></div>
-            <div class="exf"><span class="zchips ex-chips"><span class="zchip" aria-pressed="true">Ja</span><span class="zchip">Nein</span></span><span>grün: gewählt</span></div>
+            <div class="exf"><span class="zchips ex-chips"><span class="zchip" aria-pressed="true">Ja</span><span class="zchip">Nein</span></span><span>orange gefüllt mit ✓: gewählt</span></div>
           </div>
+          <p>Bei den Namen hat jeder Haushalt seine eigene Farbe: Rand in dieser Farbe, gewählt gefüllt mit ✓. Grün sind nur die Knöpfe, zum Beispiel «Neu starten» oder WhatsApp.</p>
           <p>Tippst du einen gewählten Chip nochmals an, ist die Wahl wieder aufgehoben.</p>
           <p>Graue Chips sind noch gesperrt, bis die Frage davor beantwortet ist. Erst wenn alles gewählt ist, erscheint unten der Preis.</p>
         </div></details>
@@ -1711,7 +1715,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.21.1.0";
+let VERSION = "3.21.1.1";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
