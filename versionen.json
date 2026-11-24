@@ -2,6 +2,21 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.24.0.0",
+      "datum": "2026-11-24",
+      "titel": "Eigene An- und Abreise pro Person der Familie, Freunde ab 1 Nacht",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Bei «Wer kommt mit?» hat jede Person der Familie ein eigenes Feld «Aufenthalt» mit 📅, auch du selbst. So kann z. B. Jerome später kommen als Rahel. Es gilt für «Meine Familie und Geschwister» und für «Ich und meine Familie».",
+        "Ein Haushalt zahlt jede Nacht, in der mindestens eine Person von ihm da ist. Bei mehreren Haushalten teilen sie den Preis jeder Nacht unter denen, die da sind. Der Preis bei einem Haushalt bleibt gleich.",
+        "Die Betten werden pro Nacht und Person gezählt (Kinderbettchen nicht). Sind mehr als 6 Betten belegt, kommt die Luftmatratze als Ausnahme dazu.",
+        "In jeder Nacht muss jemand von der Familie da sein. «Wer ist wann da?» zeigt jede Person mit eigenen Daten in einer eigenen Zeile.",
+        "Eine Buchung hat weiterhin mindestens 2 Nächte. Innerhalb der Buchung darf jetzt jemand, auch ein Freund, nur 1 Nacht kommen."
+      ]
+    },
+    {
       "v": "3.23.0.0",
       "datum": "2026-11-24",
       "titel": "Namen der Familie auf jedem Gerät",
