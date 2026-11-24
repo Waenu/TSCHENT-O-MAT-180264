@@ -2,6 +2,19 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.21.0.1",
+      "datum": "2026-11-24",
+      "titel": "«Wohnung» statt «Chalet»",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Wo die Räume gemeint sind, steht jetzt «Wohnung» (z. B. «Die ganze Wohnung steht euch zur Verfügung», «Abreise: Wohnung bis 10 Uhr übergeben»).",
+        "Der Ort bleibt «Chalet Tschenten», ebenso «Ferien im Chalet» und die Monatssprüche.",
+        "Checkliste: «🧹 Wohnung besenrein und aufgeräumt verlassen». Ein dort schon gesetztes Häkchen geht verloren."
+      ]
+    },
+    {
       "v": "3.21.0.0",
       "datum": "2026-11-24",
       "titel": "Gesendete Anfrage in «Meine Verwaltung», klarere Luftmatratze, Zahlung blau",
