@@ -124,8 +124,8 @@ if (TEST_MODUS) {
     --schraff: #A5BAB5;   /* Schraffur belegter Tage */
     --missing-bg: #FFEBC9;
     --missing-line: #D8962B;
-    --done-bg: #DCF1E2;
-    --done-line: #4F9E6E;
+    --done-bg: #DCE8F6;
+    --done-line: #2F6DB0;
     --error-bg: #FAD7D7;
     --error-line: #C24545;
     --rot: #C62828;   /* Feuerrot: alle roten Rahmen (seit 3.20.0.7) */
@@ -158,8 +158,8 @@ if (TEST_MODUS) {
       --schraff: #5F8580;
       --missing-bg: #4B3813;
       --missing-line: #C98C25;
-      --done-bg: #1B3F2D;
-      --done-line: #4C9A6B;
+      --done-bg: #16304D;
+      --done-line: #6AA6E3;
       --error-bg: #4C1F1F;
       --error-line: #D06666;
       --error-fg: #FFC2C2;
@@ -188,8 +188,8 @@ if (TEST_MODUS) {
       --schraff: #5F8580;
     --missing-bg: #4B3813;
     --missing-line: #C98C25;
-    --done-bg: #1B3F2D;
-    --done-line: #4C9A6B;
+    --done-bg: #16304D;
+    --done-line: #6AA6E3;
     --error-bg: #4C1F1F;
     --error-line: #D06666;
     --error-fg: #FFC2C2;
@@ -263,16 +263,16 @@ if (TEST_MODUS) {
   .mfg-bett { font-size: .9em; margin: 4px 0 2px; }
   .zchip[aria-pressed="true"] { background: var(--missing-line); color: #1F1300; border-color: var(--missing-line); }   /* gewählt: voll orange, Knöpfe bleiben grün (seit 3.21.1.1, Punkt 27) */
   .zchip[aria-pressed="true"]::after { content: "✓"; position: absolute; top: -8px; right: -8px; width: 18px; height: 18px; border-radius: 50%; background: var(--fg); color: var(--bg); font-size: 11px; line-height: 18px; text-align: center; font-weight: 700; pointer-events: none; }   /* Häkchen-Abzeichen über der Ecke (seit 3.21.1.1, Wänu Variante 4) */
-  .zchips:not(:has(.zchip[aria-pressed="true"])) .zchip[style*="--pc"]:not(:disabled) { border-color: var(--pc); }   /* Namen-Chips: nichts gewählt = Rahmen in der Farbe des Haushalts */
+  .zchip[style*="--pc"]:not(:disabled):not([aria-pressed="true"]), .field.missing .zchip[style*="--pc"]:not(:disabled):not([aria-pressed="true"]) { border-color: var(--pc); }   /* Namen-Chips: nichts gewählt = Rahmen in der Farbe des Haushalts */
   .gm-pt.vorschlag .zchip::after { display: none; }
   .zchip.kk-fr { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; cursor: default; }   /* Kleinkind der Freunde im Kinderbettchen, fest (seit 3.17.10.1) */
-  .zchip[style*="--pc"][aria-pressed="true"] { background: var(--pc); border-color: var(--pc); color: #fff; } .zchip[style*="--pc:#14B8A6"][aria-pressed="true"] { color: #062B27; }   /* Farbe der Partei schon beim Antippen (seit 3.17.6.0) */
+  .zchip[style*="--pc"][aria-pressed="true"] { background: var(--pc); border-color: var(--pc); color: #fff; } .zchip[style*="--pc:var(--missing-line)"][aria-pressed="true"] { color: #1F1300; }   /* Farbe der Partei schon beim Antippen (seit 3.17.6.0) */
   .gm-f[style*="--pc"] { box-shadow: inset 6px 0 0 var(--pc); }
   .mat-weg .zchips { margin-top: 8px; }
 .mat-f { margin: 10px 0 0; }
 .mat-f .mat-q { margin: 0 0 6px; font-weight: 600; }
 .mat-f.missing .zchip { border-color: var(--missing-line); }
-.zchip.matra { border-style: dashed !important; } #chips-gaeste { gap: 6px; } #chips-gaeste .zchip { min-width: max(44px, 2.75rem); padding: 4px 6px; } .matra-h { color: var(--missing-line); font-weight: 600; }
+.zchip.matra:not([aria-pressed="true"]):not(:disabled) { border-color: var(--gelb) !important; } #chips-gaeste { gap: 6px; } #chips-gaeste .zchip { min-width: max(44px, 2.75rem); padding: 4px 6px; } .matra-h { color: var(--missing-line); font-weight: 600; }
   .field.chipfeld > select { display: none; } .rein-chips { display: flex; flex-wrap: wrap; gap: 10px 8px; padding: 8px 8px 0 0; margin: 4px 0 6px; } .rein-chips .zchip:disabled { opacity: .45; cursor: default; }
   .rein-wahl { margin: 2px 0 4px; font-weight: 600; }   /* Fragen als Chips (seit 3.9.5.5 Reinigung, seit 3.9.5.6 alle kurzen) */
   .pt-info { list-style: none; margin: 4px 0 8px; padding: 0; } .pt-info li { display: flex; gap: 8px; align-items: baseline; padding: 3px 0; color: var(--muted); }
@@ -285,14 +285,14 @@ if (TEST_MODUS) {
   .gm-ptbox .gm-pt { display: none !important; }   /* Zeilen bleiben für die Werte, sichtbar sind die Inseln (seit 3.17.1.0) */
   .gm-ins { margin: 6px 0 10px; } .ins-i, .ins-o, .ins-neu { border-radius: 10px; padding: 6px 8px 8px; margin: 0 0 8px; }
   .ins-i { border: 2px solid var(--ic); background: color-mix(in srgb, var(--ic) 16%, transparent); } .ins-i.vs { border-style: dashed; }
-  .ins-o { border: 2px dashed var(--missing-line); background: var(--missing-bg); } .ins-neu { border: 2px dashed var(--line); text-align: center; padding: 12px 8px; cursor: pointer; }
+  .ins-o { border: 2px solid var(--missing-line); background: var(--missing-bg); } .ins-neu { border: 2px solid var(--line); text-align: center; padding: 12px 8px; cursor: pointer; }
   .ins-t { font-size: .85rem; margin: 0 0 6px; font-weight: 700; } .ins-ps { display: flex; flex-wrap: wrap; gap: 8px; }   /* gleich gross wie alle Chips (seit 3.17.6.4) */
   .ins-p { min-width: 0; min-height: max(44px, 2.75rem); border-radius: 6px; padding: 4px 14px; font-weight: 600; border: 2px solid var(--ic, var(--line)); background: var(--card, transparent); color: inherit; font: inherit; font-weight: 600; line-height: 1.15; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
-  .ins-fix { display: inline-flex; flex-direction: column; justify-content: center; cursor: default; touch-action: auto; text-align: center; } .ins-p small { display: block; font-size: .85em; font-weight: 400; opacity: .8; } .ins-p.geteilt { border-style: dashed; } .zz-n { font-weight: 400; }   /* Punkt vor dem Namen, eine Zeile (seit 3.17.6.7) */ .zz-pt { display: inline-block; width: .7em; height: .7em; border-radius: 50%; background: var(--pc); margin-right: .35em; vertical-align: .05em; } .ins-p.sel { outline: 3px solid var(--accent); outline-offset: 2px; } .ins-p.weg { opacity: .3; }
+  .ins-fix { display: inline-flex; flex-direction: column; justify-content: center; cursor: default; touch-action: auto; text-align: center; } .ins-p small { display: block; font-size: .85em; font-weight: 400; opacity: .8; } .ins-p.geteilt.kk-ins { border-style: dashed; } .zz-n { font-weight: 400; }   /* Punkt vor dem Namen, eine Zeile (seit 3.17.6.7) */ .zz-pt { display: inline-block; width: .7em; height: .7em; border-radius: 50%; background: var(--pc); margin-right: .35em; vertical-align: .05em; } .ins-p.sel { outline: 3px solid var(--accent); outline-offset: 2px; } .ins-p.weg { opacity: .3; }
   .ins-ziel { outline: 3px solid var(--accent); outline-offset: 2px; } .ins-gh { position: fixed; z-index: 9999; pointer-events: none; opacity: .9; margin: 0; }
   .gm-pt.missing select { background-color: var(--missing-bg) !important; border-color: var(--missing-line) !important; }
   .gm-k .gm-gs { display: flex; gap: 18px; } .gm-k .gm-gs label { display: flex; align-items: center; gap: 6px; min-height: 40px; }
-  .gm-k.gm-ok { border-left: 4px solid var(--gruen); }
+  .gm-k.gm-ok { border-left: 4px solid var(--marke); }
   .gm-k.gm-offen { border-left: 4px solid var(--hoch-line); }
   .rt-z { display: flex; gap: 8px; align-items: flex-start; padding: 8px 10px; margin: 6px 0; border-radius: 6px; border-left: 4px solid var(--line); background: var(--surface); }
   .rt-z.rt-fest, .rt-z.rt-selbst { border-left-color: var(--hoch-line); }
@@ -312,7 +312,7 @@ if (TEST_MODUS) {
   .gm-zu[open] > summary::after { content: "▴"; color: inherit; }   /* offen: auf grünem Grund dunkel wie die übrigen Klappen */
   .gm-knoepfe { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
   #bestKasten .gm-p { border-top: 1px solid rgba(127,127,127,0.35); padding-top: 8px; display: flex; flex-direction: column; gap: 6px; }
-  #bestKasten .gm-fr { display: flex; flex-direction: column; gap: 2px; padding: 4px 0 6px; border-bottom: 1px dashed rgba(127,127,127,0.35); }
+  #bestKasten .gm-fr { display: flex; flex-direction: column; gap: 2px; padding: 4px 0 6px; border-bottom: 1px solid rgba(127,127,127,0.35); }
   #bestKasten .gm-z { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; min-height: 36px; }
   #bestKasten .gm-l { width: 100%; font-size: .8em; opacity: .8; }
   #bestKasten .gm-v { flex: 1; min-width: 0; overflow-wrap: break-word; font-weight: 700; }
@@ -593,8 +593,8 @@ if (TEST_MODUS) {
   .sw-hoch { border-color: var(--hoch-line); background: var(--hoch-bg); }
   .sw-xmas { border-color: var(--xmas-line); background: var(--xmas-bg); }
   #btnAnsichten.warn::after { content: " ⚠️"; }
-  .alarm-n { display: inline-block; margin-left: 8px; padding: 0 8px; border-radius: 6px; background: #E5A100; color: #1A1200; font-size: .8em; font-weight: 700; }
-  .alarm-n.ok { background: #3FA66B; color: #06210F; }
+  .alarm-n { display: inline-block; margin-left: 8px; padding: 0 8px; border-radius: 6px; background: var(--missing-line); color: #1A1200; font-size: .8em; font-weight: 700; }
+  .alarm-n.ok { background: var(--marke); color: #fff; }
   .alarm-n[hidden] { display: none; }
   .sync-k[hidden] { display: none; }
   .sync-k.dreht { animation: syncDreh 1.2s linear infinite; }
@@ -646,6 +646,8 @@ if (TEST_MODUS) {
   .cal-leg .l-ruhe { border-color: var(--ruhe-line); background: var(--ruhe-bg); }
   .cal-leg .l-spitz { border-color: var(--spitz-line); background: var(--spitz-bg); }
   a.btn, button.btn, span.btn { font: inherit; font-weight: 700; color: var(--accent); background: transparent; border: 2px solid var(--accent); border-radius: 6px; min-height: 48px; padding: 8px 14px; cursor: pointer; display: flex; align-items: center; text-decoration: none; box-sizing: border-box; width: 100%; justify-content: center; text-align: center; flex: 1 1 max-content; min-width: min(100%, max-content); }   /* Knöpfe volle Breite, Text mittig; nebeneinander nur, wenn alle einzeilig Platz haben (seit 3.17.8.1, Wänu) */
+  .btn:is([data-gdel], [data-gmdel], [data-abgweg], [data-anweg], [data-bdel], [data-bweg], [data-gbd], [data-sond-del], [data-eask]) { color: var(--rot) !important; font-weight: 700; }   /* Löschen und Stornieren: roter Text, grüner Rahmen (seit 3.21.1.3, Punkt 14) */
+  .farb-leg { list-style: none; padding: 0; margin: 0 0 10px; display: grid; gap: 6px; } .farb-leg li { display: flex; gap: 8px; align-items: flex-start; } .farb-leg i { flex: none; width: 22px; height: 16px; margin-top: 2px; border: 3px solid; border-radius: 4px; box-sizing: border-box; }   /* Legende der Farben im Willkommen (seit 3.21.1.3, Punkt 14) */
   .btn.off, button.btn:disabled { opacity: 0.45; cursor: not-allowed; }
   .pay .btns { display: flex; flex-direction: column; gap: 10px; align-self: stretch; width: 100%; }
   .pay .btns .btn, .pay > button, .pay > .btns > button { width: 100%; box-sizing: border-box; justify-content: center; text-align: center; gap: 10px; min-height: 52px; border-radius: 6px; }
@@ -716,7 +718,7 @@ if (TEST_MODUS) {
   #mamiStreifen { background: #7B3F8C; color: #fff; border-radius: 6px; padding: 10px 14px; font-weight: 700; }
   #mamiStreifen[hidden] { display: none; }
   #kindStreifen .btn { background: #fff; color: #1F5FA8; border: 0; border-radius: 8px; min-height: 32px; padding: 2px 12px; font: inherit; font-size: .85rem; font-weight: 700; cursor: pointer; white-space: nowrap; }
-  #bestKasten .vk.offen { border: 2px solid #F28C28; }
+  #bestKasten .vk.offen { border: 2px solid var(--missing-line); }
   #bestKasten .vk-trenn { border: 0; border-top: 2px solid rgba(127,127,127,0.4); margin: 18px 0 0; }
   #meldenKasten .typ { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
   #meldenKasten .typ button { font: inherit; font-weight: 700; min-height: 48px; border-radius: 6px; border: 2px solid var(--accent); background: transparent; color: var(--accent); cursor: pointer; padding: 4px; }
@@ -819,7 +821,7 @@ if (TEST_MODUS) {
   #meinAuf > details.mein-st.note.h { border: 0 !important; background: none !important; padding: 0 !important; margin: 0 0 14px !important; }
   #meinAuf > details.mein-st > summary, #meinAuf > details.mein-st[open] > summary { border: 2px solid var(--accent); border-radius: 6px; background: var(--surface); padding: 6px 12px; min-height: 54px; }
   #meinAuf > details.mein-st[open] > summary { background: var(--accent); color: var(--accent-fg); margin-bottom: 10px; }
-  #meinAuf > details.mein-st.brennt:not([open]) > summary { border-color: #C62828; } #meinAuf > details.mein-st.steht:not([open]) > summary { border-color: #E5A100; }
+  #meinAuf > details.mein-st.brennt:not([open]) > summary { border-color: #C62828; } #meinAuf > details.mein-st.steht:not([open]) > summary { border-color: var(--missing-line); }
   #meinAuf > details.mein-st[open] > summary::after { color: inherit; }
   #meinKasten .brennt, #meinKasten .ink-b.brennt { border-color: #C62828 !important; }   /* Rahmen nur in Farbe, wenn etwas ansteht (rot/orange) */   /* seit 2.112.1.0 ohne blauen Rahmen wie die anderen Bereiche */
   #ver { user-select: none; -webkit-user-select: none; touch-action: manipulation; }
@@ -986,21 +988,21 @@ if (TEST_MODUS) {
   #bestKasten .vk-sec { display: flex; align-items: center; gap: 8px; margin: 12px 0 4px; font-weight: 700; }
   #bestKasten .vk-sec[data-vksec] { cursor: pointer; padding: 8px 4px; border-bottom: 1px solid rgba(127,127,127,0.35); }
   #bestKasten .vk-sec .vk-pfeil { width: 1em; }
-  #bestKasten .vk-sec .n.heiss { background: #F28C28; color: #1A1200; }
+  #bestKasten .vk-sec .n.heiss { background: var(--missing-line); color: #1A1200; }
   #bestKasten .vk-body[hidden] { display: none; }
   #bestKasten .vk-sec .n { background: var(--accent); color: var(--accent-fg, #fff); border-radius: 999px; padding: 0 8px; font-size: 0.8em; }
-  #bestKasten .vk { background: var(--surface); border: 2px solid var(--accent); border-radius: 6px; padding: 12px; margin: 6px 0; display: flex; flex-direction: column; gap: 8px; }
+  #bestKasten .vk { background: var(--surface); border: 2px solid var(--line); border-radius: 6px; padding: 12px; margin: 6px 0; display: flex; flex-direction: column; gap: 8px; }
   #bestKasten .vk.spring { outline: 4px solid var(--missing-line); outline-offset: 2px; }
-  #bestKasten .vk.ok { border-color: var(--gruen); }
+  #bestKasten .vk.ok { border-color: var(--marke); }
   #bestKasten .bs-fehlt { color: var(--missing-line); }
-  #bestKasten .vk.warn { border-color: #C9A227; }
-  .mein-teil.an-teil { border: 2px solid #E5A100; border-radius: 6px; padding: 8px 12px; }   /* offene Anfrage (seit 3.21.0.0) */
+  #bestKasten .vk.warn { border-color: var(--rot); } #bestKasten .vk.prov { border-color: var(--gelb); }   /* Frist abgelaufen rot, Vorbehalt gelb (seit 3.21.1.3, Punkt 14) */
+  .mein-teil.an-teil { border: 2px solid var(--missing-line); border-radius: 6px; padding: 8px 12px; }   /* offene Anfrage (seit 3.21.0.0) */
   #bestKasten .vk.wartet { border-color: var(--marke); }   /* nur noch die Zahlung nach der Abreise offen (seit 3.21.0.0) */
   #bestKasten .vk.rot { border-color: #C62828; }
   #bestKasten .vkd { margin: 6px 0; }
   #bestKasten details.pers { margin: 6px 0; }
   #bestKasten details.pers > summary { white-space: normal; min-height: 54px; padding: 6px 12px; gap: 6px; text-align: left; }
-  #bestKasten details.pers.fehlt:not([open]) > summary { border-color: #E5A100; }
+  #bestKasten details.pers.fehlt:not([open]) > summary { border-color: var(--missing-line); }
   #bestKasten details.pers.rot:not([open]) > summary { border-color: #C62828; }
   #bestKasten .ps-l { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.25; }
   #bestKasten .ps-b { font-weight: 400; font-size: .85rem; opacity: .85; }
@@ -1013,7 +1015,7 @@ if (TEST_MODUS) {
   #bestKasten .zt-h { font-weight: 700; margin: 8px 0 2px; }
   #bestKasten .zt-z { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(127,127,127,0.25); }
   #bestKasten .zt-bx { flex: none; width: 30px; height: 30px; border: 2px solid var(--fg); border-radius: 6px; background: transparent; color: var(--fg); font-weight: 700; font-size: 1rem; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; }
-  #bestKasten .zt-z.done .zt-bx { background: var(--gruen); border-color: var(--gruen); color: #0B2B22; }
+  #bestKasten .zt-z.done .zt-bx { background: var(--marke); border-color: var(--marke); color: #fff; }
   #bestKasten .zt-z.rot .zt-bx { border-color: var(--rot); }
   #bestKasten .zt-warn { border-color: var(--rot); color: #E5534B; cursor: default; }
   #bestKasten .zt-i { flex: 1; min-width: 0; }
@@ -1022,14 +1024,14 @@ if (TEST_MODUS) {
   #bestKasten .zt-leg { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; font-size: .85em; margin: 4px 0 10px; }
   #bestKasten .zt-leg span { display: inline-flex; align-items: center; gap: 6px; }
   #bestKasten .zt-leg i { display: inline-flex; width: 18px; height: 18px; border: 2px solid var(--fg); border-radius: 4px; font-style: normal; font-size: .8em; align-items: center; justify-content: center; }
-  #bestKasten .zt-leg i.r { border-color: var(--rot); color: #E5534B; } #bestKasten .zt-leg i.g { background: var(--gruen); border-color: var(--gruen); color: #0B2B22; }
+  #bestKasten .zt-leg i.r { border-color: var(--rot); color: #E5534B; } #bestKasten .zt-leg i.g { background: var(--marke); border-color: var(--marke); color: #fff; }
   #bestKasten .zt-d { font-size: .9em; opacity: .85; margin-top: 2px; }
-  #bestKasten .zt-ok { font-size: .9em; color: var(--gruen); margin-top: 2px; }
+  #bestKasten .zt-ok { font-size: .9em; color: var(--marke); margin-top: 2px; }
   #bestKasten .zt-k { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; align-items: center; }
   #bestKasten .zt-k .cp-zeile { width: 100%; }
   #bestKasten .zt-k .gm-p, #bestKasten .zt-liste .gm-p { width: 100%; min-width: 0; box-sizing: border-box; }
   #bestKasten .zt-ok .zt-liste { color: var(--fg); margin-top: 6px; }
-  #bestKasten .ps-offen { margin: 0 0 4px; padding: 8px 12px; border-left: 4px solid #E5A100; background: var(--surface); border-radius: 6px; }
+  #bestKasten .ps-offen { margin: 0 0 4px; padding: 8px 12px; border-left: 4px solid var(--missing-line); background: var(--surface); border-radius: 6px; }
   #bestKasten .ps-offen.rot { border-left-color: var(--rot); }
   #bestKasten .rot-warn .vk-nav .btn { background: #FFFFFF; color: #8B1A1A; border: 0; font-weight: 700; }
   #bestKasten .ps-in { padding-bottom: 6px; }
@@ -1043,7 +1045,7 @@ if (TEST_MODUS) {
   #bestKasten .ps-h { color: var(--gruen); font-weight: 700; width: 1.4em; text-align: center; }
   #bestKasten .todo-grau { opacity: .55; }
   #bestKasten .vkd > summary { min-height: 44px; border: 2px solid var(--gruen); border-radius: 6px; padding: 8px 12px; background: var(--surface); color: inherit; white-space: normal; font-size: 1rem; justify-content: space-between; text-align: left; }
-  #bestKasten .vkd.prov > summary { border-color: #C9A227; }
+  #bestKasten .vkd.prov > summary { border-color: var(--gelb); }
   #bestKasten .vkd.rot > summary { border-color: #C62828; }
   #bestKasten .bs-fehlt.rotb { color: #E5534B; }
   #bestKasten .vkd[open] > summary { margin-bottom: 4px; }
@@ -1068,7 +1070,7 @@ if (TEST_MODUS) {
   #bestKasten .vk-acts .btn, #bestKasten .vk-acts a.btn { width: 100%; box-sizing: border-box; justify-content: center; text-align: center; gap: 8px; min-height: 48px; padding: 6px 8px; }
   #bestKasten .vk-acts .btn.main { background: var(--accent); color: var(--accent-fg, #fff); }
   #bestKasten .vk-acts .btn.main svg { fill: currentColor; }
-  #bestKasten .vk-acts .btn.quiet { border-style: dashed; font-weight: 500; opacity: 0.85; }
+  #bestKasten .vk-acts .btn.quiet { font-weight: 500; }
   #bestKasten .vk-acts .full { grid-column: 1 / -1; }
   #bestKasten .vk-acts .hint { grid-column: 1 / -1; }
   .hl { display: inline-block; line-height: 1.15; background: #FFD54A; color: #1a1a1a; font-weight: 700; padding: 0 5px; border-radius: 5px; }
@@ -1080,7 +1082,7 @@ if (TEST_MODUS) {
   #bestKasten .eintab td:first-child, #bestKasten .eintab th:first-child { text-align: left; padding-left: 0; white-space: normal; }
   #bestKasten .eintab tr.sum td { border-top: 2px solid var(--accent); }
   #bestKasten .vk-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
-  #bestKasten .vk-nav .btn { width: 100%; justify-content: center; border-style: dashed; font-weight: 500; }
+  #bestKasten .vk-nav .btn { width: 100%; justify-content: center; font-weight: 500; }
   .ov-back { align-self: flex-start; font: inherit; font-weight: 700; color: var(--accent); background: var(--surface); border: 2px solid var(--accent); border-radius: 6px; padding: 8px 14px; min-height: 44px; cursor: pointer; }
   .waesche-liste { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
   .waesche-liste li { display: flex; gap: 12px; align-items: baseline; background: var(--surface); border: 2px solid var(--line); border-radius: 6px; padding: 10px 12px; font-size: 1.1rem; }
@@ -1089,14 +1091,14 @@ if (TEST_MODUS) {
   .chk-item { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 64px; font: inherit; font-size: 1.2rem; font-weight: 600; text-align: left; color: var(--fg); background: var(--surface); border: 2px solid var(--line); border-radius: 6px; padding: 10px 14px; cursor: pointer; }
   .chk-item .box { flex: none; width: 34px; height: 34px; border: 3px solid var(--accent); border-radius: 6px; display: grid; place-items: center; font-size: 1.3rem; line-height: 1; }
   .chk-item.erledigt { opacity: .6; text-decoration: line-through; }
-  .chk-item.erledigt .box { background: var(--accent); color: var(--accent-fg); }
+  .chk-item.erledigt .box { background: var(--marke); color: #fff; }
   .chk-alle .chk-item { opacity: 1; text-decoration: none; background: var(--done-bg); border-color: var(--done-line); }
   .chk-alle .chk-item .box { background: var(--done-line); border-color: var(--done-line); color: #fff; }
   #calGrid { position: relative; }
   .note.h.rot-warn { background: #C62828; border: 3px solid var(--rot); color: #fff; }
   .note.h.rot-warn b { color: #fff; }
   #calTermin p { margin: 0 0 8px; } #calTermin p:last-child { margin-bottom: 0; }
-  #calTermin.mitw { border: 3px solid #F28C28; }
+  #calTermin.mitw { border: 3px solid var(--missing-line); }
   .note.h.gelb-warn { background: var(--gelb); border: 3px solid var(--gelb-ol); color: var(--gelb-fg); }
   .note.h.gelb-warn b { color: var(--gelb-fg); }
   #hilfeKnopf { position: fixed; right: 16px; bottom: calc(140px + env(safe-area-inset-bottom, 0px)); z-index: 6; width: 48px; height: 48px; padding: 0; border-radius: 50%; border: 3px solid var(--accent); background: var(--surface); color: var(--accent); font: inherit; font-size: 1.5rem; font-weight: 800; line-height: 1; box-shadow: 0 2px 8px rgba(0,0,0,.35); cursor: pointer; }
@@ -1111,7 +1113,7 @@ if (TEST_MODUS) {
   #calBlase .gb { display: grid; gap: 8px; margin-top: 8px; }
   #calGrid.gmode .cal-d:disabled { pointer-events: none; }
   #calBlase .gd { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-  #meldenKasten .idneu { display: grid; gap: 6px; border: 2px dashed var(--accent); border-radius: 6px; padding: 12px; margin: 8px 0 12px; }
+  #meldenKasten .idneu { display: grid; gap: 6px; border: 2px solid var(--line); border-radius: 6px; padding: 12px; margin: 8px 0 12px; }
   #meldenKasten .idg { border: 2px solid var(--accent); border-radius: 6px; margin: 8px 0; padding: 0 12px; }
   #meldenKasten .idg > summary { font-weight: 700; min-height: 48px; display: flex; align-items: center; gap: 6px; cursor: pointer; }
   #meldenKasten .idsort { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 4px 0 6px; }
@@ -1137,7 +1139,7 @@ if (TEST_MODUS) {
   #calBlase .ar + .ipan { margin: 6px 0 0; padding: 6px 12px; border: 0; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; background: var(--surface); font-size: .92rem; }
   .prio { font-size: .8em; font-weight: 700; white-space: nowrap; }
   a.zum-heute { font-weight: 700; white-space: nowrap; }
-  #calBlase .ar-nur { margin: 14px 0 0; padding-top: 8px; border-top: 2px dashed var(--accent); font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; font-weight: 700; color: var(--muted); }
+  #calBlase .ar-nur { margin: 14px 0 0; padding-top: 8px; border-top: 2px solid var(--line); font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; font-weight: 700; color: var(--muted); }
   #calBlase .ipan table { width: 100%; border-collapse: collapse; } #calBlase .ipan td { padding: 3px 0; vertical-align: top; } #calBlase .ipan td:last-child { text-align: right; padding-left: 10px; white-space: nowrap; } #calBlase .ipan .rechtab td:last-child { white-space: normal; overflow-wrap: break-word; } #calBlase .ipan .rechtab td:first-child { padding-right: 6px; }
   #calBlase .ar-h { display: flex; gap: 10px; padding: 8px 0; border-top: 1px solid var(--line); } #calBlase .ar-h:first-child { border-top: 0; }
   #calBlase .ar-hi .sw-k { margin: 0; }
@@ -1150,11 +1152,11 @@ if (TEST_MODUS) {
   .gtyp .btn.typ { width: 100%; justify-content: center; text-align: center; min-height: 48px; padding: 6px 1px; font-size: 0.8em; flex-wrap: wrap; gap: 0 2px; }
   .gtyp .btn.typ.on { background: var(--accent); color: var(--accent-fg); }
   #calBlase .gb input, #calBlase .gb select { font: inherit; min-height: 44px; padding: 6px 10px; border: 2px solid var(--accent); border-radius: 6px; background: var(--surface); color: var(--fg); width: 100%; box-sizing: border-box; }
-  #calBlase .gb .gb-b { display: grid; gap: 8px; margin-top: 4px; padding-top: 8px; border-top: 2px dashed var(--accent); }
+  #calBlase .gb .gb-b { display: grid; gap: 8px; margin-top: 4px; padding-top: 8px; border-top: 2px solid var(--line); }
   #calBlase .gb .gb-f { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-items: center; }
   #calBlase .gb .gtyp { display: flex; gap: 8px; } #calBlase .gb .gtyp .btn { flex: 1; width: auto; }
   #calBlase .gb .btn { width: 100%; justify-content: center; min-height: 48px; }
-  #calBlase .gb .btn.quiet { border-style: dashed; font-weight: 500; }
+  #calBlase .gb .btn.quiet { font-weight: 500; }
   #calBlase { margin-top: 8px; position: relative; }
   .ub { overflow-x: auto; margin: 6px 0 4px; --ub-nw: 82px; } .ub-g { display: grid; row-gap: 6px; align-items: center; font-size: .82rem; } .ub-w .ub-g { width: max-content; }
   .ub-n { grid-column: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 6px; } .ub-w .ub-n { position: sticky; left: 0; z-index: 1; background: var(--surface); } .ub-w .ub-b { justify-content: flex-start; padding-left: 10px; } .ub-bt { font-size: .78rem; color: var(--muted); white-space: normal; line-height: 1.2; }
@@ -1162,7 +1164,7 @@ if (TEST_MODUS) {
   .ub-b { height: 24px; border-radius: 12px; background: var(--pc); color: #10201c; font-size: .72rem; font-weight: 700; display: flex; align-items: center; justify-content: center; white-space: nowrap; overflow: hidden; }
   .ub-b { container-type: inline-size; } .ub-b .ub-k1 { display: none; }
   @container (max-width: 5.2em) { .ub-b .ub-l1 { display: none; } .ub-b .ub-k1 { display: inline; } }
-  .ub-b.kk { height: 12px; opacity: .8; } .ub-b.mat { outline: 2px dashed #E5A100; outline-offset: 2px; }
+  .ub-b.kk { height: 12px; opacity: .8; } .ub-b.mat { outline: 3px solid var(--gelb); outline-offset: 2px; }
   .ub-c { text-align: center; font-weight: 700; padding: 3px 0; margin: 0 1px; border-radius: 6px; background: var(--note-bg); } .ub-c.voll { background: #FFE58A; color: #4a3800; }
   .ub-l { margin: 4px 0 0; } .ub-tt { margin: 0 0 4px; } details.ub-k { margin: 8px 0 0; } .mein-teil.ub-teil { border: 2px solid var(--marke) !important; padding: 8px 12px !important; } .ub-teil > details.ub-k, .re-teil > details.rechd { margin: 0; } .re-teil > details.rechd > summary { min-height: 0; padding: 2px 0; } .ub-teil > details.ub-k > summary { border: 0 !important; background: none !important; color: inherit !important; padding: 2px 0 !important; }   /* blauer Rahmen in «Meine Verwaltung» (seit 3.20.0.5) */ details.ub-k > summary { font-weight: 700; }
   #calBlase[data-mon="hoch"] { border: 2px solid var(--hoch-line); }
@@ -1355,7 +1357,7 @@ if (TEST_MODUS) {
   @keyframes geldMuenze { 0%, 22% { opacity: 0; transform: translate(0, 0) rotate(0); } 26% { opacity: 1; } 40% { opacity: 1; transform: translate(-.45em, 1.1em) rotate(200deg); } 46%, 100% { opacity: 0; transform: translate(-.55em, 1.5em) rotate(260deg); } }
   @media (prefers-reduced-motion: reduce) { .an-geld .gb, .an-geld .mz { animation: none; } }
 /* Trinkgeld bei «💳 Zu bezahlen» (seit 3.17.12.0) */
-  .trk { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line, #8886); }
+  .trk { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line, #8886); }
   .trk-t { margin: 0 0 6px; } .trk-t small { opacity: .75; }
   .trk-c { display: flex; flex-wrap: wrap; gap: 8px; }
   .trk-a { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; } .trk-a input { width: 100%; box-sizing: border-box; min-height: max(48px, 3rem); } .trk-a input::placeholder { font-size: .85em; }
@@ -1522,14 +1524,15 @@ if (TEST_MODUS) {
     <details class="card" id="b-benutzung">
       <summary>👋 Willkommen</summary>
       <div class="rows">
-        <div class="willkommen"><p class="rd-kopfzeile"><svg class="rd" viewBox="0 0 100 100" role="img" aria-label="Redner am Pult" focusable="false"><rect x="34" y="42" width="32" height="34" rx="6" fill="#0E1012"/><path d="M44 42 L50 54 L56 42 Z" fill="#F4F6F5"/><path d="M50 46 L48.3 56 L50 60 L51.7 56 Z" fill="#B3342B"/><path class="rd-arm" d="M35 50 L32 62"/><path class="rd-arm rd-un rd-l" d="M32 62 V74"/><circle class="rd-hd rd-l" cx="32" cy="74" r="4" fill="#E9B999"/><path class="rd-arm" d="M65 50 L68 62"/><path class="rd-arm rd-un rd-r" d="M68 62 V74"/><circle class="rd-hd rd-r" cx="68" cy="74" r="4" fill="#E9B999"/><g class="rd-kopf"><circle cx="50" cy="30" r="10" fill="#E9B999"/><path d="M40 28 C40 19 60 19 60 28 C57 24 43 24 40 28 Z" fill="#BFC4C8"/><circle cx="46" cy="31" r="3" fill="none" stroke="#26384A" stroke-width="1.2"/><circle cx="54" cy="31" r="3" fill="none" stroke="#26384A" stroke-width="1.2"/><path d="M49 31 H51" stroke="#26384A" stroke-width="1.2"/><ellipse class="rd-mund" cx="50" cy="36.2" rx="3.2" ry="2.4" fill="#5A1F1F"/></g><path d="M26 78 L74 78 L71 98 L29 98 Z" fill="#7A5230"/><rect x="20" y="72" width="60" height="6" rx="2" fill="#94673F"/><rect x="44" y="82" width="12" height="9" rx="1.5" fill="#D52B1E"/><path d="M50 84 V89 M47.5 86.5 H52.5" stroke="#fff" stroke-width="1.6"/><path d="M50 72 V67" stroke="#3A3F44" stroke-width="1.6"/><circle cx="50" cy="65.5" r="2.4" fill="#3A3F44"/></svg><b>Liebi Fraue und Manne</b></p><p>Uns ist bewusst, dass bei der ersten Benutzung alles etwas kompliziert scheint. Euch interessieren ja vor allem die Preise. Gebt euren Wunschtermin <a href="#cal" class="zum-heute" role="button">📅 im Kalender</a> ein und wer alles dabei sein soll. Wenn alle Felder grün sind, seht ihr die Kosten und wer wie viel bezahlt. Lest trotzdem irgendwann noch die Anleitung durch. Und wer findet das Osterei zuerst? 😉</p><p>Gruess, die Eltern</p></div>
+        <div class="willkommen"><p class="rd-kopfzeile"><svg class="rd" viewBox="0 0 100 100" role="img" aria-label="Redner am Pult" focusable="false"><rect x="34" y="42" width="32" height="34" rx="6" fill="#0E1012"/><path d="M44 42 L50 54 L56 42 Z" fill="#F4F6F5"/><path d="M50 46 L48.3 56 L50 60 L51.7 56 Z" fill="#B3342B"/><path class="rd-arm" d="M35 50 L32 62"/><path class="rd-arm rd-un rd-l" d="M32 62 V74"/><circle class="rd-hd rd-l" cx="32" cy="74" r="4" fill="#E9B999"/><path class="rd-arm" d="M65 50 L68 62"/><path class="rd-arm rd-un rd-r" d="M68 62 V74"/><circle class="rd-hd rd-r" cx="68" cy="74" r="4" fill="#E9B999"/><g class="rd-kopf"><circle cx="50" cy="30" r="10" fill="#E9B999"/><path d="M40 28 C40 19 60 19 60 28 C57 24 43 24 40 28 Z" fill="#BFC4C8"/><circle cx="46" cy="31" r="3" fill="none" stroke="#26384A" stroke-width="1.2"/><circle cx="54" cy="31" r="3" fill="none" stroke="#26384A" stroke-width="1.2"/><path d="M49 31 H51" stroke="#26384A" stroke-width="1.2"/><ellipse class="rd-mund" cx="50" cy="36.2" rx="3.2" ry="2.4" fill="#5A1F1F"/></g><path d="M26 78 L74 78 L71 98 L29 98 Z" fill="#7A5230"/><rect x="20" y="72" width="60" height="6" rx="2" fill="#94673F"/><rect x="44" y="82" width="12" height="9" rx="1.5" fill="#D52B1E"/><path d="M50 84 V89 M47.5 86.5 H52.5" stroke="#fff" stroke-width="1.6"/><path d="M50 72 V67" stroke="#3A3F44" stroke-width="1.6"/><circle cx="50" cy="65.5" r="2.4" fill="#3A3F44"/></svg><b>Liebi Fraue und Manne</b></p><p>Uns ist bewusst, dass bei der ersten Benutzung alles etwas kompliziert scheint. Euch interessieren ja vor allem die Preise. Gebt euren Wunschtermin <a href="#cal" class="zum-heute" role="button">📅 im Kalender</a> ein und wer alles dabei sein soll. Wenn alle Felder blau sind, seht ihr die Kosten und wer wie viel bezahlt. Lest trotzdem irgendwann noch die Anleitung durch. Und wer findet das Osterei zuerst? 😉</p><p>Gruess, die Eltern</p></div>
         <p><b>Neu:</b> Ferien im Chalet können euch sogar gar nichts kosten, auch in der Hochsaison. Nehmt ihr genug Freunde mit, tragen sie euren Anteil, und sie übernachten trotzdem weit günstiger als im Hotel. Wie viele es braucht, zeigt euch der Rechner.</p><p><b>Wichtig:</b> In der Hochsaison und im Februar verzichten wir Eltern selbst auf Ferien im Chalet, damit Einnahmen hereinkommen. Dafür braucht es auch von euch etwas Flexibilität. In den anderen Zeiten bucht ihr spontan und sehr günstig. Danke für euer Verständnis!</p>
         <p><b>Nur über die App:</b> Buchungen gelten nur über den TSCHENT-O-MAT, nicht mündlich, per Kurier oder Rauchzeichen. Eine Anfrage ist verbindlich.</p>
         <p>Der Kalender erklärt sich auch ohne die aufklappbaren Texte. Sie sind für alle, die es genau wissen wollen.</p>
         <details class="mehr"><summary>Mehr erfahren</summary>
           <p><b>Eltern:</b> Im TSCHENT-O-MAT steht überall «Eltern». Als Partner/in sind damit natürlich auch deine Schwiegereltern gemeint.</p>
           <p><b>Nur für die Familie:</b> Der Link bleibt in der Familie: Kinder, Partner/innen und Enkelkinder.</p>
-          <p><b>So bedienst du ihn:</b> Von oben nach unten ausfüllen, die Felder hängen zusammen. Sind alle grün, erscheint der Preis. Mit ▾ klappst du Menüs auf, mit unterstrichenen Icons wie <button type="button" class="sym" data-info="b-luecke" aria-label="Beispiel: zur Erklärung springen">🧩</button> springst du zur Erklärung und mit <span class="zei zur">↩ zurück</span> wieder an die alte Stelle. 🎬 startet ein Erklärvideo, und das <span class="zei hilfe">?</span> unten rechts erklärt jeden Tag, den du antippst.</p>
+          <p><b>So bedienst du ihn:</b> Von oben nach unten ausfüllen, die Felder hängen zusammen. Sind alle blau, erscheint der Preis. Mit ▾ klappst du Menüs auf, mit unterstrichenen Icons wie <button type="button" class="sym" data-info="b-luecke" aria-label="Beispiel: zur Erklärung springen">🧩</button> springst du zur Erklärung und mit <span class="zei zur">↩ zurück</span> wieder an die alte Stelle. 🎬 startet ein Erklärvideo, und das <span class="zei hilfe">?</span> unten rechts erklärt jeden Tag, den du antippst.</p>
+          <p><b>🎨 Was die Farben bedeuten:</b></p><ul class="farb-leg"><li><i style="border-color:var(--rot)"></i><span><b>Rot:</b> fällig oder dringend</span></li><li><i style="border-color:var(--missing-line)"></i><span><b>Orange:</b> noch zu erledigen, nicht dringend; gewählte Felder sind orange gefüllt</span></li><li><i style="border-color:var(--marke)"></i><span><b>Blau:</b> Info oder erledigt</span></li><li><i style="border-color:var(--gruen)"></i><span><b>Grün:</b> ein Knopf zum Antippen; Löschen und Stornieren mit <span style="color:var(--rot);font-weight:700">roter Schrift</span></span></li><li><i style="border-color:var(--gelb)"></i><span><b>Gelb:</b> eine Ausnahme, zum Beispiel Luftmatratze oder Vorbehalt</span></li><li><i style="border-color:var(--muted)"></i><span><b>Grau:</b> vorbei oder gesperrt</span></li><li><i style="border-color:var(--accent);border-style:dashed"></i><span><b>Gestrichelt:</b> ein Vorschlag, bitte prüfen (im Kalender: noch nicht gesichert)</span></li></ul>
           <p>Sobald Anreise und Abreise gewählt sind, erscheint unter dem Kalender <b>eine einzige Box</b> mit kurzen Sätzen zu deinem Termin. Ist der Rahmen blau, <b>erklärt</b> sie etwas. Ist er orange, steht dort eine <b>⚠️ Warnung</b>: etwas, das den Aufenthalt oder den Preis verändert. Das orange unterstrichene Symbol am Ende einer Zeile springt zur ausführlichen Erklärung hier im Glossar.</p>
           <p><b>❓ Kalender-Hilfe:</b> Im Kalender schwebt unten rechts ein runder Knopf <span class="zei hilfe">?</span>. Ist er gelb gefüllt, erklärt sich jeder Tag, den ihr antippt, in einer Box unter dem Kalender. Mit einem Tipp auf den Knopf schaltet ihr die Hilfe aus (der Knopf ist dann durchgestrichen: <span class="zei hilfe aus">?</span>) und wieder ein. Beim nächsten Öffnen der Seite ist die Hilfe wieder an. Warnungen bleiben immer sichtbar.</p>
           <p><b>🎬 Erklärvideos:</b> Wo ihr das Symbol 🎬 seht (Termin mit Vorbehalt, Lücken, Familienstaffel), startet ein kurzer Film mit dem Ablauf im Kalender. Mit dem Regler spult ihr vor und zurück, mit «Pause» haltet ihr an.</p>
@@ -1715,7 +1718,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.21.1.2";
+let VERSION = "3.21.1.3";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1813,7 +1816,7 @@ function sondPatch(o, s) {   // Pauschale wie die Reinigung als ein Betrag, aufg
   return o;
 }
 function MAXP() { return P.maxPersonen + 1; }   // Betten inkl. Luftmatratze (7. Bett, immer Ausnahme: die Eltern sagen zu oder ab, seit 3.18.0.0)
-// Luftmatratze: belegt, sobald Familie und Freunde zusammen mehr als P.maxPersonen Betten brauchen. Bei «Freunde» ist die letzte Zahl gestrichelt.
+// Luftmatratze: belegt, sobald Familie und Freunde zusammen mehr als P.maxPersonen Betten brauchen. Bei «Freunde» ist die letzte Zahl gelb umrandet.
 let MATRA_V = 0;
 function matraOpts(l) { return l; }
 function frei6(d) { return Math.max(0, d.frei - (d.FP <= P.maxPersonen ? 1 : 0)); }   // freie Betten ohne Luftmatratze
@@ -1969,7 +1972,7 @@ function ubHtml(o) {   // o = {arr, dep, fp (Familie mit Bett), fam: [{nm, pc, k
   r++; h += '<div class="ub-n ub-bt" style="grid-row:' + r + '">🛏️ Betten pro Nacht</div>';
   for (let j = 0; j < N; j++) { const c = fp + da(tage[j]).length; h += '<div class="ub-c' + (c > P.maxPersonen ? " voll" : "") + '" style="grid-row:' + r + ";grid-column:" + (3 + 2 * j) + '/span 2">' + c + "</div>"; }
   h += "</div></div>";
-  if (voll.length) h += '<p class="hint ub-l">🛏️ Gelb: alle ' + P.maxPersonen + " Betten belegt, " + (voll.length === 1 ? "in dieser Nacht" : "in diesen Nächten") + " braucht es die Luftmatratze (gestrichelt). Die Eltern geben sie frei.</p>";
+  if (voll.length) h += '<p class="hint ub-l">🛏️ Gelb: alle ' + P.maxPersonen + " Betten belegt, " + (voll.length === 1 ? "in dieser Nacht" : "in diesen Nächten") + " braucht es die Luftmatratze (gelb umrandet). Die Eltern geben sie frei.</p>";
   if (breit) h += '<p class="hint ub-l">↔️ Wische seitwärts für alle Tage.</p>';
   return h;
 }
@@ -2310,18 +2313,20 @@ function gmEntwurfUebernehmen() {   // beim Senden der Anfrage: Liste unter die 
   karteiMerken(fr);
 }
 var INS_SEL = null, INS_N = 0, INS_ZOG = false, INS_MSG = "", KK_MSG = false;   // KK_MSG: «Ja, passt» mit offenen Kleinkindern (seit 3.20.0.4)   // Parteien als Inseln (seit 3.17.1.0, Wänu): Person antippen und dann ihre Partei, oder mit dem Finger hinüberziehen
-const INS_F = ["#3B82F6", "#22A06B", "#8B5CF6", "#E0679B", "#EF6B4A", "#0EA5E9", "#84CC16"], INS_FAM = "#14B8A6", INS_KIND = "#8A8A8A";   // eigener Haushalt türkis (seit 3.21.1.2, Gold nur für Spezialpreis und Positives), Kinder ohne Partei grau (seit 3.17.2.0)
+const INS_F = ["#3B82F6", "#22A06B", "#8B5CF6", "#E0679B", "#EF6B4A", "#0EA5E9", "#84CC16"], INS_FAM = "var(--missing-line)", INS_KIND = "#8A8A8A";   // eigener Haushalt türkis (seit 3.21.1.2, Gold nur für Spezialpreis und Positives), Kinder ohne Partei grau (seit 3.17.2.0)
 function ptKoepfe(l, zi) { return [...new Set(zi.filter((i) => alterAm(l[i].geb, ARR) >= 18).map((i) => parteiKopf(i, l, zi)))]; }   // Reihenfolge wie die Liste «🤝 Parteien»
 function famGeschw() { return (famParteien() || []).filter((pp) => !pp.eigen); }   // Haushalte der Geschwister, die mitkommen (seit 3.17.6.0)
-function famFarbe(pp) { if (!pp || pp.eigen) return INS_FAM; const k = famGeschw().findIndex((q) => q.h.m[0] === pp.h.m[0]);   /* famParteien() liefert jedes Mal neue Objekte: Vergleich über den Kopf des Haushalts (seit 3.17.6.2) */ return INS_F[(k < 0 ? 0 : k) % INS_F.length]; }   // eigener Haushalt gold, Geschwister die ersten Farben
-function ptFarbe(h, l, zi) { const k = ptKoepfe(l, zi).indexOf(h); return k >= 0 ? INS_F[(k + famGeschw().length) % INS_F.length] : ""; }   // Freunde nach den Geschwistern (seit 3.17.6.0)
+function famIdx(kopf) { return famAlle().filter((h) => h.m.indexOf(ABSENDER) < 0).findIndex((h) => h.m[0] === kopf); }   // feste Farbe pro Geschwister-Haushalt, auch bevor er gewählt ist (seit 3.21.1.3)
+function geschwOff() { const l = famGeschw().map((q) => famIdx(q.h.m[0])); return l.length ? Math.max(0, ...l) + 1 : 0; }   // Freunde nach der letzten Geschwister-Farbe
+function famFarbe(pp) { if (!pp || pp.eigen) return INS_FAM; const k = famIdx(pp.h.m[0]);   /* famParteien() liefert jedes Mal neue Objekte: Vergleich über den Kopf des Haushalts (seit 3.17.6.2) */ return INS_F[(k < 0 ? 0 : k) % INS_F.length]; }   // eigener Haushalt gold, Geschwister die ersten Farben
+function ptFarbe(h, l, zi) { const k = ptKoepfe(l, zi).indexOf(h); return k >= 0 ? INS_F[(k + geschwOff()) % INS_F.length] : ""; }   // Freunde nach den Geschwistern (seit 3.17.6.0)
 function pcStil(f) { return f ? ' style="--pc:' + f + '"' : ""; }
 function freundFarbe(i, l, n) {   // Farbe eines Freundes in der Liste: nach der Zuordnung die seiner Insel, vorher nach Nachname (seit 3.17.6.0, Wänu)
   const zi = zahlendeIdx(n);
   if (zi && listeVoll(n) && zi.indexOf(i) >= 0) { const g = insGruppe(i, l, zi); return g === "fam" ? INS_FAM : g === "o" ? "" : ptFarbe(g, l, zi); }
   const nm = (j) => String((l[j] && l[j].name) || "").trim().toLowerCase(), erw = (j) => !(l[j] && l[j].geb && ARR && alterAm(l[j].geb, ARR) < 18), ord = [];
   l.forEach((f, j) => { if (kkZeile(j)) return; const k = nm(j); if (k && erw(j) && ord.indexOf(k) < 0) ord.push(k); });
-  const k = ord.indexOf(nm(i)); return k >= 0 ? INS_F[(k + famGeschw().length) % INS_F.length] : "";
+  const k = ord.indexOf(nm(i)); return k >= 0 ? INS_F[(k + geschwOff()) % INS_F.length] : "";
 }   // gleiche Farbe in Inseln, Parteien-Liste und Aufteilung (seit 3.17.2.0)
 function insGruppe(j, l, zi) {   // Insel einer Person: "o" offen, "fam" Familie zahlt, Zahl = Kopf der Partei
   if (ptOffen(j, l, zi) && !l[j].zv) return "o";
@@ -2578,7 +2583,7 @@ function mfgZeigen() {
   if (mb.hidden) { mb.innerHTML = ""; return; }
   if (!mfgAktiv()) { mb.innerHTML = eigenHtml(); return; }
   const sel = S.mfg || [], kk = S.mfgKK || [], hs = famAlle(), eig = hs.find((h) => h.m.indexOf(ABSENDER) >= 0), voll = sel.length - kk.length >= MFG_MAX();   // Kleinkinder ohne Bett belegen keinen Platz
-  const fpp = famParteien() || [], hf = (h) => { const pp = fpp.find((q) => q.h.m[0] === h.m[0]); return pp ? famFarbe(pp) : h === eig ? INS_FAM : ""; };
+  const fpp = famParteien() || [], hf = (h) => { const pp = fpp.find((q) => q.h.m[0] === h.m[0]); return h === eig ? INS_FAM : pp ? famFarbe(pp) : INS_F[Math.max(0, famIdx(h.m[0])) % INS_F.length]; };
   let HF = "";
   const chip = (attr, an, html, aus) => '<button type="button" class="zchip" ' + attr + ' aria-pressed="' + (an ? "true" : "false") + '"' + (aus ? " disabled" : "") + pcStil(HF) + ">" + html + "</button>";
   const reihe = (h) => (HF = hf(h), "") + '<div class="zchips mfg-z">' + (h === eig ? chip('data-ich="1"', ichDa(), 'Ich<small>(' + esc(rufname()) + ")</small>", false) : "") + h.m.filter((x) => x !== ABSENDER).map((x) => chip('data-mfg="' + esc(x) + '"', sel.indexOf(x) >= 0, esc(x) + (kk.indexOf(x) >= 0 ? "<small>👶 Kinderbettchen</small>" : ""), voll && sel.indexOf(x) < 0 && (h.e.indexOf(x) < 0 || kk.length >= 2))).join("") + "</div>";
@@ -2657,7 +2662,7 @@ const FIELDS = [
     hint: () => "Kinder bis etwa 2½ Jahren, höchstens zwei (es hat zwei Kinderbettchen). Sie belegen kein Bett und zählen bei der Reinigung nicht mit.",
     visible: (d) => d.kkMax > 0 && !d.kkFix && !mfgAktiv() && !eigenAktiv(), opts: (d) => range(d.kkMin, d.kkMax) },
   { id: "gaeste", label: "🧑‍🤝‍🧑 Freunde (ausserhalb der Familie)", type: "num",
-    hint: (d) => (S.matra ? "[[🛏️ Luftmatratze: Das " + (P.maxPersonen + 1) + ". Bett ist eine Ausnahme. Der Rechner rechnet normal, die Eltern sagen danach zu oder ab.]]\n\n" : "") + (S.matra ? "" : (frei6(d) === 0 ? "Alle Betten sind belegt." : (frei6(d) === 1 ? "Es ist noch 1 Platz frei." : "Noch " + frei6(d) + " Plätze frei.")) + " Maximal " + P.maxPersonen + " Personen mit Bett." + (MATRA_V ? " Die gestrichelte Zahl ist die Luftmatratze, nur als Ausnahme." : "")) + " Kleinkinder bis 2½ Jahre zählst du mit, sie schlafen im Kinderbettchen." + ((d.LUE && P.lueckeGastNacht > 0) ? (d.nights >= P.lueckeGastMinNaechte ? " In der Lücke sind Freunde möglich, schon ein Freund genügt." : " In der Lücke gehen Freunde ab " + P.lueckeGastMinNaechte + " Nächten. Bitte mehr Nächte wählen oder ohne Freunde buchen.") : "") + (S.festMin ? " Im " + festTxt() + " sind mindestens " + P.festMinGaeste + " Freunde nötig" + (d.frei < P.festMinGaeste ? ", mit dieser Familiengrösse ist das nicht möglich." : ", damit sich die Woche für alle lohnt (Gesamtpreis mindestens " + chf(P.mindestpreisWoche) + " pro 7 Nächte).") : ""),
+    hint: (d) => (S.matra ? "[[🛏️ Luftmatratze: Das " + (P.maxPersonen + 1) + ". Bett ist eine Ausnahme. Der Rechner rechnet normal, die Eltern sagen danach zu oder ab.]]\n\n" : "") + (S.matra ? "" : (frei6(d) === 0 ? "Alle Betten sind belegt." : (frei6(d) === 1 ? "Es ist noch 1 Platz frei." : "Noch " + frei6(d) + " Plätze frei.")) + " Maximal " + P.maxPersonen + " Personen mit Bett." + (MATRA_V ? " Die gelb umrandete Zahl ist die Luftmatratze, nur als Ausnahme." : "")) + " Kleinkinder bis 2½ Jahre zählst du mit, sie schlafen im Kinderbettchen." + ((d.LUE && P.lueckeGastNacht > 0) ? (d.nights >= P.lueckeGastMinNaechte ? " In der Lücke sind Freunde möglich, schon ein Freund genügt." : " In der Lücke gehen Freunde ab " + P.lueckeGastMinNaechte + " Nächten. Bitte mehr Nächte wählen oder ohne Freunde buchen.") : "") + (S.festMin ? " Im " + festTxt() + " sind mindestens " + P.festMinGaeste + " Freunde nötig" + (d.frei < P.festMinGaeste ? ", mit dieser Familiengrösse ist das nicht möglich." : ", damit sich die Woche für alle lohnt (Gesamtpreis mindestens " + chf(P.mindestpreisWoche) + " pro 7 Nächte).") : ""),
     visible: (d) => (d.frei > 0 || MATRA_V > 0) && !(d.LUE && P.lueckeGastNacht > 0 && d.nights < P.lueckeGastMinNaechte), opts: (d) => matraOpts((S.staffelOffen && S.art === ART_N && !S.festMin && !(d.LUE && P.lueckeGastNacht > 0)) ? range(1, d.freiW) : (S.festMin && d.frei >= P.festMinGaeste) ? range(P.festMinGaeste, d.freiW) : (d.LUE && P.lueckeGastNacht > 0 ? [0].concat(range(lueckeGaesteMin(d), d.freiW)) : range(0, d.freiW))) },
   { id: "kinder", label: "🎟️ Wie viele deiner Freunde sind Kinder von 6 bis 15 Jahren?", type: "num",
     hint: () => "Für Freunde fällt in Adelboden die Kurtaxe an, die Gästekarte ist inbegriffen: " + chf2(P.kurtaxe + P.kurtaxeBeherb) + " pro Nacht ab 16 Jahren, " + chf2(P.kurtaxeKind) + " für Kinder von 6 bis 15 Jahren, Kinder unter 6 Jahren zahlen nichts. Es zählt das Alter am Anreisetag. Die Kurtaxe kommt am Schluss zum Preis dazu. Für die Familie ist sie mit der Jahrespauschale der Eltern abgegolten." + (nz(S.kinder) > 0 ? " ⚠️ {{Minderjährig}}: Freunde unter 18 sind minderjährig. Kläre mit ihren Eltern, wer für sie zahlt. Bei der Reinigung «nach Personen» zählen sie voll." : ""),
@@ -3560,7 +3565,7 @@ function begriffeFuellen() {
     "<li><b>Übernachtungen:</b> Die Familie zahlt pauschal " + chf(P.famPausch) + " pro Nacht, jeder Freund " + chf(P.gast) + " (" + chf(P.gastZimmer) + " im Zimmer eines Familienmitglieds, das Familienmitglied zahlt dann nur noch " + chf(P.famAnteil) + " pro Nacht). Mit Freunden wird die Familie entlastet.</li>" +
     "<li><b>Freunde unter 18</b> zahlen den gleichen Preis wie Erwachsene. Wer ihren Anteil übernimmt, bestimmt ihr im Rechner: du, deine Partnerin oder dein Partner oder erwachsene Freunde. Gehört ein Kind zu einer Partei, zahlen deren Erwachsene. <b>Kleinkinder von Freunden</b> bis 2½ Jahre fügst du in der Liste mit «👶 Kleinkind dazu (ohne Bett)» hinzu. Sie schlafen im Kinderbettchen und sind gratis. Es hat 2 Kinderbettchen, Familie und Freunde zusammen.</li>" +
     "<li><b>Freunde mit eigenen Daten:</b> Kommt ein Freund später oder reist er früher ab, tippst du in der Liste bei seinem «Aufenthalt» auf 📅. Im kleinen Kalender tippst du zuerst seine Anreise, dann seine Abreise an: mindestens 2 Nächte, immer während eures Aufenthalts. «Wie die Familie» setzt seine Daten wieder zurück. Er zahlt dann nur seine eigenen Nächte (" + chf(P.gast) + " pro Nacht) und die Kurtaxe pro Nacht, sein Reinigungsanteil bleibt gleich. Die Betten zählen pro Nacht: Reist einer ab und kommt am selben Tag ein anderer, schläft er im frei gewordenen Bett. Erst wenn in einer Nacht alle 6 Betten belegt sind, braucht es die Luftmatratze " + symBtn("b-zimmer", "🛌") + ". In seiner Rechnung unter «Geld einsammeln» stehen dann sein Aufenthalt und seine eigenen Nächte.</li>" +
-    "<li><b>👥 Wer ist wann da?</b> Unter der Liste der Freunde zeigt eine Übersicht pro Person, an welchen Tagen sie da ist, und darunter die Betten pro Nacht. Gelb heisst: alle " + P.maxPersonen + " Betten belegt, gestrichelt ist, wer auf der Luftmatratze schläft. Du findest sie auch in «👤 Meine Verwaltung» beim Aufenthalt und im Kalender, wenn du deinen Aufenthalt antippst. Ab 10 Nächten wischst du seitwärts.</li>" +
+    "<li><b>👥 Wer ist wann da?</b> Unter der Liste der Freunde zeigt eine Übersicht pro Person, an welchen Tagen sie da ist, und darunter die Betten pro Nacht. Gelb heisst: alle " + P.maxPersonen + " Betten belegt, gelb umrandet ist, wer auf der Luftmatratze schläft. Du findest sie auch in «👤 Meine Verwaltung» beim Aufenthalt und im Kalender, wenn du deinen Aufenthalt antippst. Ab 10 Nächten wischst du seitwärts.</li>" +
     "<li><b>💰 Geld einsammeln:</b> Sobald die Eltern bestätigt haben, findest du in «👤 Meine Verwaltung» pro Partei einen Knopf «Rechnung für …». Er öffnet WhatsApp mit einer fertigen Abrechnung pro Person, den Empfänger wählst du selbst. Mit «Bezahlt?» hakst du ab, wer bezahlt hat. Alles zu einem Aufenthalt (Liste der Freunde, Zahlung, Geld einsammeln, Stornierung) steht dort in einem Klappbereich. Deine TWINT-Nummer, IBAN und den Trinkgeld-Hinweis stellst du unter «Profil» ein, sie bleiben nur auf deinem Handy. Solange etwas offen ist, hat der Knopf «👤 Meine Verwaltung» einen roten Rahmen und zeigt die Zahl der offenen Aufgaben.</li>" +
     "<li><b>Endreinigung:</b> Dazu kommen " + chf(P.reinigung) + ", aufgeteilt nach eurer Auswahl " + symBtn("b-endrein", "🪣") + "." + "</li>" +
     (P.mindestpreisWoche > 0 ? "<li><b>Mindestpreis:</b> Mit Freunden ab " + P.mindestpreisAbNaechte + " Nächten entfällt der Anteil der Familie, soweit das Total nicht unter " + chf(P.mindestpreisWoche) + " pro 7 Nächte sinkt (bei anderen Längen anteilig). Der Gesamtpreis sinkt nie unter diesen Mindestpreis, mit Freunden sinkt nur dein Anteil." + (P.hochNachtMin > 0 ? " Das gilt auch in der Hochsaison mit Vorbehalt. Wer dort verbindlich bucht, zahlt pauschal " + chf(P.hochNachtMin) + " pro Nacht plus Endreinigung, ohne Freunde " + symBtn("b-hochsaison", "🏔️") + "." : "") + (P.festBodenWoche > 0 && FEST_MONATE.length ? " Im " + esc(festTxt()) + " gilt der dortige Mindestpreis " + symBtn("b-februar", "⛷️") + "." : "") + " <b>Lieber mitzahlen?</b> Wird es für dich gratis oder vergünstigt, fragt der Rechner «🎁 Für dich gratis oder mitzahlen?». Wählst du «Mitzahlen pro Person» oder «Mitzahlen pro Partei», wird der Gesamtpreis auf alle verteilt: Du zahlst deinen Teil, deine Freunde zahlen weniger. Für die Eltern bleibt der Betrag gleich.</li>" : "") +
@@ -6891,7 +6896,7 @@ function festKarte(x, direkt) {   // direkt: nur die Karte (neue Verwaltung pro 
   const acts = gmk + eik + wik + wzk + (prov && !hochVorbehalt(x) ? '<button type="button" class="btn main" data-fest="' + key + '">' + lockSvg(true) + '→' + lockSvg(false) + ' In Airbnb gesperrt</button>' : "") + bescheidKnopf(x, false) +
     '<button type="button" class="btn quiet' + (prov ? " full" : "") + '" data-bdel="' + key + '" aria-label="Aufenthalt entfernen">🗑️ ' + (prov ? "Termin entfernen" : "Entfernen") + "</button>";
   if (x.dep >= heuteKey()) st += '<details class="todo-d"' + (ng || (direkt && pimOffen(x)) ? " open" : "") + '><summary>📌 Sperren und Pimlical</summary>' + erledigenHtml(x) + "</details>";
-  const karte = vkKarte(x, konf || ng || ag ? "rot" : (prov ? (!x.bescheid ? "offen" : "warn") : "ok"), vkChips(x), st, acts);   // fest = grün, offen/Vorbehalt ohne Bescheid = orange
+  const karte = vkKarte(x, konf || ng || ag ? "rot" : (prov ? (!x.bescheid ? "offen" : "prov") : "ok"), vkChips(x), st, acts);   // fest = grün, offen/Vorbehalt ohne Bescheid = orange
   if (direkt) return zuTunKarte(x);
   // Zugeklappt, wenn nichts mehr zu tun ist; offen, solange etwas fehlt (Konflikt, kein Bescheid, Vorbehalt noch nicht gesperrt oder praktisch sicher). Offene Zahlungen stehen nach der Abreise oben unter «Zahlungen offen».
   const fehlt = konf || ng || ag || !x.bescheid || pimOffen(x) || (prov && !hochVorbehalt(x) && !provSicher(x));
@@ -7736,7 +7741,7 @@ function bestZeigen() {
     if (!TEST_MODUS) s += '<div class="field"><label>👁️ Ansicht als</label><div class="zchips" id="ansichtChips" style="flex-wrap:wrap">' + ["", ...ABS].map((n) => '<button type="button" class="zchip" data-ans="' + esc(n) + '" aria-pressed="' + (n === (ABS.indexOf(ABSENDER) >= 0 ? ABSENDER : "")) + '">' + esc(n || "Eltern") + "</button>").join("") + '</div></div><p class="hint">Zeigt dir die Startseite und «👤 Meine Verwaltung» so, wie dieses Kind sie sieht. Nur auf diesem Handy. Die Angaben im Profil des Kindes (IBAN, TWINT …) siehst du nicht, sie sind nur auf seinem Handy. Zurück kommst du mit «Zurück zu Papi» im blauen Streifen oben.</p>';
     if (ABSENDER) { k.innerHTML = s; return; }
     s += '<p class="hint">Pro Person ein Titel mit der nächsten Buchung. Die Zahl zeigt, wie viel dort noch zu tun ist, orange oder rot bei Dringendem (Konflikt, Airbnb-Sperre). ✓ heisst: alles erledigt. Darunter stehen die früheren Aufenthalte.</p>';
-    s += '<div class="zt-leg"><span><i class="r"></i>dringend</span><span><i></i>offen</span><span><i class="g">✓</i>erledigt</span><span><i class="r">!</i>Hinweis</span></div><p class="hint">Dringend (rot) sind: in Airbnb sperren, ein Konflikt mit einem Airbnb-Gast, ein falsch gesperrter Abreisetag, eine Änderung, die du melden musst, und eine Endreinigung mit abgelaufener Frist oder geänderten Anteilen. Alles andere ist offen (weiss), bis du es abhakst.</p>';
+    s += '<div class="zt-leg"><span><i class="r"></i>dringend</span><span><i></i>offen</span><span><i class="g">✓</i>erledigt (blau)</span><span><i class="r">!</i>Hinweis</span></div><p class="hint">Dringend (rot) sind: in Airbnb sperren, ein Konflikt mit einem Airbnb-Gast, ein falsch gesperrter Abreisetag, eine Änderung, die du melden musst, und eine Endreinigung mit abgelaufener Frist oder geänderten Anteilen. Alles andere ist offen (weiss), bis du es abhakst.</p>';
     s += persListe();
     { const rl = reinigungsTermine(), r0 = rl.find((r) => r.art !== "offen") || rl[0];
       s += '<div class="ps-abst"></div>' + persTitel("__reinigung", "🧽 Reinigungstermine", r0 ? "nächste: " + esc(fmtTag(r0.frueh)) + (r0.art === "spanne" && r0.spaet ? " bis " + esc(fmtTag(r0.spaet)) : "") : "keine geplant", 0, false, false, PERS_STAND.get("__reinigung") === true, reinigungsListeHtml()); }
