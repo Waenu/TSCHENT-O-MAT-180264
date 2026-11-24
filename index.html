@@ -1722,7 +1722,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.25.0.0";
+let VERSION = "3.25.0.1";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2834,7 +2834,7 @@ function build() {
       const mb = document.createElement("div"); mb.id = "mfgRech"; mb.hidden = true; form.appendChild(mb);
       mb.addEventListener("click", (e) => {
         ERW_WARN = false; MITK_MSG = "";   // neue Auswahl: Meldung erst wieder beim Weitermachen
-        if (e.target.closest("[data-gsauf]")) { GS_AUF = true; render(); return; }
+        { const g = e.target.closest("[data-gsauf]"); if (g) { GS_AUF = g.getAttribute("data-gsauf") === "1"; render(); return; } }
         if (werFusion() && S.werArt !== MFG && e.target.closest("[data-mfg]")) werZuMFG();   // erstes Geschwister: auf «mit Geschwistern» schalten (seit 3.25.0.0)
         if (e.target.closest("[data-ich]")) {   // «Ich» abwählbar (seit 3.9.5.0), aber nie ohne Partner/in aus dem eigenen Haushalt (seit 3.21.2.1, Wänu)
           if (ichDa() && !eigeneDabei().length) { const pl = eigenePartner(); MITK_MSG = pl.length ? "Tippe zuerst " + pl.join(" oder ") + " an, wenn du selbst nicht mitkommst." : "Du buchst, darum kommst du mit."; render(); return; }
@@ -4915,7 +4915,7 @@ function gsHtml() {   // Geschwister-Reihen unter dem eigenen Haushalt (nur im M
   const hs = famAlle(), eig = hs.find((h) => h.m.indexOf(ABSENDER) >= 0); if (!eig || hs.length < 2) return "";
   if (!GS_AUF) return '<button type="button" class="btn gs-auf" data-gsauf="1">＋ Geschwister dazu</button>';
   const sel = S.famSel || [], kk = S.famKK || [], voll = sel.length - kk.length >= MFG_MAX();
-  return hs.filter((h) => h !== eig).map((h) => { const f = INS_F[Math.max(0, famIdx(h.m[0])) % INS_F.length]; return '<div class="zchips mfg-z">' + h.m.map((x) => '<button type="button" class="zchip" data-mfg="' + esc(x) + '" aria-pressed="false"' + (voll && (h.e.indexOf(x) < 0 || kk.length >= 2) ? " disabled" : "") + pcStil(f) + ">" + esc(x) + "</button>").join("") + "</div>"; }).join("");
+  return hs.filter((h) => h !== eig).map((h) => { const f = INS_F[Math.max(0, famIdx(h.m[0])) % INS_F.length]; return '<div class="zchips mfg-z">' + h.m.map((x) => '<button type="button" class="zchip" data-mfg="' + esc(x) + '" aria-pressed="false"' + (voll && (h.e.indexOf(x) < 0 || kk.length >= 2) ? " disabled" : "") + pcStil(f) + ">" + esc(x) + "</button>").join("") + "</div>"; }).join("") + '<button type="button" class="btn gs-auf" data-gsauf="0">− Geschwister ausblenden</button>';   // wieder zuklappen, solange keines angetippt ist (seit 3.25.0.1)
 }
 function famWahl() { const o = famOpts(); return o && S.werFam ? o.find((x) => x.l === S.werFam && x.w === S.wer) || null : null; }
 const PAAR = { Jerome: "Rahel", Rahel: "Jerome", Deborah: "David", David: "Deborah", Miriam: "Andreas", Andreas: "Miriam", Manuel: "Sarah", Sarah: "Manuel" };   // Paare (nur noch als Zuordnung, sie sehen ihre Buchungen nicht mehr gegenseitig)
@@ -5557,7 +5557,7 @@ function render() {
     '<div class="marke" id="marke"><span data-z="0">ankommen</span><span class="pt">·</span><span data-z="1">durchatmen</span><span class="pt">·</span><span data-z="2">geniessen</span></div>';
 }
 
-document.getElementById("reset").addEventListener("click", () => { SOND = null; gmEntwurfSetzen([]); try { localStorage.removeItem("tm2_gmEntwurfKey"); } catch (e) {} GM_ENTW_GEN++;   /* Neu beginnen: auch die Liste der Freunde leeren (seit 3.7.0.1) */ TRINK = ""; RECH_OFFEN = false; TRINK_OFFEN = false; S = Object.assign({}, EMPTY); ARR = ""; DEP = ""; initKalenderMonat(); NOTICES = {}; render(); renderKalender(); ZURUECK = null; document.getElementById("zurueck").hidden = true; setHilfe(false); hilfeZuklappen(); setRechner(false); window.scrollTo({ top: 0 }); });
+document.getElementById("reset").addEventListener("click", () => { SOND = null; GS_AUF = false; gmEntwurfSetzen([]); try { localStorage.removeItem("tm2_gmEntwurfKey"); } catch (e) {} GM_ENTW_GEN++;   /* Neu beginnen: auch die Liste der Freunde leeren (seit 3.7.0.1) */ TRINK = ""; RECH_OFFEN = false; TRINK_OFFEN = false; S = Object.assign({}, EMPTY); ARR = ""; DEP = ""; initKalenderMonat(); NOTICES = {}; render(); renderKalender(); ZURUECK = null; document.getElementById("zurueck").hidden = true; setHilfe(false); hilfeZuklappen(); setRechner(false); window.scrollTo({ top: 0 }); });
 function wendeEinstellungenAn(j) {
   if (!j || typeof j !== "object") return;
   Object.keys(P).forEach((k) => {
