@@ -991,6 +991,8 @@ if (TEST_MODUS) {
   #bestKasten .vk.ok { border-color: var(--gruen); }
   #bestKasten .bs-fehlt { color: var(--missing-line); }
   #bestKasten .vk.warn { border-color: #C9A227; }
+  .mein-teil.an-teil { border: 2px solid #E5A100; border-radius: 6px; padding: 8px 12px; }   /* offene Anfrage (seit 3.21.0.0) */
+  #bestKasten .vk.wartet { border-color: var(--marke); }   /* nur noch die Zahlung nach der Abreise offen (seit 3.21.0.0) */
   #bestKasten .vk.rot { border-color: #C62828; }
   #bestKasten .vkd { margin: 6px 0; }
   #bestKasten details.pers { margin: 6px 0; }
@@ -1709,7 +1711,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.20.1.5";
+let VERSION = "3.21.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2384,7 +2386,15 @@ function insZiehen(i, t) {   // i zu t: "neu", "fam" oder Kopf einer Partei bzw.
     S.zahler = zz; gmEntwurfSetzen(a); render(); return;
   }
   if (t === "fam") { if (erw(i)) { INS_MSG = "Zur Familie gehören nur Kinder deiner Freunde. Erwachsene Freunde haben eine eigene Partei."; insZeichnen(); return; } set(i, -1); zz[i] = ["ich"]; }
-  else if (t === "neu") { if (hi === i && mit.length) { insZeichnen(); return; } set(i, -1); }
+  else if (t === "neu") {
+    if (hi === i && mit.length) {   // Kopf geht allein: die übrigen bleiben zusammen, die nächste erwachsene Person wird ihr Kopf, Kinder der alten Partei zahlt der neue Kopf (seit 3.21.0.0, vorher geschah nichts)
+      const ne = mit.filter(erw), nk = ne[0];
+      if (nk === undefined) { INS_MSG = "Ohne erwachsene Person bleibt die Partei zusammen."; insZeichnen(); return; }
+      set(nk, -1); ne.slice(1).forEach((j) => set(j, nk));
+      zi.forEach((j) => { if (erw(j)) return; if (Array.isArray(zz[j])) zz[j] = zz[j].map((v) => (v === "p" + i ? "p" + nk : v)); else if ((a[j] || l[j]).zu === i) { a[j] = Object.assign({}, a[j] || l[j]); a[j].zu = nk; } });
+    }
+    set(i, -1);
+  }
   else {
     if (zi.indexOf(t) < 0 || t === i) { insZeichnen(); return; }
     const h = parteiKopf(t, l, zi);
@@ -6901,10 +6911,11 @@ function zuTunKarte(x) {
     knoepfe: !x.bescheid ? '<span class="hint">Wird mit dem Bescheid mitgeteilt.</span>' : endeOffen(x) ? '<span class="hint">Wird mit der Staffel-Ende-Info mitgeteilt.</span>' : '<a class="btn" data-erinfo="' + key + '" href="https://wa.me/?text=' + encodeURIComponent(endreinText(x)) + '" target="_blank" rel="noopener">' + WA_SVG + (x.endreinInfo ? "Endreinigung nochmals mitteilen" : "Endreinigung mitteilen") + "</a>" }));
   if (x.betrag > 0 && !(prov && !x.bezahlt && konf)) z.push(ztZeile({ feld: "bezahlt", key: key, done: !!x.bezahlt, titel: "💳 Zahlung " + esc(chfZk(x)) + (x.bezahlt ? "" : kommt ? " (fällig nach der Abreise)" : " offen"), doneTxt: "Zahlung eingegangen am " + ztAm(x.bezahlt), knoepfe: '<button type="button" class="btn" data-bez="' + key + '">✓ Zahlung eingegangen</button>' }));
   const offen = z.some((t) => !/zt-z done/.test(t) && !/fällig nach der Abreise/.test(t)), rot = /zt-z( done)? rot|zt-z rot/.test(z.join(""));
-  const liste = '<div class="zt"><div class="zt-h">' + (offen ? "📌 Zu tun" : "✅ Alles erledigt") + "</div>" + z.join("") + "</div>";
+  const wartet = !offen && x.betrag > 0 && !x.bezahlt;   // Zahlung erst nach der Abreise fällig: blau statt grün (Wänu 21.11.2026)
+  const liste = '<div class="zt"><div class="zt-h">' + (offen ? "📌 Zu tun" : wartet ? "⏳ Wartet auf die Zahlung" : "✅ Alles erledigt") + "</div>" + z.join("") + "</div>";
   const fam = ABS.indexOf(String(x.name).trim()) >= 0;
   const acts = '<button type="button" class="btn quiet' + (prov ? " full" : "") + '" data-bdel="' + key + '" aria-label="Aufenthalt ' + (fam ? "stornieren" : "entfernen") + '">' + (fam ? "❌ Stornieren" : "🗑️ " + (prov ? "Termin entfernen" : "Entfernen")) + "</button>" + (fam ? '<button type="button" class="btn quiet" data-bweg="' + key + '|a">🗑️ Endgültig löschen</button>' : "");
-  return vkKarte(x, rot ? "rot" : offen ? "offen" : "ok", vkChips(x), "", acts).replace('<div class="vk-acts">', liste + '<div class="vk-acts">');
+  return vkKarte(x, rot ? "rot" : offen ? "offen" : wartet ? "wartet" : "ok", vkChips(x), "", acts).replace('<div class="vk-acts">', liste + '<div class="vk-acts">');
 }
 const ZT_TXT = { bezahlt: "Zahlung eingegangen", bescheid: "Bescheid gegeben", gesperrt: "In Airbnb gesperrt", pimlical: "In Pimlical eingetragen", kurtaxeAm: "Freunde für die Kurtaxe angemeldet", waescheInfo: "Wäsche-Info gegeben", waescheZurueck: "Wäsche zurück", stornoInfo: "Storno-Bestätigung gesendet", endreinBezahlt: "Endreinigung bezahlt", freigegeben: "In Airbnb freigegeben", pimAus: "Aus Pimlical ausgetragen" };
 async function ztSetzen(key, feld, an) {   // Aufgabe abhaken (an) oder wieder öffnen
@@ -7072,7 +7083,7 @@ function anfrageKarte(x) {
   const k = bKey(x), m = matraVon(x), w = MATRA_W[k] || "", ek = esc(k);
   const frage = m ? '<div class="mat-f' + (w ? "" : " missing") + '"><p class="mat-q">🛏️ Luftmatratze (' + (P.maxPersonen + 1) + '. Bett) freigeben?</p><div class="zchips"><button type="button" class="zchip" data-matw="' + ek + '|ja" aria-pressed="' + (w === "ja") + '">Ja</button><button type="button" class="zchip" data-matw="' + ek + '|nein" aria-pressed="' + (w === "nein") + '">Nein</button></div>' + (w === "nein" ? '<p class="hint">Die Person mit der Luftmatratze kann nicht mitkommen. Die Anfrage geht zurück, das Kind schickt sie mit einer Person weniger nochmals.</p>' : (!w ? '<p class="hint">Bitte zuerst Ja oder Nein wählen.</p>' : "")) + '</div>' : "";
   const knopf = (m && w === "nein") ? '<button type="button" class="btn main" data-nein="' + ek + '" data-matnein="1">↩︎ Ohne Luftmatratze zurückschicken</button>' : '<button type="button" class="btn main" data-ja="' + ek + '"' + (m && !w ? " disabled" : "") + '>✅ Bestätigen</button>';
-  return vkKarte(x, "offen", '<div class="vk-chips"><span class="vk-chip v">📨 Anfrage, noch nicht bestätigt</span></div>' + vkChips(x, true) + frage, "", knopf + '<button type="button" class="btn" data-nein="' + ek + '">✖ Ablehnen</button>');
+  return vkKarte(x, "offen", '<div class="vk-chips"><span class="vk-chip v">📨 Anfrage, noch nicht bestätigt</span></div>' + vkChips(x, true) + frage, "", knopf + (m && w === "nein" ? "" : '<button type="button" class="btn" data-nein="' + ek + '">✖ ' + (m ? "Ganze Anfrage ablehnen" : "Ablehnen") + "</button>"));   // mit Luftmatratze: klarer Name, bei «Nein» nur noch «Ohne Luftmatratze zurückschicken» (seit 3.21.0.0)
 }
 // Mehrere Karten einer Person: jede einklappbar, offen sind die aktuelle (erste), Anfragen und dringende (rot); Zustand bis zum Neuladen in VK_KL (seit 3.9.6.0, Wänu)
 const VK_KL = new Map();
@@ -7401,10 +7412,19 @@ function meinVerteilen() {
   MEIN_TEILE.sf = stornoBuch().map((b) => { const el = document.createElement("p"); el.className = "hint mein-teil sf-h"; el.innerHTML = "📌 Mit Freunden verbindlich: Stornierung spätestens am <b>" + esc(fmtTag(addDays(b.arr, -STORNO_TAGE))) + "</b>. " + symBtn("b-storno", "📅"); return { k: bKey(b), el: el }; });   // Stornofrist beim Aufenthalt (seit 3.14.1.3)
   MEIN_TEILE.ub = BUCH.filter((b) => eigenN(b.name) && b.dep >= heuteKey()).map((b) => { const h = ubKlapp(b); if (!h) return null; const el = document.createElement("div"); el.className = "mein-teil ub-teil"; el.innerHTML = h; return { k: bKey(b), el }; }).filter(Boolean);   // Buchungsübersicht pro Aufenthalt (seit 3.20.0.0)
   MEIN_TEILE.re = BUCH.filter((b) => eigenN(b.name) && b.dep >= heuteKey() && b.rechnung).map((b) => { const k = bKey(b), h = rechDetails(b.rechnung, b.bestaetigt, true, b), c = RE_CACHE[k]; if (c && c.h === h) return { k, el: c.el }; const el = document.createElement("div"); el.className = "mein-teil ub-teil re-teil"; el.innerHTML = h; RE_CACHE[k] = { h, el }; return { k, el }; });   // Preisberechnung pro Aufenthalt wie bei Papi (seit 3.20.1.4, Meldung 13); gleiches HTML = gleiches Element, damit Aufgeklapptes offen bleibt
-  const ORD = ["vo", "ub", "re", "gm", "zb", "ink", "li", "sf", "ab"];
+  MEIN_TEILE.an = (() => {   // gesendete, noch nicht bestätigte Anfrage (nur auf diesem Handy), löschbar (seit 3.21.0.0, Wänu)
+    aufent(); const a = AUFENT;
+    if (!a || aufAbgelehnt() || BUCH.some((x) => eigenN(x.name) && x.arr === a.arr && x.dep === a.dep)) return [];
+    const el = document.createElement("div"); el.className = "mein-teil an-teil";
+    el.innerHTML = '<p><b>📨 Anfrage gesendet' + (a.t ? " am " + esc(fmtTag(String(a.t).slice(0, 10))) : "") + ", noch nicht bestätigt.</b> Sobald die Eltern sie bestätigen, steht hier dein Aufenthalt mit allem, was dazugehört.</p>" +
+      '<button type="button" class="btn quiet" data-anweg="1">🗑️ Anfrage löschen</button><p class="hint">Löscht die Anfrage nur auf deinem Handy, zum Beispiel wenn die WhatsApp nicht rausging. Hast du sie schon geschickt, sag den Eltern Bescheid.</p>';
+    return [{ k: bKey({ name: ABSENDER, arr: a.arr, dep: a.dep }), el }];
+  })();
+  MEIN_N.li += MEIN_TEILE.an.length;
+  const ORD = ["an", "vo", "ub", "re", "gm", "zb", "ink", "li", "sf", "ab"];
   const keys = [...new Set(ORD.flatMap((t) => (MEIN_TEILE[t] || []).map((x) => x.k)))].sort((p, q) => (p.split("|")[1] < q.split("|")[1] ? -1 : 1));
   const zahl = (k) => (MEIN_TEILE.gm || []).filter((x) => x.k === k && x.el.classList.contains("gm-offen")).length + (MEIN_TEILE.zb || []).filter((x) => x.k === k).length + (MEIN_TEILE.ink || []).filter((x) => x.k === k && x.el.classList.contains("brennt")).length;
-  const orz = (k) => MEIN_TEILE.li.filter((x) => x.k === k).reduce((s, x) => s + x.o, 0) + (MEIN_TEILE.vo || []).filter((x) => x.k === k && x.el.classList.contains("steht")).length;
+  const orz = (k) => MEIN_TEILE.li.filter((x) => x.k === k).reduce((s, x) => s + x.o, 0) + (MEIN_TEILE.vo || []).filter((x) => x.k === k && x.el.classList.contains("steht")).length + MEIN_TEILE.an.filter((x) => x.k === k).length;   // offene Anfrage zählt orange
   const auf = MEIN_ST_AUF || new Set(keys.filter((k) => zahl(k) + orz(k) > 0).slice(0, 1));
   [...ma.querySelectorAll(":scope > details.mein-st")].forEach((d) => { if (keys.indexOf(d.dataset.st) < 0) d.remove(); });
   const leer = ma.querySelector(":scope > .mein-leer"); if (leer) leer.remove();
@@ -7421,6 +7441,11 @@ function meinVerteilen() {
     d.querySelector(".mein-st-b").replaceChildren(...ORD.flatMap((t) => (MEIN_TEILE[t] || []).filter((x) => x.k === k).map((x) => x.el)));
   });
 }
+document.addEventListener("click", async (e) => {   // gesendete Anfrage auf dem Handy löschen (seit 3.21.0.0)
+  if (!e.target.closest("[data-anweg]") || !AUFENT) return;
+  if (!(await appFrage("Anfrage vom " + fmtTag(AUFENT.arr) + " bis " + fmtTag(AUFENT.dep) + " löschen? Sie wird nur auf deinem Handy gelöscht. Hast du sie schon per WhatsApp geschickt, sag den Eltern Bescheid."))) return;
+  AUFENT = null; aufentSichern(); aufentZeigen();
+});
 function liTeile() {   // Knöpfe der Listen pro bestätigtem Aufenthalt (seit 3.13.0.0)
   aufent();
   return (AUF_LISTE || []).filter((a) => a.ok && a.dep >= heuteKey()).map((a) => {

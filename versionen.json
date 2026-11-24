@@ -2,6 +2,22 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.21.0.0",
+      "datum": "2026-11-24",
+      "titel": "Gesendete Anfrage in «Meine Verwaltung», klarere Luftmatratze, Zahlung blau",
+      "arten": [
+        "Neu",
+        "Fehler",
+        "Layout"
+      ],
+      "punkte": [
+        "«👤 Meine Verwaltung»: Eine per WhatsApp gesendete Anfrage steht sofort als «📨 Anfrage gesendet, noch nicht bestätigt» beim Aufenthalt (oranger Rahmen). Mit «🗑️ Anfrage löschen» lässt sie sich auf dem eigenen Handy löschen, falls die WhatsApp nicht rausging. Nach der Bestätigung erscheint der Aufenthalt wie gewohnt als bestätigt.",
+        "Verwaltung der Eltern: Anfrage mit Luftmatratze: Knopf «✖ Ganze Anfrage ablehnen»; nach «Nein» zur Luftmatratze bleibt nur «↩︎ Ohne Luftmatratze zurückschicken», damit das Kind nicht fälschlich eine ganze Absage bekommt.",
+        "Verwaltung der Eltern: Ist nur noch die Zahlung nach der Abreise offen, ist die Karte blau mit «⏳ Wartet auf die Zahlung» statt grün; grün erst nach dem Zahlungseingang.",
+        "«Wer gehört zusammen?»: Der Kopf einer Partei lässt sich auf «＋ Eigene Partei» ziehen; die übrigen bleiben zusammen, die nächste erwachsene Person wird ihr Kopf (vorher geschah nichts)."
+      ]
+    },
+    {
       "v": "3.20.1.5",
       "datum": "2026-11-19",
       "titel": "Staffel: Frage an die Geschwister steht in der Anfrage",
