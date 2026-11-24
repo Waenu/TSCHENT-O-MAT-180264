@@ -2,6 +2,18 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.25.0.2",
+      "datum": "2026-11-24",
+      "titel": "«1 Nacht» statt «1 Nächte»",
+      "arten": [
+        "Text",
+        "Fehler"
+      ],
+      "punkte": [
+        "Bei einem Freund mit nur 1 Nacht steht in der Anfrage und im kleinen Kalender jetzt «1 Nacht» statt «1 Nächte»."
+      ]
+    },
+    {
       "v": "3.25.0.1",
       "datum": "2026-11-24",
       "titel": "Geschwister-Reihen wieder einklappen",
