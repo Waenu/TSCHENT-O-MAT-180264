@@ -1718,7 +1718,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.21.1.3";
+let VERSION = "3.21.1.4";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -4800,11 +4800,11 @@ try { NAME_FIX = localStorage.getItem("tm2_namefix") === "1"; } catch (e) {}
 
 let SNAP_BER = [];   // Zeilen der Preisberechnung der aktuellen Anfrage (für den Schnappschuss im Bestätigungslink)
 function htmlText(h) { return String(h).replace(/<\/p>/g, "\n").replace(/<br\s*\/?>/g, " ").replace(/<[^>]+>/g, "").replace(/&nbsp;/g, " ").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&amp;/g, "&").replace(/[ \t\u00a0]+/g, " ").trim(); }
-function schnappBer(who, det, notes, mitAufteilung, teile) {
+function schnappBer(who, det, notes, mitAufteilung, teile, farb) {
   const L = [], rows = (h) => { const re = /<tr><td>(.*?)<\/td><td>(.*?)<\/td><\/tr>/g; let m; while ((m = re.exec(h))) L.push(htmlText(m[1]) + "\t" + htmlText(m[2])); };
   rows(det);
   if (mitAufteilung && who) { L.push("#Aufteilung unter den Freunden"); rows(who); }
-  if (teile && teile.length) { L.push("#Teile"); teile.forEach((t) => L.push(t)); }   // seit 3.20.1.0: Übernachtung, Reinigung, Kurtaxe pro Zeile (ohne Namen)
+  if (teile && teile.length) { L.push("#Teile"); teile.forEach((t) => L.push(t)); if (farb && farb.length > 1) L.push("~\tF\t" + farb.join("\t")); }   // seit 3.21.1.4: feste Farbe pro Familien-Partei (-1 = eigener Haushalt, sonst Platz des Geschwister-Haushalts), ohne Namen   // seit 3.20.1.0: Übernachtung, Reinigung, Kurtaxe pro Zeile (ohne Namen)
   htmlText(notes).split("\n").map((t) => t.trim()).filter(Boolean).forEach((t) => L.push(t));
   return L;
 }
@@ -5402,7 +5402,7 @@ function render() {
   const detN = det.replace(/\u0001(\d+)\u0002/g, (m, i) => "Freund/in " + (Number(i) + 1));
   det = det.replace(/\u0001(\d+)\u0002/g, (m, i) => zpl ? esc(rn(zpl.l[Number(i)])) : "Freund");
   const spNotes = (x.sp ? '<p class="note">Zimmer 1 und rotes Bad bleiben unberührt: ' + chf(P.sparEin) + ' weniger pro Nacht, ' + (S.wer === "Nur ich" ? "du zahlst" : "die Familie zahlt") + ' ' + chf(x.FN0) + ' statt ' + chf(P.famPausch) + '.</p>' : "") + (x.GE >= 1 && !(x.SOND && x.RE === 0) ? '<p class="note">' + RW + ' aufgeteilt: ' + S.reinig + '.</p>' : "");   // nur noch im Schnappschuss (Papi sieht sie über dem Status), im Rechner nicht mehr (seit 3.19.0.6)
-  SNAP_BER = schnappBer(whoN, detN, spNotes + notes, x.GE >= 1 || !!famAuf, TEILE);
+  SNAP_BER = schnappBer(whoN, detN, spNotes + notes, x.GE >= 1 || !!famAuf, TEILE, famAufB ? famAufB.map((pp) => pp.eigen ? -1 : Math.max(0, famIdx(pp.h.m[0]))) : null);
   res.innerHTML =
     '<div class="total"><span class="small">für ' + x.nights + ' ' + (x.nights === 1 ? "Nacht" : "Nächte") + ', ' + x.PT + ' ' + (x.PT === 1 ? "Person" : "Personen") + ' mit Bett' + (x.KK > 0 ? ', ' + x.KK + (x.KK === 1 ? ' Kind' : ' Kinder') + ' im Kinderbettchen' : '') + '</span>' +
     (ARR && DEP ? '<span class="small">vom ' + esc(fmtTag(ARR)) + ' bis ' + esc(fmtTag(DEP)) + '</span><span class="small">' + esc(zeitenKurz()) + '</span>' : '') +
@@ -6737,20 +6737,25 @@ function vkChips(x, anfrage) {
 // Preisberechnung einer gespeicherten Buchung wie im Rechner (seit 3.20.1.0, Wänu): Aufteilung farbig und aufklappbar, Rest unter «📋 Ganze Berechnung»
 const rechV = (t) => { const m = /(−|-)?\s*CHF\s*([\d’'.,]+)/.exec(String(t || "")); if (!m) return NaN; const v = Number(m[2].replace(/[’',]/g, "").replace(/\.$/, "")); return m[1] ? -v : v; };
 function rechTeile(r) {   // Abschnitte der gespeicherten Berechnung
-  const o = { kopf: "", det: [], ber: [], auf: [], teile: [], notes: [] }; let cur = "det";
+  const o = { kopf: "", det: [], ber: [], auf: [], teile: [], notes: [], farb: null }; let cur = "det";
   String(r || "").split("\n").forEach((t, i) => { t = t.trim(); if (!t) return;
     if (i === 0 && /^Gesendet am /.test(t)) { o.kopf = t; return; }
     if (t[0] === "#") { cur = /^#Preisberechnung/.test(t) ? "ber" : /^#Aufteilung/.test(t) ? "auf" : /^#Teile/.test(t) ? "teile" : cur; return; }
+    if (/^~\tF\t/.test(t)) { o.farb = t.split("\t").slice(2).map(Number); return; }   // Farben der Familien-Parteien (seit 3.21.1.4)
     if (/^~\t/.test(t)) { o.teile.push(t.split("\t").slice(1).map(Number)); return; }
     const k = t.indexOf("\t"); if (k < 0) { o.notes.push(t); return; }
     const z = { a: t.slice(0, k), b: t.slice(k + 1).replace(/\t/g, " ") }; (cur === "auf" ? o.auf : cur === "ber" ? o.ber : o.det).push(z); });
   return o;
 }
 const RECH_KL = /\s(?=(?:davon Kurtaxe|inkl\. |eigener Anteil|übernommen von|im selben Zimmer|Kleinkind ohne Bett))/;
+function famParteiFarbe(o, n) {   // Partei n (ab 1) der gespeicherten Aufteilung: feste Farbe wie im Rechner, ältere Anfragen nach Parteinummer
+  if (o.farb && n - 1 < o.farb.length) { const v = o.farb[n - 1]; return v < 0 || isNaN(v) ? INS_FAM : INS_F[v % INS_F.length]; }
+  return n > 1 ? INS_F[(n - 2) % INS_F.length] : INS_FAM;
+}
 function rechFrInfo(r) {   // Parteien der Freunde aus der gespeicherten Aufteilung: Farbe pro Freund wie in «Wer ist wann da?»
   const nr = (t) => (String(t).match(/Freund\/in (\d+)/g) || []).map((x) => Number(x.slice(10)) - 1);
   const o = rechTeile(r), pt = {}, kk = new Set(); let np = 0;
-  const shift = Math.max(0, o.auf.filter((z) => /^Familie, Partei \d+/.test(z.a)).length - 1);   // Geschwister-Haushalte haben die ersten Farben
+  const shift = o.farb ? (o.farb.some((v) => v >= 0) ? Math.max(...o.farb) + 1 : 0) : Math.max(0, o.auf.filter((z) => /^Familie, Partei \d+/.test(z.a)).length - 1);   // Geschwister-Haushalte haben die ersten Farben (feste Plätze seit 3.21.1.4)
   String(r || "").split("\n").forEach((z) => { const m = /^Freund\/in (\d+)\s*\(?Kleinkind/.exec(z); if (m) kk.add(Number(m[1]) - 1); });
   o.auf.forEach((z) => { const h = z.a.split(RECH_KL)[0]; if (/Kleinkind/.test(z.a)) { nr(h).forEach((i) => kk.add(i)); return; } if (!/ zahl(t|en)\b/.test(h)) return; const g = nr(h.split(/ zahl(t|en)\b/)[0]).filter((i) => !(i in pt)); if (g.length) { g.forEach((i) => { pt[i] = np; }); np++; } });
   String(r || "").split("\n").forEach((z) => { const m = /^Für Freund\/in (\d+) \(unter 18\) zahl(?:t|en): (.*)/.exec(z); if (m && !(Number(m[1]) - 1 in pt)) { const g = nr(m[2]).filter((i) => i in pt); if (g.length) pt[Number(m[1]) - 1] = pt[g[0]]; else if (/Familie|ich/i.test(m[2])) pt[Number(m[1]) - 1] = -1; } });
@@ -6780,7 +6785,7 @@ function rechAufHtml(r, b) {   // Aufteilung wie im Rechner; null, wenn nichts z
   const out = rows.map((z, k) => {
     const tot = rechV(z.b), teile = z.a.split(RECH_KL), haupt = teile[0], klein = teile.slice(1), fam = /^(Du zahlst|Familie|Partner\/in)/.test(haupt), ids = nr(haupt);
     let pc = "";
-    if (fam) { const m = /^Familie, Partei (\d+)/.exec(haupt); pc = m && Number(m[1]) > 1 ? INS_F[(Number(m[1]) - 2) % INS_F.length] : INS_FAM; }
+    if (fam) { const m = /^Familie, Partei (\d+)/.exec(haupt); pc = m ? famParteiFarbe(o, Number(m[1])) : INS_FAM; }
     else if (ids.length) pc = fi.farbe(ids[0]) || (() => { const u = /übernommen von (.*)/.exec(z.a); if (!u) return ""; const g = nr(u[1]); return g.length ? fi.farbe(g[0]) : /Familie|dir/.test(u[1]) ? INS_FAM : ""; })();
     // Teilbeträge: gespeichert (neue Anfragen) oder aus den Zeilen zurückgerechnet (ältere)
     let q = null; const t = o.teile[k];
