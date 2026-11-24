@@ -2,6 +2,103 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.22.1.5",
+      "datum": "2026-11-24",
+      "titel": "Gewählte Antwort in den Hinweisen hellgelb",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Die hinterlegte gewählte Antwort in den Hinweisen (z. B. «Meine Familie und Geschwister») ist jetzt hellgelb wie die übrigen Markierungen."
+      ]
+    },
+    {
+      "v": "3.22.1.4",
+      "datum": "2026-11-24",
+      "titel": "Eigene Familie gelb, Luftmatratze braun, Markierungen hellgelb",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Die eigene Familie hat jetzt ein kräftiges Gelb (Chips, Inseln, Aufteilung, «Wer ist wann da?»).",
+        "Die Luftmatratze ist braun umrandet (Chip bei «Freunde», «Wer ist wann da?»).",
+        "Hinterlegte Markierungen, volle Nächte und der Vorbehalt in der Verwaltung sind hellgelb. Legende im Willkommen nachgeführt."
+      ]
+    },
+    {
+      "v": "3.22.1.3",
+      "datum": "2026-11-24",
+      "titel": "«Wer bezahlt …» gleich nach «Wer gehört zusammen?»",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Die Frage, wer die Übernachtungen eines Kindes bezahlt, steht jetzt direkt unter den Parteien-Inseln, danach «🤝 Parteien» und «👥 Wer ist wann da?».",
+        "«＋ Eigene Partei» erscheint nur noch, wenn eine erwachsene Person noch keine Partei hat oder eine Partei mehrere Erwachsene hat."
+      ]
+    },
+    {
+      "v": "3.22.1.2",
+      "datum": "2026-11-24",
+      "titel": "Zahlung als kurze Zeile unter der Aufteilung",
+      "arten": [
+        "Layout",
+        "Text",
+        "Fehler"
+      ],
+      "punkte": [
+        "Der Kasten «💰 Zahlung» nach den Knöpfen zum Senden ist weg.",
+        "Unter der Aufteilung steht jetzt kurz: «Die Familie überweist alles an Mami und Papi, spätestens 7 Tage nach der Abreise.» Der Betrag steht in der Leiste, die IBAN kommt nach der Bestätigung.",
+        "Fehler: Bei «übernommen von» stand bei einem Geschwister-Haushalt fälschlich der Name eines Freundes."
+      ]
+    },
+    {
+      "v": "3.22.1.1",
+      "datum": "2026-11-24",
+      "titel": "«wir» bei geteilten Kosten, Beispiele im Code ohne Namen",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "WhatsApp-Anfrage: Zahlen mehrere für einen Freund unter 18, heisst es «Kosten übernehmen: wir und …» statt «ich und …».",
+        "Beispiele in Code-Kommentaren ohne Vornamen."
+      ]
+    },
+    {
+      "v": "3.22.1.0",
+      "datum": "2026-11-24",
+      "titel": "Freunde unter 18: jeder Familienhaushalt als Zahler",
+      "arten": [
+        "Regel",
+        "Fehler"
+      ],
+      "punkte": [
+        "Bei «Meine Familie und Geschwister» ist bei «Wer bezahlt die Übernachtungen von …?» jeder Haushalt ein eigener Chip, auch die Geschwister. Vorher landete «Familie» immer beim Haushalt, der bucht.",
+        "Der Anteil steht in der Zeile und in der Rechnung des gewählten Haushalts. Mehrere gewählt: jede Partei zahlt gleich viel, das Total bleibt gleich.",
+        "Bei «Wer gehört zusammen?» steht das Kind in der Insel dieses Haushalts.",
+        "Eltern: «Wer ist wann da?» zeigt Haushalte mit eigenen Daten als eigene Zeile (vorher die ganze Familie über die ganze Zeit).",
+        "Glossar «Freunde unter 18» nachgeführt."
+      ]
+    },
+    {
+      "v": "3.22.0.0",
+      "datum": "2026-11-24",
+      "titel": "Familie mit eigenen Daten pro Haushalt",
+      "arten": [
+        "Neu",
+        "Text"
+      ],
+      "punkte": [
+        "Bei «Meine Familie und Geschwister» kann jeder Haushalt eigene An- und Abreise haben, auch der eigene (📅 unter der Namenszeile, mindestens 2 Nächte).",
+        "Der Familienpreis bleibt gleich; den Preis jeder Nacht teilen sich die Haushalte, die da sind. Die Reinigung wird wie bisher aufgeteilt.",
+        "In jeder Nacht muss jemand von der Familie da sein.",
+        "Betten und Luftmatratze zählen pro Nacht.",
+        "«👥 Wer ist wann da?» zeigt jeden Haushalt mit eigenen Daten als eigene Zeile.",
+        "Anfrage und Rechnung an die Geschwister nennen den Aufenthalt und die Nächte.",
+        "Glossar «Familie mit eigenen Daten»."
+      ]
+    },
+    {
       "v": "3.21.2.2",
       "datum": "2026-11-24",
       "titel": "Eigene Familie braun, Kinderbettchen ruhiger",
