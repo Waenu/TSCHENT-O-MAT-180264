@@ -266,7 +266,7 @@ if (TEST_MODUS) {
   .zchips:not(:has(.zchip[aria-pressed="true"])) .zchip[style*="--pc"]:not(:disabled) { border-color: var(--pc); }   /* Namen-Chips: nichts gewählt = Rahmen in der Farbe des Haushalts */
   .gm-pt.vorschlag .zchip::after { display: none; }
   .zchip.kk-fr { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; cursor: default; }   /* Kleinkind der Freunde im Kinderbettchen, fest (seit 3.17.10.1) */
-  .zchip[style*="--pc"][aria-pressed="true"] { background: var(--pc); border-color: var(--pc); color: #fff; } .zchip[style*="--pc:#C9A227"][aria-pressed="true"] { color: #111; }   /* Farbe der Partei schon beim Antippen (seit 3.17.6.0) */
+  .zchip[style*="--pc"][aria-pressed="true"] { background: var(--pc); border-color: var(--pc); color: #fff; } .zchip[style*="--pc:#14B8A6"][aria-pressed="true"] { color: #062B27; }   /* Farbe der Partei schon beim Antippen (seit 3.17.6.0) */
   .gm-f[style*="--pc"] { box-shadow: inset 6px 0 0 var(--pc); }
   .mat-weg .zchips { margin-top: 8px; }
 .mat-f { margin: 10px 0 0; }
@@ -1715,7 +1715,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.21.1.1";
+let VERSION = "3.21.1.2";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2310,7 +2310,7 @@ function gmEntwurfUebernehmen() {   // beim Senden der Anfrage: Liste unter die 
   karteiMerken(fr);
 }
 var INS_SEL = null, INS_N = 0, INS_ZOG = false, INS_MSG = "", KK_MSG = false;   // KK_MSG: «Ja, passt» mit offenen Kleinkindern (seit 3.20.0.4)   // Parteien als Inseln (seit 3.17.1.0, Wänu): Person antippen und dann ihre Partei, oder mit dem Finger hinüberziehen
-const INS_F = ["#3B82F6", "#22A06B", "#8B5CF6", "#E0679B", "#EF6B4A", "#0EA5E9", "#84CC16"], INS_FAM = "#C9A227", INS_KIND = "#8A8A8A";   // Familie gold, Kinder ohne Partei grau (seit 3.17.2.0)
+const INS_F = ["#3B82F6", "#22A06B", "#8B5CF6", "#E0679B", "#EF6B4A", "#0EA5E9", "#84CC16"], INS_FAM = "#14B8A6", INS_KIND = "#8A8A8A";   // eigener Haushalt türkis (seit 3.21.1.2, Gold nur für Spezialpreis und Positives), Kinder ohne Partei grau (seit 3.17.2.0)
 function ptKoepfe(l, zi) { return [...new Set(zi.filter((i) => alterAm(l[i].geb, ARR) >= 18).map((i) => parteiKopf(i, l, zi)))]; }   // Reihenfolge wie die Liste «🤝 Parteien»
 function famGeschw() { return (famParteien() || []).filter((pp) => !pp.eigen); }   // Haushalte der Geschwister, die mitkommen (seit 3.17.6.0)
 function famFarbe(pp) { if (!pp || pp.eigen) return INS_FAM; const k = famGeschw().findIndex((q) => q.h.m[0] === pp.h.m[0]);   /* famParteien() liefert jedes Mal neue Objekte: Vergleich über den Kopf des Haushalts (seit 3.17.6.2) */ return INS_F[(k < 0 ? 0 : k) % INS_F.length]; }   // eigener Haushalt gold, Geschwister die ersten Farben
