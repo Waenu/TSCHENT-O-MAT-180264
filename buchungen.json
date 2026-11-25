@@ -16,10 +16,6 @@
   ],
   "logbuch": [
     {
-      "t": "2026-10-30T03:49",
-      "text": "Bestätigt: Miriam, Mi 9.12.2026 bis So 13.12.2026, CHF 460"
-    },
-    {
       "t": "2026-10-30T04:13",
       "text": "Entfernt: Miriam, Mi 9.12.2026 bis So 13.12.2026"
     },
@@ -814,6 +810,10 @@
     {
       "t": "2026-11-25T21:43",
       "text": "Vorlage für Manuel: 2027-01-07 bis 2027-01-10, geänderte Preise: CHF 600.– pro Nacht für die ganze Wohnung, ohne Reinigung, ohne Kurtaxe"
+    },
+    {
+      "t": "2026-11-25T21:44",
+      "text": "Vorlage für Manuel: 2027-01-04 bis 2027-01-07, normale Preise wie bei einer gewöhnlichen Buchung, ohne Mindestnächte"
     }
   ],
   "reinigung": [],
@@ -828,6 +828,14 @@
       "rein": false,
       "kt": false,
       "t": "2026-11-25T21:43"
+    },
+    {
+      "id": "mwwle72y",
+      "name": "Manuel",
+      "arr": "2027-01-04",
+      "dep": "2027-01-07",
+      "pa": false,
+      "t": "2026-11-25T21:44"
     }
   ]
 }
