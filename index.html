@@ -1722,7 +1722,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.28.0.0";
+let VERSION = "3.28.0.1";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1999,7 +1999,9 @@ function ubHausRows() {   // Personen mit eigenen Daten je eine Zeile (seit 3.24
 }
 function kkSeg(i, l, zi) {   // Balken eines Kleinkinds mit mehreren Zielen: erst bei dem einen, dann bei dem anderen (seit 3.28.0.0)
   const r = kkZiel(i, l, zi); if (!r.gs || r.gs.length < 2 || r.luecke) return undefined;
-  const t = kkDat(i, l), fs = r.gs.map((g) => ({ g, fn: kkDaFn(g, l, zi) })), sg = [];
+  const t = kkDat(i, l), nm = (x) => String((x && x.name) || "").trim().toLowerCase(), n0 = nm(l[i]);
+  const rk = (g) => (typeof g === "number" ? (n0 && zi.some((j) => parteiKopf(j, l, zi) === g && alterAm(l[j].geb, ARR) >= 18 && nm(l[j]) === n0) ? 0 : 3) : g === "fam" ? 1 : 2);   // Vorrang: Freunde mit gleichem Nachnamen, dann Familie, dann Geschwister, zuletzt andere Freunde (seit 3.28.0.1, Wänu)
+  const fs = r.gs.map((g) => ({ g, fn: kkDaFn(g, l, zi), rk: rk(g) })).sort((x, y) => x.rk - y.rk || (kkErst(i, x.g, l, zi) < kkErst(i, y.g, l, zi) ? -1 : 1)), sg = [];
   for (let k = t.an; k < t.ab; k = addDays(k, 1)) { const h = fs.find((x) => x.fn && x.fn(k)), g = h ? h.g : null, la = sg[sg.length - 1]; if (la && la.g === g) la.ab = addDays(k, 1); else sg.push({ g, an: k, ab: addDays(k, 1) }); }
   return sg.map((q) => ({ an: q.an, ab: q.ab, pc: kkZielFarbe(q.g, l, zi) }));
 }
