@@ -2,6 +2,18 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.27.1.0",
+      "datum": "2026-11-25",
+      "titel": "Kleinkind der Freunde übernimmt die Nächte seiner Eltern",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Hat ein Kleinkind der Freunde keine eigenen Daten, übernimmt es die Nächte der erwachsenen Freunde mit gleichem Nachnamen. Eigene Daten haben Vorrang und bleiben änderbar.",
+        "«Wer ist wann da?» und die Prüfung der Nächte beim Zuteilen rechnen damit."
+      ]
+    },
+    {
       "v": "3.27.0.2",
       "datum": "2026-11-25",
       "titel": "Inseln «Wer gehört zusammen?» auch mit nur einem erwachsenen Freund und Kleinkind",
