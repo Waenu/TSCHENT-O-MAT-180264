@@ -4,13 +4,14 @@
     {
       "v": "3.26.1.0",
       "datum": "2026-11-25",
-      "titel": "Ein Kind bleibt nur mit einem Elternteil",
+      "titel": "Kinder und Freunde nie ohne Erwachsene der Familie",
       "arten": [
         "Funktion"
       ],
       "punkte": [
-        "Bei eigenen Tagen pro Person prüft der Rechner jetzt: In jeder Nacht muss eine erwachsene Person von der Familie da sein, und ein Kind (Enkel) ist nur da, wenn ein Elternteil aus seinem Haushalt dabei ist. Sonst steht unten «Bitte prüfen: In der Nacht vom … ist … ohne Eltern da».",
-        "Damit kann ein Kind keine Nächte für Freunde «freigeben»: Ist in einer Nacht kein Elternteil da, geht die Anfrage nicht ab. Kinder im Kinderbettchen folgen ihren Eltern."
+        "Bei eigenen Tagen pro Person prüft der Rechner jetzt: In jeder Nacht muss eine erwachsene Person aus der Familie da sein (irgendeine, auch ein Onkel oder eine Tante).",
+        "Ein Kind ist nie allein und nie nur mit Freunden da, und Freunde sind nie allein in der Wohnung. Sonst steht unten «Bitte prüfen: In der Nacht vom … ist … ohne erwachsene Person aus der Familie da». Die Anfrage geht dann nicht ab.",
+        "Kinder im Kinderbettchen folgen ihren Eltern."
       ]
     },
     {
