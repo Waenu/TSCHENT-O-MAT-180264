@@ -2,6 +2,19 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.28.0.0",
+      "datum": "2026-11-25",
+      "titel": "Kleinkind der Freunde bei mehreren nacheinander",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Ein Kleinkind der Freunde kann zu mehreren Zielen gehören, zum Beispiel erst zu Deborah und dann zu Miriam. Es zählt, dass in jeder seiner Nächte eine erwachsene Person eines dieser Ziele da ist. Antippen fügt ein Ziel dazu, nochmals antippen nimmt es weg.",
+        "Fehlt noch eine Nacht, nennt die App sie und das Kleinkind bleibt bei «Noch zuordnen».",
+        "«Wer ist wann da?» zeigt den Balken des Kleinkinds in den Farben der Ziele nacheinander."
+      ]
+    },
+    {
       "v": "3.27.1.0",
       "datum": "2026-11-25",
       "titel": "Kleinkind der Freunde übernimmt die Nächte seiner Eltern",
