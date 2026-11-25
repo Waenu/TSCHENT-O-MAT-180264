@@ -1722,7 +1722,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.28.1.0";
+let VERSION = "3.28.2.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -8247,13 +8247,22 @@ const SOND_LEER = () => ({ name: "", arr: "", dep: "", pa: false, preis: "", rei
 var SOND_F = SOND_LEER(), SOND_MSG = "", SB_KAL = null;   // SB_KAL: Daten der Vorlage werden gerade im Kalender gewählt (seit 3.14.1.0)
 const appUrl = () => location.origin + location.pathname;
 function sondWaText(v) { const n = diffDays(v.arr, v.dep); return waHoi(v.name) + "Wir haben dir im TSCHENT-O-MAT eine Vorlage für einen Aufenthalt bereitgelegt:\n\n" + waZeit(v) + " (" + n + (n === 1 ? " Nacht" : " Nächte") + ")\n" + sondBed(v) + "\n\nDu findest sie unter «👤 Meine Verwaltung». Dort nimmst du sie an, ergänzt die Gäste und schickst uns die Anfrage. Passt sie dir nicht, kannst du sie ablehnen.\n\n" + appUrl() + grussVon(v.name); }
+function sondInfo(f) {   // Kontrolle unter den Datumsfeldern der Vorlage; eingetippte Daten ignorieren die Airbnb-Sperre (seit 3.29.0.1, Wänu)
+  if (!f || !DKEY.test(f.arr) || !DKEY.test(f.dep)) return "Tippe Anreise und Abreise ein oder wähle sie im Kalender.";
+  if (f.dep <= f.arr) return '<span class="rot-txt">Die Abreise muss nach der Anreise liegen.</span>';
+  const n = diffDays(f.arr, f.dep); let t = "📅 " + esc(fmtTag(f.arr)) + " bis " + esc(fmtTag(f.dep)) + " (" + n + (n === 1 ? " Nacht)" : " Nächte)");
+  const gx = GAESTE.filter((x) => x && x.arr < f.dep && f.arr < x.dep && !(x.kal && x.typ === "fam"));
+  if (gx.length) t += '<br><span class="rot-txt">Achtung: ' + gx.map((x) => esc(String(x.name || "?")) + " (" + (x.typ === "airbnb" ? "Airbnb" : x.typ === "extern" ? "extern" : "eingetragen") + ", " + esc(fmtTag(x.arr)) + " bis " + esc(fmtTag(x.dep)) + ")").join(", ") + " ist in diesen Nächten eingetragen.</span>";
+  else if (BELEGT_AIR && Array.from({ length: n }, (_, i) => addDays(f.arr, i)).some((k) => BELEGT_AIR.has(k))) t += "<br><small>In Airbnb sind Nächte gesperrt. Das wird hier nicht geprüft.</small>";
+  return t;
+}
 function sondHtml() {
   const h = heuteKey(), l = VORL.filter((v) => v.dep >= h).sort((p, q) => (p.arr < q.arr ? -1 : 1)), f = SOND_F;
   const karten = l.map((v) => { const da = OFFEN.some((y) => bKey(y) === bKey(v)); return vkKarte(v, "", "", esc(sondBed(v)) + "<br>" + (da ? "📨 Die Anfrage ist da, du findest sie bei " + esc(v.name) + "." : "Noch keine Anfrage. Lehnt " + esc(v.name) + " ab, kommt eine WhatsApp, dann löschst du die Vorlage hier."),
     '<a class="btn" href="https://wa.me/?text=' + encodeURIComponent(sondWaText(v)) + '" target="_blank" rel="noopener">' + WA_SVG + "WhatsApp an " + esc(v.name) + '</a><button type="button" class="btn" data-sond-del="' + esc(v.id) + '">🗑️ Löschen</button>'); }).join("");
-  const inh = '<p class="hint">Eine Vorlage für ein Kind, auch für 1 Nacht und das ganze Jahr. Mindestnächte und Saisonregeln gelten nicht, die Buchung ist fest. Das Kind sieht sie in «👤 Meine Verwaltung», wählt die Gäste und schickt dir die Anfrage wie gewohnt. Eine Einladung: «Preise ändern» mit Pauschale 0, ohne Reinigung und ohne Kurtaxe. Airbnb sperrst du wie immer selbst.</p>' +
+  const inh = '<p class="hint">Eine Vorlage für ein Kind, auch für 1 Nacht und das ganze Jahr. Mindestnächte und Saisonregeln gelten nicht, die Buchung ist fest. Die Daten tippst du ein oder wählst sie im Kalender; eingetippte Daten ignorieren die Airbnb-Sperre. Das Kind sieht sie in «👤 Meine Verwaltung», wählt die Gäste und schickt dir die Anfrage wie gewohnt. Eine Einladung: «Preise ändern» mit Pauschale 0, ohne Reinigung und ohne Kurtaxe. Airbnb sperrst du wie immer selbst.</p>' +
     '<div class="sond-f"><div class="field"><label for="sondName">Für wen?</label><select id="sondName" data-sf="name"><option value="">– wählen –</option>' + absOpt(f.name) + "</select></div>" +
-    '<div class="field ' + (f.arr && f.dep ? "done" : "missing") + '"><label>Anreise und Abreise</label><p class="sond-dat">' + (f.arr && f.dep ? "📅 " + esc(fmtTag(f.arr)) + " bis " + esc(fmtTag(f.dep)) + " (" + diffDays(f.arr, f.dep) + (diffDays(f.arr, f.dep) === 1 ? " Nacht)" : " Nächte)") : "Noch nicht gewählt.") + '</p><button type="button" class="btn" data-sond-kal="1">📅 Im Kalender wählen</button></div>' +
+    '<div class="field ' + (f.arr && f.dep ? "done" : "missing") + '"><label>Anreise und Abreise</label><div class="sond-d"><label>Anreise<input type="date" data-sf="arr" min="' + heuteKey() + '" value="' + esc(f.arr) + '"></label><label>Abreise<input type="date" data-sf="dep" min="' + heuteKey() + '" value="' + esc(f.dep) + '"></label></div><p class="sond-dat" id="sondInfo">' + sondInfo(f) + '</p><button type="button" class="btn" data-sond-kal="1">📅 Im Kalender wählen</button></div>' +
     '<label class="ink-sw"><input type="checkbox" data-sf="pa"' + (f.pa ? " checked" : "") + "> 💲 Preise ändern</label>" +
     (f.pa ? '<div class="sond-pa"><div class="field"><label for="sondPreis">Pauschale pro Nacht für die ganze Wohnung (CHF)</label><input type="text" inputmode="numeric" id="sondPreis" data-sf="preis" maxlength="5" placeholder="z. B. 600" value="' + esc(f.preis) + '"></div>' +
       '<label class="ink-sw"><input type="checkbox" data-sf="rein"' + (f.rein ? " checked" : "") + "> 🧽 Reinigung dazu (" + esc(chf(P.reinigung)) + ")</label>" +
@@ -8263,7 +8272,7 @@ function sondHtml() {
   return persTitel("__sond", "⭐ Sonderbuchungen", l.length ? l.length + (l.length === 1 ? " offene Vorlage" : " offene Vorlagen") : "keine offene Vorlage", 0, false, false, PERS_STAND.get("__sond") === true, inh);
 }
 document.getElementById("bestKasten").addEventListener("input", (e) => { const t = e.target.closest && e.target.closest("[data-sf]"); if (!t) return; const k = t.getAttribute("data-sf"); if (k === "preis") t.value = t.value.replace(/\D/g, "").slice(0, 5); SOND_F[k] = t.type === "checkbox" ? t.checked : t.value; });
-document.getElementById("bestKasten").addEventListener("change", (e) => { const t = e.target.closest && e.target.closest("[data-sf]"); if (!t) return; const k = t.getAttribute("data-sf"); SOND_F[k] = t.type === "checkbox" ? t.checked : t.value; if (k === "pa") { SOND_MSG = ""; bestZeigen(); } });
+document.getElementById("bestKasten").addEventListener("change", (e) => { const t = e.target.closest && e.target.closest("[data-sf]"); if (!t) return; const k = t.getAttribute("data-sf"); SOND_F[k] = t.type === "checkbox" ? t.checked : t.value; if (k === "pa") { SOND_MSG = ""; bestZeigen(); } if (k === "arr" || k === "dep") { const i = document.getElementById("sondInfo"); if (i) i.innerHTML = sondInfo(SOND_F); } });
 // Daten der Vorlage im Kalender wählen (seit 3.14.1.0): jede freie Nacht, auch 1 Nacht
 const sbNachtFrei = (k) => !(BELEGT && BELEGT.has(k)) && !BUCH.some((b) => b.arr <= k && k < b.dep) && !VORL.some((v) => v.arr <= k && k < v.dep);
 function sbKalBar() {
@@ -8307,7 +8316,7 @@ document.getElementById("bestKasten").addEventListener("click", async (e) => {
   }
   const f = SOND_F, h = heuteKey(), preis = Math.round(Number(f.preis) || 0);
   let spz = false; if (DKEY.test(f.arr) && DKEY.test(f.dep)) for (let k = f.arr; k < f.dep; k = addDays(k, 1)) if (spitzVon(k)) spz = true;
-  const fehl = !f.name ? "Bitte wählen, für wen die Vorlage ist." : !DKEY.test(f.arr) || !DKEY.test(f.dep) ? "Bitte Anreise und Abreise im Kalender wählen." : f.dep <= f.arr ? "Die Abreise muss nach der Anreise liegen." : f.arr < h ? "Die Anreise liegt in der Vergangenheit." : diffDays(f.arr, f.dep) > P.maxNaechte ? "Höchstens " + P.maxNaechte + " Nächte." : spz && !f.pa ? "In der Spitzenzeit gibt es keinen normalen Preis. Schalte «Preise ändern» ein." : f.pa && String(f.preis).trim() === "" ? "Bitte die Pauschale eingeben (0 für gratis)." : "";
+  const fehl = !f.name ? "Bitte wählen, für wen die Vorlage ist." : !DKEY.test(f.arr) || !DKEY.test(f.dep) ? "Bitte Anreise und Abreise eingeben oder im Kalender wählen." : f.dep <= f.arr ? "Die Abreise muss nach der Anreise liegen." : f.arr < h ? "Die Anreise liegt in der Vergangenheit." : diffDays(f.arr, f.dep) > P.maxNaechte ? "Höchstens " + P.maxNaechte + " Nächte." : spz && !f.pa ? "In der Spitzenzeit gibt es keinen normalen Preis. Schalte «Preise ändern» ein." : f.pa && String(f.preis).trim() === "" ? "Bitte die Pauschale eingeben (0 für gratis)." : "";
   const ueb = BUCH.find((b) => b.arr < f.dep && f.arr < b.dep), uv = VORL.find((v) => v.arr < f.dep && f.arr < v.dep);
   SOND_MSG = fehl ? "⚠️ " + esc(fehl) : ueb ? "⚠️ Überschneidet sich mit dem Aufenthalt von " + esc(ueb.name) + " (" + esc(fmtTag(ueb.arr)) + " bis " + esc(fmtTag(ueb.dep)) + ")." : uv ? "⚠️ Überschneidet sich mit der Vorlage für " + esc(uv.name) + "." : "";
   if (SOND_MSG) { PERS_STAND.set("__sond", true); bestZeigen(); return; }
