@@ -16,10 +16,6 @@
   ],
   "logbuch": [
     {
-      "t": "2026-10-30T18:27",
-      "text": "Entfernt: Miriam, Do 19.11.2026 bis Di 24.11.2026"
-    },
-    {
       "t": "2026-10-30T21:17",
       "text": "Entfernt: Manuel, Di 24.11.2026 bis Do 26.11.2026"
     },
@@ -814,18 +810,14 @@
     {
       "t": "2026-11-25T22:29",
       "text": "Vorlage für Manuel: 2027-01-07 bis 2027-01-10, geänderte Preise: CHF 600.– pro Nacht für die ganze Wohnung, ohne Reinigung, Kurtaxe für Freunde wie üblich"
+    },
+    {
+      "t": "2026-11-25T22:49",
+      "text": "Vorlage gelöscht: Manuel, 2027-01-04 bis 2027-01-07"
     }
   ],
   "reinigung": [],
   "vorlagen": [
-    {
-      "id": "mwwmclaa",
-      "name": "Manuel",
-      "arr": "2027-01-04",
-      "dep": "2027-01-07",
-      "pa": false,
-      "t": "2026-11-25T22:11"
-    },
     {
       "id": "mwwmzjt2",
       "name": "Manuel",
