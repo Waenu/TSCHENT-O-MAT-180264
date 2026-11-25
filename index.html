@@ -1722,7 +1722,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.26.0.0";
+let VERSION = "3.26.1.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1916,7 +1916,7 @@ function check(s, d) {
   if (typeof s.nights !== "number") return "Bitte wählen: Anreise und Abreise im Kalender";
   if ((s.verbOK === true || s.selbstOK === true) && artOpts().indexOf(s.art) < 0) return "Bitte wählen: Wie möchtest du buchen?";
   if (famErwFehlt() && (eigenAktiv() ? (S.famSel || []) : mfgAktiv() ? (S.mfg || []) : []).length) return mfgAktiv() ? "Bitte wählen: " + (erwWer() ? "Du oder " + eigeneErw().join(" oder ") : "Ich") : "Bitte wählen: Eine erwachsene Person, die mitkommt";   // nur Kinder angetippt (Wänu 15.11.2026, orange)
-  if (famLeerNacht()) return "Bitte prüfen: In der Nacht vom " + fmtTag(famLeerNacht()) + " ist niemand von der Familie da";   // eigene Daten der Haushalte (seit 3.22.0.0)
+  { const nf = famNachtFehler(); if (nf) return "Bitte prüfen: " + (nf.art === "kind" ? "In der Nacht vom " + fmtTag(nf.k) + " ist " + nf.nm + " ohne Eltern da. Ein Kind bleibt nur mit einem Elternteil (" + nf.el.join(" oder ") + ")." : "In der Nacht vom " + fmtTag(nf.k) + " ist keine erwachsene Person von der Familie da."); }   // eigene Daten der Haushalte (seit 3.22.0.0)
   if ((s.luecke ? LWERL : WERL).indexOf(s.wer) < 0) return "Bitte wählen: Wer von der Familie kommt";
   if (s.wer === MFG && typeof s.fam !== "number") return "Bitte wählen: Anzahl Personen der Familie";
   if (d.kkMax > 0 && !d.kkFix && typeof s.kk !== "number") return "Bitte wählen: Kleinkinder im Kinderbettchen";
@@ -2497,7 +2497,7 @@ function hdHtml(kopf, nm, pc) {   // Aufenthalt eines Haushalts (seit 3.22.0.0):
   }
   h += "</div>";
   const txt = p ? "Anreise " + kurz(p) + " Tippe jetzt auf den <b>Abreisetag</b>." : "Jetzt: " + kurz(t.an) + " bis " + kurz(t.ab) + ", " + n + (n === 1 ? " Nacht" : " Nächte") + ". Tippe auf den <b>Anreisetag</b>, danach auf den Abreisetag.";
-  return '<div class="gm-k hd-k" style="--pc:' + pc + '"><div class="gm-dat-e"><p class="gm-dat-t">📅 An- und Abreise: ' + esc(nm) + '</p><p class="gm-dk-m">' + esc(mt) + "</p>" + h + '<p class="hint gm-dk-h">' + txt + '</p><p class="hint">Mindestens 1 Nacht, innerhalb der Buchung. Der Haushalt zahlt jede Nacht, in der mindestens eine Person von ihm da ist.</p><button type="button" class="gm-dat-b" data-hdweg="' + ka + '">Wie die Buchung</button></div></div>';
+  return '<div class="gm-k hd-k" style="--pc:' + pc + '"><div class="gm-dat-e"><p class="gm-dat-t">📅 An- und Abreise: ' + esc(nm) + '</p><p class="gm-dk-m">' + esc(mt) + "</p>" + h + '<p class="hint gm-dk-h">' + txt + '</p><p class="hint">Mindestens 1 Nacht, innerhalb der Buchung. Der Haushalt zahlt jede Nacht, in der mindestens eine Person von ihm da ist. Ein Kind bleibt nur, wenn eine erwachsene Person aus seinem Haushalt dabei ist.</p><button type="button" class="gm-dat-b" data-hdweg="' + ka + '">Wie die Buchung</button></div></div>';
 }
 function personenDat(namen, pc) {   // Feld «Aufenthalt» pro Person, die mitkommt (ohne Kinderbettchen), erst ab zwei Personen mit Bett (seit 3.24.0.0)
   if (!ARR || !DEP) return ""; const l = famLeute().filter((x) => !x.kk); if (l.length < 2) return "";
@@ -4855,10 +4855,10 @@ function famParteiText(pp, k, zahlt) {   // «Du und Partner zahlen inkl. Kind»
 // Eigene An- und Abreise pro Person der Familie (seit 3.24.0.0, vorher pro Haushalt seit 3.22.0.0): S.pDat = {Name: {an, ab}}, nur auf dem Handy. Mindestens 1 Nacht innerhalb der Buchung.
 // Ein Haushalt zahlt jede Nacht, in der mindestens eine Person von ihm da ist; die Betten zählen pro Nacht und Person (Kleinkinder im Kinderbettchen nicht).
 const ichKey = () => ABSENDER || "Ich";
-function famLeute() {   // alle, die mitkommen: [{nm, kopf (Haushalt), kk (Kinderbettchen)}]
+function famLeute() {   // alle, die mitkommen: [{nm, kopf (Haushalt), kk (Kinderbettchen), kind (Enkel)}]
   const kkL = [].concat(S.famKK || [], S.mfgKK || []), l = [];
-  if (eigenAktiv()) { if (ichDa()) l.push({ nm: ichKey(), kopf: ichKey(), kk: false }); (S.famSel || []).forEach((n) => l.push({ nm: n, kopf: ichKey(), kk: kkL.indexOf(n) >= 0 })); }
-  else if (mfgAktiv()) (famParteien() || []).forEach((pp) => pp.namen.forEach((n) => l.push({ nm: n, kopf: pp.kopf, kk: kkL.indexOf(n) >= 0 })));
+  if (eigenAktiv()) { const enk = (famNamen() || { k: [] }).k || []; if (ichDa()) l.push({ nm: ichKey(), kopf: ichKey(), kk: false, kind: false }); (S.famSel || []).forEach((n) => l.push({ nm: n, kopf: ichKey(), kk: kkL.indexOf(n) >= 0, kind: enk.indexOf(n) >= 0 })); }
+  else if (mfgAktiv()) (famParteien() || []).forEach((pp) => pp.namen.forEach((n) => l.push({ nm: n, kopf: pp.kopf, kk: kkL.indexOf(n) >= 0, kind: pp.kinder.indexOf(n) >= 0 })));
   return l;
 }
 function pDat(nm) { return fDat((S.pDat || {})[nm]); }
@@ -4871,7 +4871,16 @@ function hDat(kopf) {   // Nächte eines Haushalts: Vereinigung der Tage seiner 
   if (!an) return { an: ARR, ab: DEP, n: N, eigen: false };
   return { an, ab, n, eigen: n < N };
 }
-function famLeerNacht() { if (!hDatAktiv()) return ""; const l = famLeute().filter((x) => !x.kk); for (let k = ARR; k < DEP; k = addDays(k, 1)) if (!l.some((x) => pDa(x.nm, k))) return k; return ""; }   // Nacht ohne Familie: Buchung kürzer machen
+function famNachtFehler() {   // Regel (seit 3.26.1.0, Wänu): in jeder Nacht muss eine erwachsene Person von der Familie da sein, und ein Kind (Enkel) ist nur da, wenn eine erwachsene Person aus seinem Haushalt dabei ist; Kinder im Kinderbettchen folgen ihren Eltern
+  if (!hDatAktiv()) return null; const l = famLeute(), erw = (x) => !x.kind && !x.kk;
+  for (let k = ARR; k < DEP; k = addDays(k, 1)) {
+    const da = l.filter((x) => pDa(x.nm, k));
+    for (const c of da) if (c.kind && !c.kk) { const el = l.filter((x) => x.kopf === c.kopf && erw(x)); if (el.length && !el.some((x) => pDa(x.nm, k))) return { k, art: "kind", nm: c.nm, el: el.map((x) => x.nm === ABSENDER ? "du" : x.nm) }; }
+    if (!da.some(erw)) return { k, art: "leer" };
+  }
+  return null;
+}
+function famLeerNacht() { const f = famNachtFehler(); return f ? f.k : ""; }   // Nacht, in der die Regel verletzt ist   // Nacht ohne Familie: Buchung kürzer machen
 function famBettNacht(k, fp0) { if (!hDatAktiv()) return fp0; return fp0 - famLeute().filter((x) => !x.kk && !pDa(x.nm, k)).length; }   // Familie mit Bett in dieser Nacht
 function famNachtGew() {   // Anteil jeder Partei am Familienpreis: jede Nacht unter den Haushalten, die da sind («Nach Parteien» gleich, sonst nach Personen)
   const fp = famParteien(); if (!fp || !hDatAktiv()) return null;
