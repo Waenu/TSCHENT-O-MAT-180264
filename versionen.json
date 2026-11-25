@@ -2,6 +2,19 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.27.0.0",
+      "datum": "2026-11-25",
+      "titel": "Kleinkind der Freunde auch zu Geschwistern, mit Prüfung der Nächte",
+      "arten": [
+        "Funktion",
+        "Regel"
+      ],
+      "punkte": [
+        "Ein Kleinkind der Freunde kann jetzt auch zum Haushalt von Bruder oder Schwester gehören (antippen oder ziehen).",
+        "Die Zuordnung (und der Vorschlag nach Nachname) gilt nur, wenn in allen Nächten des Kleinkinds eine erwachsene Person dieses Ziels da ist. Sonst kommt eine Meldung mit der Nacht und das Kleinkind bleibt, wo es ist."
+      ]
+    },
+    {
       "v": "3.26.1.0",
       "datum": "2026-11-25",
       "titel": "Kinder und Freunde nie ohne Erwachsene der Familie",
@@ -2032,7 +2045,7 @@
       "punkte": [
         "Bei «Wer kommt mit?» lässt sich «Ich» abwählen, wenn du für die anderen buchst, aber selbst nicht mitkommst. Das gilt bei der eigenen Familie und mit Geschwistern.",
         "Mindestens eine erwachsene Person muss mitkommen. Sind nur Kinder angetippt und du machst weiter, erscheint eine rote Meldung.",
-        "In der Anfrage steht z. B. «Familie: Rahel, Malik & Jon (ich komme nicht mit)». Die Namen stehen in der Reihenfolge der Familie."
+        "In der Anfrage steht z. B. «Familie: Rahel, Enkel 1 & Enkel 2 (ich komme nicht mit)». Die Namen stehen in der Reihenfolge der Familie."
       ]
     },
     {
@@ -2208,8 +2221,8 @@
         "Text"
       ],
       "punkte": [
-        "Kommt ein Enkelkind ohne seine Eltern mit, steht in der Aufteilung zum Beispiel «Jerome zahlt für Malik».",
-        "Sonst zum Beispiel «Du zahlst», «Du und David zahlen inkl. Mael» oder «Jerome und Rahel zahlen inkl. Jon». Die Parteien unter der Auswahl heissen gleich."
+        "Kommt ein Enkelkind ohne seine Eltern mit, steht in der Aufteilung zum Beispiel «Jerome zahlt für Enkel 1».",
+        "Sonst zum Beispiel «Du zahlst», «Du und David zahlen inkl. Enkel 1» oder «Jerome und Rahel zahlen inkl. Enkel 2». Die Parteien unter der Auswahl heissen gleich."
       ]
     },
     {
@@ -2222,7 +2235,7 @@
       "punkte": [
         "Bei «Meine Familie und Geschwister» erscheint die ganze Familie zum Antippen, höchstens 5 ausser dir. Die Frage nach der Personenzahl entfällt.",
         "Kleinkinder ohne Bett werden direkt angetippt.",
-        "Die App bildet die Parteien selbst aus den Familien, zum Beispiel Deborah mit Mael und Jerome mit Jon.",
+        "Die App bildet die Parteien selbst aus den Familien, zum Beispiel Deborah mit Enkel 1 und Jerome mit Enkel 2.",
         "Der Preis pro Nacht bleibt gleich. Die Aufteilung zeigt, was jede Familie zahlt: «Nach Parteien» gleich viel pro Partei, sonst nach Personen ohne Kleinkinder.",
         "Dafür braucht jedes Kind einmal einen neuen Link aus der Verwaltung mit den Namen der ganzen Familie."
       ]
@@ -2437,16 +2450,62 @@
     {
       "v": "3.5.0.2",
       "datum": "2026-11-14",
-      "titel": "Familie mit Namen (aus der Testversion übernommen)",
+      "titel": "Testversion: Bestätigungslink gleich als Papi",
+      "arten": [
+        "Fehler"
+      ],
+      "punkte": [
+        "Öffnet ein Bestätigungslink aus WhatsApp die Testversion in einer Kind-Ansicht, wechselt sie zuerst zu Papi. Die Anfrage kommt so beim ersten Antippen an.",
+        "Nur Testversion, die laufende App ist nicht betroffen."
+      ]
+    },
+    {
+      "v": "3.5.0.1",
+      "datum": "2026-11-14",
+      "titel": "Namen in der Anfrage",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Die WhatsApp-Anfrage nennt die Familie mit Namen, zum Beispiel «Familie: Ich, David, Enkel 1 & Enkel 2».",
+        "Gespeichert wird weiterhin ohne Namen."
+      ]
+    },
+    {
+      "v": "3.5.0.0",
+      "datum": "2026-11-14",
+      "titel": "Familie mit Namen",
       "arten": [
         "Neu"
       ],
       "punkte": [
-        "«Wer von der Familie kommt?» zeigt die Namen der eigenen Familie, zum Beispiel «Ich, David, Mael & Yara», mit allen Kombinationen. Mit Geschwistern weiterhin «Meine Familie und Geschwister».",
+        "«Wer von der Familie kommt?» zeigt die Namen der eigenen Familie, zum Beispiel «Ich, David, Enkel 1 & Enkel 2», mit allen Kombinationen.",
+        "Mit Geschwistern weiterhin «Meine Familie und Geschwister».",
         "Papi trägt die Namen in der Verwaltung bei den persönlichen Links ein. Sie stehen nur auf dem Handy und im Link, der Code bleibt gleich.",
-        "Die WhatsApp-Anfrage nennt die Familie mit Namen. Gespeichert wird weiterhin ohne Namen.",
-        "Ohne Namen (alter Link) bleibt die bisherige Auswahl. Preise unverändert.",
-        "Testversion: Ein Bestätigungslink schaltet gleich auf Papi."
+        "Ohne Namen (alter Link) bleibt die bisherige Auswahl. Preise unverändert."
+      ]
+    },
+    {
+      "v": "3.4.2.0",
+      "datum": "2026-11-14",
+      "titel": "Nationalität wieder in der Liste der Freunde",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Die Liste der Freunde fragt wieder nach der Nationalität, vorausgefüllt mit «Schweiz» (Stand wie 3.4.0.1)."
+      ]
+    },
+    {
+      "v": "3.4.1.0",
+      "datum": "2026-11-14",
+      "titel": "Liste der Freunde ohne Nationalität",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Die Liste der Freunde fragt nur noch Name, Vorname, Geburtsdatum und Geschlecht.",
+        "Ältere Listen zeigen die Nationalität in der Verwaltung weiterhin an."
       ]
     },
     {
