@@ -16,10 +16,6 @@
   ],
   "logbuch": [
     {
-      "t": "2026-10-30T21:17",
-      "text": "Entfernt: Manuel, Di 24.11.2026 bis Do 26.11.2026"
-    },
-    {
       "t": "2026-10-30T21:18",
       "text": "Entfernt: Deborah, Do 26.11.2026 bis So 29.11.2026"
     },
@@ -814,20 +810,12 @@
     {
       "t": "2026-11-25T22:49",
       "text": "Vorlage gelöscht: Manuel, 2027-01-04 bis 2027-01-07"
+    },
+    {
+      "t": "2026-11-25T22:49",
+      "text": "Vorlage gelöscht: Manuel, 2027-01-07 bis 2027-01-10"
     }
   ],
   "reinigung": [],
-  "vorlagen": [
-    {
-      "id": "mwwmzjt2",
-      "name": "Manuel",
-      "arr": "2027-01-07",
-      "dep": "2027-01-10",
-      "pa": true,
-      "preis": 600,
-      "rein": false,
-      "kt": true,
-      "t": "2026-11-25T22:29"
-    }
-  ]
+  "vorlagen": []
 }
