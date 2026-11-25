@@ -1722,7 +1722,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.27.0.1";
+let VERSION = "3.27.0.2";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2603,7 +2603,7 @@ function gmRechZeigen(d) {
   { const pb = box.querySelector(".gm-ptbox"), mj = (i) => l[i] && l[i].geb && ARR && alterAm(l[i].geb, ARR) < 18 ? 1 : 0;   // Erwachsene zuerst, Kinder zuletzt (seit 3.10.2.4)
     if (pb) [...pts].sort((x, y) => mj(+x.dataset.pi) - mj(+y.dataset.pi) || x.dataset.pi - y.dataset.pi).forEach((x) => pb.appendChild(x));
     const ok = pb && pb.querySelector(".gm-pt-okw"); if (ok) { pb.appendChild(ok); const ks = kkStand(n); ok.hidden = !(listeVoll(n) && (freundeListe(n).some((f) => f && f.zv) || ks.vor || ks.offen)); { let w = ok.querySelector(".kk-msg"); if (!ks.offen) KK_MSG = false; if (KK_MSG) { const l = freundeListe(n), zi = zahlendeIdx(n), nm = zi ? kkIdx(n).filter((i) => kkZiel(i, l, zi).g === "o").map((i) => rn(l[i]) || "Kleinkind") : []; if (!w) { w = document.createElement("p"); w.className = "gm-warn kk-msg"; ok.appendChild(w); } w.textContent = "👶 Bitte Kleinkinder zuteilen: " + nm.join(", ") + ". Tippe ein Kleinkind an und dann die Insel seiner Eltern."; } else if (w) w.remove(); } /* nach dem Entwurf, nicht nach den alten Zeilen: ein Kopf allein hat keine Zeile (3.17.7.0) */ } }
-  { const pb = box.querySelector(".gm-ptbox"); if (pb) pb.hidden = offen.length > 0 || !listeVoll(n) || ![...pts].some((x) => !x.hidden); }
+  { const pb = box.querySelector(".gm-ptbox"); if (pb) pb.hidden = offen.length > 0 || !listeVoll(n) || (![...pts].some((x) => !x.hidden) && !kkIdx(n).length); }   /* auch nur mit Kleinkind der Freunde sichtbar, die Inseln brauchen wir zum Zuteilen (seit 3.27.0.2) */
   INS_N = n; insZeichnen();   // erst bei gültiger Liste, sonst fehlt der Vorschlag nach Nachname (3.10.5.2)
   const st = box.querySelector(".gm-r-st");
   st.className = "gm-r-st " + (offen.length ? "notice" : "note h");
