@@ -1722,7 +1722,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.28.0.1";
+let VERSION = "3.28.0.2";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1988,9 +1988,9 @@ function ubHtml(o) {   // o = {arr, dep, fp (Familie mit Bett), fam: [{nm, pc, k
   return h;
 }
 function ubFam(d) {   // Familie im Rechner: mit Namen (Partner/in, Kinder, Geschwister), sonst eine Zeile
-  const f = famNamen(), kk = [].concat(S.famKK || [], S.mfgKK || []), l = [], ich = () => ({ nm: ABSENDER ? rufname() : "Ich", pc: INS_FAM });
-  if (f && !f.gen && eigenAktiv()) { if (ichDa() && !(hDatAktiv() && pDat(ichKey()).eigen)) l.push(ich()); [f.p].concat(f.k).filter((n) => n && (S.famSel || []).indexOf(n) >= 0 && !(hDatAktiv() && pDat(n).eigen)).forEach((n) => l.push({ nm: n, pc: INS_FAM, kk: kk.indexOf(n) >= 0 })); }
-  else if (mfgAktiv()) { const eigen = (n) => hDatAktiv() && pDat(n).eigen; if (ichDa() && !eigen(ichKey())) l.push(ich()); famAlle().forEach((hh) => { const pp = famGeschw().find((q) => q.h && q.h.m[0] === hh.m[0]), pc = hh.m.indexOf(ABSENDER) >= 0 || !pp ? INS_FAM : famFarbe(pp); hh.m.filter((n) => n !== ABSENDER && (S.mfg || []).indexOf(n) >= 0 && !eigen(n)).forEach((n) => l.push({ nm: n, pc, kk: kk.indexOf(n) >= 0 })); }); }
+  const f = famNamen(), kk = [].concat(S.famKK || [], S.mfgKK || []), l = [], kkD = (p) => { if (p.kk && hDatAktiv()) { const x = famLeute().find((q) => q.nm === p.nm), t = x ? hDat(x.kopf) : null; if (t && t.an) { p.an = t.an; p.ab = t.ab; } } return p; }, ich = () => ({ nm: ABSENDER ? rufname() : "Ich", pc: INS_FAM });
+  if (f && !f.gen && eigenAktiv()) { if (ichDa() && !(hDatAktiv() && pDat(ichKey()).eigen)) l.push(ich()); [f.p].concat(f.k).filter((n) => n && (S.famSel || []).indexOf(n) >= 0 && (kk.indexOf(n) >= 0 || !(hDatAktiv() && pDat(n).eigen))).forEach((n) => l.push(kkD({ nm: n, pc: INS_FAM, kk: kk.indexOf(n) >= 0 }))); }
+  else if (mfgAktiv()) { const eigen = (n) => hDatAktiv() && pDat(n).eigen; if (ichDa() && !eigen(ichKey())) l.push(ich()); famAlle().forEach((hh) => { const pp = famGeschw().find((q) => q.h && q.h.m[0] === hh.m[0]), pc = hh.m.indexOf(ABSENDER) >= 0 || !pp ? INS_FAM : famFarbe(pp); hh.m.filter((n) => n !== ABSENDER && (S.mfg || []).indexOf(n) >= 0 && (kk.indexOf(n) >= 0 || !eigen(n))).forEach((n) => l.push(kkD({ nm: n, pc, kk: kk.indexOf(n) >= 0 }))); }); }
   return l.length || hDatAktiv() ? l : [{ nm: "Familie (" + nz(d.FP) + ")", pc: INS_FAM }];
 }
 function ubHausRows() {   // Personen mit eigenen Daten je eine Zeile (seit 3.24.0.0, vorher je Haushalt seit 3.22.0.0)
