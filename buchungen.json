@@ -16,10 +16,6 @@
   ],
   "logbuch": [
     {
-      "t": "2026-10-30T08:50",
-      "text": "Bestätigt: Deborah, Do 26.11.2026 bis So 29.11.2026, CHF 165"
-    },
-    {
       "t": "2026-10-30T08:51",
       "text": "Entfernt: Deborah, Do 26.11.2026 bis So 29.11.2026"
     },
@@ -814,17 +810,12 @@
     {
       "t": "2026-11-25T22:10",
       "text": "Vorlage gelöscht: Manuel, 2027-01-07 bis 2027-01-10"
+    },
+    {
+      "t": "2026-11-25T22:11",
+      "text": "Vorlage gelöscht: Manuel, 2027-01-04 bis 2027-01-07"
     }
   ],
   "reinigung": [],
-  "vorlagen": [
-    {
-      "id": "mwwle72y",
-      "name": "Manuel",
-      "arr": "2027-01-04",
-      "dep": "2027-01-07",
-      "pa": false,
-      "t": "2026-11-25T21:44"
-    }
-  ]
+  "vorlagen": []
 }
