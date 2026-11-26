@@ -173,6 +173,45 @@ async function tGueltigBis(b) {
   await p.ctx.close();
 }
 
+async function tSondAufteilung(b) {
+  const p = await seite(b, { ls: papiLs, papi: true });
+  const r = await p.evaluate(async () => {
+    const w = (ms) => new Promise((z) => setTimeout(z, ms)); const o = {};
+    sondStart({ id: "a", name: "Papi", arr: "2027-01-07", dep: "2027-01-10", t: 1, pa: true, preis: 600, reinB: 120 }); await w(300);
+    S.werArt = EIGEN; S.famSel = []; S.ichMit = true; S.wer = "Nur ich"; S.gaeste = 2; S.kinder = 0; S.reinig = REINIG[0]; S.zimmer = "Nein"; S.spar = "Nein"; S.waesche = S.waesche || "Persönlich bringen"; normalize(); render(); await w(400);
+    const rows = [...document.querySelectorAll("#result .auf-tab tr.auf-d")].map((t) => t.innerText.replace(/\s+/g, " "));
+    o.live = rows; o.legende = [...document.querySelectorAll("#result .ueb-leg")].map((t) => t.innerText.replace(/\s+/g, " "));
+    o.bal = [...document.querySelectorAll("#result .ueb-b")].map((e) => [...e.children].map((c) => c.className + ":" + Math.round(parseFloat(c.style.flex))).join(","));
+    const text = "Gesendet am Mo 26.11.2026, 18:27 Uhr. App-Version x.\n#Preisberechnung\n" + SNAP_BER.join("\n"); o.snapN = SNAP_BER.length;
+    const h = rechAufHtml(text, { name: "Papi", arr: "2027-01-07", dep: "2027-01-10", betrag: 1920, rechnung: text, bestaetigt: "2026-11-26T12:00" });
+    const d = document.createElement("div"); d.innerHTML = h || ""; o.gesp = [...d.querySelectorAll("tr.auf-d")].map((t) => t.innerText.replace(/\s+/g, " "));
+    return o;
+  });
+  const gut = (t) => /Übernachtung \(3 Nächte\) 3 × CHF 200\.00 \(1 von 3 Personen an CHF 600\.–\)CHF 600\.00/.test(t) && /CHF 40\.00/.test(t) && !/Pauschale/.test(t) && !/CHF 0\.0\d/.test(t);
+  ok("Sonderbuchung mit Pauschale: Aufteilung live = Übernachtung (3 × Anteil von CHF 600) + Reinigungsanteil, ohne Rundungsreste", r.live.length === 3 && r.live.every(gut) && r.live.every((t) => /Reinigungsanteil 1 von 3 Personen \(CHF 120\.–\)/.test(t)), JSON.stringify(r.live[0]));
+  ok("Sonderbuchung mit Pauschale: Balken grün (Übernachtung) und violett (Reinigung), Legende «Reinigung»", r.bal.every((t) => t === "su:600,sr:40") && r.legende.every((t) => /Übernachtung/.test(t) && /Reinigung/.test(t)), JSON.stringify([r.bal, r.legende]));
+  ok("Sonderbuchung mit Pauschale: gespeicherte Berechnung zeigt dasselbe", r.gesp.length === 3 && r.gesp.every(gut), JSON.stringify(r.gesp[0]));
+  ok("Sonderbuchung mit Pauschale: keine Fehler", p.fehler.length === 0, p.fehler.join("|"));
+  await p.ctx.close();
+}
+
+async function tSondListe(b) {
+  const p = await seite(b, { ls: kind("Manuel"), heute: "2026-11-27" });
+  const r = await p.evaluate(async () => {
+    const w = (ms) => new Promise((z) => setTimeout(z, ms)); const o = {};
+    sondStart({ id: "a", name: "Manuel", arr: "2027-01-07", dep: "2027-01-10", t: 1, pa: true, preis: 600, reinB: 120 }); await w(300);
+    S.werArt = EIGEN; S.famSel = []; S.ichMit = true; S.gaeste = 2; S.reinig = REINIG[0]; S.zimmer = "Nein"; S.spar = "Nein"; S.waesche = S.waesche || "Persönlich bringen";
+    const f = (v, n, g) => ({ vorname: v, name: n, geschlecht: "w", geb: g || "1990-01-01", nat: "Schweiz" });
+    localStorage.setItem("tm2t_gmEntwurf", JSON.stringify({ k: gmEntwurfKeyJetzt(), l: [f("Anna", "Meier"), f("Bea", "Zeller")] })); normalize(); render(); await w(400);
+    for (let i = 0; i < 4; i++) { const ok1 = document.querySelector(".gm-pt-ok"); if (ok1) { ok1.click(); await w(300); } }
+    o.leiste = (document.querySelector("#bar") || { innerText: "" }).innerText.replace(/\s+/g, " ").slice(0, 160);
+    o.rows = [...document.querySelectorAll("#result .auf-tab tr.auf-d")].map((t) => t.innerText.replace(/\s+/g, " "));
+    return o;
+  });
+  ok("Sonderbuchung mit Pauschale und Liste: Aufteilung ohne Fehler, ohne «Pauschale»", p.fehler.length === 0 && r.rows.length >= 2 && !r.rows.some((t) => /Pauschale/.test(t)), p.fehler.join("|") + " " + r.leiste + " " + JSON.stringify(r.rows[0] || ""));
+  await p.ctx.close();
+}
+
 async function tTrinkgeld(b) {
   for (const [abs, mami, text] of [["Manuel", "Mami", "meine Mami"], ["David", "Marianne", "Marianne Werder"]]) {
     const p = await seite(b, { ls: kind(abs), buchungen: manuelBuch({ name: abs }), heute: "2027-01-08" });
@@ -313,7 +352,7 @@ async function tNamenAufraeumen(b) {
 
 (async () => {
   const s = await server(); const b = await chromium.launch();
-  const lauf = [["Dateien", tDateien], ["Start", tStart], ["Control Panel", tControlPanel], ["Gültig ab", tGueltigAb], ["Gültig bis", tGueltigBis], ["Trinkgeld", tTrinkgeld], ["Rechnung an Freunde", tRechnungSchalter], ["Ansicht als", tAnsichtAls], ["Anfrage und Namen", tSchnappschuss], ["Sonderbuchungen", tSonder], ["Preise", tPreise], ["Alte Namen aufräumen", tNamenAufraeumen]];
+  const lauf = [["Dateien", tDateien], ["Start", tStart], ["Control Panel", tControlPanel], ["Gültig ab", tGueltigAb], ["Gültig bis", tGueltigBis], ["Trinkgeld", tTrinkgeld], ["Rechnung an Freunde", tRechnungSchalter], ["Ansicht als", tAnsichtAls], ["Anfrage und Namen", tSchnappschuss], ["Sonderbuchungen", tSonder], ["SondAuf", tSondAufteilung], ["SondListe", tSondListe], ["Preise", tPreise], ["Alte Namen aufräumen", tNamenAufraeumen]];
   const nur = process.argv[2];
   for (const [n, f] of lauf) { if (nur && !n.toLowerCase().includes(nur.toLowerCase())) continue; try { await f(b); } catch (e) { ok(n + ": Lauf abgebrochen", false, e.message); } }
   await b.close(); s.close();
