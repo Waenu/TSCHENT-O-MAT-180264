@@ -1014,6 +1014,9 @@ if (TEST_MODUS) {
   #bestKasten details.pers > summary .alarm-n { margin-left: 0; }
   #bestKasten .alarm-n.rot { background: #E5534B; color: #fff; }
   #bestKasten .ps-abst { height: 14px; }
+  .lauf { overflow: hidden; white-space: nowrap; border: 2px solid var(--marke); border-radius: 6px; padding: 6px 0; margin: 6px 0; font-size: .9em; } .lauf span { display: inline-block; padding-left: 100%; animation: lauf 16s linear infinite; } @keyframes lauf { to { transform: translateX(-100%); } }
+  @media (prefers-reduced-motion: reduce) { .lauf { white-space: normal; padding: 6px 10px; } .lauf span { padding-left: 0; animation: none; } }
+  html.aus .lauf { white-space: normal; padding: 6px 10px; } html.aus .lauf span { padding-left: 0; animation: none; }
   #bestKasten .sch-i { display: flex; align-items: center; gap: 8px; } #bestKasten .sch-i input { max-width: 8em; } #bestKasten .sch-e { color: var(--muted); }
   #bestKasten .sch-h { display: flex; flex-direction: column; gap: 6px; margin: 4px 0 0; } #bestKasten .sch-h .btn[hidden] { display: none; }
   #bestKasten .nw { white-space: nowrap; }
@@ -1725,7 +1728,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.31.0.2";
+let VERSION = "3.31.1.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2065,7 +2068,7 @@ function ubBuchung(b) {   // Übersicht einer gespeicherten Buchung: eigenes Han
   const rows = Array.from({ length: n }, (_, i) => { const m = new RegExp("^Freund/in " + (i + 1) + "[:\\t] ?(.+?) bis (.+?) \\(", "m").exec(r); if (!(i in pt) && !kkS.has(i)) pt[i] = np++; return Object.assign({ nm: gkU[i] || "Freund/in " + (i + 1) }, gkU[i] ? { nk: ubKurz(gkU[i]) } : {}, { an: m ? dt(m[1]) : b.arr, ab: m ? dt(m[2]) : b.dep, pc: kkS.has(i) ? INS_KIND : pt[i] === -1 ? INS_FAM : INS_F[((pt[i] || 0) + sh) % INS_F.length], kk: kkS.has(i), sg: kkS.has(i) ? 300 : pt[i] >= 0 ? 100 + pt[i] : 100 + i, kd: kkS.has(i) || minS.has(i) }); });
   return ubHtml({ arr: b.arr, dep: b.dep, fp, fam, rows: hr.concat(rows) });
 }
-function ubKlapp(b) { const h = ubBuchung(b); return h ? '<details class="ub-k"><summary>👥 Wer ist wann da?</summary>' + h + "</details>" : ""; }
+function ubKlapp(b) { const h = ubBuchung(b); return h ? '<details class="ub-k"><summary>👥 Wer ist wann da?</summary>' + laufNamen(b) + h + "</details>" : ""; }
 function minderN(s, d) {   // Freunde mit weniger Nächten: CHF pro fehlende Nacht weniger (gleicher Nachtpreis wie bisher, keine neue Preisregel)
   const o = { sum: 0, per: {} }, fn = s && s.fn; if (!fn || !d.GE) return o;
   Object.keys(fn).forEach((k) => { const i = Number(k), m = Math.max(0, d.nights - nz(fn[k])); if (!m) return; const a = m * ((d.ZE === "Ja" && (s.zimmerWer === i || d.GE === 1)) ? d.HN : d.GN); o.per[i] = a; o.sum += a; });
@@ -7056,7 +7059,7 @@ function famParteiName(b) {   // «Familie, Partei N» durch Namen ersetzen (sei
 function rechNameFn(b) {   // Vornamen statt «Freund/in N»: eigenes Handy (Liste) oder Papi (Liste aus dem Briefkasten); gespeichert bleibt alles neutral
   if (!b) return null; const k = bKey(b); let l = null, p = "";
   if (ABSENDER && eigenN(b.name) && !TOKEN) { const e = gmLokal()[k]; l = e && Array.isArray(e.freunde) ? e.freunde : null; const fn = famNamen(); if (fn && !fn.gen) p = fn.p; }
-  else if (TOKEN && !ABSENDER) { const g = GM_LISTEN && GM_LISTEN[k]; l = g && Array.isArray(g.freunde) ? g.freunde : null; const f = famSauber(famListe()[b.name]); if (f) p = f.p; }   // Papi (seit 3.20.1.0)
+  else if (TOKEN) { const g = GM_LISTEN && GM_LISTEN[k]; l = g && Array.isArray(g.freunde) ? g.freunde : null; const f = famSauber(famListe()[b.name]); if (f) p = f.p; }   // Papi (seit 3.20.1.0)
   const fp = famParteiName(b), gk = rechTeile(b.rechnung).gast;   // ohne Liste: abgekürzte Namen aus der Anfrage (seit 3.31.0.0)
   if (!(l && l.length) && !p && !fp && !(gk && gk.some(Boolean))) return null;
   return (t) => { if (fp) t = String(t).replace(/Familie, Partei (\d+)( zahlt)?/g, (m, n, z) => fp(Number(n), !!z) || m); t = String(t).replace(/Freund\/in (\d+)/g, (m, n) => { const f = l && l[Number(n) - 1]; return f && f.vorname ? esc(String(rufVon(f) || f.vorname)) : gk && gk[Number(n) - 1] ? esc(gk[Number(n) - 1]) : m; }); return p ? t.replace(/Partner\/in/g, esc(p)) : t; };   // HTML: Namen escapen
@@ -7126,7 +7129,7 @@ function rechDetails(r, bt, ohneSp, b) {
   // Hinweise «Zimmer 1 und rotes Bad bleiben unberührt …» und «Reinigung aufgeteilt …» gehören zur Buchung, nicht zur Rechnung: sie stehen ausserhalb des aufklappbaren Teils (in der Verwaltung über dem Status, sonst über der Preisberechnung)
   const isSp = rechIsSp;
   const zl = r ? r.split("\n") : [], sp = ohneSp ? "" : rechSp(r);
-  return sp + '<details class="rechd"><summary>🧾 Preisberechnung</summary><div class="rechin">' + rechnungHtml(r ? zl.filter((t) => !isSp(t)).join("\n") : r, bt, b) + "</div></details>";
+  return sp + '<details class="rechd"><summary>🧾 Preisberechnung</summary><div class="rechin">' + laufNamen(b) + rechnungHtml(r ? zl.filter((t) => !isSp(t)).join("\n") : r, bt, b) + "</div></details>";
 }
 function vkKarte(x, cls, chips, status, acts) {
   return '<div class="vk' + (cls ? " " + cls : "") + '" data-vk="' + esc(bKey(x)) + '"><div class="vk-top"><span class="vk-name">' + esc(x.name) + '</span><button type="button" class="vk-datum" data-zk="' + esc(x.arr) + '" aria-label="Im Kalender zeigen">📅 ' + esc(fmtTag(x.arr)) + " bis " + esc(fmtTag(x.dep)) + " ›</button></div>" + chips + (typeof x.rechnung === "string" ? rechSp(x.rechnung) : "") + (status ? '<div class="vk-st hint">' + status + "</div>" : "") + ubKlapp(x) + (typeof x.rechnung === "string" ? rechDetails(x.rechnung, x.bestaetigt, true, x) : "") + '<div class="vk-acts">' + acts + "</div></div>";
@@ -7872,6 +7875,14 @@ document.addEventListener("click", (e) => {   // Mailadresse direkt bei der List
   try { localStorage.setItem("tm2_mail", JSON.stringify(mn)); } catch (er) {}
   mailSenden(mn); render();
 });
+const namenBekannt = (b) => { try { const e = GM_LISTEN && GM_LISTEN[bKey(b)]; if (e && Array.isArray(e.freunde) && e.freunde.length) return true; const g = rechTeile(b.rechnung).gast; return !!(g && g.some(Boolean)); } catch (e) { return false; } };   // Namen der Freunde für Papi bekannt (Liste im Briefkasten oder abgekürzt in der Anfrage; seit 3.31.1.0)
+const laufNamen = (b) => (TOKEN && b && b.rechnung && freundeVon(b) > 0 && !namenBekannt(b)) ? '<div class="lauf" role="note"><span>Namen noch nicht sichtbar: Sie erscheinen, sobald ' + esc(b.name) + " die Liste der Freunde gesendet hat.</span></div>" : "";   // Laufschrift, nur wo die Namen sicher nicht angezeigt werden können
+function vorschauListe(b) {   // «Ansicht als»: Zeile über dem Formular des Kindes (seit 3.31.1.0)
+  const e = GM_LISTEN && GM_LISTEN[bKey(b)];
+  if (e && Array.isArray(e.freunde) && e.freunde.length && e.gesendet) return '<p class="hint">✅ ' + esc(b.name) + " hat die Liste am " + esc(fmtTag(String(e.gesendet).slice(0, 10))) + ", " + esc(String(e.gesendet).slice(11, 16)) + " Uhr gesendet. Das Formular unten zeigt nur, was auf deinem Handy steht.</p>";
+  const n = namenBekannt(b) ? "" : laufNamen(b);
+  return n || '<p class="hint">Das Formular unten zeigt nur, was auf deinem Handy steht, nicht die Eingaben von ' + esc(b.name) + ".</p>";
+}
 function gmKindZeigen() {
   const box = document.getElementById("gmBox");
   gmAltAufraeumen();
@@ -7889,16 +7900,11 @@ function gmKindZeigen() {
   box.dataset.gen = String((+box.dataset.gen || 0) + 1);
   box.innerHTML = l.map((b) => {
     const key = bKey(b), n = freundeVon(b), alt = lok[key] || {}, fr = Array.isArray(alt.freunde) ? alt.freunde : [], auf = !alt.gesendet || GM_AUF.has(key), msg = GM_MSG[key] || "";
-    if (meinVorschau()) {   // «Ansicht als»: die Liste des Kindes steht nur auf dessen Handy, hier der Stand aus dem Briefkasten (seit 3.30.1.0, Wänu)
-      const e = GM_LISTEN && GM_LISTEN[key], ok = e && Array.isArray(e.freunde) && e.freunde.length && e.gesendet;
-      const st = ok ? "✅ " + esc(b.name) + " hat die Liste der Freunde am " + esc(fmtTag(String(e.gesendet).slice(0, 10))) + ", " + esc(String(e.gesendet).slice(11, 16)) + " Uhr gesendet." : GM_LISTEN ? "⏳ " + esc(b.name) + " hat die Liste der Freunde noch nicht gesendet." : "Ob " + esc(b.name) + " die Liste gesendet hat, siehst du in der Verwaltung bei der Buchung unter «👥 Freunde für die Kurtaxe».";
-      return '<div class="note h gm-vor" data-gmk="' + esc(key) + '" style="border-color: var(--marke)"><b>👥 Liste der Freunde</b><p class="hint">Aufenthalt vom ' + esc(fmtTag(b.arr)) + " bis " + esc(fmtTag(b.dep)) + ", " + n + " " + gastWort(n) + ". " + st + " Die Eingaben stehen nur auf dem Handy von " + esc(b.name) + ", darum siehst du sie hier nicht.</p></div>";
-    }
     const bereit = !alt.gesendet && fr.length >= n && fr.slice(0, n).every((f) => f && f.name && f.vorname && f.geb && f.geschlecht);   // schon im Rechner ausgefüllt (seit 3.6.0.1)
     const kopf = alt.gesendet
       ? '<span class="gm-ico">✅</span><b>Liste deiner Freunde gesendet</b> am ' + esc(fmtTag(alt.gesendet.slice(0, 10))) + ", " + esc(alt.gesendet.slice(11, 16)) + " Uhr. Danke!"
       : bereit ? '<span class="gm-ico">👥</span><b>Bitte sende uns nun noch die Liste deiner Freunde zu</b>' : '<span class="gm-ico">👥</span><b>Wichtig: Bitte fülle die Liste deiner Freunde aus</b>';
-    let h = '<details class="note h gm-k gm-zu' + (alt.gesendet ? " gm-ok" : " gm-offen") + '" data-gmk="' + esc(key) + '"' + (GM_AUF.has(key) || GM_OPEN.has(key) ? " open" : "") + '><summary><span>' + kopf + '</span></summary><p class="hint">Aufenthalt vom ' + esc(fmtTag(b.arr)) + " bis " + esc(fmtTag(b.dep)) + ", " + n + " " + gastWort(n) + "." + (bereit ? " Die Liste ist schon ausgefüllt. Prüfe sie kurz und tippe auf «Senden»." : " Die Eltern brauchen die Liste, damit sie die Reservation abschliessen und deine Freunde für die Kurtaxe in Adelboden anmelden können.") + " Die Angaben gehen direkt an die Eltern und sind nicht öffentlich.</p>";
+    let h = '<details class="note h gm-k gm-zu' + (alt.gesendet ? " gm-ok" : " gm-offen") + '" data-gmk="' + esc(key) + '"' + (GM_AUF.has(key) || GM_OPEN.has(key) ? " open" : "") + '><summary><span>' + kopf + '</span></summary>' + (meinVorschau() ? vorschauListe(b) : "") + '<p class="hint">Aufenthalt vom ' + esc(fmtTag(b.arr)) + " bis " + esc(fmtTag(b.dep)) + ", " + n + " " + gastWort(n) + "." + (bereit ? " Die Liste ist schon ausgefüllt. Prüfe sie kurz und tippe auf «Senden»." : " Die Eltern brauchen die Liste, damit sie die Reservation abschliessen und deine Freunde für die Kurtaxe in Adelboden anmelden können.") + " Die Angaben gehen direkt an die Eltern und sind nicht öffentlich.</p>";
     if (!auf) return '<details class="note h gm-k gm-ok gm-zu" data-gmk="' + esc(key) + '"><summary><span>' + kopf + '</span></summary><p class="hint">Aufenthalt vom ' + esc(fmtTag(b.arr)) + " bis " + esc(fmtTag(b.dep)) + ", " + n + " " + gastWort(n) + '. Die Liste ist bei den Eltern. Ändern kannst du sie bis zwei Tage vor der Abreise, dann verschwindet dieser Kasten.</p><div class="gm-knoepfe"><button type="button" class="btn" data-gmauf="' + esc(key) + '">✏️ Liste ändern</button><button type="button" class="btn" data-gmweg="' + esc(key) + '">🙈 Ausblenden</button></div>' + (msg ? '<p class="hint">' + msg + "</p>" : "") + "</details>";
     for (let i = 0; i < n; i++) {
       const f = fr[i] || {};

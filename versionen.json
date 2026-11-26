@@ -2,6 +2,19 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.31.1.0",
+      "datum": "2026-11-27",
+      "titel": "«Ansicht als»: Verwaltung wieder original, Laufschrift für unbekannte Namen",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Bei «Ansicht als» steht wieder das Formular des Kindes wie es das Kind sieht, mit einer Zeile darüber: gesendet am … oder die Laufschrift «Namen noch nicht sichtbar».",
+        "Eine Laufschrift läuft auch in «Wer ist wann da?» und in der Preisberechnung, aber nur, wo die Namen der Freunde nicht bekannt sind. Sobald die Liste im Briefkasten liegt oder die Anfrage die abgekürzten Namen enthält, verschwindet sie.",
+        "Fehler behoben: Bei «Ansicht als» holte die Preisberechnung die Namen nie aus dem Briefkasten."
+      ]
+    },
+    {
       "v": "3.31.0.2",
       "datum": "2026-11-26",
       "titel": "Papis Liste der Freunde: veraltete Warnung weg",
