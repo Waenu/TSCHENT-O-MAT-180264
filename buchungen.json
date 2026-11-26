@@ -50,10 +50,6 @@
   ],
   "logbuch": [
     {
-      "t": "2026-10-31T17:52",
-      "text": "Bestätigt: Jerome, Do 5.11.2026 bis Sa 7.11.2026, CHF 110, Wäsche: persönlich bringen bis Di 10.11.2026"
-    },
-    {
       "t": "2026-10-31T17:54",
       "text": "Bestätigt: Deborah, Sa 7.11.2026 bis Mo 9.11.2026, CHF 110"
     },
@@ -844,6 +840,10 @@
     {
       "t": "2026-11-26T19:13",
       "text": "Bestätigt: ⭐ Sonderbuchung, Manuel, Do 7.01.2027 bis So 10.01.2027, CHF 1920"
+    },
+    {
+      "t": "2026-11-26T19:17",
+      "text": "Bescheid gegeben: Manuel, Do 7.01.2027 bis So 10.01.2027"
     },
     {
       "t": "2026-11-26T19:17",
