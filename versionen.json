@@ -2,6 +2,20 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.33.0.0",
+      "datum": "2026-11-26",
+      "titel": "Neu: Prüfmappe und Namen der Freunde nach 18 Monaten entfernen",
+      "arten": [
+        "Neu",
+        "Text"
+      ],
+      "punkte": [
+        "Ordner «tests» mit automatischen Prüfungen (node tests/lauf.js) und Checkliste fürs Handy.",
+        "Abgekürzte Namen der Freunde in der gespeicherten Anfrage werden 18 Monate nach der Abreise entfernt (läuft, wenn Papi die App mit seinem Token öffnet, höchstens einmal pro Tag). In der Versionsgeschichte von GitHub bleiben sie länger sichtbar.",
+        "Glossar «Datenschutz» nachgeführt."
+      ]
+    },
+    {
       "v": "3.32.0.1",
       "datum": "2026-11-27",
       "titel": "Trinkgeld: neuer Text",

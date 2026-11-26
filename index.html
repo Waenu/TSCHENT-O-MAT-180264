@@ -1609,7 +1609,7 @@ if (TEST_MODUS) {
         <details class="sub" id="b-daten"><summary>🔒 Datenschutz</summary><div class="bc"><p class="wt">Das Wichtigste</p><p>Der TSCHENT-O-MAT ist unsere private Familien-App. Was nur dich betrifft, bleibt auf deinem Handy. Was wir für Buchung, Zahlung und Kurtaxe brauchen, verlässt dein Handy. Hier steht ehrlich, was wo liegt und wer es sehen kann.</p><details class="mehr"><summary>Mehr erfahren</summary>
 <p class="wt">📱 Nur auf deinem Handy</p><p>Das sehen wir nicht, auch Papi nicht in seiner Verwaltung:</p><ul><li>dein Rufname</li><li>deine IBAN und deine TWINT-Nummer für die Rechnungen an deine Freunde</li><li>das Adressbuch deiner Freunde</li><li>dein Trinkgeld, deine Haken in den Listen und «Geld einsammeln»</li></ul><p>Deine IBAN und deine TWINT-Nummer stehen nur in den Rechnungen, die du selbst per WhatsApp an deine Freunde schickst. Löschst du die Daten des Browsers oder wechselst du das Handy, sind diese Angaben weg. Wer dein Handy benutzt, kann sie sehen.</p>
 <p class="wt">✉️ Im Briefkasten der Eltern (privat)</p><p>Der Briefkasten liegt in unserem Google-Konto. Nur wir Eltern sehen ihn:</p><ul><li>deine Mailadresse und ob du Mails zu offenen Aufgaben willst</li><li>die Liste deiner Freunde mit Name, Vorname, Geschlecht, Geburtsdatum, Nationalität und Aufenthalt (An- und Abreise)</li></ul><p>Die Liste der Freunde brauchen wir für die Gästekarten und die Kurtaxe. Dafür melden wir deine Freunde bei Adelboden Tourismus an, das ist Vorschrift. Sonst geben wir nichts weiter.</p>
-<p class="wt">🌐 Öffentlich einsehbar</p><p>Der TSCHENT-O-MAT liegt bei GitHub. Seine Dateien sind öffentlich: Wer die Adresse kennt und weiss, wo er suchen muss, kann sie lesen. Dort stehen:</p><ul><li>deine Aufenthalte mit Vorname, Anreise, Abreise, Zahl der Personen und Betrag</li><li>die Preisberechnung mit den Vornamen deiner Familie und deinen Freunden mit abgekürztem Namen (Initiale des Vornamens und Nachname, zum Beispiel S. Meier)</li><li>die Vornamen der Familie (Partner/in und Enkel) in der Datei familie.json, damit sie auf jedem Gerät erscheinen</li><li>der Kalender mit den Vornamen und Daten der Aufenthalte</li><li>die IBAN der Eltern. Auf eine IBAN kann man nur einzahlen, nicht abheben.</li></ul><p>Dort stehen keine Nachnamen der Familie, keine Geburtsdaten, keine Mailadressen und keine Telefonnummern. Von deinen Freunden steht nur der abgekürzte Name, nie die ganze Liste mit Geburtsdatum, Geschlecht und Nationalität. Frag deine Freunde, ob das für sie in Ordnung ist.</p>
+<p class="wt">🌐 Öffentlich einsehbar</p><p>Der TSCHENT-O-MAT liegt bei GitHub. Seine Dateien sind öffentlich: Wer die Adresse kennt und weiss, wo er suchen muss, kann sie lesen. Dort stehen:</p><ul><li>deine Aufenthalte mit Vorname, Anreise, Abreise, Zahl der Personen und Betrag</li><li>die Preisberechnung mit den Vornamen deiner Familie und deinen Freunden mit abgekürztem Namen (Initiale des Vornamens und Nachname, zum Beispiel S. Meier)</li><li>die Vornamen der Familie (Partner/in und Enkel) in der Datei familie.json, damit sie auf jedem Gerät erscheinen</li><li>der Kalender mit den Vornamen und Daten der Aufenthalte</li><li>die IBAN der Eltern. Auf eine IBAN kann man nur einzahlen, nicht abheben.</li></ul><p>Dort stehen keine Nachnamen der Familie, keine Geburtsdaten, keine Mailadressen und keine Telefonnummern. Von deinen Freunden steht nur der abgekürzte Name, nie die ganze Liste mit Geburtsdatum, Geschlecht und Nationalität. 18 Monate nach der Abreise entfernen wir diese Namen aus der Datei, in der Versionsgeschichte von GitHub können sie länger sichtbar bleiben. Frag deine Freunde, ob das für sie in Ordnung ist.</p>
 <p class="wt">📞 Telefonnummern</p><p>Der TSCHENT-O-MAT speichert keine Telefonnummern. Tippst du auf einen WhatsApp-Knopf, öffnet sich WhatsApp, und du wählst selbst, an wen die Nachricht geht. Was du per WhatsApp schickst, läuft über WhatsApp wie jede andere Nachricht.</p>
 <p class="wt">🔑 Dein persönlicher Link</p><p>Dein Link enthält einen Code und die Namen deiner Familie. Wer ihn hat, kann den TSCHENT-O-MAT in deinem Namen benutzen und Anfragen schicken. Gib ihn darum nicht weiter. Die Vornamen deiner Familie stehen mit deiner Buchung in der Preisberechnung, wie oben beschrieben.</p>
 <p class="wt">🗑️ Löschen</p><p>Möchtest du, dass wir etwas löschen, zum Beispiel deine Mailadresse oder die Liste deiner Freunde nach dem Aufenthalt? Sag es uns, wir machen das gerne.</p></details></div></details>
@@ -1729,7 +1729,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.32.0.1";
+let VERSION = "3.33.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -6953,6 +6953,24 @@ async function ghFamilie(lokal, name, fo) {   // familie.json im Repo nachführe
   }
   throw new Error("Speichern fehlgeschlagen.");
 }
+// Abgekürzte Namen der Freunde (Zeile «~\tG») 18 Monate nach der Abreise aus den gespeicherten Anfragen entfernen (seit 3.33.0.0, Wänu). Nur Papi mit echtem Token, höchstens einmal pro Tag.
+// Hinweis: In der Versionsgeschichte von GitHub bleiben die Namen trotzdem sichtbar; entfernt wird nur der heutige Stand der Datei.
+const NAMEN_MONATE = 18;
+const addMonate = (k, n) => { const d = dparse(k); d.setUTCMonth(d.getUTCMonth() + n); return dkey(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()); };
+const namenAlt = (x, heute) => !!(x && x.rechnung && /(^|\n)~\tG\t/.test(String(x.rechnung)) && DKEY.test(String(x.dep)) && addMonate(x.dep, NAMEN_MONATE) <= heute);
+async function namenAufraeumen() {
+  if (!TOKEN || TOKEN === "test" || ABSENDER || MAMI) return;
+  const heute = heuteKey();
+  try { if (localStorage.getItem("tm2_namenAuf") === heute) return; } catch (e) {}
+  const merk = () => { try { localStorage.setItem("tm2_namenAuf", heute); } catch (e) {} };
+  if (!BUCH.some((x) => namenAlt(x, heute)) && !BUCH_ABGEL.some((x) => namenAlt(x, heute)) && !BUCH_STORNO.some((x) => namenAlt(x, heute))) { merk(); return; }
+  try {
+    let n = 0;
+    const j = await ghAendern((l, jj) => { l.forEach((x) => { if (namenAlt(x, heute)) { x.rechnung = String(x.rechnung).split("\n").filter((z) => !/^~\tG\t/.test(z)).join("\n"); n++; } }); if (n) logEintrag(jj, "Namen der Freunde aus " + n + (n === 1 ? " alten Anfrage" : " alten Anfragen") + " entfernt (älter als " + NAMEN_MONATE + " Monate)"); return l; });
+    buchungenAn(j); try { localStorage.setItem("tm2_buchungen", JSON.stringify(j)); } catch (e2) {}
+    merk();
+  } catch (err) { /* nächster Start versucht es nochmals */ }
+}
 async function ghAendern(fn) {
   const url = "https://api.github.com/repos/" + GH_REPO + "/contents/" + GH_DATEI;
   const kopf = { Authorization: "Bearer " + TOKEN, Accept: "application/vnd.github+json" };
@@ -9286,6 +9304,7 @@ try { new ResizeObserver(() => zeichneBalken()).observe(document.getElementById(
   try { let bw = 0; new ResizeObserver(() => { const ti = document.getElementById("calTitle"), w = ti ? ti.clientWidth : 0; if (w && w !== bw) { bw = w; kalTitelNeu(); } }).observe(document.getElementById("calTitle")); } catch (e) {}   // Titelbreite ändert sich (Umschalten, Pfeile, Aufklappen): Jahr neu messen   // erst sichtbar (Rechner aufgeklappt): Sprung nachholen
 })();
 Promise.all([ladeEinstellungen(), ladeBelegt(), ladeBuchungen(), ladeGaeste()]).then(() => {
+  setTimeout(() => { try { namenAufraeumen(); } catch (e) {} }, 4000);   // alte Namen der Freunde entfernen (seit 3.33.0.0)
   einnLaden().then(() => { try { zeichneBalken(); } catch (e) {} });
   {
     const STUFEN = [["klein", 0.92], ["mittel", 1], ["gross", 1.12]];

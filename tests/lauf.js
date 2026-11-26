@@ -1,0 +1,259 @@
+// Prüfläufe für den TSCHENT-O-MAT (seit 3.33.0.0).
+// Aufruf im Repo-Ordner:  node tests/lauf.js        (Voraussetzung: Node.js und «npm i playwright», einmalig «npx playwright install chromium»)
+// Die Läufe starten einen kleinen Server, öffnen die App wie ein Handy (450 px), simulieren GitHub und den Briefkasten und melden OK oder FEHLER.
+// Es wird nichts gesendet und nichts gespeichert: api.github.com ist abgefangen.
+const { chromium } = require("playwright");
+const http = require("http"), fs = require("fs"), path = require("path"), vm = require("vm");
+const ROOT = path.resolve(__dirname, "..");
+const PORT = Number(process.env.PORT) || 8790;
+const BASIS = "http://localhost:" + PORT + "/TSCHENT-O-MAT-Test/";   // «TSCHENT-O-MAT-Test» im Pfad schaltet den Testmodus ein
+const TYP = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".json": "application/json", ".png": "image/png", ".woff2": "font/woff2", ".css": "text/css" };
+const lesen = (f) => fs.readFileSync(path.join(ROOT, f), "utf8");
+const b64 = (o) => Buffer.from(typeof o === "string" ? o : JSON.stringify(o)).toString("base64");
+
+const ERG = [];
+const ok = (name, bed, extra) => { ERG.push({ name, ok: !!bed, extra }); };
+
+function server() {
+  return new Promise((res) => {
+    const s = http.createServer((req, ant) => {
+      let p = decodeURIComponent(req.url.split("?")[0]).replace(/^\/TSCHENT-O-MAT-Test\//, "/"); if (p === "/") p = "/index.html";
+      const f = path.join(ROOT, p);
+      if (!f.startsWith(ROOT) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) { ant.writeHead(404); ant.end("nicht da"); return; }
+      ant.writeHead(200, { "Content-Type": TYP[path.extname(f)] || "application/octet-stream" }); ant.end(fs.readFileSync(f));
+    });
+    s.listen(PORT, () => res(s));
+  });
+}
+
+// opt: {ls:{…}, papi:true, heute:"2026-11-08", schalter:{…}|null, buchungen:{…}, api:(url, methode, body) => {status, body}|null}
+async function seite(browser, opt = {}) {
+  const ctx = await browser.newContext({ serviceWorkers: "block", viewport: { width: 450, height: 900 } });
+  const p = await ctx.newPage(); p.fehler = []; p.api = [];
+  p.on("pageerror", (e) => p.fehler.push(e.message));
+  await p.route("**/belegt.json*", (r) => r.fulfill({ contentType: "application/json", body: JSON.stringify({ belegt: [] }) }));
+  await p.route("**/einladungen.json*", (r) => r.abort());
+  await p.route("**/familie.json*", (r) => r.fulfill({ contentType: "application/json", body: JSON.stringify(opt.familie || { liste: {} }) }));
+  await p.route("**/schalter.json*", (r) => (opt.schalter ? r.fulfill({ contentType: "application/json", body: JSON.stringify({ werte: opt.schalter }) }) : r.fulfill({ status: 404, body: "{}" })));
+  if (opt.buchungen) await p.route("**/buchungen.json*", (r) => r.fulfill({ contentType: "application/json", body: JSON.stringify(opt.buchungen) }));
+  await p.route("**api.github.com/**", async (r) => {
+    const q = r.request(), m = q.method(), body = q.postData();
+    p.api.push({ url: q.url(), m, body });
+    const a = opt.api ? opt.api(q.url(), m, body) : null;
+    if (!a) return r.abort();
+    return r.fulfill({ status: a.status || 200, contentType: "application/json", body: typeof a.body === "string" ? a.body : JSON.stringify(a.body || {}) });
+  });
+  const ls = Object.assign({ i: "1" }, opt.ls || {});
+  await p.addInitScript(([l, papi]) => { if (localStorage.getItem("tm2t_i") && localStorage.getItem("tm2t_run")) return; localStorage.setItem("tm2t_run", "1"); Object.keys(l).forEach((k) => localStorage.setItem("tm2t_" + k, l[k])); if (papi) window.__papi = 1; }, [ls, !!opt.papi]);
+  await p.goto(BASIS + "?heute=" + (opt.heute || "2026-11-08"), { waitUntil: "load" }); await p.waitForTimeout(2200);
+  p.ctx = ctx; return p;
+}
+const kind = (name) => ({ absender: name, namefix: "1", ["mailSkip:" + name]: "1", mail: JSON.stringify({ name, mail: "t@e.ch" }) });
+const papiLs = { token: "test", papitoken: "test" };
+const manuelBuch = (extra) => ({ buchungen: [Object.assign({ name: "Manuel", arr: "2027-01-04", dep: "2027-01-07", selbst: false, pers: 5, betrag: 1254, rechnung: "Anreise\tMo\nFreunde\t3\nTotal laut Rechner\tCHF 1254.–", bestaetigt: "2026-11-26T12:52" }, extra || {})], logbuch: [] });
+const warte = (p, ms) => p.waitForTimeout(ms);
+
+async function tDateien() {
+  const idx = lesen("index.html"), ein = fs.readFileSync(path.join(ROOT, "einstellungen.json")), ver = JSON.parse(lesen("versionen.json"));
+  ok("einstellungen.json hat genau 3024 Bytes", ein.length === 3024, ein.length + " Bytes");
+  const v = (/let VERSION = "([^"]+)"/.exec(idx) || [])[1], vj = (/"version":\s*"([^"]+)"/.exec(ein.toString()) || [])[1];
+  ok("Version in index.html = einstellungen.json = oberster Eintrag in versionen.json", v && v === vj && ver.versionen[0].v === v, [v, vj, ver.versionen[0].v].join(" / "));
+  ok("«let VERSION» kommt genau einmal vor", (idx.match(/let VERSION = "/g) || []).length === 1);
+  const sk = [...idx.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)].map((x) => x[1]).sort((a, b) => b.length - a.length)[0];
+  let syn = true, msg = ""; try { new vm.Script(sk); } catch (e) { syn = false; msg = e.message; }
+  ok("Skript hat keinen Syntaxfehler", syn, msg);
+  ok("versionen.json: Datum im Format JJJJ-MM-TT", /^\d{4}-\d{2}-\d{2}$/.test(ver.versionen[0].datum), ver.versionen[0].datum);
+}
+
+async function tStart(b) {
+  const p = await seite(b, { ls: papiLs, papi: true });
+  const r = await p.evaluate(() => ({ v: typeof VERSION === "string" ? VERSION : null, token: !!TOKEN }));
+  ok("Start als Papi ohne Fehler", p.fehler.length === 0 && r.v && r.token, p.fehler.join("|"));
+  await p.ctx.close();
+  const k = await seite(b, { ls: kind("Deborah") });
+  ok("Start als Kind (Deborah) ohne Fehler", k.fehler.length === 0, k.fehler.join("|"));
+  await k.ctx.close();
+}
+
+async function tControlPanel(b) {
+  const puts = [];
+  const api = (url, m, body) => {
+    if (/contents\/schalter\.json/.test(url)) { if (m === "GET") return { status: 404 }; puts.push(JSON.parse(body)); return { status: 201 }; }
+    if (/contents\/buchungen\.json/.test(url)) { if (m === "GET") return { body: { sha: "x", content: b64({ buchungen: [], logbuch: [] }) } }; puts.push({ log: JSON.parse(Buffer.from(JSON.parse(body).content, "base64").toString()).logbuch }); return { status: 200 }; }
+    return null;
+  };
+  const p = await seite(b, { ls: papiLs, papi: true, schalter: { gast: 80, famPausch: 9999, gastZimmer: 35 }, api });
+  const r = await p.evaluate(async () => {
+    const w = (ms) => new Promise((z) => setTimeout(z, ms)); const o = {};
+    o.geladen = { gast: P.gast, fam: P.famPausch, gz: P.gastZimmer, fa: P.famAnteil };
+    bestZeigen(); await w(300);
+    const sd = [...document.querySelectorAll("#bestKasten details")].find((d) => /Control Panel/.test(d.querySelector("summary").innerText)); o.da = !!sd; if (sd) sd.open = true;
+    const inp = (k) => document.getElementById("sch-" + k);
+    o.std = !document.querySelector('[data-sch-std="gast"]').hidden;
+    document.querySelector('[data-sch-std="gast"]').click(); await w(300); o.gastNachStd = document.getElementById("sch-gast").value;
+    inp("hochMinNaechte").value = "99"; inp("hochMinNaechte").dispatchEvent(new Event("input", { bubbles: true }));
+    document.querySelector("[data-sch-save]").click(); await w(400); o.grenze = (document.querySelector(".sond-msg") || {}).innerText || "";
+    inp("hochMinNaechte").value = String(P.hochMinNaechte); inp("hochMinNaechte").dispatchEvent(new Event("input", { bubbles: true }));
+    inp("gastZimmer").value = "30"; inp("gastZimmer").dispatchEvent(new Event("input", { bubbles: true })); o.live = document.getElementById("sch-fa").textContent;
+    document.querySelector("[data-sch-save]").click(); await w(500); const ok1 = document.querySelector('[data-afr="1"]'); if (ok1) { ok1.click(); await w(1500); }
+    o.nach = { gz: P.gastZimmer, fa: P.famAnteil, gast: P.gast };
+    return o;
+  });
+  ok("Control Panel: gültige Werte aus schalter.json gelten, ungültiger (9999) wird ignoriert", r.geladen.gast === 80 && r.geladen.fam === 70, JSON.stringify(r.geladen));
+  ok("Control Panel: Familienanteil im Zimmer folgt (35 → 35)", r.geladen.gz === 35 && r.geladen.fa === 35);
+  ok("Control Panel: Kasten da, «Standard» setzt zurück", r.da && r.std && r.gastNachStd === "70", JSON.stringify([r.da, r.std, r.gastNachStd]));
+  ok("Control Panel: Eingabe ausserhalb der Grenzen wird abgewiesen", /Bitte prüfen/.test(r.grenze), r.grenze);
+  ok("Control Panel: Live-Anzeige und Speichern (Zimmer 30 → Familie 40)", /CHF 40/.test(r.live) && r.nach.gz === 30 && r.nach.fa === 40, r.live + " | " + JSON.stringify(r.nach));
+  ok("Control Panel: schalter.json und Logbuch werden geschrieben", puts.some((x) => x.message && /Schalter/.test(x.message)) && puts.some((x) => x.log && x.log.length), JSON.stringify(puts).slice(0, 120));
+  ok("Control Panel: keine Fehler", p.fehler.length === 0, p.fehler.join("|"));
+  await p.ctx.close();
+}
+
+async function tTrinkgeld(b) {
+  for (const [abs, mami, text] of [["Manuel", "Mami", "meine Mami"], ["David", "Marianne", "Marianne Werder"]]) {
+    const p = await seite(b, { ls: kind(abs), buchungen: manuelBuch({ name: abs }), heute: "2027-01-08" });
+    const r = await p.evaluate(() => {
+      const bu = BUCH[0], t = (h) => { const d = document.createElement("div"); d.innerHTML = h; return d.innerText.replace(/\s+/g, " "); }, o = {};
+      o.start = t(trinkHtml(bu)); trinkSetzen(bKey(bu), "aus"); o.aus = t(trinkHtml(bu)); o.betragAus = trinkBetrag(bu);
+      trinkSetzen(bKey(bu), 16); o.mit = t(trinkHtml(bu)); o.betragMit = trinkBetrag(bu);
+      const e = { arr: "2027-01-04", dep: "2027-01-07", nights: 3, frist: "2027-01-14" }, pp = { an: ["Anna"], pers: [{ n: "Anna Meier", a: 30, z: [], kk: false }], fuer: [], t: 100, fam: false, mit: [], z: [] };
+      o.mitHinweis = inkText(e, pp, true); o.ohneHinweis = inkText(e, pp, false);
+      return o;
+    });
+    ok("Trinkgeld (" + abs + "): Feld sichtbar, «Kein Trinkgeld für " + mami + "», kein Aufrunden", r.start.includes("Kein Trinkgeld für " + mami) && /Trinkgeld/.test(r.start) && !/ufrunden/.test(r.start), r.start);
+    ok("Trinkgeld (" + abs + "): ausdrücklich aus zeigt «Kein Trinkgeld für " + mami + "», Betrag 0", r.aus.includes("Kein Trinkgeld für " + mami) && r.betragAus === 0, r.aus);
+    ok("Trinkgeld (" + abs + "): Betrag 16 → «Zu überweisen» 1’270.00", /1.270\.00/.test(r.mit) && r.betragMit === 16, r.mit);
+    ok("Rechnung an Freunde (" + abs + "): Hinweis mit Mami/Marianne und Adelboden, ohne Schalter kein Hinweis", r.mitHinweis.includes(text) && /nach Adelboden/.test(r.mitHinweis) && !/🍀/.test(r.ohneHinweis));
+    await p.ctx.close();
+  }
+}
+
+async function tRechnungSchalter(b) {
+  const p = await seite(b, { ls: kind("Manuel"), buchungen: manuelBuch(), heute: "2027-01-08" });
+  const r = await p.evaluate(async () => {
+    const w = (ms) => new Promise((z) => setTimeout(z, ms)); const o = {}, bu = BUCH[0];
+    const e = { arr: "2027-01-04", dep: "2027-01-07", nights: 3, frist: "2027-01-14", tot: 100, kt: 0, ok: {}, p: [{ an: ["Anna"], pers: [{ n: "Anna Meier", a: 30, z: [["Übernachtung", "CHF 100.–"]], kk: false }], fuer: [], t: 100, fam: false, mit: [], z: [] }] };
+    inkSetzen(bKey(bu), e); INK_SIG = ""; inkZeigen(); await w(300);
+    const cb = () => document.querySelector("[data-ink-tr]"), href = () => decodeURIComponent((document.querySelector('a.btn[href*="wa.me"]') || { href: "" }).href);
+    o.da = !!cb() && cb().checked; o.vorher = /🍀/.test(href());
+    cb().click(); await w(300); o.aus = { checked: cb().checked, hinweis: /🍀/.test(href()), gespeichert: JSON.stringify(inkLokal()[bKey(bu)].tr) };
+    cb().click(); await w(300); o.an = { checked: cb().checked, hinweis: /🍀/.test(href()) };
+    return o;
+  });
+  ok("Rechnung an Freunde: Schalter pro Rechnung da und vorgewählt, Hinweis in der WhatsApp", r.da && r.vorher);
+  ok("Rechnung an Freunde: Schalter aus = kein Hinweis, Wahl wird gespeichert, wieder an = Hinweis", !r.aus.checked && !r.aus.hinweis && r.aus.gespeichert === '{"0":false}' && r.an.checked && r.an.hinweis, JSON.stringify(r));
+  ok("Rechnung an Freunde: keine Fehler", p.fehler.length === 0, p.fehler.join("|"));
+  await p.ctx.close();
+}
+
+async function tAnsichtAls(b) {
+  const p = await seite(b, { ls: kind("Manuel"), buchungen: manuelBuch(), heute: "2026-11-27", papi: true });
+  const r = await p.evaluate(async () => {
+    const w = (ms) => new Promise((z) => setTimeout(z, ms)); const o = {};
+    TOKEN = "test"; o.vorschau = meinVorschau(); GM_SIG = ""; gmKindZeigen(); await w(300);
+    const gm = () => [...document.querySelectorAll("[data-gmk]")], bu = BUCH[0];
+    o.felder = gm().reduce((a, x) => a + x.querySelectorAll("input").length, 0); o.lauf = gm().some((x) => x.querySelector(".lauf")); o.kopf = gm().map((x) => x.innerText.replace(/\s+/g, " ").slice(0, 160)).join("|");
+    o.ubLauf = /class="lauf"/.test(ubKlapp(bu)); o.reLauf = /class="lauf"/.test(rechDetails(bu.rechnung, bu.bestaetigt, true, bu));
+    GM_LISTEN = {}; GM_LISTEN[bKey(bu)] = { gesendet: "2026-11-27T09:15", freunde: [{ vorname: "Anna", name: "Meier" }] }; GM_SIG = ""; gmKindZeigen(); await w(200);
+    o.nach = { kopf: gm().map((x) => x.innerText.replace(/\s+/g, " ").slice(0, 120)).join("|"), ubLauf: /class="lauf"/.test(ubKlapp(bu)), name: (rechNameFn(bu) || ((x) => x))("Freund/in 1 zahlt") };
+    GM_LISTEN = null; const bu2 = Object.assign({}, bu, { rechnung: bu.rechnung + "\n~\tG\tS. Meier\tT. Huber" });
+    o.kuerzel = { ubLauf: /class="lauf"/.test(ubKlapp(bu2)), name: (rechNameFn(bu2) || ((x) => x))("Freund/in 2 zahlt") };
+    return o;
+  });
+  ok("Ansicht als: Formular des Kindes bleibt original, Überschrift «Bitte sende uns nun noch die Liste …», Laufschrift", r.vorschau && r.felder > 5 && r.lauf && /Bitte sende uns nun noch/.test(r.kopf), r.kopf);
+  ok("Ansicht als: Laufschrift auch in «Wer ist wann da?» und «Preisberechnung»", r.ubLauf && r.reLauf);
+  ok("Ansicht als: Liste gesendet → «gesendet», keine Laufschrift, Name aus dem Briefkasten", /gesendet am/.test(r.nach.kopf) && !r.nach.ubLauf && r.nach.name === "Anna zahlt", JSON.stringify(r.nach));
+  ok("Ansicht als: abgekürzter Name aus der Anfrage («T. Huber»), keine Laufschrift", !r.kuerzel.ubLauf && r.kuerzel.name === "T. Huber zahlt", JSON.stringify(r.kuerzel));
+  ok("Ansicht als: keine Fehler", p.fehler.length === 0, p.fehler.join("|"));
+  await p.ctx.close();
+}
+
+async function tSchnappschuss(b) {
+  const p = await seite(b, { ls: kind("Deborah"), heute: "2026-11-08", familie: { liste: { Deborah: { p: "David", k: ["Mael"] } } } });
+  const r = await p.evaluate(async () => {
+    const w = (ms) => new Promise((z) => setTimeout(z, ms)); const o = {};
+    kalenderKlick("2026-12-12"); kalenderKlick("2026-12-15"); await w(400);
+    const c = [...document.querySelectorAll("#f-art .zchip")].find((x) => /Normal/.test(x.textContent)); if (c) { c.click(); await w(400); }
+    S.werArt = EIGEN; S.famSel = []; S.ichMit = true; normalize(); render(); await w(300);
+    const f = (v, n, g) => ({ vorname: v, name: n, geschlecht: "w", geb: g || "1990-01-01", nat: "Schweiz" });
+    localStorage.setItem("tm2t_gmEntwurf", JSON.stringify({ k: gmEntwurfKeyJetzt(), l: [f("Anna", "Meier"), f("Bea", "Zeller", "2010-05-05")] })); render(); await w(300);
+    const L = schnappBer('<tr><td>Freund/in 1 zahlt</td><td>CHF 100.–</td></tr><tr><td>Freund/in 2 zahlt</td><td>CHF 100.–</td></tr>', '<tr><td>Anreise</td><td>Sa 12.12.2026</td></tr>', "", true, [[100, 0, 5, 0, 3], [100, 0, 5, 0, 3]], null);
+    o.g = L.filter((z) => /^~\tG/.test(z)).map((z) => z.replace(/\t/g, "|"));
+    const text = "Gesendet am Sa 12.12.2026, 10:00 Uhr. App-Version x.\nFreunde\t2\n" + L.join("\n"), bu = { name: "Deborah", arr: "2026-12-12", dep: "2026-12-15", pers: 3, betrag: 630, rechnung: text, bestaetigt: "2026-11-26T12:00" };
+    TOKEN = "test"; ABSENDER = "";
+    o.fn = (rechNameFn(bu) || ((x) => x))("Freund/in 1 zahlt und Freund/in 2"); const u = ubBuchung(bu); o.ubTyp = typeof u; o.ub = (String(u).match(/A\. Meier|B\. Zeller|Freund\/in \d/g) || []).join(",");
+    return o;
+  });
+  ok("Anfrage speichert die abgekürzten Namen («~|G|A. Meier|B. Zeller»), nie Geburtsdatum", r.g.length === 1 && r.g[0] === "~|G|A. Meier|B. Zeller" && !/19|2010/.test(r.g[0]), JSON.stringify(r.g));
+  ok("Anfrage: Namen erscheinen in Aufteilung und «Wer ist wann da?»", r.fn === "A. Meier zahlt und B. Zeller" && r.ub === "A. Meier,B. Zeller", r.fn + " | " + r.ub + " | " + r.ubTyp);
+  await p.ctx.close();
+}
+
+async function tSonder(b) {
+  const p = await seite(b, { ls: papiLs, papi: true });
+  const r = await p.evaluate(async () => {
+    const w = (ms) => new Promise((z) => setTimeout(z, ms)); const o = {};
+    const tot = async (v, ge) => { sondStart(v); await w(300); S.werArt = EIGEN; S.famSel = []; S.ichMit = true; S.wer = "Nur ich"; S.gaeste = ge; S.reinig = REINIG[0]; S.zimmer = "Nein"; S.spar = "Nein"; S.waesche = S.waesche || "Persönlich bringen"; normalize(); render(); await w(300); const rr = calc(Object.assign({}, S, { kinderPflicht: !listeModus() })); return "CHF " + rr.TOT + (rr.ok ? "" : " " + JSON.stringify(Object.assign({}, rr, { d: 0 })).slice(0, 300)); };
+    const base = { id: "a", name: "Papi", arr: "2027-01-04", dep: "2027-01-07", t: 1 };
+    o.leer = await tot(Object.assign({ pa: false, reinB: null }, base), 0); o.r120 = await tot(Object.assign({ pa: false, reinB: 120 }, base), 0); o.r0 = await tot(Object.assign({ pa: false, reinB: 0 }, base), 0);
+    const b1 = Object.assign({}, base, { id: "b", dep: "2027-01-05" }), b5 = Object.assign({}, base, { id: "c", dep: "2027-01-09" }), b3 = Object.assign({}, base, { id: "d", arr: "2027-01-07", dep: "2027-01-10" });
+    o.pa1 = await tot(Object.assign({ pa: true, preis: 600, reinB: 120 }, b1), 0); o.pa5 = await tot(Object.assign({ pa: true, preis: 600, reinB: 120 }, b5), 0); o.pa3 = await tot(Object.assign({ pa: true, preis: 600, reinB: 120 }, b3), 0);
+    o.altMit = await tot(Object.assign({ pa: true, preis: 600, rein: true }, b3), 0); o.altOhne = await tot(Object.assign({ pa: true, preis: 600, rein: false }, b3), 0);
+    return o;
+  });
+  const z = (t) => (/CHF\s*([\d’'’]+)/.exec(t) || [])[1] && Number(/CHF\s*([\d’'’]+)/.exec(t)[1].replace(/[’'’]/g, ""));
+  const e = [["leer", 450], ["r120", 330], ["r0", 210], ["pa1", 720], ["pa5", 3120], ["pa3", 1920], ["altMit", 2040], ["altOhne", 1800]];
+  e.forEach(([k, soll]) => ok("Sonderbuchung " + k + " = CHF " + soll, z(r[k]) === soll, r[k]));
+  await p.ctx.close();
+}
+
+async function tPreise(b) {
+  for (const [schalter, famSoll] of [[null, 70], [{ famPausch: 80 }, 80]]) {
+    const p = await seite(b, { ls: kind("Deborah"), schalter });
+    const r = await p.evaluate(async () => {
+      const w = (ms) => new Promise((z) => setTimeout(z, ms));
+      kalenderKlick("2026-12-12"); kalenderKlick("2026-12-15"); await w(400);
+      const c = [...document.querySelectorAll("#f-art .zchip")].find((x) => /Normal/.test(x.textContent)); if (c) { c.click(); await w(400); }
+      S.werArt = EIGEN; S.famSel = []; S.ichMit = true; S.gaeste = 0; normalize(); render(); await w(500);
+      const d = derive(S); return { FN: d.FN, nights: d.nights };
+    });
+    ok("Preis pro Nacht für die Familie " + famSoll + " (Control Panel " + (schalter ? "80" : "Standard") + "), 3 Nächte", r.FN === famSoll && r.nights === 3, JSON.stringify(r));
+    await p.ctx.close();
+  }
+}
+
+async function tNamenAufraeumen(b) {
+  const alt = { name: "Rahel", arr: "2025-03-07", dep: "2025-03-10", pers: 3, betrag: 300, rechnung: "Anreise\tFr\nFreunde\t1\n~\tG\tA. Meier\nTotal laut Rechner\tCHF 300.–", bestaetigt: "2025-02-01T10:00" };
+  const neu = { name: "Manuel", arr: "2027-01-04", dep: "2027-01-07", pers: 3, betrag: 300, rechnung: "Anreise\tMo\nFreunde\t1\n~\tG\tB. Zeller\nTotal laut Rechner\tCHF 300.–", bestaetigt: "2026-11-26T12:52" };
+  const puts = []; const buch = { buchungen: [alt, neu], logbuch: [] };
+  const api = (url, m, body) => {
+    if (/contents\/buchungen\.json/.test(url)) { if (m === "GET") return { body: { sha: "x", content: b64(buch) } }; puts.push(JSON.parse(Buffer.from(JSON.parse(body).content, "base64").toString())); return { status: 200 }; }
+    return null;
+  };
+  const p = await seite(b, { ls: papiLs, papi: true, buchungen: buch, api, heute: "2026-11-08" });
+  const r = await p.evaluate(async () => {
+    const o = {}; o.mitTest = (TOKEN = "test", await namenAufraeumen(), "ok");
+    return o;
+  });
+  ok("Aufräumen: mit Test-Token passiert nichts", puts.length === 0, JSON.stringify(puts).slice(0, 80));
+  await p.evaluate(async () => { TOKEN = "echt"; try { localStorage.removeItem("tm2_namenAuf"); localStorage.removeItem("tm2t_namenAuf"); } catch (e) {} await namenAufraeumen(); });
+  const j = puts[0];
+  ok("Aufräumen: Namen von Anfragen älter als 18 Monate werden entfernt, neuere bleiben", !!j && !/~\tG/.test(j.buchungen.find((x) => x.name === "Rahel").rechnung) && /~\tG\tB\. Zeller/.test(j.buchungen.find((x) => x.name === "Manuel").rechnung), JSON.stringify(j && j.buchungen.map((x) => x.rechnung)));
+  ok("Aufräumen: Logbuch-Eintrag", !!j && j.logbuch.some((x) => /Namen der Freunde/.test(x.text)), JSON.stringify(j && j.logbuch));
+  ok("Aufräumen: Rest der Anfrage bleibt (Betrag und Zeilen)", !!j && /Total laut Rechner/.test(j.buchungen.find((x) => x.name === "Rahel").rechnung));
+  const n = puts.length; await p.evaluate(async () => { await namenAufraeumen(); });
+  ok("Aufräumen: höchstens einmal pro Tag", puts.length === n);
+  ok("Aufräumen: keine Fehler", p.fehler.length === 0, p.fehler.join("|"));
+  await p.ctx.close();
+}
+
+(async () => {
+  const s = await server(); const b = await chromium.launch();
+  const lauf = [["Dateien", tDateien], ["Start", tStart], ["Control Panel", tControlPanel], ["Trinkgeld", tTrinkgeld], ["Rechnung an Freunde", tRechnungSchalter], ["Ansicht als", tAnsichtAls], ["Anfrage und Namen", tSchnappschuss], ["Sonderbuchungen", tSonder], ["Preise", tPreise], ["Alte Namen aufräumen", tNamenAufraeumen]];
+  const nur = process.argv[2];
+  for (const [n, f] of lauf) { if (nur && !n.toLowerCase().includes(nur.toLowerCase())) continue; try { await f(b); } catch (e) { ok(n + ": Lauf abgebrochen", false, e.message); } }
+  await b.close(); s.close();
+  let fehl = 0; ERG.forEach((x) => { if (!x.ok) fehl++; console.log((x.ok ? "OK      " : "FEHLER  ") + x.name + (!x.ok && x.extra ? "\n          → " + String(x.extra).slice(0, 300) : "")); });
+  console.log("\n" + (ERG.length - fehl) + " von " + ERG.length + " Prüfungen in Ordnung" + (fehl ? ", " + fehl + " FEHLER" : "."));
+  process.exit(fehl ? 1 : 0);
+})();

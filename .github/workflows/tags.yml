@@ -1,0 +1,26 @@
+# Legt für jede Version ein Git-Tag «v3.33.0.0» an (Rückweg zu einer alten Fassung).
+# Liest die Version aus dem Commit-Text («3.33.0.0: Titel»); legt fehlende Tags an, auch rückwirkend. Ändert keine Dateien.
+name: tags
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: tags
+jobs:
+  tags:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Tags anlegen
+        run: |
+          git config user.name "tags"
+          git config user.email "tags@users.noreply.github.com"
+          git log --format='%H %s' | grep -E '^[0-9a-f]+ [0-9]+\.[0-9]+\.[0-9]+\.[0-9]+:' | while read -r sha subj; do
+            v="v${subj%%:*}"
+            if ! git rev-parse -q --verify "refs/tags/$v" >/dev/null; then git tag "$v" "$sha" && echo "Tag $v"; fi
+          done
+          git push origin --tags
