@@ -2,6 +2,20 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.37.0.0",
+      "datum": "2026-11-26",
+      "titel": "Neu: Control Panel «Sonderbuchung (Weltcup)»: Mindestnächte pro Person",
+      "arten": [
+        "Neu"
+      ],
+      "punkte": [
+        "Neuer Wert im Control Panel: «Sonderbuchung (Weltcup): jede Person bleibt mindestens» N Nächte, Standard 3. Bei einer Sonderbuchung kann dann niemand kürzer bleiben als N Nächte, bei einer Vorlage mit 3 Nächten bleiben alle die ganze Zeit.",
+        "Auf 2 gestellt, sind Aufenthalte mit 2 von 3 Nächten wieder erlaubt (die Pauschale wird nach Personennächten verteilt).",
+        "Beim Speichern einer Vorlage mit weniger Nächten fragt die App nach (nicht gesperrt).",
+        "Normale Buchungen sind nicht betroffen (dort gilt weiter «Eigene An- und Abreise»)."
+      ]
+    },
+    {
       "v": "3.36.0.0",
       "datum": "2026-11-26",
       "titel": "Sonderbuchung: Pauschale nach Personennächten",

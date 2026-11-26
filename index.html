@@ -1729,7 +1729,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.36.0.0";
+let VERSION = "3.37.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -1758,6 +1758,7 @@ let HOCH = [];       // Hochsaison: Liste von ["JJJJ-MM-TT", "JJJJ-MM-TT"] (von,
 const P = {
   // Alle Beträge in CHF. Pro Nacht = pro Nacht und Person bzw. Gruppe, wie beschriftet.
   famPausch: 70,        // Familie pro Nacht
+  sondMin: 3,           // Sonderbuchung (Weltcup): jede Person bleibt mindestens so viele Nächte (seit 3.37.0.0, Schalter; 2 erlaubt kürzere Aufenthalte)
   eigeneMin: 1,         // eigene An-/Abreise einer Person (Freund oder Familie): mindestens so viele Nächte (seit 3.30.0.0, Schalter; vorher fest 1)
   gast: 70,             // Gast pro Nacht (eigenes Zimmer)
   reinigung: 240,       // pro Buchung, pauschal
@@ -1965,7 +1966,8 @@ function freundParteienN(d) {   // liest den Entwurf nur (calc läuft auch mit f
 var ROH_L = null;   // letzte Liste zum aktuellen Termin: Varianten mit 1 Nacht mehr usw. ändern ARR/DEP kurz, die Gruppe bleibt dieselbe (seit 3.15.0.3)
 // Freunde mit eigener An- und Abreise (seit 3.19.0.0): f.an/f.ab im Entwurf (nur Handy), sonst die Daten der Familie; immer innerhalb, mindestens 1 Nacht (seit 3.24.0.0, vorher 2)
 function fAuf(f, arr, dep) { let an = f && /^\d{4}-\d{2}-\d{2}$/.test(f.an || "") && f.an >= arr && f.an < dep ? f.an : arr, ab = f && /^\d{4}-\d{2}-\d{2}$/.test(f.ab || "") && f.ab <= dep && f.ab > arr ? f.ab : dep; if (diffDays(an, ab) < 1) { an = arr; ab = dep; } const n = diffDays(an, ab); return { an, ab, n, nt: n + " " + (n === 1 ? "Nacht" : "Nächte") }; }   // Aufenthalt eines Freundes für Anzeigen (seit 3.19.0.3)
-function fDat(f) { let an = f && f.an && f.an > ARR && f.an < DEP ? f.an : ARR, ab = f && f.ab && f.ab < DEP && f.ab > ARR ? f.ab : DEP; if (diffDays(an, ab) < P.eigeneMin) { an = ARR; ab = DEP; } return { an, ab, eigen: an !== ARR || ab !== DEP }; }
+const eigMin = () => (SOND ? P.sondMin : P.eigeneMin);   // Mindestnächte einer Person mit eigenen Daten; bei Sonderbuchungen der Schalter «Weltcup» (seit 3.37.0.0)
+function fDat(f) { let an = f && f.an && f.an > ARR && f.an < DEP ? f.an : ARR, ab = f && f.ab && f.ab < DEP && f.ab > ARR ? f.ab : DEP; if (diffDays(an, ab) < eigMin()) { an = ARR; ab = DEP; } return { an, ab, eigen: an !== ARR || ab !== DEP }; }
 const fNaechte = (f) => { const t = fDat(f); return diffDays(t.an, t.ab); };
 function fnBerechnen() { const o = {}; if (!listeModus() || !ARR || !DEP) return o; const l = rohListe(), g = Math.min(nz(S.gaeste), GM_MAX), alle = diffDays(ARR, DEP); for (let i = 0; i < g; i++) { const f = l[i]; if (!f || (f.geb && istKleinkind(f.geb, ARR))) continue; const nn = fNaechte(f); if (nn < alle) o[i] = nn; } return o; }
 function belegung() {   // Freunde mit Bett pro Nacht; Luftmatratze nur in Nächten mit mehr als 6 Personen (Wänu 18.11.2026)
@@ -2551,7 +2553,7 @@ function hdHtml(kopf, nm, pc) {   // Aufenthalt eines Haushalts (seit 3.22.0.0):
   let h = '<div class="gm-dk">' + WT_KURZ.map((w) => '<span class="gm-dk-w">' + w + "</span>").join("");
   for (let k = st; k <= en; k = addDays(k, 1)) {
     const tg = dparse(k).getUTCDate(), drin = k >= ARR && k <= DEP;
-    const ok = drin && (p ? (k === p || (k >= addDays(p, P.eigeneMin) && k <= DEP)) : k <= addDays(DEP, -P.eigeneMin));
+    const ok = drin && (p ? (k === p || (k >= addDays(p, eigMin()) && k <= DEP)) : k <= addDays(DEP, -eigMin()));
     const cls = p ? (k === p ? " end" : "") : (k === t.an || k === t.ab ? " end" : k > t.an && k < t.ab ? " mid" : "");
     h += ok ? '<button type="button" class="gm-dk-t' + cls + '" data-hdk="' + ka + "|" + k + '">' + tg + "</button>" : '<span class="gm-dk-t aus' + (drin ? cls : "") + '">' + tg + "</span>";
   }
@@ -2561,15 +2563,18 @@ function hdHtml(kopf, nm, pc) {   // Aufenthalt eines Haushalts (seit 3.22.0.0):
 }
 function personenDat(namen, pc) {   // Feld «Aufenthalt» pro Person, die mitkommt (ohne Kinderbettchen), erst ab zwei Personen mit Bett (seit 3.24.0.0)
   if (!ARR || !DEP) return ""; const l = famLeute().filter((x) => !x.kk); if (l.length < 2) return "";
+  if (SOND && diffDays(ARR, DEP) <= eigMin()) return sondGanz();   // Sonderbuchung: alle bleiben die ganze Zeit
   return namen.filter((n) => l.some((x) => x.nm === n)).map((n) => hdHtml(n, n === ichKey() && ABSENDER ? "Ich (" + rufname() + ")" : n === ichKey() ? "Ich" : n, pc)).join("");
 }
 const HD_AUF = {}, HD_KL = {};   // offener Kalender und gewählte Anreise pro Haushalt (nur bis zum Neuladen)
-function hdSetzen(kopf, an, ab) { const o = S.pDat = Object.assign({}, S.pDat || {}); if (an === undefined) delete o[kopf]; else { if (diffDays(an, ab) < P.eigeneMin) ab = addDays(an, P.eigeneMin); if (ab > DEP) ab = DEP; if (an === ARR && ab === DEP) delete o[kopf]; else o[kopf] = { an, ab }; } delete HD_AUF[kopf]; delete HD_KL[kopf]; normalize(); render(); }
+function hdSetzen(kopf, an, ab) { const o = S.pDat = Object.assign({}, S.pDat || {}); if (an === undefined) delete o[kopf]; else { if (diffDays(an, ab) < eigMin()) ab = addDays(an, eigMin()); if (ab > DEP) ab = DEP; if (an === ARR && ab === DEP) delete o[kopf]; else o[kopf] = { an, ab }; } delete HD_AUF[kopf]; delete HD_KL[kopf]; normalize(); render(); }
 document.addEventListener("click", (e) => { const b = e.target.closest && e.target.closest("[data-hdat], [data-hdweg], [data-hdk]"); if (!b) return;
   if (b.hasAttribute("data-hdat")) { HD_AUF[b.getAttribute("data-hdat")] = true; render(); return; }
   if (b.hasAttribute("data-hdweg")) { hdSetzen(b.getAttribute("data-hdweg")); return; }
   const [kopf, k] = b.getAttribute("data-hdk").split("|"), p = HD_KL[kopf]; if (!p) { HD_KL[kopf] = k; render(); } else if (k === p) { delete HD_KL[kopf]; render(); } else hdSetzen(kopf, p, k); });
+const sondGanz = () => '<p class="hint gm-dat-h sond-ganz">🏁 Bei dieser Sonderbuchung bleiben alle mindestens ' + eigMin() + (eigMin() === 1 ? " Nacht" : " Nächte") + ', also die ganze Zeit.</p>';
 function datHtml(i, t, auf, f) {
+  if (SOND && diffDays(ARR, DEP) <= eigMin()) return sondGanz();
   const kurz = (k) => fmtTag(k).replace(/\.\d{4}$/, ".");
   if (!auf) { const n = diffDays(ARR, DEP); return '<p class="gm-dat-l">Aufenthalt (wie die Familie)</p><div class="gm-geb"><input type="text" readonly tabindex="-1" class="gm-dat-v" data-gmdat="' + i + '" aria-label="Aufenthalt" value="' + esc(kurz(ARR).replace(/^\S+ /, "") + " – " + kurz(DEP).replace(/^\S+ /, "") + " · " + n + " " + (n === 1 ? "Nacht" : "Nächte")) + '"><button type="button" class="btn" data-gmdat="' + i + '" aria-label="Eigene An- und Abreise wählen">📅</button></div><p class="hint gm-dat-h">' + datFrage(f) + '</p>'; }   // wie das Geburtsdatum: Feld und Knopf hinten (seit 3.19.0.4)
   const p = DAT_KL[i], wd = (k) => (dparse(k).getUTCDay() + 6) % 7, st = addDays(ARR, -wd(ARR)), en = addDays(DEP, 6 - wd(DEP));
@@ -2577,7 +2582,7 @@ function datHtml(i, t, auf, f) {
   let h = '<div class="gm-dk">' + WT_KURZ.map((w) => '<span class="gm-dk-w">' + w + "</span>").join("");
   for (let k = st; k <= en; k = addDays(k, 1)) {
     const tg = dparse(k).getUTCDate(), drin = k >= ARR && k <= DEP;
-    const ok = drin && (p ? (k === p || (k >= addDays(p, P.eigeneMin) && k <= DEP)) : k <= addDays(DEP, -P.eigeneMin));
+    const ok = drin && (p ? (k === p || (k >= addDays(p, eigMin()) && k <= DEP)) : k <= addDays(DEP, -eigMin()));
     const cls = p ? (k === p ? " end" : "") : (k === t.an || k === t.ab ? " end" : k > t.an && k < t.ab ? " mid" : "");
     h += ok ? '<button type="button" class="gm-dk-t' + cls + '" data-gmdk="' + i + "|" + k + '">' + tg + "</button>" : '<span class="gm-dk-t aus' + (drin ? cls : "") + '">' + tg + "</span>";
   }
@@ -2585,7 +2590,7 @@ function datHtml(i, t, auf, f) {
   const txt = p ? "Anreise " + kurz(p) + " Tippe jetzt auf den <b>Abreisetag</b>." : "Jetzt: " + kurz(t.an) + " bis " + kurz(t.ab) + ", " + diffDays(t.an, t.ab) + (diffDays(t.an, t.ab) === 1 ? " Nacht" : " Nächte") + ". Tippe auf den <b>Anreisetag</b>, danach auf den Abreisetag.";
   return '<div class="gm-dat-e"><p class="gm-dat-t">📅 Eigene An- und Abreise</p><p class="gm-dk-m">' + esc(mt) + "</p>" + h + '<p class="hint gm-dk-h">' + txt + "</p><p class=\"hint\">CHF " + P.gast + '.– pro Nacht und Kurtaxe pro Nacht. Mindestens 1 Nacht, immer während eures Aufenthalts.</p><button type="button" class="gm-dat-b" data-gmdatweg="' + i + '">Wie die Familie</button></div>';
 }
-function datSetzen(i, an, ab) { const a = gmEntwurf(); const f = a[i] = a[i] || {}; if (an === undefined) { delete f.an; delete f.ab; } else { if (diffDays(an, ab) < P.eigeneMin) ab = addDays(an, P.eigeneMin); if (ab > DEP) ab = DEP; if (an === ARR && ab === DEP) { delete f.an; delete f.ab; } else { f.an = an; f.ab = ab; } } gmEntwurfSetzen(a); normalize(); render(); }
+function datSetzen(i, an, ab) { const a = gmEntwurf(); const f = a[i] = a[i] || {}; if (an === undefined) { delete f.an; delete f.ab; } else { if (diffDays(an, ab) < eigMin()) ab = addDays(an, eigMin()); if (ab > DEP) ab = DEP; if (an === ARR && ab === DEP) { delete f.an; delete f.ab; } else { f.an = an; f.ab = ab; } } gmEntwurfSetzen(a); normalize(); render(); }
 document.addEventListener("click", (e) => { const b = e.target.closest && e.target.closest("[data-gmdat], [data-gmdatweg]"); if (!b) return; const i = Number(b.getAttribute("data-gmdat") || b.getAttribute("data-gmdatweg")); if (b.hasAttribute("data-gmdat")) { DAT_AUF[i] = true; render(); } else { delete DAT_AUF[i]; delete DAT_KL[i]; datSetzen(i); } });
 document.addEventListener("click", (e) => { const b = e.target.closest && e.target.closest("[data-gmdk]"); if (!b) return; const [is, k] = b.getAttribute("data-gmdk").split("|"), i = Number(is), p = DAT_KL[i]; if (!p) { DAT_KL[i] = k; render(); } else if (k === p) { delete DAT_KL[i]; render(); } else { delete DAT_KL[i]; datSetzen(i, p, k); } });   // 1. Tipp Anreise, 2. Tipp Abreise (seit 3.19.0.2)
 document.addEventListener("change", (e) => { const t = e.target; if (!t.matches || !t.matches("[data-gmdan], [data-gmdab]")) return; const i = Number(t.getAttribute("data-gmdan") || t.getAttribute("data-gmdab")), cur = fDat(rohListe()[i] || {}); if (t.hasAttribute("data-gmdan")) datSetzen(i, t.value, cur.ab); else datSetzen(i, cur.an, t.value); });
@@ -5748,6 +5753,7 @@ const SCH_DEF = [
   { k: "reinigung", t: "Reinigung durch die Eltern (pro Aufenthalt)", e: "CHF", min: 0, max: 1000 },
   { k: "hochMinNaechte", t: "Hochsaison: Mindestnächte mit Vorbehalt", e: "Nächte", min: 2, max: 14 },
   { k: "verbMin", t: "Hochsaison: verbindlich ab", e: "Nächten", min: 2, max: 14 },
+  { k: "sondMin", t: "Sonderbuchung (Weltcup): jede Person bleibt mindestens", e: "Nächte", min: 1, max: 3 },
   { k: "eigeneMin", t: "Eigene An- und Abreise von Freunden und Familie: mindestens", e: "Nächte", min: 1, max: 3 },
   { k: "zahlTage", t: "Zahlungsfrist nach der Abreise", e: "Tage", min: 0, max: 30 },
   { k: "mindestpreisAbNaechte", t: "Mindestpreis gilt ab", e: "Nächten", min: 1, max: 14 },
@@ -8510,6 +8516,7 @@ document.getElementById("bestKasten").addEventListener("click", async (e) => {
   const ueb = BUCH.find((b) => b.arr < f.dep && f.arr < b.dep), uv = VORL.find((v) => v.arr < f.dep && f.arr < v.dep);
   SOND_MSG = fehl ? "⚠️ " + esc(fehl) : ueb ? "⚠️ Überschneidet sich mit dem Aufenthalt von " + esc(ueb.name) + " (" + esc(fmtTag(ueb.arr)) + " bis " + esc(fmtTag(ueb.dep)) + ")." : uv ? "⚠️ Überschneidet sich mit der Vorlage für " + esc(uv.name) + "." : "";
   if (SOND_MSG) { PERS_STAND.set("__sond", true); bestZeigen(); return; }
+  if (diffDays(f.arr, f.dep) < P.sondMin && !(await appFrage("Die Vorlage hat nur " + diffDays(f.arr, f.dep) + (diffDays(f.arr, f.dep) === 1 ? " Nacht" : " Nächte") + ". Bei Sonderbuchungen (Weltcup) gilt im Control Panel mindestens " + P.sondMin + ". Trotzdem speichern?", "Ja, speichern", "Abbrechen"))) return;
   const v = sondPa(f) ? { id: Date.now().toString(36), name: f.name, arr: f.arr, dep: f.dep, pa: true, preis: preis, reinB: reinB0, kt: true, t: jetztStr() } : { id: Date.now().toString(36), name: f.name, arr: f.arr, dep: f.dep, pa: false, reinB: reinB0, t: jetztStr() };
   neu.disabled = true; neu.textContent = "Speichert …";
   try {
