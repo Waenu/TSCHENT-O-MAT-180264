@@ -1028,6 +1028,7 @@ if (TEST_MODUS) {
   #bestKasten .zt-leg { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; font-size: .85em; margin: 4px 0 10px; }
   #bestKasten .zt-leg span { display: inline-flex; align-items: center; gap: 6px; }
   #bestKasten .zt-leg i { display: inline-flex; width: 18px; height: 18px; border: 2px solid var(--fg); border-radius: 4px; font-style: normal; font-size: .8em; align-items: center; justify-content: center; }
+  #bestKasten .zt-leg i.o { border-color: var(--missing-line); } #bestKasten .zt-leg i.b { border-color: var(--marke); } #bestKasten .zt-leg i.y { border-color: var(--hgelb); } #bestKasten .zt-leg i.n { border-color: var(--line); }
   #bestKasten .zt-leg i.r { border-color: var(--rot); color: #E5534B; } #bestKasten .zt-leg i.g { background: var(--marke); border-color: var(--marke); color: #fff; }
   #bestKasten .zt-d { font-size: .9em; opacity: .85; margin-top: 2px; }
   #bestKasten .zt-ok { font-size: .9em; color: var(--marke); margin-top: 2px; }
@@ -1722,7 +1723,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.29.1.0";
+let VERSION = "3.29.1.1";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -8000,7 +8001,7 @@ function bestZeigen() {
     if (!TEST_MODUS) s += '<div class="field"><label>👁️ Ansicht als</label><div class="zchips" id="ansichtChips" style="flex-wrap:wrap">' + ["", ...ABS].map((n) => '<button type="button" class="zchip" data-ans="' + esc(n) + '" aria-pressed="' + (n === (ABS.indexOf(ABSENDER) >= 0 ? ABSENDER : "")) + '">' + esc(n || "Eltern") + "</button>").join("") + '</div></div><p class="hint">Zeigt dir die Startseite und «👤 Meine Verwaltung» so, wie dieses Kind sie sieht. Nur auf diesem Handy. Die Angaben im Profil des Kindes (IBAN, TWINT …) siehst du nicht, sie sind nur auf seinem Handy. Zurück kommst du mit «Zurück zu Papi» im blauen Streifen oben.</p>';
     if (ABSENDER) { k.innerHTML = s; return; }
     s += '<p class="hint">Pro Person ein Titel mit der nächsten Buchung. Die Zahl zeigt, wie viel dort noch zu tun ist, orange oder rot bei Dringendem (Konflikt, Airbnb-Sperre). ✓ heisst: alles erledigt. Darunter stehen die früheren Aufenthalte.</p>';
-    s += '<div class="zt-leg"><span><i class="r"></i>dringend</span><span><i></i>offen</span><span><i class="g">✓</i>erledigt (blau)</span><span><i class="r">!</i>Hinweis</span></div><p class="hint">Dringend (rot) sind: in Airbnb sperren, ein Konflikt mit einem Airbnb-Gast, ein falsch gesperrter Abreisetag, eine Änderung, die du melden musst, und eine Endreinigung mit abgelaufener Frist oder geänderten Anteilen. Alles andere ist offen (weiss), bis du es abhakst.</p>';
+    s += '<details class="leg-det"><summary>🎨 Legende</summary><p class="leg-h">Kästchen in «Zu tun»</p><div class="zt-leg"><span><i class="r"></i>dringend</span><span><i></i>offen</span><span><i class="g">✓</i>erledigt (blau)</span><span><i class="r">!</i>Hinweis</span></div><p class="hint">Dringend (rot) sind: in Airbnb sperren, ein Konflikt mit einem Airbnb-Gast, ein falsch gesperrter Abreisetag, eine Änderung, die du melden musst, und eine Endreinigung mit abgelaufener Frist oder geänderten Anteilen. Alles andere ist offen (leer), bis du es abhakst.</p><p class="leg-h">Rahmen der Karten</p><div class="zt-leg"><span><i class="o"></i>noch etwas zu tun</span><span><i class="r"></i>dringend oder Frist abgelaufen</span><span><i class="b"></i>erledigt oder wartet auf die Zahlung</span><span><i class="y"></i>Vorbehalt</span><span><i class="n"></i>neutral, vorbei</span></div></details>';
     s += persListe();
     { const rl = reinigungsTermine(), r0 = rl.find((r) => r.art !== "offen") || rl[0];
       s += '<div class="ps-abst"></div>' + persTitel("__reinigung", "🧽 Reinigungstermine", r0 ? "nächste: " + esc(fmtTag(r0.frueh)) + (r0.art === "spanne" && r0.spaet ? " bis " + esc(fmtTag(r0.spaet)) : "") : "keine geplant", 0, false, false, PERS_STAND.get("__reinigung") === true, reinigungsListeHtml()); }
