@@ -44,14 +44,11 @@
       },
       "betrag": 1920,
       "rechnung": "Gesendet am Do 26.11.2026, 18:27 Uhr. App-Version 3.35.0.0.\nAnreise\tDonnerstag 7.01.2027\nAbreise\tSonntag 10.01.2027 (3 Nächte)\nSonderbuchung (eure Vorlage)\tgeänderte Preise: CHF 600.– pro Nacht für die ganze Wohnung, mit Reinigung (CHF 120.– pro Aufenthalt), Kurtaxe für Freunde wie üblich\n🛏️ Luftmatratze (7. Bett) in den Nächten Fr 8.01.2027 / Sa 9.01.2027, Sa 9.01.2027 / So 10.01.2027: bitte freigeben\nFamilie\tMeine Familie und Geschwister (3 Personen)\nAufenthalt Person, Partei 2, Jerome: Fr 8.01.2027 bis So 10.01.2027 (2 Nächte) · mit Bett\nFreunde\t4\nFreund/in 4\tFr 8.01.2027 bis So 10.01.2027 (2 Nächte)\nPauschale nach Personen\tjede Person zählt gleich (ohne Kleinkinder)\nBedingungen akzeptiert\tJa\nTotal\tCHF 1’977.20, davon Kurtaxe Adelboden für die Freunde CHF 57.20\n#Preisberechnung\nSonderbuchung: Pauschale pro Nacht\tCHF 600.–\nPauschale (3 Nächte)\tCHF 1’800.–\nReinigung\tCHF 120.–\nPauschale mit Reinigung\tCHF 1’920.–\nPauschale: Anteil Familie\tCHF 822.86\nPauschale: Anteil pro Freund\tCHF 274.29\nKurtaxe Adelboden (dazu) 4 Freunde ab 16 Jahren zu CHF 5.20 pro Nacht, zusammen 11 Nächte (eigene Nächte)\tCHF 57.20\nTotal mit Kurtaxe\tCHF 1’977.20\n#Aufteilung unter den Freunden\nFamilie, Partei 1 zahlt\tCHF 548.50\nFamilie, Partei 2 zahlt\tCHF 274.30\nFreund/in 1 und Freund/in 2 zahlen davon Kurtaxe CHF 31.20\tCHF 579.80\nFreund/in 3 zahlt davon Kurtaxe CHF 15.60 (ab 16 Jahren)\tCHF 289.90\nFreund/in 4 zahlt davon Kurtaxe CHF 10.40 (ab 16 Jahren)\tCHF 284.70\n#Teile\n~\t548.5\t548.57\t0\t0\t3\n~\t274.3\t274.29\t0\t0\t2\n~\t579.8\t548.57\t31.2\t0\t0\n~\t289.9\t274.29\t15.6\t0\t3\n~\t284.7\t274.29\t10.4\t0\t2\n~\tF\t-1\t0\n~\tN\tManuel, Sarah|\tJerome|\n~\tG\tJ. Müller\tA. Weber\tK. Herzog\tM. Müller\nPauschale aufgeteilt: Nach Personen: jede Person zählt gleich (ohne Kleinkinder).",
-      "bestaetigt": "2026-11-26T19:13"
+      "bestaetigt": "2026-11-26T19:13",
+      "bescheid": "2026-11-26T19:17"
     }
   ],
   "logbuch": [
-    {
-      "t": "2026-10-31T17:50",
-      "text": "Entfernt: Jerome, Mo 2.11.2026 bis Fr 6.11.2026"
-    },
     {
       "t": "2026-10-31T17:52",
       "text": "Bestätigt: Jerome, Do 5.11.2026 bis Sa 7.11.2026, CHF 110, Wäsche: persönlich bringen bis Di 10.11.2026"
@@ -847,6 +844,10 @@
     {
       "t": "2026-11-26T19:13",
       "text": "Bestätigt: ⭐ Sonderbuchung, Manuel, Do 7.01.2027 bis So 10.01.2027, CHF 1920"
+    },
+    {
+      "t": "2026-11-26T19:17",
+      "text": "Bescheid gegeben: Manuel, Do 7.01.2027 bis So 10.01.2027"
     }
   ],
   "reinigung": [],
