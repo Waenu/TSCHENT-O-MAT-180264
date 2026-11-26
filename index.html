@@ -1725,7 +1725,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.31.0.1";
+let VERSION = "3.31.0.2";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -7986,8 +7986,6 @@ function gmPapiHtml(x, ohneTitel) {   // Abschnitt in der Karte der Buchung (nur
   if (!e || !Array.isArray(e.freunde) || !e.freunde.length) return h + '<p class="hint">' + esc(x.name) + ' hat die Liste noch nicht gesendet. <button type="button" class="btn" data-gmneu="1">🔄 Neu laden</button></p></div>';
   h += '<p class="hint"><button type="button" class="btn" data-gmneu="1">🔄 Neu laden</button></p><p class="hint">Gesendet am ' + esc(fmtTag(String(e.gesendet).slice(0, 10))) + ", " + esc(String(e.gesendet).slice(11, 16)) + " Uhr.</p>";
   const alter = (geb) => { const g = /^\d{4}-\d{2}-\d{2}$/.test(String(geb)) ? String(geb) : gmIso(gmDatum(geb)); if (!g) return null; let a = Number(x.arr.slice(0, 4)) - Number(g.slice(0, 4)); if (x.arr.slice(5) < g.slice(5)) a--; return a; };   // Alter am Anreisetag
-  const mj = e.freunde.map((f) => ({ f: f, a: alter(f.geb) })).filter((o) => o.a !== null && o.a < 18);
-  if (mj.length) h += '<p class="note h rot-warn"><b>⚠️ Minderjährig:</b> ' + mj.map((o) => esc(o.f.vorname + " " + o.f.name) + ", " + o.a + " Jahre am Anreisetag").join("; ") + ". Mit wem " + (mj.length > 1 ? "kommen sie" : "kommt sie oder er") + ", und wer zahlt? Bitte bei " + esc(x.name) + " nachfragen. Bei der Reinigung «nach Personen» zählen alle Freunde voll.</p>";
   h += e.freunde.map((f, i) => {
     const z = (lab, v) => '<div class="gm-z"><span class="gm-l">' + lab + '</span><span class="gm-v">' + esc(v) + "</span>" + cp(v) + "</div>";
     return '<div class="gm-fr"><b>' + (i + 1) + ". " + esc(f.vorname + " " + f.name) + "</b>" + z("Name", f.name) + z("Vorname", f.vorname) + z("Geburtsdatum", gmDatum(f.geb)) + z("Geschlecht", f.geschlecht === "w" ? "weiblich" : "männlich") + z("Nationalität", f.nat) + (() => { const au = fAuf(f, x.arr, x.dep); return z("Aufenthalt", gmDatum(au.an) + " bis " + gmDatum(au.ab)) + z("Nächte", String(au.n)); })() + "</div>";
