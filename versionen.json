@@ -2,6 +2,34 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.30.1.0",
+      "datum": "2026-11-26",
+      "titel": "«Ansicht als»: Liste der Freunde zeigt den Stand statt eines leeren Formulars",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Bei «Ansicht als» steht statt des roten Formulars ein blauer Hinweis: gesendet am … oder noch nicht gesendet.",
+        "Die Eingaben des Kindes stehen nur auf dessen Handy, das sagt der Hinweis auch.",
+        "Für das Kind selbst ändert sich nichts."
+      ]
+    },
+    {
+      "v": "3.30.0.0",
+      "datum": "2026-11-26",
+      "titel": "Neu: Schalter in der Verwaltung",
+      "arten": [
+        "Neu",
+        "Funktion"
+      ],
+      "punkte": [
+        "Neuer Kasten «🎛️ Schalter» in der Verwaltung: Preise pro Nacht (Familie, Freund, Freund im Zimmer), Reinigung, Hochsaison (Mindestnächte, verbindlich ab), Mindestnächte für eigene An- und Abreise, Zahlungsfrist, Mindestpreis.",
+        "Hinter jeder Änderung steht «↩︎ Standard». Der Standard ist der Wert aus einstellungen.json.",
+        "Geänderte Werte stehen in schalter.json, einstellungen.json bleibt unverändert.",
+        "Vor dem Speichern Rückfrage mit altem und neuem Wert, Warnung bei offenen Anfragen, Eintrag im Logbuch."
+      ]
+    },
+    {
       "v": "3.29.1.1",
       "datum": "2026-11-26",
       "titel": "Verwaltung: Legende mit Rahmenfarben, einklappbar",
