@@ -26,14 +26,11 @@
       "betrag": 960,
       "rechnung": "Gesendet am Do 26.11.2026, 09:47 Uhr. App-Version 3.29.1.0.\nAnreise\tMontag 4.01.2027\nAbreise\tDonnerstag 7.01.2027 (3 Nächte)\nSonderbuchung (eure Vorlage)\tnormale Preise wie bei einer gewöhnlichen Buchung, ohne Mindestnächte, Reinigung CHF 120.– pro Aufenthalt\nFamilie\tIch und Partner/in\nFreunde\t3\nZimmer 1 unberührt\tNein\nReinigung nach Personen\tjede Person zählt gleich (ohne Kleinkinder)\nBedingungen akzeptiert\tJa\nTotal\tCHF 1’006.80, davon Kurtaxe Adelboden für die Freunde CHF 46.80\n#Preisberechnung\nFamilie pro Nacht\tCHF 70.–\nFreund/in 1 pro Nacht\tCHF 70.–\nFreund/in 2 pro Nacht\tCHF 70.–\nFreund/in 3 pro Nacht\tCHF 70.–\nÜbernachtung (3 Nächte)\tCHF 840.–\nReinigung\tCHF 120.–\nReinigung: Anteil Familie\tCHF 48.00\nReinigung: Anteil pro Freund\tCHF 24.00\nKurtaxe Adelboden (dazu) 3 Freunde ab 16 Jahren zu CHF 5.20 pro Nacht, 3 Nächte\tCHF 46.80\nTotal mit Kurtaxe\tCHF 1’006.80\n#Aufteilung unter den Freunden\nFamilie zahlt\tCHF 258.00\nFreund/in 1 und Freund/in 2 zahlen davon Kurtaxe CHF 31.20\tCHF 499.20\nFreund/in 3 zahlt davon Kurtaxe CHF 15.60 (ab 16 Jahren)\tCHF 249.60\n#Teile\n~\t258\t48\t0\t0\t3\n~\t499.2\t48\t31.2\t0\t0\n~\t249.6\t24\t15.6\t0\t3\n~\tN\tManuel, Sarah|\nReinigung aufgeteilt: Nach Personen: jede Person zählt gleich (ohne Kleinkinder).",
       "bestaetigt": "2026-11-26T12:52",
-      "bescheid": "2026-11-26T12:52"
+      "bescheid": "2026-11-26T12:52",
+      "pimlical": "2026-11-26T15:59"
     }
   ],
   "logbuch": [
-    {
-      "t": "2026-10-30T23:29",
-      "text": "Bescheid gegeben: Jerome, Mo 2.11.2026 bis Fr 6.11.2026"
-    },
     {
       "t": "2026-10-31T00:08",
       "text": "Abgelehnt: Deborah, Fr 6.11.2026 bis So 8.11.2026"
@@ -829,6 +826,10 @@
     {
       "t": "2026-11-26T12:52",
       "text": "Bescheid gegeben: Manuel, Mo 4.01.2027 bis Do 7.01.2027"
+    },
+    {
+      "t": "2026-11-26T15:59",
+      "text": "In Pimlical eingetragen: Manuel, Mo 4.01.2027 bis Do 7.01.2027"
     }
   ],
   "reinigung": [],
