@@ -485,12 +485,12 @@ if (TEST_MODUS) {
   .pay-z { display: flex; gap: 8px; align-items: baseline; margin: 12px 0 0; }   /* Zahlung als Zeile unter der Aufteilung (seit 3.22.1.2) */
   .pay .rot-txt { color: var(--spitz-line); }
   .ink-opt label { display: flex; flex-direction: column; gap: 4px; font-weight: 700; margin-top: 8px; } .ink-opt input { min-height: 48px; font: inherit; color: var(--fg); padding: 8px 12px; border: 2px solid var(--line); border-radius: 6px; background: var(--surface); }
-  .bigbtn.rot-rand { border-color: #C62828; box-shadow: 0 0 0 1px #C62828; } #btnMein.ok-rand { border-color: var(--marke); }   /* feuerrot wie bei Papi, alles erledigt blau (seit 3.17.12.7) */ #btnMein .alarm-n { margin-left: auto; font-size: 1rem; padding: 2px 10px; } .alarm-n.rot { background: #E5534B; color: #fff; }
+  .bigbtn.rot-rand { border-color: #C62828; } #btnMein.ok-rand { border-color: var(--marke); }   /* feuerrot wie bei Papi, alles erledigt blau (seit 3.17.12.7) */ #btnMein .alarm-n { margin-left: auto; font-size: 1rem; padding: 2px 10px; } .alarm-n.rot { background: #E5534B; color: #fff; }
   .mein-sek { margin: 6px 0 14px; } .mein-h { margin: 4px 0 8px; font-size: 1.1rem; } #meinTodo > .note, #meinTodo > div > .note, #meinTodo .gm-k { margin-top: 8px; } #meinProfil > summary { cursor: pointer; font-weight: 700; padding: 8px 14px; }
   .note.h.brennt, details.note.h.brennt { border-color: var(--rot); }
   .sond-f .sond-d { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; } .sond-f input[type=date], .sond-f input[type=text] { width: 100%; min-height: 44px; } .sond-f .ink-sw { display: block; margin: 8px 0; } .sond-msg { font-weight: 600; } .sond-dat { margin: 4px 0 8px; font-weight: 600; } .sond-pa { margin-left: 8px; } .vorl .btns { margin-top: 8px; } .sond-h { border-color: var(--accent); } .gm-ruf-h { margin: 6px 0 2px; } .sond-rot { color: var(--error-line); margin: 8px 0 0; }
   .note.h.steht, details.note.h.steht { border-color: var(--missing-line); }   /* Liste steht an: orange (seit 3.13.0.0) */
-  .bigbtn.or-rand { border-color: var(--missing-line); box-shadow: 0 0 0 1px var(--missing-line); } .bigbtn .alarm-n.or-n { margin-left: auto; font-size: 1rem; padding: 2px 10px; } #btnMein .alarm-n + .alarm-n { margin-left: 6px; }
+  .bigbtn.or-rand { border-color: var(--missing-line); }   /* Rahmen immer gleich dick wie die übrigen Knöpfe (3 px), kein zusätzlicher Schatten (seit 3.37.0.2) */ .bigbtn .alarm-n.or-n { margin-left: auto; font-size: 1rem; padding: 2px 10px; } #btnMein .alarm-n + .alarm-n { margin-left: 6px; }
   .li-k { margin-top: 10px; } .li-k .li-b { display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; margin-top: 8px; } .li-k .li-b small { display: block; font-weight: 400; opacity: .8; } .li-k .li-b .alarm-n { margin-left: auto; } .li-k .li-b.steht { border-color: var(--missing-line); box-shadow: 0 0 0 1px var(--missing-line); }   /* offene Aufgabe in «Meine Verwaltung» rot umrandet wie der Knopf (seit 3.12.0.1) */
   .ink-b.brennt { border: 2px solid var(--rot); padding: 6px 8px; margin-top: 10px; }
   #meinAuf > .mein-st { margin: 0 0 12px; } .mein-st > summary .gm-ico { margin-right: 4px; } .mein-st > summary, .mein-st[open] > summary { display: flex; align-items: center; gap: 8px; border: 0; background: none; color: inherit; padding: 0 4px 0 0; min-height: 40px; white-space: normal; font-size: 1.05rem; } .mein-st > summary .alarm-n { margin-left: auto; } .mein-st > summary::after, .mein-st[open] > summary::after { margin-left: 8px; color: var(--accent); }   /* Rahmen kommt vom Kasten, Pfeil grün rechts */
@@ -1729,7 +1729,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.37.0.1";
+let VERSION = "3.37.0.2";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
