@@ -1725,7 +1725,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.30.1.0";
+let VERSION = "3.30.2.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -5735,7 +5735,9 @@ const SCH_DEF = [
 const schStd = (k) => (EINST_STD && typeof EINST_STD[k] === "number" && isFinite(EINST_STD[k]) ? EINST_STD[k] : P_CODE[k]);
 const schAkt = (k) => (k === "zahlTage" ? ZAHL_TAGE : P[k]);
 const schOk = (d, v) => Number.isInteger(v) && v >= d.min && v <= d.max;
-function schalterAnwenden() { const v = {}; SCH_DEF.forEach((d) => { const x = Object.prototype.hasOwnProperty.call(SCHALTER, d.k) ? SCHALTER[d.k] : schStd(d.k); if (typeof x === "number") v[d.k] = x; }); wendeEinstellungenAn(v); }
+function schalterAnwenden() { const v = {}; SCH_DEF.forEach((d) => { const x = Object.prototype.hasOwnProperty.call(SCHALTER, d.k) ? SCHALTER[d.k] : schStd(d.k); if (typeof x === "number") v[d.k] = x; }); wendeEinstellungenAn(v); P.famAnteil = schFam(P.gastZimmer); }
+const schZimmer = () => schStd("famAnteil") + schStd("gastZimmer");   // Zimmerpreis (Familie + Freund im selben Zimmer) bleibt gleich, heute 70 (seit 3.30.2.0)
+const schFam = (gz) => Math.max(0, schZimmer() - gz);   // Familienanteil = Zimmerpreis minus Preis des Freundes im Zimmer
 async function ladeSchalter() {
   let w = null;
   try {
@@ -8360,10 +8362,11 @@ let SCH_F = null, SCH_MSG = "";
 const schEntw = () => SCH_F || (SCH_F = {});   // nur geänderte Eingaben, sonst gilt der aktuelle Wert
 const schWert = (k) => (Object.prototype.hasOwnProperty.call(schEntw(), k) ? schEntw()[k] : String(schAkt(k)));
 const schZahl = (d) => { const t = String(schWert(d.k)).trim(); return t === "" ? NaN : Number(t); };
+const schFaTxt = (v) => (Number.isFinite(v) ? "Der Anteil der Familie im Zimmer folgt: CHF " + schFam(v) + ".– (Zimmer bleibt bei CHF " + schZimmer() + ".–)" : "");
 function schalterHtml() {
   const anz = SCH_DEF.filter((d) => schAkt(d.k) !== schStd(d.k)).length;
   const zeilen = SCH_DEF.map((d) => { const std = schStd(d.k), v = schZahl(d), anders = v !== std;
-    return '<div class="field sch-z" data-schz="' + d.k + '"><label for="sch-' + d.k + '">' + esc(d.t) + '</label><div class="sch-i"><input type="text" inputmode="numeric" id="sch-' + d.k + '" data-sch="' + d.k + '" maxlength="5" value="' + esc(schWert(d.k)) + '"><span class="sch-e">' + esc(d.e) + '</span></div><p class="hint sch-h"><span>Standard: ' + std + " " + esc(d.e) + ' (erlaubt ' + d.min + " bis " + d.max + ')</span><button type="button" class="btn" data-sch-std="' + d.k + '"' + (anders ? "" : " hidden") + '>↩︎ Standard</button></p></div>'; }).join("");
+    return '<div class="field sch-z" data-schz="' + d.k + '"><label for="sch-' + d.k + '">' + esc(d.t) + '</label><div class="sch-i"><input type="text" inputmode="numeric" id="sch-' + d.k + '" data-sch="' + d.k + '" maxlength="5" value="' + esc(schWert(d.k)) + '"><span class="sch-e">' + esc(d.e) + '</span></div><p class="hint sch-h"><span>Standard: ' + std + " " + esc(d.e) + ' (erlaubt ' + d.min + " bis " + d.max + ')' + (d.k === "gastZimmer" ? '<br><b id="sch-fa">' + schFaTxt(v) + "</b>" : "") + '</span><button type="button" class="btn" data-sch-std="' + d.k + '"' + (anders ? "" : " hidden") + '>↩︎ Standard</button></p></div>'; }).join("");
   const inh = '<p class="hint">Hier änderst du Werte, ohne eine Datei zu bearbeiten. Der Standard ist der Wert aus <code>einstellungen.json</code>. Hinter jeder Änderung steht «↩︎ Standard». Neue Werte sehen alle nach etwa einer Minute. Bestätigte Buchungen ändern sich nicht, ihr Betrag ist gespeichert.</p>' +
     '<div class="sond-f">' + zeilen + '<button type="button" class="btn main full" data-sch-save="1">💾 Schalter speichern</button>' + (SCH_MSG ? '<p class="hint sond-msg">' + SCH_MSG + "</p>" : "") + "</div>";
   return persTitel("__schalter", "🎛️ Schalter", anz ? anz + (anz === 1 ? " Wert geändert" : " Werte geändert") : "alles auf Standard", 0, false, false, PERS_STAND.get("__schalter") === true, inh);
@@ -8388,7 +8391,7 @@ async function ghSchalter(werte) {   // schalter.json im Repo schreiben (ohne We
   }
   throw new Error("Speichern fehlgeschlagen.");
 }
-document.getElementById("bestKasten").addEventListener("input", (e) => { const t = e.target.closest && e.target.closest("[data-sch]"); if (!t) return; t.value = t.value.replace(/\D/g, "").slice(0, 5); const k = t.getAttribute("data-sch"); schEntw()[k] = t.value; const d = SCH_DEF.find((x) => x.k === k), z = t.closest("[data-schz]"), b = z && z.querySelector("[data-sch-std]"); if (d && b) b.hidden = schZahl(d) === schStd(k); });
+document.getElementById("bestKasten").addEventListener("input", (e) => { const t = e.target.closest && e.target.closest("[data-sch]"); if (!t) return; t.value = t.value.replace(/\D/g, "").slice(0, 5); const k = t.getAttribute("data-sch"); schEntw()[k] = t.value; const d = SCH_DEF.find((x) => x.k === k), z = t.closest("[data-schz]"), b = z && z.querySelector("[data-sch-std]"); if (d && b) b.hidden = schZahl(d) === schStd(k); if (k === "gastZimmer") { const fa = document.getElementById("sch-fa"); if (fa) fa.textContent = schFaTxt(schZahl(d)); } });
 document.getElementById("bestKasten").addEventListener("click", async (e) => {
   const sb = e.target.closest("[data-sch-std]"), sv = e.target.closest("[data-sch-save]"); if (!sb && !sv) return;
   if (!TOKEN) return;
@@ -8400,14 +8403,15 @@ document.getElementById("bestKasten").addEventListener("click", async (e) => {
   const gew = SCH_DEF.filter((d) => (neu[d.k] != null ? neu[d.k] : schStd(d.k)) !== alt[d.k]);
   if (!gew.length) { SCH_MSG = "Nichts geändert."; PERS_STAND.set("__schalter", true); bestZeigen(); return; }
   const off = OFFEN.filter((x) => x.dep >= heuteKey() && !BUCH.some((y) => bKey(y) === bKey(x))).length;
-  const txt = gew.map((d) => d.t + ": " + alt[d.k] + " → " + (neu[d.k] != null ? neu[d.k] : schStd(d.k))).join("\n");
+  const gzN = neu.gastZimmer != null ? neu.gastZimmer : schStd("gastZimmer"), faTxt = gew.some((d) => d.k === "gastZimmer") ? "\nAnteil der Familie im Zimmer: " + P.famAnteil + " → " + schFam(gzN) : "";
+  const txt = gew.map((d) => d.t + ": " + alt[d.k] + " → " + (neu[d.k] != null ? neu[d.k] : schStd(d.k))).join("\n") + faTxt;
   if (!(await appFrage("Diese Werte speichern?\n\n" + txt + (off ? "\n\n⚠️ " + off + (off === 1 ? " Anfrage ist" : " Anfragen sind") + " noch offen. Sie wurden mit den alten Werten gerechnet. Beim Bestätigen kann der Betrag abweichen." : ""), "Ja, speichern", "Abbrechen"))) return;
   sv.disabled = true; sv.textContent = "Speichert …";
   try {
     SCHALTER = await ghSchalter(neu); try { localStorage.setItem("tm2_schalter", JSON.stringify(SCHALTER)); } catch (e2) {}
     schalterAnwenden(); SCH_F = {};
     SCH_MSG = "✅ Gespeichert. " + (Object.keys(SCHALTER).length ? "Alle sehen die Werte nach etwa einer Minute." : "Alles steht wieder auf Standard.");
-    try { await ghAendern((l, jj) => { logEintrag(jj, "Schalter: " + gew.map((d) => d.k + " " + alt[d.k] + " → " + (neu[d.k] != null ? neu[d.k] : schStd(d.k))).join(", ")); return l; }); } catch (e3) { /* Logbuch ist Beigabe */ }
+    try { await ghAendern((l, jj) => { logEintrag(jj, "Schalter: " + gew.map((d) => d.k + " " + alt[d.k] + " → " + (neu[d.k] != null ? neu[d.k] : schStd(d.k))).join(", ") + (faTxt ? ", famAnteil → " + P.famAnteil : "")); return l; }); } catch (e3) { /* Logbuch ist Beigabe */ }
     try { zeichneBalken(); } catch (e4) {} try { render(); } catch (e5) {}
   } catch (err) { SCH_MSG = "⚠️ " + esc(err && err.message ? err.message : "Nicht gespeichert."); }
   PERS_STAND.set("__schalter", true); bestZeigen();

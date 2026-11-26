@@ -2,6 +2,18 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.30.2.0",
+      "datum": "2026-11-26",
+      "titel": "Schalter: Familienanteil im Zimmer folgt dem Preis des Freundes",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Ändert man den Preis des Freundes im Zimmer, passt sich der Anteil der Familie an: Der Zimmerpreis bleibt bei CHF 70.–.",
+        "Der Schalter zeigt den neuen Anteil gleich an, die Rückfrage und das Logbuch nennen ihn auch."
+      ]
+    },
+    {
       "v": "3.30.1.0",
       "datum": "2026-11-26",
       "titel": "«Ansicht als»: Liste der Freunde zeigt den Stand statt eines leeren Formulars",
