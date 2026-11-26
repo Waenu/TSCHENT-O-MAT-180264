@@ -2,6 +2,19 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.29.0.0",
+      "datum": "2026-11-25",
+      "titel": "Sonderbuchung: Reinigung als Betrag pro Aufenthalt",
+      "arten": [
+        "Funktion"
+      ],
+      "punkte": [
+        "Statt des Kästchens gibt es das Feld «Reinigung pro Aufenthalt (CHF)». Der Betrag gilt einmal pro Aufenthalt, egal wie viele Nächte.",
+        "Mit Pauschale: leer heisst keine Reinigung. Mit normalem Preis: leer heisst die übliche Reinigung von CHF 240, ein Betrag ersetzt sie (z. B. 120), 0 heisst keine.",
+        "Alte Vorlagen mit dem früheren Kästchen bleiben unverändert."
+      ]
+    },
+    {
       "v": "3.28.3.1",
       "datum": "2026-11-25",
       "titel": "Sonderbuchung: «Reinigung dazu» steht am Anfang auf aus",
