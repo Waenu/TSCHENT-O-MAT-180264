@@ -1176,7 +1176,7 @@ if (TEST_MODUS) {
   @container (max-width: 5.2em) { .ub-b .ub-l1 { display: none; } .ub-b .ub-k1 { display: inline; } }
   .ub-b.kk { height: 12px; opacity: .8; } .ub-b.mat { outline: 3px solid var(--matra); outline-offset: 2px; }
   .ub-c { text-align: center; font-weight: 700; padding: 3px 0; margin: 0 1px; border-radius: 6px; background: var(--note-bg); } .ub-c.voll { background: var(--hgelb); color: #4a3800; }
-  .ub-l { margin: 4px 0 0; } .ub-tt { margin: 0 0 4px; } details.ub-k { margin: 8px 0 0; } .mein-teil.ub-teil { border: 2px solid var(--marke) !important; padding: 8px 12px !important; } .ub-teil > details.ub-k, .re-teil > details.rechd { margin: 0; } .re-teil > details.rechd > summary { min-height: 0; padding: 2px 0; } .ub-teil > details.ub-k > summary { border: 0 !important; background: none !important; color: inherit !important; padding: 2px 0 !important; }   /* blauer Rahmen in «Meine Verwaltung» (seit 3.20.0.5) */ details.ub-k > summary { font-weight: 700; }
+  .ub-l { margin: 4px 0 0; } .ub-tt { margin: 0 0 4px; } details.ub-k { margin: 8px 0 0; } .mein-teil.ub-teil { border: 2px solid var(--marke) !important; padding: 8px 12px !important; } .ub-teil > details.ub-k, .re-teil > details.rechd { margin: 0; } .re-teil > details.rechd > summary { min-height: 0; padding: 2px 0 !important; border: 0 !important; background: none !important; color: inherit !important; font-weight: 700; }   /* kein zweiter Rahmen in «Meine Verwaltung» (seit 3.37.0.1) */ .ub-teil > details.ub-k > summary { border: 0 !important; background: none !important; color: inherit !important; padding: 2px 0 !important; }   /* blauer Rahmen in «Meine Verwaltung» (seit 3.20.0.5) */ details.ub-k > summary { font-weight: 700; }
   #calBlase[data-mon="hoch"] { border: 2px solid var(--hoch-line); }
   #calBlase[data-mon="fest"] { border: 2px solid var(--fest-line); }
   #calBlase[data-mon="spitz"] { border: 2px solid var(--spitz-line); }
@@ -1729,7 +1729,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.37.0.0";
+let VERSION = "3.37.0.1";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";

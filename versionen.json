@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.37.0.1",
+      "datum": "2026-11-26",
+      "titel": "Meine Verwaltung: Preisberechnung ohne zweiten Rahmen",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Die Titelzeile «Preisberechnung» in «Meine Verwaltung» hat keinen eigenen Rahmen und Hintergrund mehr, nur noch den blauen Rahmen der Karte wie bei «Wer ist wann da?»."
+      ]
+    },
+    {
       "v": "3.37.0.0",
       "datum": "2026-11-26",
       "titel": "Neu: Control Panel «Sonderbuchung (Weltcup)»: Mindestnächte pro Person",
