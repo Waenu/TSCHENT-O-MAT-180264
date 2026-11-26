@@ -2,6 +2,21 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.36.0.0",
+      "datum": "2026-11-26",
+      "titel": "Sonderbuchung: Pauschale nach Personennächten",
+      "arten": [
+        "Regel",
+        "Layout"
+      ],
+      "punkte": [
+        "Die Pauschale pro Nacht wird als Übernachtung nach Personennächten verteilt: wer nur 2 von 3 Nächten dabei ist, zahlt nur 2 Nächte. Die Reinigung folgt weiter der gewählten Regel.",
+        "Anzeige «2 × CHF 90.00 (Anteil an CHF 600.– pro Nacht)».",
+        "Frage «Wie wird die Reinigung aufgeteilt?» erscheint nur noch, wenn die Vorlage eine Reinigung hat.",
+        "Ältere gespeicherte Anfragen zeigen weiter ihre damaligen Beträge."
+      ]
+    },
+    {
       "v": "3.35.0.1",
       "datum": "2026-11-26",
       "titel": "Sonderbuchung mit Pauschale: Aufteilung wie üblich",

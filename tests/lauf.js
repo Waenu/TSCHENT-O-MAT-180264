@@ -187,7 +187,7 @@ async function tSondAufteilung(b) {
     const d = document.createElement("div"); d.innerHTML = h || ""; o.gesp = [...d.querySelectorAll("tr.auf-d")].map((t) => t.innerText.replace(/\s+/g, " "));
     return o;
   });
-  const gut = (t) => /Übernachtung \(3 Nächte\) 3 × CHF 200\.00 \(1 von 3 Personen an CHF 600\.–\)CHF 600\.00/.test(t) && /CHF 40\.00/.test(t) && !/Pauschale/.test(t) && !/CHF 0\.0\d/.test(t);
+  const gut = (t) => /Übernachtung \(3 Nächte\) 3 × CHF 200\.00 \(Anteil an CHF 600\.– pro Nacht\)CHF 600\.00/.test(t) && /CHF 40\.00/.test(t) && !/Pauschale/.test(t) && !/CHF 0\.0\d/.test(t);
   ok("Sonderbuchung mit Pauschale: Aufteilung live = Übernachtung (3 × Anteil von CHF 600) + Reinigungsanteil, ohne Rundungsreste", r.live.length === 3 && r.live.every(gut) && r.live.every((t) => /Reinigungsanteil 1 von 3 Personen \(CHF 120\.–\)/.test(t)), JSON.stringify(r.live[0]));
   ok("Sonderbuchung mit Pauschale: Balken grün (Übernachtung) und violett (Reinigung), Legende «Reinigung»", r.bal.every((t) => t === "su:600,sr:40") && r.legende.every((t) => /Übernachtung/.test(t) && /Reinigung/.test(t)), JSON.stringify([r.bal, r.legende]));
   ok("Sonderbuchung mit Pauschale: gespeicherte Berechnung zeigt dasselbe", r.gesp.length === 3 && r.gesp.every(gut), JSON.stringify(r.gesp[0]));
@@ -209,6 +209,27 @@ async function tSondListe(b) {
     return o;
   });
   ok("Sonderbuchung mit Pauschale und Liste: Aufteilung ohne Fehler, ohne «Pauschale»", p.fehler.length === 0 && r.rows.length >= 2 && !r.rows.some((t) => /Pauschale/.test(t)), p.fehler.join("|") + " " + r.leiste + " " + JSON.stringify(r.rows[0] || ""));
+  await p.ctx.close();
+}
+
+async function tSondNaechte(b) {
+  const p = await seite(b, { ls: kind("Manuel"), heute: "2026-11-27" });
+  const r = await p.evaluate(async () => {
+    const w = (ms) => new Promise((z) => setTimeout(z, ms)); const o = {};
+    sondStart({ id: "a", name: "Manuel", arr: "2027-01-07", dep: "2027-01-10", t: 1, pa: true, preis: 600, reinB: 120 }); await w(300);
+    S.werArt = EIGEN; S.famSel = []; S.ichMit = true; S.gaeste = 2; S.reinig = REINIG[0]; S.zimmer = "Nein"; S.spar = "Nein"; S.waesche = S.waesche || "Persönlich bringen";
+    const f = (v, n, a, b2) => Object.assign({ vorname: v, name: n, geschlecht: "w", geb: "1990-01-01", nat: "Schweiz" }, a ? { an: a, ab: b2 } : {});
+    localStorage.setItem("tm2t_gmEntwurf", JSON.stringify({ k: gmEntwurfKeyJetzt(), l: [f("Anna", "Meier"), f("Bea", "Zeller", "2027-01-08", "2027-01-10")] })); normalize(); render(); await w(400);
+    for (let i = 0; i < 4; i++) { const ok1 = document.querySelector(".gm-pt-ok"); if (ok1) { ok1.click(); await w(300); } }
+    o.leiste = (document.querySelector("#bar") || { innerText: "" }).innerText.replace(/\s+/g, " ").slice(0, 120);
+    o.rows = [...document.querySelectorAll("#result .auf-tab tr.auf-d")].map((t) => t.innerText.replace(/\s+/g, " "));
+    o.sum = [...document.querySelectorAll("#result .auf-tab tr.auf-z")].map((t) => { const m = [...t.innerText.matchAll(/CHF\s([\d’]+\.\d\d)/g)]; return m.length ? parseFloat(m[m.length - 1][1].replace(/’/g, "")) : 0; }).reduce((a, v) => a + v, 0);
+    o.zr = [...document.querySelectorAll("#result .auf-tab tr.auf-z")].map((t) => t.innerText.replace(/\s+/g, " ")); o.tot = (document.querySelector("#result .big") || { innerText: "" }).innerText;
+    return o;
+  });
+  ok("Pauschale nach Personennächten: Anna 3 Nächte CHF 675, Bea 2 Nächte CHF 450 (1800 / 8 Personennächte = 225)", r.rows.length === 3 && /3 × CHF 225\.00 \(Anteil an CHF 600\.– pro Nacht\)CHF 675\.00/.test(r.rows[0] + r.rows[1] + r.rows[2]) && r.rows.some((t) => /Übernachtung \(2 Nächte\) 2 × CHF 225\.00 \(Anteil an CHF 600\.– pro Nacht\)CHF 450\.00/.test(t)), JSON.stringify(r.rows) + " " + r.leiste);
+  ok("Pauschale nach Personennächten: Summe der Zeilen = Total CHF 1’920", Math.abs(r.sum - 1920) < 0.3 && /1.920/.test(r.tot), r.sum + " " + r.tot + " " + JSON.stringify(r.zr));
+  ok("Pauschale nach Personennächten: keine Fehler", p.fehler.length === 0, p.fehler.join("|"));
   await p.ctx.close();
 }
 
@@ -352,7 +373,7 @@ async function tNamenAufraeumen(b) {
 
 (async () => {
   const s = await server(); const b = await chromium.launch();
-  const lauf = [["Dateien", tDateien], ["Start", tStart], ["Control Panel", tControlPanel], ["Gültig ab", tGueltigAb], ["Gültig bis", tGueltigBis], ["Trinkgeld", tTrinkgeld], ["Rechnung an Freunde", tRechnungSchalter], ["Ansicht als", tAnsichtAls], ["Anfrage und Namen", tSchnappschuss], ["Sonderbuchungen", tSonder], ["SondAuf", tSondAufteilung], ["SondListe", tSondListe], ["Preise", tPreise], ["Alte Namen aufräumen", tNamenAufraeumen]];
+  const lauf = [["Dateien", tDateien], ["Start", tStart], ["Control Panel", tControlPanel], ["Gültig ab", tGueltigAb], ["Gültig bis", tGueltigBis], ["Trinkgeld", tTrinkgeld], ["Rechnung an Freunde", tRechnungSchalter], ["Ansicht als", tAnsichtAls], ["Anfrage und Namen", tSchnappschuss], ["Sonderbuchungen", tSonder], ["SondAuf", tSondAufteilung], ["SondListe", tSondListe], ["SondNaechte", tSondNaechte], ["Preise", tPreise], ["Alte Namen aufräumen", tNamenAufraeumen]];
   const nur = process.argv[2];
   for (const [n, f] of lauf) { if (nur && !n.toLowerCase().includes(nur.toLowerCase())) continue; try { await f(b); } catch (e) { ok(n + ": Lauf abgebrochen", false, e.message); } }
   await b.close(); s.close();
