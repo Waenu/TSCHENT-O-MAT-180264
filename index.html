@@ -1729,7 +1729,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.33.0.0";
+let VERSION = "3.34.0.0";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -5257,6 +5257,7 @@ function gkkVerschieben() {   // ändert sich die Zahl der Freunde, wandern die 
   GKK_G = g;
 }
 function render() {
+  schGelten();
   INK = null;
   gkkVerschieben();
   mfgSync();
@@ -5740,9 +5741,12 @@ const SCH_DEF = [
   { k: "mindestpreisWoche", t: "Mindestpreis pro Woche (0 = aus)", e: "CHF", min: 0, max: 10000 }
 ];
 const schStd = (k) => (EINST_STD && typeof EINST_STD[k] === "number" && isFinite(EINST_STD[k]) ? EINST_STD[k] : P_CODE[k]);
-const schAkt = (k) => (k === "zahlTage" ? ZAHL_TAGE : P[k]);
+let SCH_PLAN = [], SCH_GILT = "";   // geplante Änderungen [{ab, werte}] (seit 3.34.0.0): gelten für Aufenthalte mit Anreise ab diesem Tag
+function schEff(dat) { const v = {}; SCH_DEF.forEach((d) => { const x = Object.prototype.hasOwnProperty.call(SCHALTER, d.k) ? SCHALTER[d.k] : schStd(d.k); if (typeof x === "number") v[d.k] = x; }); SCH_PLAN.filter((e) => e.ab <= dat).sort((a, b) => (a.ab < b.ab ? -1 : 1)).forEach((e) => Object.assign(v, e.werte)); return v; }   // Werte, die für diesen Anreisetag gelten
+const schAkt = (k) => { const x = schEff(heuteKey())[k]; return typeof x === "number" ? x : (k === "zahlTage" ? ZAHL_TAGE : P[k]); };   // Werte von heute (Control Panel)
+function schGelten() { if (!SCH_PLAN.length) return; const dat = ARR && DKEY.test(ARR) ? ARR : heuteKey(); if (dat !== SCH_GILT) schalterAnwenden(dat); }   // im Rechner gilt der Wert vom Anreisetag
 const schOk = (d, v) => Number.isInteger(v) && v >= d.min && v <= d.max;
-function schalterAnwenden() { const v = {}; SCH_DEF.forEach((d) => { const x = Object.prototype.hasOwnProperty.call(SCHALTER, d.k) ? SCHALTER[d.k] : schStd(d.k); if (typeof x === "number") v[d.k] = x; }); wendeEinstellungenAn(v); P.famAnteil = schFam(P.gastZimmer); }
+function schalterAnwenden(dat) { SCH_GILT = dat || heuteKey(); wendeEinstellungenAn(schEff(SCH_GILT)); P.famAnteil = schFam(P.gastZimmer); }
 const schZimmer = () => schStd("famAnteil") + schStd("gastZimmer");   // Zimmerpreis (Familie + Freund im selben Zimmer) bleibt gleich, heute 70 (seit 3.30.2.0)
 const schFam = (gz) => Math.max(0, schZimmer() - gz);   // Familienanteil = Zimmerpreis minus Preis des Freundes im Zimmer
 async function ladeSchalter() {
@@ -5751,13 +5755,14 @@ async function ladeSchalter() {
     const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 4000);
     const r = await fetch("schalter.json?v=" + Date.now(), { cache: "no-store", signal: ctl.signal });
     clearTimeout(to);
-    if (r.ok) { const j = await r.json(); w = j && typeof j.werte === "object" && j.werte ? j.werte : {}; try { localStorage.setItem("tm2_schalter", JSON.stringify(w)); } catch (e) {} }
-    else if (r.status === 404) { w = {}; try { localStorage.removeItem("tm2_schalter"); } catch (e) {} }
+    if (r.ok) { const j = await r.json(); w = { werte: j && typeof j.werte === "object" && j.werte ? j.werte : {}, plan: j && Array.isArray(j.plan) ? j.plan : [] }; try { localStorage.setItem("tm2_schalter", JSON.stringify(w)); } catch (e) {} }
+    else if (r.status === 404) { w = { werte: {}, plan: [] }; try { localStorage.removeItem("tm2_schalter"); } catch (e) {} }
     else throw new Error("http " + r.status);
-  } catch (e) { try { w = JSON.parse(localStorage.getItem("tm2_schalter") || "{}"); } catch (e2) { w = {}; } }
-  SCHALTER = {};
-  SCH_DEF.forEach((d) => { if (w && schOk(d, w[d.k]) && w[d.k] !== schStd(d.k)) SCHALTER[d.k] = w[d.k]; });
-  if (Object.keys(SCHALTER).length) schalterAnwenden();
+  } catch (e) { try { const c = JSON.parse(localStorage.getItem("tm2_schalter") || "{}"); w = c && c.werte ? c : { werte: c || {}, plan: [] }; } catch (e2) { w = { werte: {}, plan: [] }; } }
+  SCHALTER = {}; SCH_PLAN = [];
+  SCH_DEF.forEach((d) => { if (w && w.werte && schOk(d, w.werte[d.k]) && w.werte[d.k] !== schStd(d.k)) SCHALTER[d.k] = w.werte[d.k]; });
+  (w && Array.isArray(w.plan) ? w.plan : []).forEach((e) => { if (!e || !DKEY.test(String(e.ab)) || !e.werte || typeof e.werte !== "object") return; const wv = {}; SCH_DEF.forEach((d) => { if (schOk(d, e.werte[d.k])) wv[d.k] = e.werte[d.k]; }); if (Object.keys(wv).length) SCH_PLAN.push({ ab: String(e.ab), werte: wv }); });
+  if (Object.keys(SCHALTER).length || SCH_PLAN.length) schalterAnwenden();
 }
 // ===== Mein Aufenthalt: Anreise (Wäsche) und Reinigungs-Checkliste =====
 // Bestätigt: Eintrag in buchungen.json mit dem Namen des Absenders (wird von den Eltern gepflegt).
@@ -8388,7 +8393,9 @@ function sbKalTag(k) {
 document.getElementById("calGrid").addEventListener("click", (e) => { if (!SB_KAL) return; const c = e.target.closest("[data-k]"); e.stopImmediatePropagation(); e.preventDefault(); if (c && c.dataset.k) sbKalTag(c.dataset.k); }, true);
 
 // ===== Schalter in der Verwaltung (seit 3.30.0.0) =====
-let SCH_F = null, SCH_MSG = "";
+let SCH_F = null, SCH_MSG = "", SCH_AB = "";
+const schDat = (d) => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(d || ""); return m ? Number(m[3]) + "." + Number(m[2]) + "." + m[1] : ""; };
+const schPlanTxt = (e) => SCH_DEF.filter((d) => typeof e.werte[d.k] === "number").map((d) => d.t + " " + e.werte[d.k] + " " + d.e).join("; ");
 const schEntw = () => SCH_F || (SCH_F = {});   // nur geänderte Eingaben, sonst gilt der aktuelle Wert
 const schWert = (k) => (Object.prototype.hasOwnProperty.call(schEntw(), k) ? schEntw()[k] : String(schAkt(k)));
 const schZahl = (d) => { const t = String(schWert(d.k)).trim(); return t === "" ? NaN : Number(t); };
@@ -8397,11 +8404,12 @@ function schalterHtml() {
   const anz = SCH_DEF.filter((d) => schAkt(d.k) !== schStd(d.k)).length;
   const zeilen = SCH_DEF.map((d) => { const std = schStd(d.k), v = schZahl(d), anders = v !== std;
     return '<div class="field sch-z" data-schz="' + d.k + '"><label for="sch-' + d.k + '">' + esc(d.t) + '</label><div class="sch-i"><input type="text" inputmode="numeric" id="sch-' + d.k + '" data-sch="' + d.k + '" maxlength="5" value="' + esc(schWert(d.k)) + '"><span class="sch-e">' + esc(d.e) + '</span></div><p class="hint sch-h"><span>Standard: ' + std + " " + esc(d.e) + ' (erlaubt ' + d.min + " bis " + d.max + ')' + (d.k === "gastZimmer" ? '<br><b id="sch-fa">' + schFaTxt(v) + "</b>" : "") + '</span><button type="button" class="btn" data-sch-std="' + d.k + '"' + (anders ? "" : " hidden") + '>↩︎ Standard</button></p></div>'; }).join("");
+  const pl = SCH_PLAN.filter((e) => e.ab > heuteKey()), plan = pl.length ? '<div class="note sch-plan"><b>📅 Geplante Änderungen</b>' + pl.map((e) => '<p class="hint">Ab Anreise ' + schDat(e.ab) + ': ' + esc(schPlanTxt(e)) + ' <button type="button" class="btn" data-sch-planweg="' + e.ab + '">✕ Entfernen</button></p>').join("") + "</div>" : "";
   const inh = '<p class="hint">Hier änderst du Werte, ohne eine Datei zu bearbeiten. Der Standard ist der Wert aus <code>einstellungen.json</code>. Hinter jeder Änderung steht «↩︎ Standard». Neue Werte sehen alle nach etwa einer Minute. Bestätigte Buchungen ändern sich nicht, ihr Betrag ist gespeichert.</p>' +
-    '<div class="sond-f">' + zeilen + '<button type="button" class="btn main full" data-sch-save="1">💾 Control Panel speichern</button>' + (SCH_MSG ? '<p class="hint sond-msg">' + SCH_MSG + "</p>" : "") + "</div>";
+    '<div class="sond-f">' + zeilen + '<div class="field sch-ab"><label for="sch-ab">Gültig ab (Anreisetag, leer = sofort)</label><input type="date" id="sch-ab" class="sond-d" value="' + esc(SCH_AB) + '" min="' + esc(heuteKey()) + '"><p class="hint">Mit Datum gelten die geänderten Werte nur für Aufenthalte mit Anreise ab diesem Tag. Frühere Aufenthalte und Anfragen rechnen mit dem bisherigen Wert.</p></div>' + plan + '<button type="button" class="btn main full" data-sch-save="1">💾 Control Panel speichern</button>' + (SCH_MSG ? '<p class="hint sond-msg">' + SCH_MSG + "</p>" : "") + "</div>";
   return persTitel("__schalter", "🎛️ Control Panel", anz ? anz + (anz === 1 ? " Wert geändert" : " Werte geändert") : "alles auf Standard", 0, false, false, PERS_STAND.get("__schalter") === true, inh);
 }
-async function ghSchalter(werte) {   // schalter.json im Repo schreiben (ohne Werte = Standard, Datei bleibt)
+async function ghSchalter(werte, plan) {   // schalter.json im Repo schreiben (ohne Werte = Standard, Datei bleibt)
   const url = "https://api.github.com/repos/" + GH_REPO + "/contents/schalter.json";
   const kopf = { Authorization: "Bearer " + TOKEN, Accept: "application/vnd.github+json" };
   for (let versuch = 0; versuch < 2; versuch++) {
@@ -8411,20 +8419,27 @@ async function ghSchalter(werte) {   // schalter.json im Repo schreiben (ohne We
     else if (g.status === 401 || g.status === 403) throw new Error("Das Token wird nicht akzeptiert. Es ist ungültig oder abgelaufen.");
     else if (!g.ok) throw new Error("GitHub antwortet mit Fehler " + g.status + ".");
     else { const d = await g.json(); sha = d.sha; }
-    const j = { _hinweis: "Von der App geschrieben (Verwaltung, Schalter). Nur Werte, die vom Standard in einstellungen.json abweichen.", werte: werte, t: jetztStr() };
+    const j = { _hinweis: "Von der App geschrieben (Verwaltung, Schalter). Nur Werte, die vom Standard in einstellungen.json abweichen.", werte: werte, plan: plan && plan.length ? plan : undefined, t: jetztStr() };
     const r = await fetch(url, { method: "PUT", headers: Object.assign({ "Content-Type": "application/json" }, kopf),
       body: JSON.stringify({ message: "Schalter aktualisiert (App)", content: b64(JSON.stringify(j, null, 2) + "\n"), sha, branch: "main" }) });
-    if (r.ok) return j.werte;
+    if (r.ok) return { werte: j.werte, plan: j.plan || [] };
     if ((r.status === 409 || r.status === 422) && versuch === 0) continue;
     if (r.status === 401 || r.status === 403) throw new Error("Das Token darf in " + GH_REPO + " nicht schreiben.");
     throw new Error("Speichern fehlgeschlagen (Fehler " + r.status + ").");
   }
   throw new Error("Speichern fehlgeschlagen.");
 }
+document.getElementById("bestKasten").addEventListener("change", (e) => { if (e.target && e.target.id === "sch-ab") SCH_AB = e.target.value || ""; });
 document.getElementById("bestKasten").addEventListener("input", (e) => { const t = e.target.closest && e.target.closest("[data-sch]"); if (!t) return; t.value = t.value.replace(/\D/g, "").slice(0, 5); const k = t.getAttribute("data-sch"); schEntw()[k] = t.value; const d = SCH_DEF.find((x) => x.k === k), z = t.closest("[data-schz]"), b = z && z.querySelector("[data-sch-std]"); if (d && b) b.hidden = schZahl(d) === schStd(k); if (k === "gastZimmer") { const fa = document.getElementById("sch-fa"); if (fa) fa.textContent = schFaTxt(schZahl(d)); } });
 document.getElementById("bestKasten").addEventListener("click", async (e) => {
-  const sb = e.target.closest("[data-sch-std]"), sv = e.target.closest("[data-sch-save]"); if (!sb && !sv) return;
+  const sb = e.target.closest("[data-sch-std]"), sv = e.target.closest("[data-sch-save]"), pw = e.target.closest("[data-sch-planweg]"); if (!sb && !sv && !pw) return;
   if (!TOKEN) return;
+  if (pw) {   // geplante Änderung entfernen
+    const ab = pw.getAttribute("data-sch-planweg"), e1 = SCH_PLAN.find((x) => x.ab === ab); if (!e1) return;
+    if (!(await appFrage("Geplante Änderung ab " + schDat(ab) + " entfernen?\n\n" + schPlanTxt(e1), "Ja, entfernen", "Abbrechen"))) return;
+    try { const res = await ghSchalter(SCHALTER, SCH_PLAN.filter((x) => x.ab !== ab)); SCH_PLAN = res.plan; try { localStorage.setItem("tm2_schalter", JSON.stringify(res)); } catch (e2) {} schalterAnwenden(); SCH_MSG = "✅ Geplante Änderung entfernt."; try { await ghAendern((l, jj) => { logEintrag(jj, "Control Panel: geplante Änderung ab " + ab + " entfernt"); return l; }); } catch (e3) {} try { render(); } catch (e4) {} } catch (err) { SCH_MSG = "⚠️ " + esc(err && err.message ? err.message : "Nicht gespeichert."); }
+    PERS_STAND.set("__schalter", true); bestZeigen(); return;
+  }
   if (sb) { const k = sb.getAttribute("data-sch-std"); schEntw()[k] = String(schStd(k)); SCH_MSG = ""; PERS_STAND.set("__schalter", true); bestZeigen(); return; }
   const neu = {}, alt = {}, fehl = [];
   SCH_DEF.forEach((d) => { const v = schZahl(d); if (!schOk(d, v)) { fehl.push(d.t + ": " + d.min + " bis " + d.max); return; } if (v !== schStd(d.k)) neu[d.k] = v; alt[d.k] = schAkt(d.k); });
@@ -8432,16 +8447,21 @@ document.getElementById("bestKasten").addEventListener("click", async (e) => {
   if (fehl.length) { SCH_MSG = "⚠️ Bitte prüfen: " + esc(fehl.join("; ")) + "."; PERS_STAND.set("__schalter", true); bestZeigen(); return; }
   const gew = SCH_DEF.filter((d) => (neu[d.k] != null ? neu[d.k] : schStd(d.k)) !== alt[d.k]);
   if (!gew.length) { SCH_MSG = "Nichts geändert."; PERS_STAND.set("__schalter", true); bestZeigen(); return; }
-  const off = OFFEN.filter((x) => x.dep >= heuteKey() && !BUCH.some((y) => bKey(y) === bKey(x))).length;
-  const gzN = neu.gastZimmer != null ? neu.gastZimmer : schStd("gastZimmer"), faTxt = gew.some((d) => d.k === "gastZimmer") ? "\nAnteil der Familie im Zimmer: " + P.famAnteil + " → " + schFam(gzN) : "";
+  const ab = SCH_AB && DKEY.test(SCH_AB) && SCH_AB > heuteKey() ? SCH_AB : "";   // «gültig ab»: nur für Aufenthalte mit Anreise ab diesem Tag (seit 3.34.0.0)
+  const off = OFFEN.filter((x) => (ab ? x.arr >= ab : x.dep >= heuteKey()) && !BUCH.some((y) => bKey(y) === bKey(x))).length;
+  const gzN = neu.gastZimmer != null ? neu.gastZimmer : schStd("gastZimmer"), faTxt = gew.some((d) => d.k === "gastZimmer") ? "\nAnteil der Familie im Zimmer: " + schFam(alt.gastZimmer) + " → " + schFam(gzN) : "";
   const txt = gew.map((d) => d.t + ": " + alt[d.k] + " → " + (neu[d.k] != null ? neu[d.k] : schStd(d.k))).join("\n") + faTxt;
-  if (!(await appFrage("Diese Werte speichern?\n\n" + txt + (off ? "\n\n⚠️ " + off + (off === 1 ? " Anfrage ist" : " Anfragen sind") + " noch offen. Sie wurden mit den alten Werten gerechnet. Beim Bestätigen kann der Betrag abweichen." : ""), "Ja, speichern", "Abbrechen"))) return;
+  if (!(await appFrage((ab ? "Diese Werte speichern, gültig für Aufenthalte mit Anreise ab " + schDat(ab) + "?" : "Diese Werte speichern?") + "\n\n" + txt + (off ? "\n\n⚠️ " + off + (off === 1 ? " Anfrage ist" : " Anfragen sind") + " noch offen. Sie wurden mit den alten Werten gerechnet. Beim Bestätigen kann der Betrag abweichen." : ""), "Ja, speichern", "Abbrechen"))) return;
   sv.disabled = true; sv.textContent = "Speichert …";
   try {
-    SCHALTER = await ghSchalter(neu); try { localStorage.setItem("tm2_schalter", JSON.stringify(SCHALTER)); } catch (e2) {}
-    schalterAnwenden(); SCH_F = {};
-    SCH_MSG = "✅ Gespeichert. " + (Object.keys(SCHALTER).length ? "Alle sehen die Werte nach etwa einer Minute." : "Alles steht wieder auf Standard.");
-    try { await ghAendern((l, jj) => { logEintrag(jj, "Control Panel: " + gew.map((d) => d.k + " " + alt[d.k] + " → " + (neu[d.k] != null ? neu[d.k] : schStd(d.k))).join(", ") + (faTxt ? ", famAnteil → " + P.famAnteil : "")); return l; }); } catch (e3) { /* Logbuch ist Beigabe */ }
+    const heu = heuteKey(), zukunft = SCH_PLAN.filter((x) => x.ab > heu && x.ab !== ab);
+    let res;
+    if (ab) { const wv = {}; gew.forEach((d) => { wv[d.k] = neu[d.k] != null ? neu[d.k] : schStd(d.k); }); const vor = SCH_PLAN.find((x) => x.ab === ab); res = await ghSchalter(SCHALTER, zukunft.concat([{ ab: ab, werte: Object.assign({}, vor ? vor.werte : {}, wv) }]).sort((a, b) => (a.ab < b.ab ? -1 : 1))); }
+    else res = await ghSchalter(neu, zukunft);
+    SCHALTER = res.werte; SCH_PLAN = res.plan; try { localStorage.setItem("tm2_schalter", JSON.stringify(res)); } catch (e2) {}
+    schalterAnwenden(); SCH_F = {}; SCH_AB = "";
+    SCH_MSG = "✅ Gespeichert" + (ab ? " (gültig für Anreisen ab " + schDat(ab) + ")" : "") + ". " + (Object.keys(SCHALTER).length || SCH_PLAN.length ? "Alle sehen die Werte nach etwa einer Minute." : "Alles steht wieder auf Standard.");
+    try { await ghAendern((l, jj) => { logEintrag(jj, "Control Panel" + (ab ? " (gültig ab Anreise " + ab + ")" : "") + ": " + gew.map((d) => d.k + " " + alt[d.k] + " → " + (neu[d.k] != null ? neu[d.k] : schStd(d.k))).join(", ") + (faTxt ? ", famAnteil → " + schFam(gzN) : "")); return l; }); } catch (e3) { /* Logbuch ist Beigabe */ }
     try { zeichneBalken(); } catch (e4) {} try { render(); } catch (e5) {}
   } catch (err) { SCH_MSG = "⚠️ " + esc(err && err.message ? err.message : "Nicht gespeichert."); }
   PERS_STAND.set("__schalter", true); bestZeigen();

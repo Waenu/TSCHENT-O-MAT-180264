@@ -34,7 +34,7 @@ async function seite(browser, opt = {}) {
   await p.route("**/belegt.json*", (r) => r.fulfill({ contentType: "application/json", body: JSON.stringify({ belegt: [] }) }));
   await p.route("**/einladungen.json*", (r) => r.abort());
   await p.route("**/familie.json*", (r) => r.fulfill({ contentType: "application/json", body: JSON.stringify(opt.familie || { liste: {} }) }));
-  await p.route("**/schalter.json*", (r) => (opt.schalter ? r.fulfill({ contentType: "application/json", body: JSON.stringify({ werte: opt.schalter }) }) : r.fulfill({ status: 404, body: "{}" })));
+  await p.route("**/schalter.json*", (r) => (opt.schalter ? r.fulfill({ contentType: "application/json", body: JSON.stringify({ werte: opt.schalter, plan: opt.plan }) }) : r.fulfill({ status: 404, body: "{}" })));
   if (opt.buchungen) await p.route("**/buchungen.json*", (r) => r.fulfill({ contentType: "application/json", body: JSON.stringify(opt.buchungen) }));
   await p.route("**api.github.com/**", async (r) => {
     const q = r.request(), m = q.method(), body = q.postData();
@@ -106,6 +106,41 @@ async function tControlPanel(b) {
   ok("Control Panel: Live-Anzeige und Speichern (Zimmer 30 → Familie 40)", /CHF 40/.test(r.live) && r.nach.gz === 30 && r.nach.fa === 40, r.live + " | " + JSON.stringify(r.nach));
   ok("Control Panel: schalter.json und Logbuch werden geschrieben", puts.some((x) => x.message && /Schalter/.test(x.message)) && puts.some((x) => x.log && x.log.length), JSON.stringify(puts).slice(0, 120));
   ok("Control Panel: keine Fehler", p.fehler.length === 0, p.fehler.join("|"));
+  await p.ctx.close();
+}
+
+async function tGueltigAb(b) {
+  const puts = [];
+  const api = (url, m, body) => {
+    if (/contents\/schalter\.json/.test(url)) { if (m === "GET") return { body: { sha: "x", content: b64({ werte: {}, plan: [] }) } }; puts.push(JSON.parse(Buffer.from(JSON.parse(body).content, "base64").toString())); return { status: 200 }; }
+    if (/contents\/buchungen\.json/.test(url)) { if (m === "GET") return { body: { sha: "x", content: b64({ buchungen: [], logbuch: [] }) } }; return { status: 200 }; }
+    return null;
+  };
+  const p = await seite(b, { ls: papiLs, papi: true, schalter: { gast: 75 }, plan: [{ ab: "2027-02-01", werte: { famPausch: 80, gast: 90 } }, { ab: "2026-01-01", werte: { reinigung: 1 } }, { ab: "kaputt", werte: { gast: 1 } }], api });
+  const r = await p.evaluate(async () => {
+    const w = (ms) => new Promise((z) => setTimeout(z, ms)); const o = {};
+    o.plan = SCH_PLAN.length; o.heute = { fam: schAkt("famPausch"), gast: schAkt("gast") };
+    const wert = async (k) => { ARR = k; DEP = ""; render(); await w(100); return { fam: P.famPausch, gast: P.gast }; };
+    o.dez = await wert("2026-12-12"); o.feb = await wert("2027-02-05"); o.jan = await wert("2027-01-30");
+    ARR = ""; render(); bestZeigen(); await w(300);
+    const sd = [...document.querySelectorAll("#bestKasten details")].find((d) => /Control Panel/.test(d.querySelector("summary").innerText)); if (sd) sd.open = true;
+    o.liste = (document.querySelector(".sch-plan") || { innerText: "" }).innerText.replace(/\s+/g, " ");
+    o.feld = !!document.getElementById("sch-ab");
+    const inp = document.getElementById("sch-famPausch"); inp.value = "85"; inp.dispatchEvent(new Event("input", { bubbles: true }));
+    const ab = document.getElementById("sch-ab"); ab.value = "2027-03-01"; ab.dispatchEvent(new Event("change", { bubbles: true }));
+    document.querySelector("[data-sch-save]").click(); await w(500); const ja = document.querySelector('[data-afr="1"]'); o.frage = (document.querySelector(".afr-t, #appFrage") || { innerText: "" }).innerText.replace(/\s+/g, " "); if (ja) { ja.click(); await w(1500); }
+    o.nachHeute = { fam: schAkt("famPausch") }; o.nachMaerz = await wert("2027-03-10"); o.nachFeb = await wert("2027-02-10");
+    return o;
+  });
+  ok("Gültig ab: Werte aus schalter.json (plan), ungültige und alte Einträge ohne Wirkung", r.plan === 2 || r.plan === 3, "Einträge: " + r.plan);
+  ok("Gültig ab: heute gilt der alte Wert (Panel zeigt heute)", r.heute.fam === 70 && r.heute.gast === 75, JSON.stringify(r.heute));
+  ok("Gültig ab: Anreise 12.12.2026 alt, 30.1.2027 alt, 5.2.2027 neu (80 / 90)", r.dez.fam === 70 && r.dez.gast === 75 && r.jan.fam === 70 && r.feb.fam === 80 && r.feb.gast === 90, JSON.stringify([r.dez, r.jan, r.feb]));
+  ok("Gültig ab: geplante Änderung steht im Panel, Feld «Gültig ab» da", /1\.2\.2027/.test(r.liste) && r.feld, r.liste);
+  const pj = puts[0];
+  ok("Gültig ab: Speichern mit Datum schreibt Plan, Basiswerte bleiben", !!pj && pj.werte.gast === 75 && pj.werte.famPausch === undefined && pj.plan.some((x) => x.ab === "2027-03-01" && x.werte.famPausch === 85) && pj.plan.some((x) => x.ab === "2027-02-01"), JSON.stringify(pj));
+  ok("Gültig ab: nach dem Speichern heute unverändert, ab 1.3. 85, dazwischen 80", r.nachHeute.fam === 70 && r.nachMaerz.fam === 85 && r.nachFeb.fam === 80, JSON.stringify([r.nachHeute, r.nachMaerz, r.nachFeb]));
+  ok("Gültig ab: Rückfrage nennt das Datum", /1\.3\.2027/.test(r.frage), r.frage);
+  ok("Gültig ab: keine Fehler", p.fehler.length === 0, p.fehler.join("|"));
   await p.ctx.close();
 }
 
@@ -249,7 +284,7 @@ async function tNamenAufraeumen(b) {
 
 (async () => {
   const s = await server(); const b = await chromium.launch();
-  const lauf = [["Dateien", tDateien], ["Start", tStart], ["Control Panel", tControlPanel], ["Trinkgeld", tTrinkgeld], ["Rechnung an Freunde", tRechnungSchalter], ["Ansicht als", tAnsichtAls], ["Anfrage und Namen", tSchnappschuss], ["Sonderbuchungen", tSonder], ["Preise", tPreise], ["Alte Namen aufräumen", tNamenAufraeumen]];
+  const lauf = [["Dateien", tDateien], ["Start", tStart], ["Control Panel", tControlPanel], ["Gültig ab", tGueltigAb], ["Trinkgeld", tTrinkgeld], ["Rechnung an Freunde", tRechnungSchalter], ["Ansicht als", tAnsichtAls], ["Anfrage und Namen", tSchnappschuss], ["Sonderbuchungen", tSonder], ["Preise", tPreise], ["Alte Namen aufräumen", tNamenAufraeumen]];
   const nur = process.argv[2];
   for (const [n, f] of lauf) { if (nur && !n.toLowerCase().includes(nur.toLowerCase())) continue; try { await f(b); } catch (e) { ok(n + ": Lauf abgebrochen", false, e.message); } }
   await b.close(); s.close();
