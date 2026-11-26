@@ -1728,7 +1728,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.31.1.0";
+let VERSION = "3.31.1.1";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -7877,6 +7877,10 @@ document.addEventListener("click", (e) => {   // Mailadresse direkt bei der List
 });
 const namenBekannt = (b) => { try { const e = GM_LISTEN && GM_LISTEN[bKey(b)]; if (e && Array.isArray(e.freunde) && e.freunde.length) return true; const g = rechTeile(b.rechnung).gast; return !!(g && g.some(Boolean)); } catch (e) { return false; } };   // Namen der Freunde für Papi bekannt (Liste im Briefkasten oder abgekürzt in der Anfrage; seit 3.31.1.0)
 const laufNamen = (b) => (TOKEN && b && b.rechnung && freundeVon(b) > 0 && !namenBekannt(b)) ? '<div class="lauf" role="note"><span>Namen noch nicht sichtbar: Sie erscheinen, sobald ' + esc(b.name) + " die Liste der Freunde gesendet hat.</span></div>" : "";   // Laufschrift, nur wo die Namen sicher nicht angezeigt werden können
+function vorschauAlt(a, b) {   // «Ansicht als»: Stand «gesendet» aus dem Briefkasten statt vom Handy des Papis (seit 3.31.1.1)
+  if (!meinVorschau()) return a; const e = GM_LISTEN && GM_LISTEN[bKey(b)], ok = e && Array.isArray(e.freunde) && e.freunde.length && e.gesendet;
+  return Object.assign({}, a, { gesendet: ok ? String(e.gesendet) : "" });
+}
 function vorschauListe(b) {   // «Ansicht als»: Zeile über dem Formular des Kindes (seit 3.31.1.0)
   const e = GM_LISTEN && GM_LISTEN[bKey(b)];
   if (e && Array.isArray(e.freunde) && e.freunde.length && e.gesendet) return '<p class="hint">✅ ' + esc(b.name) + " hat die Liste am " + esc(fmtTag(String(e.gesendet).slice(0, 10))) + ", " + esc(String(e.gesendet).slice(11, 16)) + " Uhr gesendet. Das Formular unten zeigt nur, was auf deinem Handy steht.</p>";
@@ -7899,8 +7903,8 @@ function gmKindZeigen() {
   box.hidden = !l.length;
   box.dataset.gen = String((+box.dataset.gen || 0) + 1);
   box.innerHTML = l.map((b) => {
-    const key = bKey(b), n = freundeVon(b), alt = lok[key] || {}, fr = Array.isArray(alt.freunde) ? alt.freunde : [], auf = !alt.gesendet || GM_AUF.has(key), msg = GM_MSG[key] || "";
-    const bereit = !alt.gesendet && fr.length >= n && fr.slice(0, n).every((f) => f && f.name && f.vorname && f.geb && f.geschlecht);   // schon im Rechner ausgefüllt (seit 3.6.0.1)
+    const key = bKey(b), n = freundeVon(b), alt = vorschauAlt(lok[key] || {}, b), fr = Array.isArray(alt.freunde) ? alt.freunde : [], auf = !alt.gesendet || GM_AUF.has(key), msg = GM_MSG[key] || "";
+    const bereit = meinVorschau() ? !alt.gesendet : !alt.gesendet && fr.length >= n && fr.slice(0, n).every((f) => f && f.name && f.vorname && f.geb && f.geschlecht);   // schon im Rechner ausgefüllt (seit 3.6.0.1); «Ansicht als»: die Anfrage ging nur mit ausgefüllter Liste, gesendet oder nicht kommt aus dem Briefkasten (seit 3.31.1.1)
     const kopf = alt.gesendet
       ? '<span class="gm-ico">✅</span><b>Liste deiner Freunde gesendet</b> am ' + esc(fmtTag(alt.gesendet.slice(0, 10))) + ", " + esc(alt.gesendet.slice(11, 16)) + " Uhr. Danke!"
       : bereit ? '<span class="gm-ico">👥</span><b>Bitte sende uns nun noch die Liste deiner Freunde zu</b>' : '<span class="gm-ico">👥</span><b>Wichtig: Bitte fülle die Liste deiner Freunde aus</b>';
