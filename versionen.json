@@ -2,6 +2,33 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.32.0.1",
+      "datum": "2026-11-27",
+      "titel": "Trinkgeld: neuer Text",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "WhatsApp an die Freunde: «Freiwillig: Ein Trinkgeld geht an meine Mami. Sie putzt, wäscht und fährt für uns nach Adelboden, und der günstige Preis deckt das nicht ganz.»",
+        "Bei «Trinkgeld für Mami» und im Glossar derselbe Ton."
+      ]
+    },
+    {
+      "v": "3.32.0.0",
+      "datum": "2026-11-27",
+      "titel": "Trinkgeld neu: Feld mit eigenem Betrag, Schalter pro WhatsApp",
+      "arten": [
+        "Neu",
+        "Funktion"
+      ],
+      "punkte": [
+        "Zahlung an die Eltern: Das Feld «Trinkgeld für Mami» ist immer sichtbar, du trägst deinen eigenen Betrag ein. Kein Aufrunden-Vorschlag mehr.",
+        "«Kein Trinkgeld für Mami» schaltet es ausdrücklich aus und steht dann so da. Für Partner heisst es Marianne.",
+        "Beim Wählen fallen Herzen, Blumen und Smileys.",
+        "Rechnung an die Freunde: Bei jeder einzelnen WhatsApp gibt es den Schalter «Hinweis aufs Trinkgeld», vorgewählt. Der Hinweis nennt, dass das Geld an Marianne geht, für Reinigung und Wäsche. Der Schalter im Profil entfällt."
+      ]
+    },
+    {
       "v": "3.31.1.1",
       "datum": "2026-11-27",
       "titel": "«Ansicht als»: Überschrift der Liste der Freunde aus dem Briefkasten",
