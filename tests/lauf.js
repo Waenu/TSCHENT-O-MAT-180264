@@ -250,6 +250,7 @@ async function tPaar(b) {
     const f = (v, n, g) => ({ vorname: v, name: n, geschlecht: "w", geb: g || "1990-01-01", nat: "Schweiz" });
     localStorage.setItem("tm2t_gmEntwurf", JSON.stringify({ k: gmEntwurfKeyJetzt(), l: [f("Alex", "Meier"), f("Julia", "Meier"), f("Alexandra", "Huber")] })); normalize(); render(); await w(400);
     for (let i = 0; i < 4; i++) { const ok1 = document.querySelector(".gm-pt-ok"); if (ok1) { ok1.click(); await w(300); } }
+    o.rechner = (document.querySelector("#result .auf-tab tr") || document.querySelector(".auf-tab tr") || { innerText: "" }).innerText.replace(/\s+/g, " "); o.snapFam = SNAP_BER.filter((t) => /zahlt|zahlen/.test(t)).join(" | ").slice(0, 200);
     const text = "Gesendet am Fr 27.11.2026, 10:00 Uhr. App-Version x.\n#Preisberechnung\n" + SNAP_BER.join("\n"), bu = { name: "Manuel", arr: "2026-12-12", dep: "2026-12-15", betrag: 1000, rechnung: text, bestaetigt: "2026-11-27T10:00" };
     const txt = (h) => { const d = document.createElement("div"); d.innerHTML = h || ""; return [...d.querySelectorAll("tr")].map((t) => t.innerText.replace(/\s+/g, " ")); };
     o.kind = txt(rechAufHtml(text, bu)); TOKEN = "test"; const bk = ABSENDER; ABSENDER = ""; o.papi = txt(rechAufHtml(text, bu)); ABSENDER = bk; o.leiste = (document.querySelector("#bar") || { innerText: "" }).innerText.replace(/\s+/g, " ").slice(0, 120);
@@ -258,6 +259,7 @@ async function tPaar(b) {
   const alle = (a) => a.join(" | ");
   ok("Paar in der gespeicherten Berechnung: «2 × 3 Nächte × CHF 70.00» wie bei Einzelnen", /Übernachtung \(3 Nächte\) 2 × 3 Nächte × CHF 70\.00CHF 420\.00/.test(alle(r.papi)) && /3 × CHF 70\.00/.test(alle(r.papi)), alle(r.papi));
   ok("Einnahmen ohne Reinigung/Kurtaxe, darunter Anteil Reinigung, Anteil Kurtaxe, Total", /Einnahmen ÜbernachtungCHF [\d’']+\.\d\d \| Anteil ReinigungCHF [\d’']+\.\d\d \| Anteil KurtaxeCHF [\d’']+\.\d\d \| Total/.test(alle(r.papi)), alle(r.papi).slice(-200));
+  ok("Buchen: erste Zeile «Ich (Manuel) & Sarah zahlen», gespeichert neutral ohne Namen", /Ich \(Manuel\) & Sarah zahlen/.test(r.rechner) && !/Sarah/.test(r.snapFam), r.rechner + " || " + r.snapFam);
   ok("Familie mit Namen: Papi «Manuel & Sarah zahlen», Kind «Ich (Manuel) & Sarah zahlen»", /Manuel & Sarah zahlen/.test(alle(r.papi)) && /Ich \(Manuel\) & Sarah zahlen/.test(alle(r.kind)), alle(r.papi).slice(0, 80) + " || " + alle(r.kind).slice(0, 80));
   ok("Paar und Familie: keine Fehler", p.fehler.length === 0, p.fehler.join("|"));
   await p.ctx.close();

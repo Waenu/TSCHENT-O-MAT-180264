@@ -1732,7 +1732,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.37.0.6";
+let VERSION = "3.37.0.7";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2259,6 +2259,14 @@ function partnerDa() {   // kommt Partner/in mit? Name aus dem persönlichen Lin
   if (eigenAktiv()) { const pn = (famNamen() || {}).p; return pn && (S.famSel || []).indexOf(pn) >= 0 ? pn : ""; }   // seit 3.9.5.0 (auch ohne «Ich»)
   const fw = famWahl(); if (fw) return fw.p ? ((famNamen() || {}).p || "Partner/in") : "";
   return /Partner\/in/.test(S.wer || "") ? "Partner/in" : "";
+}
+function famZahltText() {   // erste Zeile der Aufteilung mit Namen: «Manuel & Sarah zahlen» (Papi «Ansicht als»), «Ich (Manuel) & Sarah zahlen» (Kind); leer = bei «Familie zahlt» bleiben (seit 3.37.0.7)
+  const fn = famNamen(); if (!ABSENDER || !fn || fn.gen) return "";
+  const p = partnerDa(); if (p === "Partner/in") return "";
+  const me = ichDa() ? (TOKEN ? esc(ABSENDER) : "Ich (" + esc(rufname()) + ")") : "", l = [me, p ? esc(p) : ""].filter(Boolean);
+  if (l.length >= 2) return l.join(" &amp; ") + " zahlen";
+  if (l.length === 1) return l[0] === me && !TOKEN ? "Du zahlst" : l[0] + " zahlt";
+  return "";
 }
 function kindRoh(i, l) {   // Zahler eines Kindes: gewählte Chips, sonst die Insel (zu) als Vorwahl (seit 3.17.8.0, Wänu: Kinder gehören nie fest zu einer Partei)
   const s = S.zahler && S.zahler[i]; if (s) return s;
@@ -5569,6 +5577,7 @@ function render() {
         who = rows.join(""); whoN = rowsN.join("");
       }
     }
+    if (rows[0] && /^<tr><td>(Familie zahlt|Du zahlst)/.test(rows[0])) { const fz = famZahltText(); if (fz) rows[0] = rows[0].replace(/^(<tr><td>)(Familie zahlt|Du zahlst)/, "$1" + fz); }   // nur die Anzeige, die gespeicherte Aufteilung (whoN) bleibt neutral (seit 3.37.0.7)
     const balken = (q) => { if (!q || !(q.tot > 0.004)) return ""; const rr = Math.max(0, q.r), kk = Math.max(0, q.k), u = Math.max(0, q.tot - rr - kk);   // Balken zuunterst in der aufgeklappten Zeile (seit 3.10.0.1, Wänu)
       return '<li class="ueb-li"><div class="ueb-b">' + (u > 0.004 ? '<i class="su" style="flex:' + u + '"></i>' : "") + (rr > 0.004 ? '<i class="sr" style="flex:' + rr + '"></i>' : "") + (kk > 0.004 ? '<i class="sk" style="flex:' + kk + '"></i>' : "") + '</div><div class="ueb-leg">' + (u > 0.004 ? '<span><i class="su"></i>Übernachtung</span>' : "") + (rr > 0.004 ? '<span><i class="sr"></i>Reinigung</span>' : "") + (kk > 0.004 ? '<span><i class="sk"></i>Kurtaxe</span>' : "") + "</div></li>"; };
     if (rows.length === bd.length) bd.forEach((t, k) => { if (t) bd[k] = t + (rows.length === sg.length ? balken(sg[k]) : ""); });
