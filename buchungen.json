@@ -32,10 +32,6 @@
   ],
   "logbuch": [
     {
-      "t": "2026-11-03T12:09",
-      "text": "Bestätigt: Jerome, Mi 25.11.2026 bis Sa 28.11.2026, CHF 405"
-    },
-    {
       "t": "2026-11-03T14:28",
       "text": "Entfernt: Jerome, Mi 25.11.2026 bis Sa 28.11.2026"
     },
@@ -830,21 +826,12 @@
     {
       "t": "2026-11-26T21:53",
       "text": "Vorlage für Manuel: 2027-01-07 bis 2027-01-10, geänderte Preise: CHF 600.– pro Nacht für die ganze Wohnung, mit Reinigung (CHF 120.– pro Aufenthalt), Kurtaxe für Freunde wie üblich"
+    },
+    {
+      "t": "2026-11-27T17:51",
+      "text": "Vorlage gelöscht: Manuel, 2027-01-07 bis 2027-01-10"
     }
   ],
   "reinigung": [],
-  "vorlagen": [
-    {
-      "id": "mwy1571v",
-      "name": "Manuel",
-      "arr": "2027-01-07",
-      "dep": "2027-01-10",
-      "pa": true,
-      "preis": 600,
-      "reinB": 120,
-      "kt": true,
-      "t": "2026-11-26T21:53",
-      "ws": "2026-11-26T21:56"
-    }
-  ]
+  "vorlagen": []
 }
