@@ -1729,7 +1729,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.37.0.3";
+let VERSION = "3.37.0.4";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -7123,6 +7123,13 @@ function rechAufHtml(r, b) {   // Aufteilung wie im Rechner; null, wenn nichts z
   const proN = (v, n) => n > 1 && v > 0.004 ? n + " × " + chf2(v / n) : "";
   const D = (c) => '<i class="dot ' + c + '"></i>', L = (a, v, k, c) => '<li><span>' + (c ? D(c) : "") + a + (k ? ' <small class="ktk">' + k + "</small>" : "") + "</span><span>" + chf2(v) + "</span></li>";
   const zim1 = /Ja/.test((find(o.det, /^Zimmer 1 unberührt/) || {}).b || "");
+  const famAnz = (h) => {   // «Familie zahlt» mit Namen aus der Anfrage (Zeile ~N): «Manuel & Sarah zahlen» (Papi), «Ich (Manuel) & Sarah zahlen» (Kind) (seit 3.37.0.4)
+    if (!b || !/^(Familie zahlt|Du zahlst)$/.test(h)) return h;
+    const eigen = !!(ABSENDER && eigenN(b.name) && !TOKEN), p0 = o.namen && o.namen[0], erw = p0 ? p0.erw.filter(Boolean) : [], nm = String(b.name || "").split(/[ ,&]/)[0];
+    if (erw.length >= 2) return erw.map((x) => (eigen && x === ABSENDER ? "Ich (" + rufname() + ")" : x)).join(" & ") + " zahlen";
+    if (TOKEN && nm && (erw.length === 1 || h === "Du zahlst")) return (erw[0] || nm) + " zahlt";
+    return h;
+  };
   const out = rows.map((z, k) => {
     const tot = rechV(z.b), teile = z.a.split(RECH_KL), haupt = teile[0], klein = teile.slice(1), fam = /^(Du zahlst|Familie|Partner\/in)/.test(haupt), ids = nr(haupt);
     let pc = "";
@@ -7138,14 +7145,19 @@ function rechAufHtml(r, b) {   // Aufteilung wie im Rechner; null, wenn nichts z
       const n = fam ? nG : ids.length === 1 ? (() => { const d = find(o.det, new RegExp("^Freund/in " + (ids[0] + 1) + "$")); const m = d && /\((\d+) N/.exec(d.b); return m ? Number(m[1]) : nG; })() : 0;
       if (rr >= 0 && tot - rr - kt > -0.005) q = { r: rr, k: kt, e: 0, n };
     }
+    if (q && !fam && ids.length >= 2 && !q.n && !sond) {   // Partei mit mehreren Personen: Nächte aus den Zeilen der Mitglieder (seit 3.37.0.4)
+      const nGes = nG || (() => { const u = find(o.ber, /^Übernachtung \((\d+) N/) || find(o.det, /^Übernachtung \((\d+) N/); return u ? Number(/\((\d+) N/.exec(u.a)[1]) : 0; })();
+      const ns = ids.map((i) => { const d = find(o.det, new RegExp("^Freund/in " + (i + 1) + "$")), m = d && /\((\d+) N/.exec(d.b); return m ? Number(m[1]) : nGes; });
+      if (ns.every((v) => v > 0)) { q.pn = ns.reduce((a, v) => a + v, 0); q.gl = ids.length; q.n0 = ns.every((v) => v === ns[0]) ? ns[0] : 0; q.n = q.n0; }
+    }
     let bd = "";
     let qpa = 0, qf = 0; if (q && spf > 0) { qpa = q.r * spf; qf = (PA + RB) > 0 ? q.r / (PA + RB) : 0; q = { r: q.r * (1 - spf), k: q.k, e: q.e, n: q.n }; }   // Sonderbuchung: Pauschale-Anteil als Übernachtung (seit 3.35.0.1)
     if (q) { const ue = tot - q.r - q.k + q.e, nT = q.n ? " (" + q.n + (q.n === 1 ? " Nacht" : " Nächte") + ")" : "", zs = /im selben Zimmer/.test(z.a) ? ", im selben Zimmer" : "";
       const nPa = q.n || nG, paTxt = qpa > 0 && qf > 0 ? (nPa > 1 ? nPa + " × " + chf2(PA / nPa * qf) : "") + (() => { const t = (() => { for (let m = 2; m <= 12; m++) { const pz = Math.round(qf * m); if (pz > 0 && Math.abs(pz / m - qf) < 0.0005) return pz + " von " + m + (nachPart ? " Parteien" : " Personen"); } return ""; })(); return t ? (nPa > 1 ? " (" : "") + t + " an " + chf(PA / nPa) + (nPa > 1 ? ")" : "") : ""; })() : "";
-      bd = (ue > 0.004 || !sond ? L("Übernachtung" + nT + zs, ue, qpa > 0 ? paTxt : nachN && PA > 0 && (nG || nPa) > 0 ? ((q.n || nG) > 1 ? (q.n || nG) + " × " + chf2(ue / (q.n || nG)) + " (Anteil an " : "Anteil an ") + chf(PA / (nG || nPa)) + ((q.n || nG) > 1 ? " pro Nacht)" : " pro Nacht") : proN(ue, q.n), "su") : "") + (fam && k === 0 && zim1 ? '<li><span>🚪 Zimmer 1 und rotes Bad unberührt <small class="ktk">schon abgezogen</small></span><span></span></li>' : "") + (q.r > 0.004 ? L((qpa > 0 || nachN ? "Reinigung" : RW) + "santeil", q.r, reTxt(q.r), "sr") : "") + (q.k > 0.004 ? L("Kurtaxe", q.k, proN(q.k, q.n), "sk") : "") + (q.e > 0.004 ? L("🎁 Mindestpreis: erlassen", -q.e, "", "") : "");
+      bd = (ue > 0.004 || !sond ? L("Übernachtung" + nT + zs, ue, qpa > 0 ? paTxt : nachN && PA > 0 && (nG || nPa) > 0 ? ((q.n || nG) > 1 ? (q.n || nG) + " × " + chf2(ue / (q.n || nG)) + " (Anteil an " : "Anteil an ") + chf(PA / (nG || nPa)) + ((q.n || nG) > 1 ? " pro Nacht)" : " pro Nacht") : q.pn && ue > 0.004 ? (q.n0 ? q.gl + " × " + q.n0 + " Nächte × " : q.pn + " Personennächte × ") + chf2(ue / q.pn) : proN(ue, q.n), "su") : "") + (fam && k === 0 && zim1 ? '<li><span>🚪 Zimmer 1 und rotes Bad unberührt <small class="ktk">schon abgezogen</small></span><span></span></li>' : "") + (q.r > 0.004 ? L((qpa > 0 || nachN ? "Reinigung" : RW) + "santeil", q.r, reTxt(q.r), "sr") : "") + (q.k > 0.004 ? L("Kurtaxe", q.k, proN(q.k, q.n), "sk") : "") + (q.e > 0.004 ? L("🎁 Mindestpreis: erlassen", -q.e, "", "") : "");
       const u = Math.max(0, tot - q.r - q.k);
       bd += '<li class="ueb-li"><div class="ueb-b">' + (u > 0.004 ? '<i class="su" style="flex:' + u + '"></i>' : "") + (q.r > 0.004 ? '<i class="sr" style="flex:' + q.r + '"></i>' : "") + (q.k > 0.004 ? '<i class="sk" style="flex:' + q.k + '"></i>' : "") + '</div><div class="ueb-leg">' + (u > 0.004 ? '<span><i class="su"></i>Übernachtung</span>' : "") + (q.r > 0.004 ? '<span><i class="sr"></i>' + (qpa > 0 || nachN ? "Reinigung" : RW) + "</span>" : "") + (q.k > 0.004 ? '<span><i class="sk"></i>Kurtaxe</span>' : "") + "</div></li>"; }
-    const st = pc ? ' style="--pc:' + pc + '"' : "", td1 = "<td>" + esc(haupt) + klein.map((s) => ' <small class="ktk">' + esc(s) + "</small>").join("") + "</td><td>" + esc(z.b) + "</td>";
+    const st = pc ? ' style="--pc:' + pc + '"' : "", td1 = "<td>" + esc(famAnz(haupt)) + klein.map((s) => ' <small class="ktk">' + esc(s) + "</small>").join("") + "</td><td>" + esc(z.b) + "</td>";
     return bd ? '<tr class="auf-z"' + st + ' role="button" tabindex="0" aria-expanded="false">' + td1 + '</tr><tr class="auf-d"' + st + ' hidden><td colspan="2"><ul>' + bd + "</ul></td></tr>" : "<tr" + st + ">" + td1 + "</tr>";
   }).join("");
   const tz = find(o.ber, /^Total mit Kurtaxe$/), totV = tz ? tz.b : chf2(rows.reduce((a, z) => a + (rechV(z.b) || 0), 0));

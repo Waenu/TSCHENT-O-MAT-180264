@@ -2,6 +2,19 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.37.0.4",
+      "datum": "2026-11-27",
+      "titel": "Aufteilung: Paar mit Nächten, Familie mit Namen",
+      "arten": [
+        "Layout",
+        "Text"
+      ],
+      "punkte": [
+        "Bei einer Partei mit mehreren Personen steht in der gespeicherten Berechnung wie bei Einzelnen die Rechnung: «Übernachtung (3 Nächte)» und darunter «2 × 3 Nächte × CHF 70.00».",
+        "«Familie zahlt» heisst mit Namen aus der Anfrage «Manuel & Sarah zahlen» (Papi) bzw. «Ich (Manuel) & Sarah zahlen» (Kind). Ältere Anfragen ohne Namen bleiben wie sie sind."
+      ]
+    },
+    {
       "v": "3.37.0.3",
       "datum": "2026-11-26",
       "titel": "Kleinkind-Warnung: Rahmen gleich dick",
