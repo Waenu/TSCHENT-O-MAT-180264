@@ -2,6 +2,67 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.37.0.12",
+      "datum": "2026-11-27",
+      "titel": "Bonus bei vielen Freunden, Vorteil in Gold",
+      "arten": [
+        "Text",
+        "Layout"
+      ],
+      "punkte": [
+        "Zahlt die Familie dank vieler Freunde (Mindestpreis) nichts oder weniger, steht «Bonus: Mindestpreis erlassen» mit dem Betrag.",
+        "Familienrabatt und Bonus stehen in goldener Schrift."
+      ]
+    },
+    {
+      "v": "3.37.0.11",
+      "datum": "2026-11-27",
+      "titel": "Familienrabatt statt «ihr spart», Kinder im Namen",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Die Zeile unter der Familie heisst «Ohne Familienpreis: … , Familienrabatt CHF …».",
+        "Kinder der Familie stehen in der Zeile («Ich (Manuel) & Sarah mit Mael & Yara») und zählen bei den Nächten mit; gilt auch für Geschwister-Haushalte."
+      ]
+    },
+    {
+      "v": "3.37.0.10",
+      "datum": "2026-11-27",
+      "titel": "Aufteilung: Familienvorteil sichtbar",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Unter der Familienzeile steht klein, was ohne Familienpreis gezahlt würde und wie viel die Familie spart, z. B. «Ohne Familienpreis: 11 × CHF 70.00 = CHF 770.00, ihr spart CHF 280.00»."
+      ]
+    },
+    {
+      "v": "3.37.0.9",
+      "datum": "2026-11-27",
+      "titel": "Aufteilung: «4 Nächte (à CHF 70.00)», Familie «11 Nächte (7 + 4) für»",
+      "arten": [
+        "Text"
+      ],
+      "punkte": [
+        "Freunde: «Übernachtung 4 Nächte (à CHF 70.00) CHF 280.00».",
+        "Familie: «Übernachtung 11 Nächte (7 + 4) für CHF 490.00», damit man den Familienvorteil sofort sieht. Gilt beim Buchen und in der gespeicherten Berechnung."
+      ]
+    },
+    {
+      "v": "3.37.0.8",
+      "datum": "2026-11-27",
+      "titel": "Aufteilung einheitlich: Nächte pro Person, Legende einmal, Summen",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Jede aufgeklappte Zeile der Aufteilung ist gleich aufgebaut: Name mit Betrag, darunter klein Übernachtung (Nächte × Preis), Reinigung und Kurtaxe, zuletzt der Balken.",
+        "Die Legende steht nur noch einmal unten, darüber folgen Total Reinigung, Total Kurtaxe und Einnahmen Übernachtung, dann das Total.",
+        "Gilt beim Buchen und in der gespeicherten Berechnung."
+      ]
+    },
+    {
       "v": "3.37.0.7",
       "datum": "2026-11-27",
       "titel": "Aufteilung beim Buchen mit Namen",
