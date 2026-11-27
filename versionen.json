@@ -2,6 +2,19 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.37.0.8",
+      "datum": "2026-11-27",
+      "titel": "Aufteilung einheitlich: Nächte pro Person, Legende einmal, Summen",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Jede aufgeklappte Zeile der Aufteilung ist gleich aufgebaut: Name mit Betrag, darunter klein Übernachtung (Nächte × Preis), Reinigung und Kurtaxe, zuletzt der Balken.",
+        "Die Legende steht nur noch einmal unten, darüber folgen Total Reinigung, Total Kurtaxe und Einnahmen Übernachtung, dann das Total.",
+        "Gilt beim Buchen und in der gespeicherten Berechnung."
+      ]
+    },
+    {
       "v": "3.37.0.7",
       "datum": "2026-11-27",
       "titel": "Aufteilung beim Buchen mit Namen",
