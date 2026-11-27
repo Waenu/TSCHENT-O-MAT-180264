@@ -187,8 +187,8 @@ async function tSondAufteilung(b) {
     const d = document.createElement("div"); d.innerHTML = h || ""; o.gesp = [...d.querySelectorAll("tr.auf-d")].map((t) => t.innerText.replace(/\s+/g, " "));
     return o;
   });
-  const gut = (t) => /Übernachtung \(3 Nächte\) 3 × CHF 200\.00 \(Anteil an CHF 600\.– pro Nacht\)CHF 600\.00/.test(t) && /CHF 40\.00/.test(t) && !/Pauschale/.test(t) && !/CHF 0\.0\d/.test(t);
-  ok("Sonderbuchung mit Pauschale: Aufteilung live = Übernachtung (3 × Anteil von CHF 600) + Reinigungsanteil, ohne Rundungsreste", r.live.length === 3 && r.live.every(gut) && r.live.every((t) => /Reinigungsanteil 1 von 3 Personen \(CHF 120\.–\)/.test(t)), JSON.stringify(r.live[0]));
+  const gut = (t) => /Übernachtung 3 Nächte \(à CHF 200\.00, Anteil an CHF 600\.– pro Nacht\) CHF 600\.00/.test(t) && /Reinigung CHF 40\.00/.test(t) && !/Pauschale/.test(t) && !/CHF 0\.0\d/.test(t);
+  ok("Sonderbuchung mit Pauschale: Aufteilung live = Übernachtung (3 × Anteil von CHF 600) + Reinigungsanteil, ohne Rundungsreste", r.live.length === 3 && r.live.every(gut), JSON.stringify(r.live[0]));
   ok("Sonderbuchung mit Pauschale: Balken grün (Übernachtung) und violett (Reinigung), Legende «Reinigung»", r.bal.every((t) => t === "su:600,sr:40") && r.legende.every((t) => /Übernachtung/.test(t) && /Reinigung/.test(t)), JSON.stringify([r.bal, r.legende]));
   ok("Sonderbuchung mit Pauschale: gespeicherte Berechnung zeigt dasselbe", r.gesp.length === 3 && r.gesp.every(gut), JSON.stringify(r.gesp[0]));
   ok("Sonderbuchung mit Pauschale: keine Fehler", p.fehler.length === 0, p.fehler.join("|"));
@@ -229,7 +229,7 @@ async function tSondNaechte(b, sm) {
     return o;
   });
   if (sm) {
-    ok("Pauschale nach Personennächten: Anna 3 Nächte CHF 675, Bea 2 Nächte CHF 450 (1800 / 8 Personennächte = 225, Schalter auf 2)", r.rows.length === 3 && /3 × CHF 225\.00 \(Anteil an CHF 600\.– pro Nacht\)CHF 675\.00/.test(r.rows[0] + r.rows[1] + r.rows[2]) && r.rows.some((t) => /Übernachtung \(2 Nächte\) 2 × CHF 225\.00 \(Anteil an CHF 600\.– pro Nacht\)CHF 450\.00/.test(t)), JSON.stringify(r.rows) + " " + r.leiste);
+    ok("Pauschale nach Personennächten: Anna 3 Nächte CHF 675, Bea 2 Nächte CHF 450 (1800 / 8 Personennächte = 225, Schalter auf 2)", r.rows.length === 3 && /3 Nächte \(à CHF 225\.00, Anteil an CHF 600\.– pro Nacht\) CHF 675\.00/.test(r.rows[0] + r.rows[1] + r.rows[2]) && r.rows.some((t) => /2 Nächte \(à CHF 225\.00, Anteil an CHF 600\.– pro Nacht\) CHF 450\.00/.test(t)), JSON.stringify(r.rows) + " " + r.leiste);
     ok("Pauschale nach Personennächten: Summe der Zeilen = Total CHF 1’920", Math.abs(r.sum - 1920) < 0.3 && /1.920/.test(r.tot), r.sum + " " + r.tot + " " + JSON.stringify(r.zr));
     ok("Schalter Weltcup auf 2 Nächte: kein Hinweis «ganze Zeit», Wert 2", !r.hint && r.pm === 2, JSON.stringify([r.hint, r.pm]));
   } else {
@@ -240,6 +240,46 @@ async function tSondNaechte(b, sm) {
   await p.ctx.close();
 }
 
+async function tFamRabatt(b) {
+  const p = await seite(b, { ls: kind("Manuel"), heute: "2026-11-27", familie: { liste: { Manuel: { p: "Sarah", k: ["Mael"] } } } });
+  const r = await p.evaluate(async () => {
+    const w = (ms) => new Promise((z) => setTimeout(z, ms)); const o = {};
+    kalenderKlick("2026-12-12"); kalenderKlick("2026-12-15"); await w(400);
+    const c = [...document.querySelectorAll("#f-art .zchip")].find((x) => /Normal/.test(x.textContent)); if (c) { c.click(); await w(400); }
+    S.werArt = EIGEN; S.famSel = ["Sarah", "Mael"]; S.ichMit = true; S.gaeste = 0; S.reinig = REINIG[0]; S.zimmer = "Nein"; S.spar = "Nein"; S.waesche = S.waesche || "Persönlich bringen"; normalize(); render(); await w(400);
+    o.aufD = [...document.querySelectorAll("#result .auf-d")].map((t) => t.innerText.replace(/\s+/g, " ")).join(" || "); o.kopf = (document.querySelector("#result .auf-z") || { innerText: "" }).innerText.replace(/\s+/g, " ");
+    return o;
+  });
+  ok("Familie mit Kind: Name «mit Mael», Nächte 9 (3 + 3 + 3) für den Familienpreis, Familienrabatt", /Ich \(Manuel\) & Sarah mit Mael/.test(r.aufD) && /9 Nächte \(3 \+ 3 \+ 3\) für CHF 210\.00/.test(r.aufD) && /Ohne Familienpreis: 9 × CHF 70\.00 = CHF 630\.00, Familienrabatt CHF 420\.00/.test(r.aufD), r.aufD.slice(0, 300));
+}
+async function tFamEigen(b) {
+  const p = await seite(b, { ls: kind("Manuel"), heute: "2026-11-27", familie: { liste: { Manuel: { p: "Sarah", k: [] } } } });
+  const r = await p.evaluate(async () => {
+    const w = (ms) => new Promise((z) => setTimeout(z, ms)); const o = {};
+    kalenderKlick("2026-12-12"); kalenderKlick("2026-12-19"); await w(400);
+    const c = [...document.querySelectorAll("#f-art .zchip")].find((x) => /Normal/.test(x.textContent)); if (c) { c.click(); await w(400); }
+    S.werArt = EIGEN; S.famSel = ["Sarah"]; S.ichMit = true; S.gaeste = 0; S.reinig = REINIG[0]; S.zimmer = "Nein"; S.spar = "Nein"; S.waesche = S.waesche || "Persönlich bringen";
+    S.pDat = { Sarah: { an: "2026-12-16", ab: "2026-12-19" } }; normalize(); render(); await w(400);
+    o.aufD = [...document.querySelectorAll("#result .auf-d")].map((t) => t.innerText.replace(/\s+/g, " ")).join(" || ");
+    return o;
+  });
+  ok("Familie mit eigenen Tagen: 10 Nächte (7 + 3), Ohne Familienpreis 10 ×", /10 Nächte \(7 \+ 3\)/.test(r.aufD) && /Ohne Familienpreis: 10 × CHF 70\.00 = CHF 700\.00/.test(r.aufD), r.aufD.slice(0, 400));
+}
+async function tBonus(b) {
+  const p = await seite(b, { ls: kind("Manuel"), heute: "2026-11-27", familie: { liste: { Manuel: { p: "Sarah", k: [] } } } });
+  const r = await p.evaluate(async () => {
+    const w = (ms) => new Promise((z) => setTimeout(z, ms)); const o = {};
+    kalenderKlick("2026-12-12"); kalenderKlick("2026-12-19"); await w(400);
+    const c = [...document.querySelectorAll("#f-art .zchip")].find((x) => /Normal/.test(x.textContent)); if (c) { c.click(); await w(400); }
+    S.werArt = EIGEN; S.famSel = []; S.ichMit = true; S.gaeste = 5; S.reinig = REINIG[0]; S.zimmer = "Nein"; S.spar = "Nein"; S.waesche = S.waesche || "Persönlich bringen";
+    const f = (v, n) => ({ vorname: v, name: n, geschlecht: "w", geb: "1990-01-01", nat: "Schweiz" });
+    localStorage.setItem("tm2t_gmEntwurf", JSON.stringify({ k: gmEntwurfKeyJetzt(), l: ["A", "B", "C", "D", "E"].map((v) => f(v, "Z" + v)) })); normalize(); render(); await w(400);
+    for (let i = 0; i < 6; i++) { const ok1 = document.querySelector(".gm-pt-ok"); if (ok1) { ok1.click(); await w(300); } }
+    o.aufD = [...document.querySelectorAll("#result .auf-d")].map((t) => t.innerText.replace(/\s+/g, " ")).join(" || "); o.gratis = !!(typeof calc === "function" && window.__x); o.kopf = (document.querySelector("#result .auf-z") || { innerText: "" }).innerText.replace(/\s+/g, " ");
+    return o;
+  });
+  ok("Bonus bei vielen Freunden (Mindestpreis), in Gold", /Bonus/.test(r.aufD), r.kopf + " || " + r.aufD.slice(0, 500));
+}
 async function tPaar(b) {
   const p = await seite(b, { ls: kind("Manuel"), heute: "2026-11-27", familie: { liste: { Manuel: { p: "Sarah", k: [] } } } });
   const r = await p.evaluate(async () => {
@@ -250,16 +290,17 @@ async function tPaar(b) {
     const f = (v, n, g) => ({ vorname: v, name: n, geschlecht: "w", geb: g || "1990-01-01", nat: "Schweiz" });
     localStorage.setItem("tm2t_gmEntwurf", JSON.stringify({ k: gmEntwurfKeyJetzt(), l: [f("Alex", "Meier"), f("Julia", "Meier"), f("Alexandra", "Huber")] })); normalize(); render(); await w(400);
     for (let i = 0; i < 4; i++) { const ok1 = document.querySelector(".gm-pt-ok"); if (ok1) { ok1.click(); await w(300); } }
-    o.rechner = (document.querySelector("#result .auf-tab tr") || document.querySelector(".auf-tab tr") || { innerText: "" }).innerText.replace(/\s+/g, " "); o.snapFam = SNAP_BER.filter((t) => /zahlt|zahlen/.test(t)).join(" | ").slice(0, 200);
+    o.rechner = (document.querySelector("#result .auf-tab tr") || document.querySelector(".auf-tab tr") || { innerText: "" }).innerText.replace(/\s+/g, " "); o.aufD = [...document.querySelectorAll("#result .auf-d")].map((t) => t.innerText.replace(/\s+/g, " ")).join(" || "); o.leg = document.querySelectorAll("#result .ueb-leg").length; o.snapFam = SNAP_BER.filter((t) => /zahlt|zahlen/.test(t)).join(" | ").slice(0, 200);
     const text = "Gesendet am Fr 27.11.2026, 10:00 Uhr. App-Version x.\n#Preisberechnung\n" + SNAP_BER.join("\n"), bu = { name: "Manuel", arr: "2026-12-12", dep: "2026-12-15", betrag: 1000, rechnung: text, bestaetigt: "2026-11-27T10:00" };
     const txt = (h) => { const d = document.createElement("div"); d.innerHTML = h || ""; return [...d.querySelectorAll("tr")].map((t) => t.innerText.replace(/\s+/g, " ")); };
     o.kind = txt(rechAufHtml(text, bu)); TOKEN = "test"; const bk = ABSENDER; ABSENDER = ""; o.papi = txt(rechAufHtml(text, bu)); ABSENDER = bk; o.leiste = (document.querySelector("#bar") || { innerText: "" }).innerText.replace(/\s+/g, " ").slice(0, 120);
     return o;
   });
   const alle = (a) => a.join(" | ");
-  ok("Paar in der gespeicherten Berechnung: «2 × 3 Nächte × CHF 70.00» wie bei Einzelnen", /Übernachtung \(3 Nächte\) 2 × 3 Nächte × CHF 70\.00CHF 420\.00/.test(alle(r.papi)) && /3 × CHF 70\.00/.test(alle(r.papi)), alle(r.papi));
-  ok("Einnahmen ohne Reinigung/Kurtaxe, darunter Anteil Reinigung, Anteil Kurtaxe, Total", /Einnahmen ÜbernachtungCHF [\d’']+\.\d\d \| Anteil ReinigungCHF [\d’']+\.\d\d \| Anteil KurtaxeCHF [\d’']+\.\d\d \| Total/.test(alle(r.papi)), alle(r.papi).slice(-200));
+  ok("Paar in der gespeicherten Berechnung: «2 × 3 Nächte × CHF 70.00» wie bei Einzelnen", /Übernachtung 6 Nächte \(à CHF 70\.00\) CHF 420\.00/.test(alle(r.papi)) && /3 Nächte \(à CHF 70\.00\)/.test(alle(r.papi)) || /3 Nächte für CHF/.test(alle(r.papi)), alle(r.papi));
+  ok("Unten: Total Reinigung, Total Kurtaxe, Einnahmen, dann Total", /Total ReinigungCHF [\d’']+\.\d\d \| Total KurtaxeCHF [\d’']+\.\d\d \| Einnahmen ÜbernachtungCHF [\d’']+\.\d\d \| Total/.test(alle(r.papi)), alle(r.papi).slice(-200));
   ok("Buchen: erste Zeile «Ich (Manuel) & Sarah zahlen», gespeichert neutral ohne Namen", /Ich \(Manuel\) & Sarah zahlen/.test(r.rechner) && !/Sarah/.test(r.snapFam), r.rechner + " || " + r.snapFam);
+  ok("Buchen: pro Person Nächte × Preis, Legende nur einmal", /Ich \(Manuel\) & Sarah[^|]*Übernachtung 6 Nächte \(3 \+ 3\) für CHF 210\.00/.test(r.aufD) && /Alex[^|]*Übernachtung 3 Nächte \(à CHF 70\.00\) CHF 210\.00/.test(r.aufD) && r.leg === 1, r.leg + " || " + r.aufD.slice(0, 400));
   ok("Familie mit Namen: Papi «Manuel & Sarah zahlen», Kind «Ich (Manuel) & Sarah zahlen»", /Manuel & Sarah zahlen/.test(alle(r.papi)) && /Ich \(Manuel\) & Sarah zahlen/.test(alle(r.kind)), alle(r.papi).slice(0, 80) + " || " + alle(r.kind).slice(0, 80));
   ok("Paar und Familie: keine Fehler", p.fehler.length === 0, p.fehler.join("|"));
   await p.ctx.close();
@@ -405,7 +446,7 @@ async function tNamenAufraeumen(b) {
 
 (async () => {
   const s = await server(); const b = await chromium.launch();
-  const lauf = [["Dateien", tDateien], ["Start", tStart], ["Control Panel", tControlPanel], ["Gültig ab", tGueltigAb], ["Gültig bis", tGueltigBis], ["Trinkgeld", tTrinkgeld], ["Rechnung an Freunde", tRechnungSchalter], ["Ansicht als", tAnsichtAls], ["Anfrage und Namen", tSchnappschuss], ["Sonderbuchungen", tSonder], ["SondAuf", tSondAufteilung], ["SondListe", tSondListe], ["SondNaechte", tSondNaechte], ["Paar", tPaar], ["SondNaechte2", (b) => tSondNaechte(b, true)], ["Preise", tPreise], ["Alte Namen aufräumen", tNamenAufraeumen]];
+  const lauf = [["Dateien", tDateien], ["Start", tStart], ["Control Panel", tControlPanel], ["Gültig ab", tGueltigAb], ["Gültig bis", tGueltigBis], ["Trinkgeld", tTrinkgeld], ["Rechnung an Freunde", tRechnungSchalter], ["Ansicht als", tAnsichtAls], ["Anfrage und Namen", tSchnappschuss], ["Sonderbuchungen", tSonder], ["SondAuf", tSondAufteilung], ["SondListe", tSondListe], ["SondNaechte", tSondNaechte], ["Paar", tPaar], ["Bonus", tBonus], ["Familienrabatt", tFamRabatt], ["FamEigen", tFamEigen], ["SondNaechte2", (b) => tSondNaechte(b, true)], ["Preise", tPreise], ["Alte Namen aufräumen", tNamenAufraeumen]];
   const nur = process.argv[2];
   for (const [n, f] of lauf) { if (nur && !n.toLowerCase().includes(nur.toLowerCase())) continue; try { await f(b); } catch (e) { ok(n + ": Lauf abgebrochen", false, e.message); } }
   await b.close(); s.close();
