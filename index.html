@@ -528,6 +528,7 @@ if (TEST_MODUS) {
   .ueb-leg { display: flex; flex-wrap: wrap; gap: 14px; font-size: .85em; color: var(--muted, inherit); } .ueb-leg i { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
   .auf-tab tr.auf-tot td { font-weight: 700; border-top: 2px solid var(--line); }
   .auf-tab tr.auf-ein td { font-weight: 700; border-top: 2px solid var(--line); }
+  .auf-tab tr.auf-leg td { border-top: 2px solid var(--line); padding-top: 8px; }
   .auf-tab tr.auf-kl td { font-size: .82em; color: var(--muted, inherit); opacity: .85; padding-top: 2px; padding-bottom: 2px; }
   .auf-tab tr.auf-ein + tr.auf-kl td, .auf-tab tr.auf-kl + tr.auf-tot td { border-top: 0; }
   #result h2 { font-family: var(--body); text-transform: none; letter-spacing: 0; font-size: var(--t-title); font-weight: 700; }
@@ -1732,7 +1733,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.37.0.7";
+let VERSION = "3.37.0.9";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -2260,13 +2261,17 @@ function partnerDa() {   // kommt Partner/in mit? Name aus dem persönlichen Lin
   const fw = famWahl(); if (fw) return fw.p ? ((famNamen() || {}).p || "Partner/in") : "";
   return /Partner\/in/.test(S.wer || "") ? "Partner/in" : "";
 }
+function famNamenListe(pp) {   // Namen der zahlenden Erwachsenen für die Anzeige, [] = unbekannt (seit 3.37.0.8)
+  const me = TOKEN ? esc(ABSENDER) : "Ich (" + esc(rufname()) + ")";
+  if (pp) { const e = pp.eigen && ichDa() ? [me].concat((pp.erw || []).filter((q) => q !== ABSENDER).map(esc)) : (pp.erw || []).map(esc); return e.length ? e : pp.kopf ? [esc(pp.kopf)] : []; }
+  const fn = famNamen(); if (!ABSENDER || !fn || fn.gen) return [];
+  const p = partnerDa(); if (p === "Partner/in") return [];
+  return [ichDa() ? me : "", p ? esc(p) : ""].filter(Boolean);
+}
 function famZahltText() {   // erste Zeile der Aufteilung mit Namen: «Manuel & Sarah zahlen» (Papi «Ansicht als»), «Ich (Manuel) & Sarah zahlen» (Kind); leer = bei «Familie zahlt» bleiben (seit 3.37.0.7)
-  const fn = famNamen(); if (!ABSENDER || !fn || fn.gen) return "";
-  const p = partnerDa(); if (p === "Partner/in") return "";
-  const me = ichDa() ? (TOKEN ? esc(ABSENDER) : "Ich (" + esc(rufname()) + ")") : "", l = [me, p ? esc(p) : ""].filter(Boolean);
+  const l = famNamenListe(); if (!l.length) return "";
   if (l.length >= 2) return l.join(" &amp; ") + " zahlen";
-  if (l.length === 1) return l[0] === me && !TOKEN ? "Du zahlst" : l[0] + " zahlt";
-  return "";
+  return l[0].indexOf("Ich (") === 0 && !TOKEN ? "Du zahlst" : l[0] + " zahlt";
 }
 function kindRoh(i, l) {   // Zahler eines Kindes: gewählte Chips, sonst die Insel (zu) als Vorwahl (seit 3.17.8.0, Wänu: Kinder gehören nie fest zu einer Partei)
   const s = S.zahler && S.zahler[i]; if (s) return s;
@@ -5483,7 +5488,7 @@ function render() {
     for (let g = 2; g <= x.GE; g++) who += whoF(g, r.WZ / (x.GE - 1));
     whoN = who;
   }
-  let TEILE = [];
+  let TEILE = [], SUMZ = "";
   const exSum = (key) => zpl && zpl.extra[key] ? zpl.extra[key].reduce((a, e) => a + e.b, 0) : 0, famExAll = zpl ? Object.keys(zpl.extra).filter((k) => k === "ich" || /^g\d+$/.test(k)).reduce((a, k) => a + exSum(k), 0) : 0;   // Kinder der Freunde, für die eine Familienpartei zahlt (seit 3.22.1.0 pro Haushalt)
   const famAufB = (() => { const ges = zpl ? zpl.zahlt.ich : r.FZ; return famAufteilen(ges - famExAll, zpl ? zpl.FA2 : x.FA); })();
   const famAuf = (() => {   // Familie mit mehreren Parteien: erste Zeile der Aufteilung ersetzen (seit 3.9.0.0)
@@ -5512,6 +5517,9 @@ function render() {
     const anteil = (k) => zpl && zpl.zahler[k] ? zpl.zahler[k].length : 1;
     const extraL = (key) => zpl ? zpl.extra[key].map((e) => { const z = zpl.zahler[e.i].length / (e.c || 1), b = bruch(e.c || 1, zpl.zahler[e.i].length, "Hälfte"), t = b ? " (" + b + ")" : "";
       return L("Für " + vn(e.i) + t, e.b, D("su") + "Übernachtung " + chf2((zpl.base[e.i] - x.GS) / z + gP(e.i) / z) + (gR(e.i) > 0.004 ? ", " + D("sr") + "Reinigung " + chf2(gR(e.i) / z) : "") + (zpl.kt[e.i] > 0 ? ", " + D("sk") + "Kurtaxe " + chf2(zpl.kt[e.i] / z) : "")); }).join("") : "";
+    const nN = (n) => n + (n === 1 ? " Nacht" : " Nächte");
+    const pK = (nm, tot, ue, n, r, k, nl) => L(nm, tot, D("su") + "Übernachtung " + (nl && nl.length ? nN(nl.reduce((a, v) => a + v, 0)) + (nl.length > 1 ? " (" + nl.join(" + ") + ")" : "") + " für " : n > 0 && ue > 0.004 ? nN(n) + " (à " + chf2(ue / n) + (x.SOND && nz(SOND.preis) > 0 ? ", Anteil an " + chf(nz(SOND.preis)) + " pro Nacht" : "") + ") " : "") + chf2(ue) + (r > 0.004 ? ", " + D("sr") + "Reinigung " + chf2(r) : "") + (k > 0.004 ? ", " + D("sk") + "Kurtaxe " + chf2(k) : ""), "");   // eine Person: Name, Betrag, darunter klein «Übernachtung 4 Nächte (à CHF 70.00) CHF 280.00», Reinigung, Kurtaxe; Familie «11 Nächte (7 + 4) für CHF 490.00», damit der Vorteil sichtbar ist (seit 3.37.0.9, Wänu)
+    const famL = (names, ue, r, n, kopf) => { const nl = famLeute().filter((q) => !q.kk && q.kopf === kopf).map((q) => pDat(q.nm).n || x.nights); return pK(names.length ? names.join(" &amp; ") : S.wer === "Nur ich" ? "Du" : "Familie", ue + r, ue, n, r, 0, nl.length && !x.SOND ? nl : null); };   // Haushalt als eine Zeile: der Familienpreis gilt für alle zusammen
     const bd = [], sg = [];   // sg: Anteile pro Zeile für die Balken-Übersicht (tot, r = Reinigung, k = Kurtaxe; Rest = Übernachtung), seit 3.10.0.0
     const zc = (i) => (zpl.zahler[i] || []).length || 1;
     const exR = (key) => zpl ? zpl.extra[key].reduce((a, e) => a + gR(e.i) * (e.c || 1) / zc(e.i), 0) : 0, exK = (key) => zpl ? zpl.extra[key].reduce((a, e) => a + zpl.kt[e.i] * (e.c || 1) / zc(e.i), 0) : 0;
@@ -5519,13 +5527,13 @@ function render() {
     if (famAufB) { const sum = famAufB.reduce((a, pp) => a + pp.n, 0) || 1, pro = REINIG.indexOf(S.reinig) === 1;
       const hda = hDatAktiv(), kurzT = (k) => fmtTag(k).replace(/\.\d{4}$/, ".");
       famAufB.forEach((pp, k) => { const gu = pp.gu, gr = pp.gr, nn = pp.au.n;
-        bd.push(L("Anteil am Familienpreis", famUeb * gu, hda ? kurzT(pp.au.an) + " bis " + kurzT(pp.au.ab) + ", " + nn + (nn === 1 ? " Nacht" : " Nächte") + (pp.au.eigen ? "" : " (ganzer Aufenthalt)") : pro ? "1 von " + famAufB.length + " Familien" : pp.n + " von " + sum + " Personen mit Bett", "su") + (k === 0 ? spL() : "") + (famRei ? L("Reinigungsanteil", famRei * gr, "", "sr") : "") + erlL(gu) + extraL(famZK(pp)));
+        bd.push(famL(famNamenListe(pp), famUeb * gu, famRei * gr, nn, pp.kopf) + (k === 0 ? spL() : "") + erlL(gu) + extraL(famZK(pp)));
         sg.push({ tot: pp.b + exB(famZK(pp)), r: famRei * gr + exR(famZK(pp)), k: exK(famZK(pp)), e: erl * gu, n: hda ? nn : 0 }); }); }
-    else { bd.push(L("Übernachtung (" + nTxt + ")", famUeb + fP, x.SOND && fP > 0.004 ? ueDet(fP, hDatAktiv() ? 0 : x.nights) : proN(famUeb), "su") + spL() + (famRei ? L("Reinigungsanteil", fR, reTxt(fR), "sr") : "") + erlL(1) + extraL("ich"));
+    else { bd.push(famL(famNamenListe(null), famUeb + fP, fR, hDatAktiv() ? 0 : x.nights, ichKey()) + spL() + erlL(1) + extraL("ich"));
       sg.push({ tot: zpl ? zpl.zahlt.ich : r.FZ, r: fR + exR("ich"), k: exK("ich"), e: erl, n: x.nights }); }
     if (zpl) {
       if (zpl.extra.partner.length) { bd.push(extraL("partner")); sg.push({ tot: zpl.zahlt.partner, r: exR("partner"), k: exK("partner") }); }
-      const pers = (j) => L(vn(j) + (zpl.alt[j] < 18 ? " (" + zpl.alt[j] + ")" : ""), zpl.eigen[j], D("su") + "Übernachtung " + chf2(zpl.base[j] - x.GS + gP(j)) + (j === zpl.zr && zpl.zi.length > 1 ? " (im selben Zimmer)" : "") + (gR(j) > 0.004 ? ", " + D("sr") + "Reinigung " + chf2(gR(j)) : "") + (zpl.kt[j] > 0 ? ", " + D("sk") + "Kurtaxe " + chf2(zpl.kt[j]) : ""));
+      const pers = (j) => pK(vn(j) + (zpl.alt[j] < 18 ? " (" + zpl.alt[j] + ")" : "") + (j === zpl.zr && zpl.zi.length > 1 ? " (im selben Zimmer)" : ""), zpl.eigen[j], zpl.base[j] - x.GS + gP(j), Math.min(x.nights, fNaechte(zpl.l[j] || {})), gR(j), zpl.kt[j]);
       zRows.forEach((zr) => {
         if (zr.typ === "leer") { bd.push(""); sg.push({ tot: 0, r: 0, k: 0 }); return; }
         if (zr.typ === "partei") { const fr = []; zr.erw.forEach((j) => zpl.extra["f" + j].forEach((e) => { if (zr.gl.indexOf(e.i) < 0) fr.push(e); })); const g = {}; fr.forEach((e) => { g[e.i] = (g[e.i] || 0) + e.b; });
@@ -5535,13 +5543,13 @@ function render() {
           sg.push(zr.erw.reduce((a, j) => ({ tot: a.tot + zpl.zahlt["f" + j], r: a.r + gR(j) + exR("f" + j), k: a.k + zpl.kt[j] + exK("f" + j) }), { tot: 0, r: 0, k: 0 })); return; }
         const i = zr.i, z = anteil(i) > 1 && zpl.minder.indexOf(i) >= 0 ? anteil(i) : 1;
         const nI = Math.min(x.nights, fNaechte(zpl.l[i] || {})), pI = (v) => nI > 1 && v > 0 ? nI + " × " + chf2(v / nI) : "";   // eigene Nächte (seit 3.19.0.0)
-        bd.push(L("Übernachtung (" + (nI === x.nights ? nTxt : nI + " Nächte") + ")" + (i === zpl.zr && zpl.zi.length > 1 ? ", im selben Zimmer" : ""), (zpl.base[i] - x.GS) / z + gP(i) / z, x.SOND ? ueDet(gP(i) / z, nI) : pI((zpl.base[i] - x.GS) / z), "su") + L("Reinigungsanteil", gR(i) / z, reTxt(gR(i) / z), "sr") + (zpl.kt[i] > 0 ? L("Kurtaxe", zpl.kt[i] / z, pI(zpl.kt[i] / z), "sk") : "") + extraL("f" + i));
+        bd.push(pK(vn(i) + (zpl.alt[i] < 18 ? " (" + zpl.alt[i] + ")" : "") + (i === zpl.zr && zpl.zi.length > 1 ? " (im selben Zimmer)" : ""), (zpl.base[i] - x.GS) / z + gP(i) / z + gR(i) / z + zpl.kt[i] / z, (zpl.base[i] - x.GS) / z + gP(i) / z, nI, gR(i) / z, zpl.kt[i] / z) + extraL("f" + i));
         sg.push({ tot: zpl.zahlt["f" + i], r: gR(i) + exR("f" + i), k: zpl.kt[i] + exK("f" + i), n: zpl.extra["f" + i].length ? 0 : nI });
       });
     } else for (let g = 1; g <= x.GE; g++) {   // ohne Liste (Papi): Aufschlüsselung ohne Namen (seit 3.16.3.1, Wänu)
       const st = kt.summe > 0 ? (kt.alt ? (kt.alt[g - 1] >= 16 ? "E" : kt.alt[g - 1] >= 6 ? "K" : "0") : (g > kt.er ? "K" : "E")) : "0", kk = (st === "E" ? kt.sE : st === "K" ? kt.sK : 0) * x.nights;
       const fb = g === 1 ? r.HZ : r.WZ / (x.GE - 1), ue = fb - x.GS;
-      bd.push(L("Übernachtung (" + nTxt + ")" + (g === 1 && x.ZE === "Ja" && x.GE > 1 ? ", im selben Zimmer" : ""), ue + gP(0), x.SOND ? ueDet(gP(0), x.nights) : proN(ue), "su") + (gR(0) > 0.004 ? L("Reinigungsanteil", gR(0), reTxt(gR(0)), "sr") : "") + (kk > 0 ? L("Kurtaxe", kk, proN(kk), "sk") : ""));
+      bd.push(pK("Freund " + g + (g === 1 && x.ZE === "Ja" && x.GE > 1 ? " (im selben Zimmer)" : ""), ue + gP(0) + gR(0) + kk, ue + gP(0), x.nights, gR(0), kk));
       sg.push({ tot: (g === 1 ? r.HZ : r.WZ / (x.GE - 1)) + kk, r: gR(0), k: kk, n: x.nights }); }
     {   // Abrechnung für «Geld einsammeln» (seit 3.11.0.0): pro Partei Personen mit Zeilen, nur auf dem Handy gespeichert
       const ps = [], Z = (a) => a.filter((q) => q[1] > 0.004);
@@ -5579,8 +5587,10 @@ function render() {
     }
     if (rows[0] && /^<tr><td>(Familie zahlt|Du zahlst)/.test(rows[0])) { const fz = famZahltText(); if (fz) rows[0] = rows[0].replace(/^(<tr><td>)(Familie zahlt|Du zahlst)/, "$1" + fz); }   // nur die Anzeige, die gespeicherte Aufteilung (whoN) bleibt neutral (seit 3.37.0.7)
     const balken = (q) => { if (!q || !(q.tot > 0.004)) return ""; const rr = Math.max(0, q.r), kk = Math.max(0, q.k), u = Math.max(0, q.tot - rr - kk);   // Balken zuunterst in der aufgeklappten Zeile (seit 3.10.0.1, Wänu)
-      return '<li class="ueb-li"><div class="ueb-b">' + (u > 0.004 ? '<i class="su" style="flex:' + u + '"></i>' : "") + (rr > 0.004 ? '<i class="sr" style="flex:' + rr + '"></i>' : "") + (kk > 0.004 ? '<i class="sk" style="flex:' + kk + '"></i>' : "") + '</div><div class="ueb-leg">' + (u > 0.004 ? '<span><i class="su"></i>Übernachtung</span>' : "") + (rr > 0.004 ? '<span><i class="sr"></i>Reinigung</span>' : "") + (kk > 0.004 ? '<span><i class="sk"></i>Kurtaxe</span>' : "") + "</div></li>"; };
+      return '<li class="ueb-li"><div class="ueb-b">' + (u > 0.004 ? '<i class="su" style="flex:' + u + '"></i>' : "") + (rr > 0.004 ? '<i class="sr" style="flex:' + rr + '"></i>' : "") + (kk > 0.004 ? '<i class="sk" style="flex:' + kk + '"></i>' : "") + '</div></li>'; };
     if (rows.length === bd.length) bd.forEach((t, k) => { if (t) bd[k] = t + (rows.length === sg.length ? balken(sg[k]) : ""); });
+    if (rows.length === sg.length && sg.length) { const sR = sg.reduce((a, q) => a + Math.max(0, q.r), 0), sK = sg.reduce((a, q) => a + Math.max(0, q.k), 0), ges = r.TOT + (kt.summe > 0 ? kt.summe : 0);   // Legende einmal, dann Reinigung, Kurtaxe, Einnahmen (seit 3.37.0.8, Wänu)
+      SUMZ = '<tr class="auf-leg"><td colspan="2"><div class="ueb-leg"><span><i class="su"></i>Übernachtung</span>' + (sR > 0.004 ? '<span><i class="sr"></i>Reinigung</span>' : "") + (sK > 0.004 ? '<span><i class="sk"></i>Kurtaxe</span>' : "") + '</div></td></tr>' + (sR > 0.004 ? '<tr class="auf-kl"><td>Total Reinigung</td><td>' + chf2(sR) + '</td></tr>' : "") + (sK > 0.004 ? '<tr class="auf-kl"><td>Total Kurtaxe</td><td>' + chf2(sK) + '</td></tr>' : "") + (sR + sK > 0.004 ? '<tr class="auf-kl"><td>Einnahmen Übernachtung</td><td>' + chf2(Math.max(0, ges - sR - sK)) + '</td></tr>' : ""); }
     TEILE = rows.length === sg.length ? sg.map((q) => "~\t" + [q.tot, q.r, q.k, q.e || 0, q.n || 0].map((v) => String(Math.round((Number(v) || 0) * 100) / 100)).join("\t")) : [];   // Teilbeträge pro Zeile für die gespeicherte Aufteilung (seit 3.20.1.0)
     const pcol = rows.map((rw, k) => { const nf = rows.length - zRows.length; if (k < nf) return famAufB && famAufB[k] ? famFarbe(famAufB[k]) : zpl ? INS_FAM : ""; const zr = zRows[k - nf]; if (!zr || !zpl) return "";   // Farbe der Partei links an der Zeile (seit 3.17.2.0, Wänu)
       if (zr.typ === "partei") return ptFarbe(parteiKopf(zr.gl[0], zpl.l, zpl.zi), zpl.l, zpl.zi); if (zr.typ === "eins") return ptFarbe(parteiKopf(zr.i, zpl.l, zpl.zi), zpl.l, zpl.zi);
@@ -5636,7 +5646,7 @@ function render() {
   const totZ = (tip > 0 ? '<tr><td>Trinkgeld für Mami <small class="ktk">freiwillig</small></td><td>' + chf2(tip) + "</td></tr>" : "") + '<tr class="auf-tot"><td>Total' + (kt.summe > 0 ? " mit Kurtaxe" : "") + "</td><td>" + chf2(r.TOT + tip + (kt.summe > 0 ? kt.summe : 0)) + "</td></tr>";
   const aufteilung = '<h3 class="split-h auf-h">' + (teilt ? "💸 Aufteilung unter euch" : "🧮 So setzt sich der Preis zusammen") + "</h3>" +
     '<p class="hint">' + (teilt ? "Das Geld der Freunde sammelt ihr selbst ein. Die Tabelle zeigt, wie viel jeder schuldet." + (kt.summe > 0 ? " Die Kurtaxe ist bei jedem Freund schon im Betrag enthalten." : "") + " " : "") + "Tippe eine Zeile an, dann siehst du die Rechnung und zuunterst einen Balken: Übernachtung, Reinigung und Kurtaxe in eigenen Farben.</p>" +
-    '<table class="auf-tab"><tbody>' + who + totZ + "</tbody></table>" + zahlung + notes + (x.SB ? endreinigungInfo(r) : "");
+    '<table class="auf-tab"><tbody>' + who + SUMZ + totZ + "</tbody></table>" + zahlung + notes + (x.SB ? endreinigungInfo(r) : "");
   const aufS = !x.SOND ? aufteilung : aufteilung.replace(/<i class="dot su"><\/i>Übernachtung CHF 0\.00( \(im selben Zimmer\))?(, )?/g, "");   // Sonderbuchung: keine Übernachtung, die Pauschale wird wie die Reinigung aufgeteilt
   const detN = det.replace(/\u0001(\d+)\u0002/g, (m, i) => "Freund/in " + (Number(i) + 1));
   det = det.replace(/\u0001(\d+)\u0002/g, (m, i) => zpl ? esc(rn(zpl.l[Number(i)])) : "Freund");
@@ -7168,15 +7178,21 @@ function rechAufHtml(r, b) {   // Aufteilung wie im Rechner; null, wenn nichts z
     if (tot > 0.004) { if (q) { sR += q.r; sK += q.k; } else okS = false; }
     if (q) { const ue = tot - q.r - q.k + q.e, nT = q.n ? " (" + q.n + (q.n === 1 ? " Nacht" : " Nächte") + ")" : "", zs = /im selben Zimmer/.test(z.a) ? ", im selben Zimmer" : "";
       const nPa = q.n || nG, paTxt = qpa > 0 && qf > 0 ? (nPa > 1 ? nPa + " × " + chf2(PA / nPa * qf) : "") + (() => { const t = (() => { for (let m = 2; m <= 12; m++) { const pz = Math.round(qf * m); if (pz > 0 && Math.abs(pz / m - qf) < 0.0005) return pz + " von " + m + (nachPart ? " Parteien" : " Personen"); } return ""; })(); return t ? (nPa > 1 ? " (" : "") + t + " an " + chf(PA / nPa) + (nPa > 1 ? ")" : "") : ""; })() : "";
-      bd = (ue > 0.004 || !sond ? L("Übernachtung" + nT + zs, ue, qpa > 0 ? paTxt : nachN && PA > 0 && (nG || nPa) > 0 ? ((q.n || nG) > 1 ? (q.n || nG) + " × " + chf2(ue / (q.n || nG)) + " (Anteil an " : "Anteil an ") + chf(PA / (nG || nPa)) + ((q.n || nG) > 1 ? " pro Nacht)" : " pro Nacht") : q.pn && ue > 0.004 ? (q.n0 ? q.gl + " × " + q.n0 + " Nächte × " : q.pn + " Personennächte × ") + chf2(ue / q.pn) : proN(ue, q.n), "su") : "") + (fam && k === 0 && zim1 ? '<li><span>🚪 Zimmer 1 und rotes Bad unberührt <small class="ktk">schon abgezogen</small></span><span></span></li>' : "") + (q.r > 0.004 ? L((qpa > 0 || nachN ? "Reinigung" : RW) + "santeil", q.r, reTxt(q.r), "sr") : "") + (q.k > 0.004 ? L("Kurtaxe", q.k, proN(q.k, q.n), "sk") : "") + (q.e > 0.004 ? L("🎁 Mindestpreis: erlassen", -q.e, "", "") : "");
+      let dt = qpa > 0 ? paTxt : nachN && PA > 0 && (nG || nPa) > 0 ? ((q.n || nG) > 1 ? (q.n || nG) + " × " + chf2(ue / (q.n || nG)) + " (Anteil an " : "Anteil an ") + chf(PA / (nG || nPa)) + ((q.n || nG) > 1 ? " pro Nacht)" : " pro Nacht") : q.pn && ue > 0.004 ? (q.n0 ? q.gl + " × " + q.n0 + " Nächte × " : q.pn + " Personennächte × ") + chf2(ue / q.pn) : proN(ue, q.n);
+      let dtT = "";   // Anzeige wie beim Buchen: «4 Nächte (à CHF 70.00)», Familie «11 Nächte (7 + 4) für» (seit 3.37.0.9)
+      if (fam && !q.pn && !sond) { const pm = /^Familie, Partei (\d+)/.exec(haupt), pn = pm ? pm[1] : "1", nl = r.split("\n").map((t) => new RegExp("^Aufenthalt Person, Partei " + pn + ", .+?[:\\t] ?.*?\\((\\d+) N").exec(t.trim())).filter(Boolean).map((m2) => Number(m2[1]));
+        dtT = nl.length ? nl.reduce((a2, v) => a2 + v, 0) + " Nächte" + (nl.length > 1 ? " (" + nl.join(" + ") + ")" : "") + " für " : (nG ? nG + (nG === 1 ? " Nacht" : " Nächte") + " für " : ""); }
+      else if (q.pn && ue > 0.004) dtT = q.pn + " Nächte (à " + chf2(ue / q.pn) + ") ";
+      else if (dt) { const mm = /^(\d+) × (CHF \S+)(?: \((Anteil[^)]*)\))?$/.exec(String(dt)); dtT = mm ? mm[1] + (mm[1] === "1" ? " Nacht" : " Nächte") + " (à " + mm[2] + (mm[3] ? ", " + mm[3] : "") + ") " : "(" + dt + ") "; }
+      bd = L(esc(famAnz(haupt).replace(/ zahl(en|t)$/, "")), tot, D("su") + "Übernachtung " + dtT + chf2(ue) + (q.r > 0.004 ? ", " + D("sr") + (qpa > 0 || nachN ? "Reinigung" : RW) + " " + chf2(q.r) : "") + (q.k > 0.004 ? ", " + D("sk") + "Kurtaxe " + chf2(q.k) : ""), "") + (fam && k === 0 && zim1 ? '<li><span>🚪 Zimmer 1 und rotes Bad unberührt <small class="ktk">schon abgezogen</small></span><span></span></li>' : "") + (q.e > 0.004 ? L("🎁 Mindestpreis: erlassen", -q.e, "", "") : "");
       const u = Math.max(0, tot - q.r - q.k);
-      bd += '<li class="ueb-li"><div class="ueb-b">' + (u > 0.004 ? '<i class="su" style="flex:' + u + '"></i>' : "") + (q.r > 0.004 ? '<i class="sr" style="flex:' + q.r + '"></i>' : "") + (q.k > 0.004 ? '<i class="sk" style="flex:' + q.k + '"></i>' : "") + '</div><div class="ueb-leg">' + (u > 0.004 ? '<span><i class="su"></i>Übernachtung</span>' : "") + (q.r > 0.004 ? '<span><i class="sr"></i>' + (qpa > 0 || nachN ? "Reinigung" : RW) + "</span>" : "") + (q.k > 0.004 ? '<span><i class="sk"></i>Kurtaxe</span>' : "") + "</div></li>"; }
+      bd += '<li class="ueb-li"><div class="ueb-b">' + (u > 0.004 ? '<i class="su" style="flex:' + u + '"></i>' : "") + (q.r > 0.004 ? '<i class="sr" style="flex:' + q.r + '"></i>' : "") + (q.k > 0.004 ? '<i class="sk" style="flex:' + q.k + '"></i>' : "") + '</div></li>'; }
     const st = pc ? ' style="--pc:' + pc + '"' : "", td1 = "<td>" + esc(famAnz(haupt)) + klein.map((s) => ' <small class="ktk">' + esc(s) + "</small>").join("") + "</td><td>" + esc(z.b) + "</td>";
     return bd ? '<tr class="auf-z"' + st + ' role="button" tabindex="0" aria-expanded="false">' + td1 + '</tr><tr class="auf-d"' + st + ' hidden><td colspan="2"><ul>' + bd + "</ul></td></tr>" : "<tr" + st + ">" + td1 + "</tr>";
   }).join("");
   const tz = find(o.ber, /^Total mit Kurtaxe$/), totV = tz ? tz.b : chf2(rows.reduce((a, z) => a + (rechV(z.b) || 0), 0));
   return '<h3 class="split-h auf-h">' + (mitAuf ? "💸 Aufteilung unter euch" : "🧮 So setzt sich der Preis zusammen") + '</h3><p class="hint">Tippe eine Zeile an, dann siehst du die Rechnung.</p>' +
-    '<table class="auf-tab rech-auf"><tbody>' + out + (okS && sR + sK > 0.004 ? '<tr class="auf-ein"><td>Einnahmen <small class="ktk">Übernachtung</small></td><td>' + chf2(Math.max(0, (rechV(totV) || 0) - sR - sK)) + "</td></tr>" + (sR > 0.004 ? '<tr class="auf-kl"><td>Anteil Reinigung</td><td>' + chf2(sR) + "</td></tr>" : "") + (sK > 0.004 ? '<tr class="auf-kl"><td>Anteil Kurtaxe</td><td>' + chf2(sK) + "</td></tr>" : "") : "") + '<tr class="auf-tot"><td>Total' + (tz ? " mit Kurtaxe" : "") + "</td><td>" + esc(totV) + "</td></tr></tbody></table>";
+    '<table class="auf-tab rech-auf"><tbody>' + out + (out && okS ? '<tr class="auf-leg"><td colspan="2"><div class="ueb-leg"><span><i class="su"></i>Übernachtung</span>' + (sR > 0.004 ? '<span><i class="sr"></i>Reinigung</span>' : "") + (sK > 0.004 ? '<span><i class="sk"></i>Kurtaxe</span>' : "") + '</div></td></tr>' + (sR > 0.004 ? '<tr class="auf-kl"><td>Total Reinigung</td><td>' + chf2(sR) + "</td></tr>" : "") + (sK > 0.004 ? '<tr class="auf-kl"><td>Total Kurtaxe</td><td>' + chf2(sK) + "</td></tr>" : "") + (sR + sK > 0.004 ? '<tr class="auf-kl"><td>Einnahmen Übernachtung</td><td>' + chf2(Math.max(0, (rechV(totV) || 0) - sR - sK)) + "</td></tr>" : "") : "") + '<tr class="auf-tot"><td>Total' + (tz ? " mit Kurtaxe" : "") + "</td><td>" + esc(totV) + "</td></tr></tbody></table>";
 }
 document.addEventListener("click", (e) => { const z = e.target.closest && e.target.closest(".rech-auf tr.auf-z"); if (!z) return; const d = z.nextElementSibling; if (!d) return; const auf = d.hidden; d.hidden = !auf; z.classList.toggle("auf", auf); z.setAttribute("aria-expanded", auf ? "true" : "false"); });
 document.addEventListener("keydown", (e) => { if (e.key !== "Enter" && e.key !== " ") return; const z = e.target.closest && e.target.closest(".rech-auf tr.auf-z"); if (z) { e.preventDefault(); z.click(); } });
