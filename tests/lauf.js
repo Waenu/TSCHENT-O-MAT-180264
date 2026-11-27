@@ -257,6 +257,7 @@ async function tPaar(b) {
   });
   const alle = (a) => a.join(" | ");
   ok("Paar in der gespeicherten Berechnung: «2 × 3 Nächte × CHF 70.00» wie bei Einzelnen", /Übernachtung \(3 Nächte\) 2 × 3 Nächte × CHF 70\.00CHF 420\.00/.test(alle(r.papi)) && /3 × CHF 70\.00/.test(alle(r.papi)), alle(r.papi));
+  ok("Einnahmen ohne Reinigung/Kurtaxe, darunter Anteil Reinigung, Anteil Kurtaxe, Total", /Einnahmen ÜbernachtungCHF [\d’']+\.\d\d \| Anteil ReinigungCHF [\d’']+\.\d\d \| Anteil KurtaxeCHF [\d’']+\.\d\d \| Total/.test(alle(r.papi)), alle(r.papi).slice(-200));
   ok("Familie mit Namen: Papi «Manuel & Sarah zahlen», Kind «Ich (Manuel) & Sarah zahlen»", /Manuel & Sarah zahlen/.test(alle(r.papi)) && /Ich \(Manuel\) & Sarah zahlen/.test(alle(r.kind)), alle(r.papi).slice(0, 80) + " || " + alle(r.kind).slice(0, 80));
   ok("Paar und Familie: keine Fehler", p.fehler.length === 0, p.fehler.join("|"));
   await p.ctx.close();
