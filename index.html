@@ -1734,7 +1734,8 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.37.0.13";
+let VERSION = "3.37.0.14";
+let NEU_VERSION = "";   // Version laut einstellungen.json (Netz); VERSION ist die Fassung, die wirklich läuft (seit 3.37.0.14)
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -5666,12 +5667,20 @@ function render() {
 }
 
 document.getElementById("reset").addEventListener("click", () => { SOND = null; GS_AUF = false; gmEntwurfSetzen([]); try { localStorage.removeItem("tm2_gmEntwurfKey"); } catch (e) {} GM_ENTW_GEN++;   /* Neu beginnen: auch die Liste der Freunde leeren (seit 3.7.0.1) */ TRINK = ""; RECH_OFFEN = false; TRINK_OFFEN = false; S = Object.assign({}, EMPTY); ARR = ""; DEP = ""; initKalenderMonat(); NOTICES = {}; render(); renderKalender(); ZURUECK = null; document.getElementById("zurueck").hidden = true; setHilfe(false); hilfeZuklappen(); setRechner(false); window.scrollTo({ top: 0 }); });
+function verAnzeige() {   // zeigt die laufende Fassung; ist im Netz eine neuere, kommt ein Hinweis zum Neuladen (seit 3.37.0.14, Wänu)
+  const el = document.getElementById("ver"); if (el) el.textContent = "Version " + VERSION;
+  let b = document.getElementById("verNeu");
+  if (!NEU_VERSION || NEU_VERSION === VERSION) { if (b) b.remove(); return; }
+  if (!b) { b = document.createElement("button"); b.type = "button"; b.id = "verNeu"; b.style.cssText = "position:fixed;left:0;right:0;top:0;z-index:99999;padding:12px 16px;border:0;background:#F2C230;color:#1F1300;font:inherit;font-weight:700;text-align:center;cursor:pointer";
+    b.addEventListener("click", () => { location.reload(); }); document.body.appendChild(b); }
+  b.textContent = "🔄 Neue Version " + NEU_VERSION + " ist da. Tippe hier zum Neuladen (du hast " + VERSION + ").";
+}
 function wendeEinstellungenAn(j) {
   if (!j || typeof j !== "object") return;
   Object.keys(P).forEach((k) => {
     if (typeof j[k] === "number" && isFinite(j[k]) && j[k] >= 0) P[k] = j[k];
   });
-  if (typeof j.version === "string" && j.version) VERSION = j.version;
+  if (typeof j.version === "string" && j.version) { NEU_VERSION = j.version; try { verAnzeige(); } catch (e) {} }
   if (typeof j.gueltigAb === "string" && j.gueltigAb) GUELTIG_AB = j.gueltigAb;
   if (typeof j.iban === "string" && j.iban.trim()) IBAN = j.iban.trim();
   if (typeof j.bank === "string" && j.bank.trim()) BANK = j.bank.trim();
@@ -9505,7 +9514,11 @@ Promise.all([ladeEinstellungen(), ladeBelegt(), ladeBuchungen(), ladeGaeste()]).
       location.href = location.pathname;
     });
   })();
-  document.getElementById("ver").textContent = "Version " + VERSION;
+  verAnzeige();
+  document.addEventListener("visibilitychange", () => {   // alter Tab: beim Zurückkommen prüfen, ob im Netz eine neuere Version liegt (seit 3.37.0.14)
+    if (document.visibilityState !== "visible") return;
+    fetch("einstellungen.json?v=" + Date.now(), { cache: "no-store" }).then((r) => r.ok ? r.json() : null).then((j) => { if (j && typeof j.version === "string" && j.version) { NEU_VERSION = j.version; verAnzeige(); } }).catch(() => {});
+  });
   initKalenderMonat();
   berechneLuecken();
   build(); render(); renderKalender(); aufentZeigen(); bestZeigen();

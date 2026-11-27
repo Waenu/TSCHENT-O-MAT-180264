@@ -75,6 +75,16 @@ async function tStart(b) {
   await k.ctx.close();
 }
 
+async function tVerNeu(b) {
+  const p = await seite(b, { ls: papiLs, papi: true });
+  const r = await p.evaluate(async () => {
+    const o = {}; o.v = VERSION; o.ver0 = document.getElementById("ver").textContent; o.b0 = !!document.getElementById("verNeu");
+    NEU_VERSION = "9.9.9.9"; verAnzeige(); o.b1 = (document.getElementById("verNeu") || {}).textContent; o.ver1 = document.getElementById("ver").textContent;
+    NEU_VERSION = VERSION; verAnzeige(); o.b2 = !!document.getElementById("verNeu"); return o;
+  });
+  ok("Versionsanzeige: laufende Fassung, Hinweis nur bei neuerer Version im Netz", r.ver0 === "Version " + r.v && !r.b0 && /9\.9\.9\.9/.test(r.b1 || "") && r.ver1 === "Version " + r.v && !r.b2, JSON.stringify(r));
+  await p.ctx.close();
+}
 async function tControlPanel(b) {
   const puts = [];
   const api = (url, m, body) => {
@@ -446,7 +456,7 @@ async function tNamenAufraeumen(b) {
 
 (async () => {
   const s = await server(); const b = await chromium.launch();
-  const lauf = [["Dateien", tDateien], ["Start", tStart], ["Control Panel", tControlPanel], ["Gültig ab", tGueltigAb], ["Gültig bis", tGueltigBis], ["Trinkgeld", tTrinkgeld], ["Rechnung an Freunde", tRechnungSchalter], ["Ansicht als", tAnsichtAls], ["Anfrage und Namen", tSchnappschuss], ["Sonderbuchungen", tSonder], ["SondAuf", tSondAufteilung], ["SondListe", tSondListe], ["SondNaechte", tSondNaechte], ["Paar", tPaar], ["Bonus", tBonus], ["Familienrabatt", tFamRabatt], ["FamEigen", tFamEigen], ["SondNaechte2", (b) => tSondNaechte(b, true)], ["Preise", tPreise], ["Alte Namen aufräumen", tNamenAufraeumen]];
+  const lauf = [["Dateien", tDateien], ["Start", tStart], ["VerNeu", tVerNeu], ["Control Panel", tControlPanel], ["Gültig ab", tGueltigAb], ["Gültig bis", tGueltigBis], ["Trinkgeld", tTrinkgeld], ["Rechnung an Freunde", tRechnungSchalter], ["Ansicht als", tAnsichtAls], ["Anfrage und Namen", tSchnappschuss], ["Sonderbuchungen", tSonder], ["SondAuf", tSondAufteilung], ["SondListe", tSondListe], ["SondNaechte", tSondNaechte], ["Paar", tPaar], ["Bonus", tBonus], ["Familienrabatt", tFamRabatt], ["FamEigen", tFamEigen], ["SondNaechte2", (b) => tSondNaechte(b, true)], ["Preise", tPreise], ["Alte Namen aufräumen", tNamenAufraeumen]];
   const nur = process.argv[2];
   for (const [n, f] of lauf) { if (nur && !n.toLowerCase().includes(nur.toLowerCase())) continue; try { await f(b); } catch (e) { ok(n + ": Lauf abgebrochen", false, e.message); } }
   await b.close(); s.close();
