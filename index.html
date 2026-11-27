@@ -1732,7 +1732,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.37.0.5";
+let VERSION = "3.37.0.6";
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
 let BANK = "Spar- und Leihkasse Frutigen (SLF)";
@@ -8047,6 +8047,7 @@ async function gmLaden() {
   try { const j = await gmPost({ a: "liste", k: GM_KEY }); GM_LISTEN = {}; (j.listen || []).forEach((x) => { GM_LISTEN[x.buchung] = x; }); GM_MAILS = {}; (j.mails || []).forEach((x) => { if (x && x.name) GM_MAILS[x.name] = x; }); }
   catch (err) { GM_STATUS = err && err.message ? err.message : "Fehler"; }
   GM_LAEDT = false; bestZeigen(); try { renderKalender(); } catch (e) {}
+  if (TOKEN && ABSENDER) { try { aufentZeigen(); } catch (e) {} }   // «Ansicht als»: Verwaltung des Kindes mit Namen neu zeichnen
 }
 function gmPapiHtml(x, ohneTitel) {   // Abschnitt in der Karte der Buchung (nur Papi)
   if (!gmAktiv() || !freundeVon(x)) return "";
@@ -8103,7 +8104,7 @@ function bestZeigen() {
   listeSichern("tm2_offen", OFFEN);
   { document.getElementById("mamiStreifen").hidden = !mamiAn(); }
   infoAnwenden();
-  if (TOKEN && !ABSENDER && GM_LISTEN === null && !GM_STATUS) gmLaden();
+  if (TOKEN && GM_LISTEN === null && !GM_STATUS) gmLaden();   // auch bei «Ansicht als»: Namen der Freunde (seit 3.37.0.6)
   { const ks = document.getElementById("kindStreifen"); ks.hidden = !(TOKEN && ABSENDER); document.body.classList.toggle("kind-an", !ks.hidden); if (!ks.hidden) document.getElementById("kindStreifenTxt").textContent = "👁️ Ansicht als " + ABSENDER; }
   if ((!TOKEN && !bestMsg) || (TOKEN && ABSENDER)) { k.hidden = true; k.innerHTML = ""; kn.hidden = true; return; }   // Papi «Ansicht als»: keine Papi-Verwaltung, zurück nur über «Zurück zu Papi» (seit 3.16.3.0)
   kn.classList.toggle("warn", !!(TOKEN && !ABSENDER && xmasOffen().length));
