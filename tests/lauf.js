@@ -197,7 +197,7 @@ async function tSondAufteilung(b) {
     const d = document.createElement("div"); d.innerHTML = h || ""; o.gesp = [...d.querySelectorAll("tr.auf-d")].map((t) => t.innerText.replace(/\s+/g, " "));
     return o;
   });
-  const gut = (t) => /Übernachtung 3 Nächte \(à CHF 200\.00, Anteil an CHF 600\.– pro Nacht\) CHF 600\.00/.test(t) && /Reinigung CHF 40\.00/.test(t) && !/Pauschale/.test(t) && !/CHF 0\.0\d/.test(t);
+  const gut = (t) => /Übernachtung 3 Nächte \(Anteil an CHF 600\.– pro Nacht\) CHF 600\.00/.test(t) && /Reinigung CHF 40\.00/.test(t) && !/Pauschale/.test(t) && !/CHF 0\.0\d/.test(t);
   ok("Sonderbuchung mit Pauschale: Aufteilung live = Übernachtung (3 × Anteil von CHF 600) + Reinigungsanteil, ohne Rundungsreste", r.live.length === 3 && r.live.every(gut), JSON.stringify(r.live[0]));
   ok("Sonderbuchung mit Pauschale: Balken grün (Übernachtung) und violett (Reinigung), Legende «Reinigung»", r.bal.every((t) => t === "su:600,sr:40") && r.legende.every((t) => /Übernachtung/.test(t) && /Reinigung/.test(t)), JSON.stringify([r.bal, r.legende]));
   ok("Sonderbuchung mit Pauschale: gespeicherte Berechnung zeigt dasselbe", r.gesp.length === 3 && r.gesp.every(gut), JSON.stringify(r.gesp[0]));
@@ -239,8 +239,8 @@ async function tSondNaechte(b, sm, nf) {
     return o;
   }, !!nf);
   if (sm || nf) {
-    ok("Pauschale pro Personennacht: Anna 3 Nächte CHF 600, Bea 2 Nächte CHF 400 (Satz 600 ÷ 3 Personen = 200, fehlende Nacht senkt das Total)", r.rows.length === 3 && /3 Nächte \(à CHF 200\.00, Anteil an CHF 600\.– pro Nacht\) CHF 600\.00/.test(r.rows[0] + r.rows[1] + r.rows[2]) && r.rows.some((t) => /2 Nächte \(à CHF 200\.00, Anteil an CHF 600\.– pro Nacht\) CHF 400\.00/.test(t)), JSON.stringify(r.rows) + " " + r.leiste);
-    ok("Pauschale pro Personennacht: Summe der Zeilen = Total CHF 1’720 (1600 + Reinigung 120)", Math.abs(r.sum - 1720) < 0.3 && /1.720/.test(r.tot), r.sum + " " + r.tot + " " + JSON.stringify(r.zr));
+    ok("Pauschale pro Nacht geteilt: Du/Anna 3 Nächte CHF 700, Bea 2 Nächte CHF 400 (Nacht 1: 2 Personen je 300, Nacht 2 und 3: 3 Personen je 200)", r.rows.length === 3 && (r.rows.join("|").match(/3 Nächte \(Anteil an CHF 600\.– pro Nacht\) CHF 700\.00/g) || []).length === 2 && /2 Nächte \(Anteil an CHF 600\.– pro Nacht\) CHF 400\.00/.test(r.rows.join("|")), JSON.stringify(r.rows) + " " + r.leiste);
+    ok("Pauschale pro Nacht geteilt: Summe der Zeilen = Total CHF 1’920 (3 × 600 + Reinigung 120)", Math.abs(r.sum - 1920) < 0.3 && /1.920/.test(r.tot), r.sum + " " + r.tot + " " + JSON.stringify(r.zr));
     ok(nf ? "Notfall-Schalter der Vorlage: 2 Nächte erlaubt, Control Panel bleibt bei 3" : "Schalter Weltcup auf 2 Nächte: kein Hinweis «ganze Zeit», Wert 2", !r.hint && r.pm === (nf ? 3 : 2), JSON.stringify([r.hint, r.pm]));
   } else {
     ok("Schalter Weltcup (Standard 3): eigene Daten mit 2 Nächten werden nicht übernommen, alle 3 Nächte", r.rows.length === 3 && r.rows.every((t) => /3 × CHF 225\.00|3 × CHF 200\.00|Anteil an CHF 600\.–/.test(t)) && !r.rows.some((t) => /\(2 Nächte\)/.test(t)) && Math.abs(r.sum - 1920) < 0.3, JSON.stringify(r.rows) + " " + r.sum);
@@ -261,18 +261,19 @@ async function tWeltcup(b) {
     for (let i = 0; i < 6; i++) { const ok1 = document.querySelector(".gm-pt-ok"); if (ok1) { ok1.click(); await w(300); } }
     o.rows = [...document.querySelectorAll("#result .auf-tab tr.auf-d")].map((t) => t.innerText.replace(/\s+/g, " "));
     o.zr = [...document.querySelectorAll("#result .auf-tab tr.auf-z")].map((t) => t.innerText.replace(/\s+/g, " ")); o.tot = (document.querySelector("#result .big") || { innerText: "" }).innerText;
-    o.rh = (() => { SOND_F = Object.assign(SOND_LEER(), { arr: "2028-01-07", dep: "2028-01-10", preis: "600", notfall: true, rhV: "5", rhK: "2" }); return sondRech(SOND_F).replace(/<[^>]+>/g, " ").replace(/\s+/g, " "); })();
-    o.rh2 = (() => { SOND_F = Object.assign(SOND_LEER(), { arr: "2028-01-07", dep: "2028-01-10", preis: "600", notfall: false, rhV: "7", rhK: "2" }); return sondRech(SOND_F).replace(/<[^>]+>/g, " ").replace(/\s+/g, " "); })();
-    o.rh3 = (() => { SOND_F = Object.assign(SOND_LEER(), { arr: "2028-01-07", dep: "2028-01-10", preis: "600", notfall: true, satz: "90", rhV: "5", rhK: "2" }); return sondRech(SOND_F).replace(/<[^>]+>/g, " ").replace(/\s+/g, " "); })();
+    const rh = (extra) => { SOND_F = Object.assign(SOND_LEER(), { arr: "2028-01-07", dep: "2028-01-10", preis: "600", rhP: ["6", "7", "6"] }, extra); return sondRech(SOND_F).replace(/<[^>]+>/g, " ").replace(/\s+/g, " "); };
+    o.rh = rh({ notfall: true }); o.rh2 = rh({ notfall: false }); o.rh3 = rh({ notfall: true, rhP: ["4", "", ""] }); o.rh4 = rh({ preis: "570", notfall: true });
     return o;
   });
   const all = r.rows.join(" | ");
-  ok("Weltcup 5 × 3 Nächte, 2 × 2 Nächte: Satz CHF 85.71 pro Personennacht, 5 zahlen 257.14", (all.match(/3 Nächte \(à CHF 85\.71, Anteil an CHF 600\.– pro Nacht\) CHF 257\.14/g) || []).length === 3, all);
-  ok("Weltcup: die zwei mit 2 Nächten zahlen CHF 171.43", (all.match(/2 Nächte \(à CHF 85\.71, Anteil an CHF 600\.– pro Nacht\) CHF 171\.43/g) || []).length === 2, all);
-  ok("Weltcup: Total rund CHF 1’629 (1628.57, auf 5 Rappen)", /1.62[89]/.test(r.tot), r.tot + " " + JSON.stringify(r.zr));
-  ok("Rechenhilfe: 5 × 3 und 2 × 2 Nächte: 257.15 / 171.45, Total 1’628.57, Verzicht 171.43", /257\.15/.test(r.rh) && /171\.45/.test(r.rh) && /1.628\.57/.test(r.rh) && /171\.43/.test(r.rh), r.rh);
-  ok("Rechenhilfe ohne Notfall: keine Zeile für kürzere Aufenthalte", !/2 Personen mit 2/.test(r.rh2) && /7 Personen mit 3 Nächten/.test(r.rh2) && /Gleich viel/.test(r.rh2), r.rh2);
-  ok("Rechenhilfe mit Satz CHF 90: Satz übersteuert, Mehreinnahme", /CHF 90\.00/.test(r.rh3) && /Mehreinnahme|Du verzichtest/.test(r.rh3), r.rh3);
+  ok("Weltcup (D Nacht 1+2, E Nacht 2+3): A, B, C zahlen je 285.71 (100 + 85.71 + 100)", (all.match(/3 Nächte \(Anteil an CHF 600\.– pro Nacht\) CHF 285\.71/g) || []).length === 3, all);
+  ok("Weltcup: D und E mit 2 Nächten zahlen je CHF 185.71", (all.match(/2 Nächte \(Anteil an CHF 600\.– pro Nacht\) CHF 185\.71/g) || []).length === 2, all);
+  ok("Weltcup: die Familie (2 Personen) zahlt 571.43, das Total ist 3 × CHF 600", /571\.43/.test(all) && /1.800/.test(r.tot), r.tot + " " + all.slice(0, 200));
+  ok("Rechenhilfe 6, 7, 6 Personen: je 100.00 / 85.71 / 100.00, alle Nächte 285.75, Total 1’800", /100\.00/.test(r.rh) && /85\.71/.test(r.rh) && /285\.75/.test(r.rh) && /1.800/.test(r.rh), r.rh);
+  ok("Rechenhilfe mit Notfall: ohne erste Nacht 185.75, ohne letzte Nacht 185.75", /185\.75/.test(r.rh) && /erste Nacht auslässt/.test(r.rh), r.rh);
+  ok("Rechenhilfe ohne Notfall: keine Zeile für ausgelassene Nächte", !/auslässt/.test(r.rh2) && /Wer alle 3 Nächte bleibt/.test(r.rh2), r.rh2);
+  ok("Rechenhilfe: 4 Personen in Nacht 1 = je 150.00", /4 Personen, je CHF 150\.00/.test(r.rh3) && /niemand eingetragen/.test(r.rh3), r.rh3);
+  ok("Rechenhilfe: Pauschale 570 statt 600 (Verhandeln): Total 1’710", /1.710/.test(r.rh4) && /95\.00/.test(r.rh4), r.rh4);
   ok("Weltcup: keine Fehler", p.fehler.length === 0, p.fehler.join("|"));
   await p.ctx.close();
 }
@@ -283,24 +284,22 @@ async function tVorlageForm(b) {
     const w = (ms) => new Promise((z) => setTimeout(z, ms)); const o = {};
     SOND_F = SOND_LEER(); PERS_STAND.set("__sond", true); bestZeigen(); await w(300);
     const d = document.querySelector('details.pers[data-pers="__sond"]'); if (d) d.open = true;
-    const q = (k) => document.querySelector('#bestKasten [data-sf="' + k + '"]');
-    o.da = !!q("notfall") && !!q("satz") && !!q("rhV") && !!q("rhK"); o.kHidden0 = document.getElementById("sondRhKw").hidden;
-    const set = (k, v) => { const e = q(k); if (e.type === "checkbox") { e.checked = v; e.dispatchEvent(new Event("change", { bubbles: true })); } else { e.value = v; e.dispatchEvent(new Event("input", { bubbles: true })); e.dispatchEvent(new Event("change", { bubbles: true })); } };
-    set("arr", "2028-01-07"); set("dep", "2028-01-10"); set("preis", "600"); set("rhV", "5"); set("rhK", "2");
-    o.aus = document.getElementById("sondRhOut").innerText.replace(/\s+/g, " ");
-    set("notfall", true); o.kHidden1 = document.getElementById("sondRhKw").hidden; o.an = document.getElementById("sondRhOut").innerText.replace(/\s+/g, " ");
-    set("satz", "90,5"); o.satz = document.getElementById("sondRhOut").innerText.replace(/\s+/g, " "); o.f = JSON.stringify([SOND_F.notfall, SOND_F.satz]);
-    buchungenAn({ buchungen: [], vorlagen: [{ id: "x", name: "Manuel", arr: "2028-01-07", dep: "2028-01-10", pa: true, preis: 600, reinB: 0, kt: true, notfall: true, satz: 85.71, t: "" }, { id: "y", name: "Manuel", arr: "2028-02-07", dep: "2028-02-10", pa: true, preis: 600, t: "" }] });
-    o.v = VORL.map((v) => [v.notfall, v.satz]);
+    const q = (k, i) => document.querySelector('#bestKasten [data-sf="' + k + '"]' + (i !== undefined ? '[data-ri="' + i + '"]' : ""));
+    o.da = !!q("notfall") && !!document.getElementById("sondRhIn") && !q("satz"); o.l0 = document.getElementById("sondRhOut").innerText;
+    const set = (k, v, i) => { const e = q(k, i); if (e.type === "checkbox") { e.checked = v; e.dispatchEvent(new Event("change", { bubbles: true })); } else { e.value = v; e.dispatchEvent(new Event("input", { bubbles: true })); e.dispatchEvent(new Event("change", { bubbles: true })); } };
+    set("preis", "600"); o.l1 = document.getElementById("sondRhOut").innerText;
+    set("arr", "2028-01-07"); set("dep", "2028-01-10"); o.felder = document.querySelectorAll('#bestKasten [data-sf="rhP"]').length;
+    set("rhP", "6", 0); set("rhP", "7", 1); set("rhP", "6", 2); o.aus = document.getElementById("sondRhOut").innerText.replace(/\s+/g, " "); o.behalten = q("rhP", 1).value;
+    set("notfall", true); o.an = document.getElementById("sondRhOut").innerText.replace(/\s+/g, " ");
+    buchungenAn({ buchungen: [], vorlagen: [{ id: "x", name: "Manuel", arr: "2028-01-07", dep: "2028-01-10", pa: true, preis: 600, reinB: 0, kt: true, notfall: true, t: "" }, { id: "y", name: "Manuel", arr: "2028-02-07", dep: "2028-02-10", pa: true, preis: 600, t: "" }] });
+    o.v = VORL.map((v) => v.notfall);
     return o;
   });
-  const ph = await p.evaluate(async () => { SOND_F = SOND_LEER(); bestZeigen(); const d = document.querySelector('details.pers[data-pers="__sond"]'); if (d) d.open = true; const q = (k) => document.querySelector('#bestKasten [data-sf="' + k + '"]'); const set = (k, v) => { const e = q(k); if (e.type === "checkbox") { e.checked = v; e.dispatchEvent(new Event("change", { bubbles: true })); } else { e.value = v; e.dispatchEvent(new Event("input", { bubbles: true })); } }; const o = {}; o.l0 = document.getElementById("sondRhOut").innerText; set("preis", "600"); o.l1 = document.getElementById("sondRhOut").innerText; set("rhV", "5"); set("notfall", true); set("rhK", "2"); o.l2 = document.getElementById("sondRhOut").innerText.replace(/\\s+/g, " "); o.ph = document.getElementById("sondSatz").placeholder; o.leer = document.getElementById("sondSatz").value; return o; });
-  ok("Rechenhilfe: sagt, was fehlt, zeigt den Satz ohne Daten, Feld bleibt leer mit Platzhalter 85.71", /Pauschale/.test(ph.l0) && /Personen/.test(ph.l1) && /85\.71/.test(ph.l2) && /Anreise und Abreise/.test(ph.l2) && /85\.71/.test(ph.ph) && ph.leer === "", JSON.stringify(ph));
-  ok("Vorlage: Felder «Notfall», «Preis pro Person und Nacht», Rechenhilfe da; Zeile für kürzere Aufenthalte erst mit Notfall", r.da && r.kHidden0 && !r.kHidden1, JSON.stringify([r.da, r.kHidden0, r.kHidden1]));
-  ok("Rechenhilfe ohne Notfall: nur Personen mit allen Nächten", /5 Personen mit 3 Nächten/.test(r.aus) && !/2 Personen mit 2/.test(r.aus), r.aus);
-  ok("Rechenhilfe mit Notfall: 5 × 257.15 und 2 × 171.45", /257\.15/.test(r.an) && /171\.45/.test(r.an), r.an);
-  ok("Rechenhilfe: Satz mit Komma übersteuert (90.50)", /90\.50/.test(r.satz) && r.f === '[true,"90,5"]', r.satz + " " + r.f);
-  ok("Vorlagen laden Notfall und Satz (alte ohne = aus)", JSON.stringify(r.v) === "[[true,85.71],[false,null]]", JSON.stringify(r.v));
+  ok("Vorlage: Kästchen «Notfall» und Rechenhilfe da, kein Feld «Preis pro Person» mehr", r.da, JSON.stringify(r.da));
+  ok("Rechenhilfe sagt, was fehlt (Pauschale, dann Daten)", /Pauschale/.test(r.l0) && /Anreise und Abreise/.test(r.l1), r.l0 + " | " + r.l1);
+  ok("Rechenhilfe: nach den Daten ein Feld «Personen» pro Nacht (3 Stück), Eingabe bleibt stehen", r.felder === 3 && r.behalten === "7", JSON.stringify([r.felder, r.behalten]));
+  ok("Rechenhilfe 6, 7, 6: Beträge und Total, mit Notfall zusätzliche Zeile", /85\.71/.test(r.aus) && /1.800/.test(r.aus) && !/auslässt/.test(r.aus) && /auslässt/.test(r.an), r.aus + " | " + r.an);
+  ok("Vorlagen laden den Notfall-Schalter (alte ohne = aus)", JSON.stringify(r.v) === "[true,false]", JSON.stringify(r.v));
   ok("Vorlage-Formular: keine Fehler", p.fehler.length === 0, p.fehler.join("|"));
   await p.ctx.close();
 }
