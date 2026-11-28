@@ -358,3 +358,4 @@ Erledigt: Haftung, Bedingungen, Stornierung als Kapitel, gelber Hilfeknopf (2.11
 - 3.40.0.1 (Wänu 28.11.2026, Bild Ansicht als Manuel): Sonderbuchung mit Pauschale und Geschwister-Haushalten: Zeilen zeigen Übernachtung (Anteil an der Pauschale pro Nacht) und Reinigung statt alles als Reinigung. Einzelheiten in der CLAUDE.md der Testversion.
 - 3.40.0.2 (Wänu 28.11.2026, Bild): Sonderbuchung mit Geschwister-Haushalten: jeder Haushalt zahlt Übernachtung nach Personennächten plus seinen Anteil an der Reinigung. Einzelheiten in der CLAUDE.md der Testversion.
 - 3.40.0.3 (Wänu 28.11.2026): Aufteilung aufgeklappt zeigt den gerundeten Betrag der Zeile (324.20), die Zeile «Aufgerundet auf 5 Rappen» entfällt.
+- 3.40.0.4 (Wänu 28.11.2026): gespeicherte Aufteilung: aufgeklappte Zeile bricht um (lange Texte liefen über den Bildrand). Einzelheiten in der CLAUDE.md der Testversion.

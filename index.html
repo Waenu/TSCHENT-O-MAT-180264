@@ -1143,7 +1143,7 @@ if (TEST_MODUS) {
   #meldenKasten .idneu input, #meldenKasten .idneu select, #meldenKasten .idneu textarea { font: inherit; min-height: 44px; padding: 6px 10px; border: 2px solid var(--accent); border-radius: 6px; background: var(--surface); color: var(--fg); width: 100%; box-sizing: border-box; }
   .rechd { margin: 6px 0; } .rechd > summary { cursor: pointer; font-weight: 700; min-height: 44px; display: flex; align-items: center; gap: 6px; }
   .rechd .rechin { border-top: 1px solid var(--line); padding-top: 6px; } .rechd .rechin h4 { margin: 10px 0 2px; }
-  .rechd .auf-tab td, .ipan .auf-tab td { padding: 8px 0; vertical-align: top; } .rechd .auf-tab tr.auf-d td, .ipan .auf-tab tr.auf-d td { padding-top: 0; } .rechd .auf-tab tr[style*="--pc"] > td:first-child, .ipan .auf-tab tr[style*="--pc"] > td:first-child { padding-left: 12px; } .rechd .auf-tab td:last-child, .ipan .auf-tab td:last-child { white-space: nowrap; padding-left: 10px; } .rech-auf + .rech-alle { margin-top: 10px; }   /* Aufteilung wie im Rechner (seit 3.20.1.0) */
+  .rechd .auf-tab td, .ipan .auf-tab td { padding: 8px 0; vertical-align: top; } .rechd .auf-tab tr.auf-d td, .ipan .auf-tab tr.auf-d td { padding-top: 0; } .rechd .auf-tab tr[style*="--pc"] > td:first-child, .ipan .auf-tab tr[style*="--pc"] > td:first-child { padding-left: 12px; } .rechd .auf-tab td:last-child, .ipan .auf-tab td:last-child { white-space: nowrap; padding-left: 10px; } .rechd .auf-tab tr.auf-d td:last-child, .ipan .auf-tab tr.auf-d td:last-child { white-space: normal; }   /* aufgeklappte Zeile bricht um (nowrap war nur für die Beträge gedacht, seit 3.40.0.4) */ .rech-auf + .rech-alle { margin-top: 10px; }   /* Aufteilung wie im Rechner (seit 3.20.1.0) */
   .rech-alle > summary { cursor: pointer; font-weight: 700; min-height: 44px; display: flex; align-items: center; gap: 6px; } .rech-alle > summary::after { content: "▾"; margin-left: auto; color: var(--accent); font-weight: 700; } .rech-alle[open] > summary::after { content: "▴"; color: inherit; } .rech-alle > summary::-webkit-details-marker { display: none; } .rech-alle > summary { list-style: none; }
   .rechd table { width: 100%; border-collapse: collapse; } .rechd td { padding: 3px 0; vertical-align: top; } .rechd td:last-child { text-align: right; padding-left: 10px; white-space: normal; overflow-wrap: break-word; } .rechd td:first-child { overflow-wrap: break-word; }
   #calBlase .ar { display: flex; align-items: center; gap: 10px; width: 100%; box-sizing: border-box; margin: 8px 0 0; padding: 8px 12px; border: 2px solid var(--accent); border-radius: 6px; background: var(--surface); color: var(--fg); font: inherit; text-align: left; cursor: pointer; }
@@ -1735,7 +1735,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.40.0.3";
+let VERSION = "3.40.0.4";
 let NEU_VERSION = "";   // Version laut einstellungen.json (Netz); VERSION ist die Fassung, die wirklich läuft (seit 3.37.0.14)
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
