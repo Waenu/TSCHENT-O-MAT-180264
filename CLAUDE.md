@@ -354,3 +354,4 @@ Erledigt 10.11.2026 abends: Kurzfilm Saisons (2.120.0.x), Beherbergungsabgabe im
 Erledigt: Haftung, Bedingungen, Stornierung als Kapitel, gelber Hilfeknopf (2.118.x). Liste «Zu tun» pro Buchung (2.117.0.0). Gästemeldung (2.116.x). Verwaltung neu, Schritte A bis C (2.114.0.0 bis 2.115.1.0). Kurtaxe für Freunde (2.113.0.0 und 2.113.0.1). Beträge fix im Code (P.kurtaxe, kurtaxeBeherb, kurtaxeKind), nicht aus der aktuellen Verordnung.
 - 3.37.0.13 (Wänu 27.11.2026): Fehler in der Zeile «Nächte (7 + 3)» der Familie (eigene Nächte pro Person). Neuer Test `tFamEigen`.
 - 3.37.0.14 (Wänu 27.11.2026): Versionsanzeige zeigt die laufende Fassung, Hinweis «Neue Version … ist da» bei neuerer im Netz (siehe Testversion).
+- 3.38.0.0 (Wänu 28.11.2026): Sonderbuchung mit festem Preis pro Personennacht, Notfall-Schalter (2 Nächte) und Rechenhilfe in der Vorlage (siehe Testversion). Bereit, Push nach «übernehmen».

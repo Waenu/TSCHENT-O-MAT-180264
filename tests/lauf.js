@@ -207,9 +207,9 @@ async function tSondAufteilung(b) {
 
 async function tSondListe(b) {
   const p = await seite(b, { ls: kind("Manuel"), heute: "2026-11-27" });
-  const r = await p.evaluate(async () => {
+  const r = await p.evaluate(async (NF) => {
     const w = (ms) => new Promise((z) => setTimeout(z, ms)); const o = {};
-    sondStart({ id: "a", name: "Manuel", arr: "2027-01-07", dep: "2027-01-10", t: 1, pa: true, preis: 600, reinB: 120 }); await w(300);
+    sondStart({ id: "a", name: "Manuel", arr: "2027-01-07", dep: "2027-01-10", t: 1, pa: true, preis: 600, reinB: 120, notfall: !!NF }); await w(300);
     S.werArt = EIGEN; S.famSel = []; S.ichMit = true; S.gaeste = 2; S.reinig = REINIG[0]; S.zimmer = "Nein"; S.spar = "Nein"; S.waesche = S.waesche || "Persönlich bringen";
     const f = (v, n, g) => ({ vorname: v, name: n, geschlecht: "w", geb: g || "1990-01-01", nat: "Schweiz" });
     localStorage.setItem("tm2t_gmEntwurf", JSON.stringify({ k: gmEntwurfKeyJetzt(), l: [f("Anna", "Meier"), f("Bea", "Zeller")] })); normalize(); render(); await w(400);
@@ -222,11 +222,11 @@ async function tSondListe(b) {
   await p.ctx.close();
 }
 
-async function tSondNaechte(b, sm) {
+async function tSondNaechte(b, sm, nf) {
   const p = await seite(b, { ls: kind("Manuel"), heute: "2026-11-27", schalter: sm ? { sondMin: 2 } : null });
-  const r = await p.evaluate(async () => {
+  const r = await p.evaluate(async (NF) => {
     const w = (ms) => new Promise((z) => setTimeout(z, ms)); const o = {};
-    sondStart({ id: "a", name: "Manuel", arr: "2027-01-07", dep: "2027-01-10", t: 1, pa: true, preis: 600, reinB: 120 }); await w(300);
+    sondStart({ id: "a", name: "Manuel", arr: "2027-01-07", dep: "2027-01-10", t: 1, pa: true, preis: 600, reinB: 120, notfall: !!NF }); await w(300);
     S.werArt = EIGEN; S.famSel = []; S.ichMit = true; S.gaeste = 2; S.reinig = REINIG[0]; S.zimmer = "Nein"; S.spar = "Nein"; S.waesche = S.waesche || "Persönlich bringen";
     const f = (v, n, a, b2) => Object.assign({ vorname: v, name: n, geschlecht: "w", geb: "1990-01-01", nat: "Schweiz" }, a ? { an: a, ab: b2 } : {});
     localStorage.setItem("tm2t_gmEntwurf", JSON.stringify({ k: gmEntwurfKeyJetzt(), l: [f("Anna", "Meier"), f("Bea", "Zeller", "2027-01-08", "2027-01-10")] })); normalize(); render(); await w(400);
@@ -237,16 +237,69 @@ async function tSondNaechte(b, sm) {
     o.sum = [...document.querySelectorAll("#result .auf-tab tr.auf-z")].map((t) => { const m = [...t.innerText.matchAll(/CHF\s([\d’]+\.\d\d)/g)]; return m.length ? parseFloat(m[m.length - 1][1].replace(/’/g, "")) : 0; }).reduce((a, v) => a + v, 0);
     o.zr = [...document.querySelectorAll("#result .auf-tab tr.auf-z")].map((t) => t.innerText.replace(/\s+/g, " ")); o.tot = (document.querySelector("#result .big") || { innerText: "" }).innerText;
     return o;
-  });
-  if (sm) {
-    ok("Pauschale nach Personennächten: Anna 3 Nächte CHF 675, Bea 2 Nächte CHF 450 (1800 / 8 Personennächte = 225, Schalter auf 2)", r.rows.length === 3 && /3 Nächte \(à CHF 225\.00, Anteil an CHF 600\.– pro Nacht\) CHF 675\.00/.test(r.rows[0] + r.rows[1] + r.rows[2]) && r.rows.some((t) => /2 Nächte \(à CHF 225\.00, Anteil an CHF 600\.– pro Nacht\) CHF 450\.00/.test(t)), JSON.stringify(r.rows) + " " + r.leiste);
-    ok("Pauschale nach Personennächten: Summe der Zeilen = Total CHF 1’920", Math.abs(r.sum - 1920) < 0.3 && /1.920/.test(r.tot), r.sum + " " + r.tot + " " + JSON.stringify(r.zr));
-    ok("Schalter Weltcup auf 2 Nächte: kein Hinweis «ganze Zeit», Wert 2", !r.hint && r.pm === 2, JSON.stringify([r.hint, r.pm]));
+  }, !!nf);
+  if (sm || nf) {
+    ok("Pauschale pro Personennacht: Anna 3 Nächte CHF 600, Bea 2 Nächte CHF 400 (Satz 600 ÷ 3 Personen = 200, fehlende Nacht senkt das Total)", r.rows.length === 3 && /3 Nächte \(à CHF 200\.00, Anteil an CHF 600\.– pro Nacht\) CHF 600\.00/.test(r.rows[0] + r.rows[1] + r.rows[2]) && r.rows.some((t) => /2 Nächte \(à CHF 200\.00, Anteil an CHF 600\.– pro Nacht\) CHF 400\.00/.test(t)), JSON.stringify(r.rows) + " " + r.leiste);
+    ok("Pauschale pro Personennacht: Summe der Zeilen = Total CHF 1’720 (1600 + Reinigung 120)", Math.abs(r.sum - 1720) < 0.3 && /1.720/.test(r.tot), r.sum + " " + r.tot + " " + JSON.stringify(r.zr));
+    ok(nf ? "Notfall-Schalter der Vorlage: 2 Nächte erlaubt, Control Panel bleibt bei 3" : "Schalter Weltcup auf 2 Nächte: kein Hinweis «ganze Zeit», Wert 2", !r.hint && r.pm === (nf ? 3 : 2), JSON.stringify([r.hint, r.pm]));
   } else {
     ok("Schalter Weltcup (Standard 3): eigene Daten mit 2 Nächten werden nicht übernommen, alle 3 Nächte", r.rows.length === 3 && r.rows.every((t) => /3 × CHF 225\.00|3 × CHF 200\.00|Anteil an CHF 600\.–/.test(t)) && !r.rows.some((t) => /\(2 Nächte\)/.test(t)) && Math.abs(r.sum - 1920) < 0.3, JSON.stringify(r.rows) + " " + r.sum);
     ok("Schalter Weltcup (Standard 3): Hinweis «ganze Zeit» statt Aufenthalts-Feld, Wert 3", r.hint && r.pm === 3, JSON.stringify([r.hint, r.pm]));
   }
   ok("Pauschale nach Personennächten: keine Fehler", p.fehler.length === 0, p.fehler.join("|"));
+  await p.ctx.close();
+}
+
+async function tWeltcup(b) {
+  const p = await seite(b, { ls: kind("Manuel"), heute: "2026-11-27", familie: { liste: { Manuel: { p: "Sarah", k: [] } } } });
+  const r = await p.evaluate(async () => {
+    const w = (ms) => new Promise((z) => setTimeout(z, ms)); const o = {};
+    sondStart({ id: "w", name: "Manuel", arr: "2028-01-07", dep: "2028-01-10", t: 1, pa: true, preis: 600, reinB: 0, kt: false, notfall: true }); await w(300);
+    S.werArt = EIGEN; S.famSel = ["Sarah"]; S.ichMit = true; S.gaeste = 5; S.reinig = REINIG[0]; S.zimmer = "Nein"; S.spar = "Nein"; S.waesche = S.waesche || "Persönlich bringen";
+    const f = (v, n, a, b2) => Object.assign({ vorname: v, name: n, geschlecht: "w", geb: "1990-01-01", nat: "Schweiz" }, a ? { an: a, ab: b2 } : {});
+    localStorage.setItem("tm2t_gmEntwurf", JSON.stringify({ k: gmEntwurfKeyJetzt(), l: [f("A", "Aa"), f("B", "Bb"), f("C", "Cc"), f("D", "Dd", "2028-01-07", "2028-01-09"), f("E", "Ee", "2028-01-08", "2028-01-10")] })); normalize(); render(); await w(400);
+    for (let i = 0; i < 6; i++) { const ok1 = document.querySelector(".gm-pt-ok"); if (ok1) { ok1.click(); await w(300); } }
+    o.rows = [...document.querySelectorAll("#result .auf-tab tr.auf-d")].map((t) => t.innerText.replace(/\s+/g, " "));
+    o.zr = [...document.querySelectorAll("#result .auf-tab tr.auf-z")].map((t) => t.innerText.replace(/\s+/g, " ")); o.tot = (document.querySelector("#result .big") || { innerText: "" }).innerText;
+    o.rh = (() => { SOND_F = Object.assign(SOND_LEER(), { arr: "2028-01-07", dep: "2028-01-10", preis: "600", notfall: true, rhV: "5", rhK: "2" }); return sondRech(SOND_F).replace(/<[^>]+>/g, " ").replace(/\s+/g, " "); })();
+    o.rh2 = (() => { SOND_F = Object.assign(SOND_LEER(), { arr: "2028-01-07", dep: "2028-01-10", preis: "600", notfall: false, rhV: "7", rhK: "2" }); return sondRech(SOND_F).replace(/<[^>]+>/g, " ").replace(/\s+/g, " "); })();
+    o.rh3 = (() => { SOND_F = Object.assign(SOND_LEER(), { arr: "2028-01-07", dep: "2028-01-10", preis: "600", notfall: true, satz: "90", rhV: "5", rhK: "2" }); return sondRech(SOND_F).replace(/<[^>]+>/g, " ").replace(/\s+/g, " "); })();
+    return o;
+  });
+  const all = r.rows.join(" | ");
+  ok("Weltcup 5 × 3 Nächte, 2 × 2 Nächte: Satz CHF 85.71 pro Personennacht, 5 zahlen 257.14", (all.match(/3 Nächte \(à CHF 85\.71, Anteil an CHF 600\.– pro Nacht\) CHF 257\.14/g) || []).length === 3, all);
+  ok("Weltcup: die zwei mit 2 Nächten zahlen CHF 171.43", (all.match(/2 Nächte \(à CHF 85\.71, Anteil an CHF 600\.– pro Nacht\) CHF 171\.43/g) || []).length === 2, all);
+  ok("Weltcup: Total rund CHF 1’629 (1628.57, auf 5 Rappen)", /1.62[89]/.test(r.tot), r.tot + " " + JSON.stringify(r.zr));
+  ok("Rechenhilfe: 5 × 3 und 2 × 2 Nächte: 257.15 / 171.45, Total 1’628.57, Verzicht 171.43", /257\.15/.test(r.rh) && /171\.45/.test(r.rh) && /1.628\.57/.test(r.rh) && /171\.43/.test(r.rh), r.rh);
+  ok("Rechenhilfe ohne Notfall: keine Zeile für kürzere Aufenthalte", !/2 Personen mit 2/.test(r.rh2) && /7 Personen mit 3 Nächten/.test(r.rh2) && /Gleich viel/.test(r.rh2), r.rh2);
+  ok("Rechenhilfe mit Satz CHF 90: Satz übersteuert, Mehreinnahme", /CHF 90\.00/.test(r.rh3) && /Mehreinnahme|Du verzichtest/.test(r.rh3), r.rh3);
+  ok("Weltcup: keine Fehler", p.fehler.length === 0, p.fehler.join("|"));
+  await p.ctx.close();
+}
+
+async function tVorlageForm(b) {
+  const p = await seite(b, { ls: papiLs, papi: true });
+  const r = await p.evaluate(async () => {
+    const w = (ms) => new Promise((z) => setTimeout(z, ms)); const o = {};
+    SOND_F = SOND_LEER(); PERS_STAND.set("__sond", true); bestZeigen(); await w(300);
+    const d = document.querySelector('details.pers[data-pers="__sond"]'); if (d) d.open = true;
+    const q = (k) => document.querySelector('#bestKasten [data-sf="' + k + '"]');
+    o.da = !!q("notfall") && !!q("satz") && !!q("rhV") && !!q("rhK"); o.kHidden0 = document.getElementById("sondRhKw").hidden;
+    const set = (k, v) => { const e = q(k); if (e.type === "checkbox") { e.checked = v; e.dispatchEvent(new Event("change", { bubbles: true })); } else { e.value = v; e.dispatchEvent(new Event("input", { bubbles: true })); e.dispatchEvent(new Event("change", { bubbles: true })); } };
+    set("arr", "2028-01-07"); set("dep", "2028-01-10"); set("preis", "600"); set("rhV", "5"); set("rhK", "2");
+    o.aus = document.getElementById("sondRhOut").innerText.replace(/\s+/g, " ");
+    set("notfall", true); o.kHidden1 = document.getElementById("sondRhKw").hidden; o.an = document.getElementById("sondRhOut").innerText.replace(/\s+/g, " ");
+    set("satz", "90,5"); o.satz = document.getElementById("sondRhOut").innerText.replace(/\s+/g, " "); o.f = JSON.stringify([SOND_F.notfall, SOND_F.satz]);
+    buchungenAn({ buchungen: [], vorlagen: [{ id: "x", name: "Manuel", arr: "2028-01-07", dep: "2028-01-10", pa: true, preis: 600, reinB: 0, kt: true, notfall: true, satz: 85.71, t: "" }, { id: "y", name: "Manuel", arr: "2028-02-07", dep: "2028-02-10", pa: true, preis: 600, t: "" }] });
+    o.v = VORL.map((v) => [v.notfall, v.satz]);
+    return o;
+  });
+  ok("Vorlage: Felder «Notfall», «Preis pro Person und Nacht», Rechenhilfe da; Zeile für kürzere Aufenthalte erst mit Notfall", r.da && r.kHidden0 && !r.kHidden1, JSON.stringify([r.da, r.kHidden0, r.kHidden1]));
+  ok("Rechenhilfe ohne Notfall: nur Personen mit allen Nächten", /5 Personen mit 3 Nächten/.test(r.aus) && !/2 Personen mit 2/.test(r.aus), r.aus);
+  ok("Rechenhilfe mit Notfall: 5 × 257.15 und 2 × 171.45", /257\.15/.test(r.an) && /171\.45/.test(r.an), r.an);
+  ok("Rechenhilfe: Satz mit Komma übersteuert (90.50)", /90\.50/.test(r.satz) && r.f === '[true,"90,5"]', r.satz + " " + r.f);
+  ok("Vorlagen laden Notfall und Satz (alte ohne = aus)", JSON.stringify(r.v) === "[[true,85.71],[false,null]]", JSON.stringify(r.v));
+  ok("Vorlage-Formular: keine Fehler", p.fehler.length === 0, p.fehler.join("|"));
   await p.ctx.close();
 }
 
@@ -456,7 +509,7 @@ async function tNamenAufraeumen(b) {
 
 (async () => {
   const s = await server(); const b = await chromium.launch();
-  const lauf = [["Dateien", tDateien], ["Start", tStart], ["VerNeu", tVerNeu], ["Control Panel", tControlPanel], ["Gültig ab", tGueltigAb], ["Gültig bis", tGueltigBis], ["Trinkgeld", tTrinkgeld], ["Rechnung an Freunde", tRechnungSchalter], ["Ansicht als", tAnsichtAls], ["Anfrage und Namen", tSchnappschuss], ["Sonderbuchungen", tSonder], ["SondAuf", tSondAufteilung], ["SondListe", tSondListe], ["SondNaechte", tSondNaechte], ["Paar", tPaar], ["Bonus", tBonus], ["Familienrabatt", tFamRabatt], ["FamEigen", tFamEigen], ["SondNaechte2", (b) => tSondNaechte(b, true)], ["Preise", tPreise], ["Alte Namen aufräumen", tNamenAufraeumen]];
+  const lauf = [["Dateien", tDateien], ["Start", tStart], ["VerNeu", tVerNeu], ["Control Panel", tControlPanel], ["Gültig ab", tGueltigAb], ["Gültig bis", tGueltigBis], ["Trinkgeld", tTrinkgeld], ["Rechnung an Freunde", tRechnungSchalter], ["Ansicht als", tAnsichtAls], ["Anfrage und Namen", tSchnappschuss], ["Sonderbuchungen", tSonder], ["SondAuf", tSondAufteilung], ["SondListe", tSondListe], ["SondNaechte", tSondNaechte], ["Paar", tPaar], ["Bonus", tBonus], ["Familienrabatt", tFamRabatt], ["FamEigen", tFamEigen], ["SondNaechte2", (b) => tSondNaechte(b, true)], ["SondNotfall", (b) => tSondNaechte(b, false, true)], ["Weltcup", tWeltcup], ["VorlageForm", tVorlageForm], ["Preise", tPreise], ["Alte Namen aufräumen", tNamenAufraeumen]];
   const nur = process.argv[2];
   for (const [n, f] of lauf) { if (nur && !n.toLowerCase().includes(nur.toLowerCase())) continue; try { await f(b); } catch (e) { ok(n + ": Lauf abgebrochen", false, e.message); } }
   await b.close(); s.close();
