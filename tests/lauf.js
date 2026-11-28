@@ -294,6 +294,8 @@ async function tVorlageForm(b) {
     o.v = VORL.map((v) => [v.notfall, v.satz]);
     return o;
   });
+  const ph = await p.evaluate(async () => { SOND_F = SOND_LEER(); bestZeigen(); const d = document.querySelector('details.pers[data-pers="__sond"]'); if (d) d.open = true; const q = (k) => document.querySelector('#bestKasten [data-sf="' + k + '"]'); const set = (k, v) => { const e = q(k); if (e.type === "checkbox") { e.checked = v; e.dispatchEvent(new Event("change", { bubbles: true })); } else { e.value = v; e.dispatchEvent(new Event("input", { bubbles: true })); } }; const o = {}; o.l0 = document.getElementById("sondRhOut").innerText; set("preis", "600"); o.l1 = document.getElementById("sondRhOut").innerText; set("rhV", "5"); set("notfall", true); set("rhK", "2"); o.l2 = document.getElementById("sondRhOut").innerText.replace(/\\s+/g, " "); o.ph = document.getElementById("sondSatz").placeholder; o.leer = document.getElementById("sondSatz").value; return o; });
+  ok("Rechenhilfe: sagt, was fehlt, zeigt den Satz ohne Daten, Feld bleibt leer mit Platzhalter 85.71", /Pauschale/.test(ph.l0) && /Personen/.test(ph.l1) && /85\.71/.test(ph.l2) && /Anreise und Abreise/.test(ph.l2) && /85\.71/.test(ph.ph) && ph.leer === "", JSON.stringify(ph));
   ok("Vorlage: Felder «Notfall», «Preis pro Person und Nacht», Rechenhilfe da; Zeile für kürzere Aufenthalte erst mit Notfall", r.da && r.kHidden0 && !r.kHidden1, JSON.stringify([r.da, r.kHidden0, r.kHidden1]));
   ok("Rechenhilfe ohne Notfall: nur Personen mit allen Nächten", /5 Personen mit 3 Nächten/.test(r.aus) && !/2 Personen mit 2/.test(r.aus), r.aus);
   ok("Rechenhilfe mit Notfall: 5 × 257.15 und 2 × 171.45", /257\.15/.test(r.an) && /171\.45/.test(r.an), r.an);

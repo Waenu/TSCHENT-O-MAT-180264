@@ -1734,7 +1734,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.38.0.0";
+let VERSION = "3.38.0.1";
 let NEU_VERSION = "";   // Version laut einstellungen.json (Netz); VERSION ist die Fassung, die wirklich läuft (seit 3.37.0.14)
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
@@ -8417,9 +8417,10 @@ const sondPa = (f) => String((f && f.preis) == null ? "" : f.preis).trim() !== "
 const sondReinPh = (f) => sondPa(f) ? "leer = keine Reinigung" : "leer = Standard " + chf(P.reinigung);
 function sondHint(f) { const r = String(f.reinB == null ? "" : f.reinB).trim(); const rt = r !== "" ? " Reinigung: " + chf(Math.round(Number(r) || 0)) + " pro Aufenthalt, egal wie viele Nächte." : ""; return sondPa(f) ? "Pauschale × Nächte" + (r !== "" && Number(r) > 0 ? " plus Reinigung" : "") + ". Die Kurtaxe für die Freunde gilt immer. Die Buchung ist fest." + rt : "Leer = der Rechner rechnet normal: Familienpreis, Preis pro Freund, Reinigung durch die Eltern, Kurtaxe. Die Buchung ist fest, Freunde sind erlaubt." + rt; }
 function sondRech(f) {   // Rechenhilfe «Verhandeln» in der Vorlage: Beträge pro Person ohne Reinigung und Kurtaxe (seit 3.38.0.0, Wänu)
-  const N = DKEY.test(f.arr) && DKEY.test(f.dep) && f.dep > f.arr ? diffDays(f.arr, f.dep) : 0, preis = Math.round(Number(f.preis) || 0), V = Math.round(Number(f.rhV) || 0), K = f.notfall && N > 1 ? Math.round(Number(f.rhK) || 0) : 0;
-  if (!N || !preis) return "Trage Daten und Pauschale ein, dann siehst du hier die Beträge.";
-  if (V + K < 1) return "Gib die Zahl der Personen ein.";
+  const N = DKEY.test(f.arr) && DKEY.test(f.dep) && f.dep > f.arr ? diffDays(f.arr, f.dep) : 0, preis = Math.round(Number(f.preis) || 0), V = Math.round(Number(f.rhV) || 0), K = f.notfall && N !== 1 ? Math.round(Number(f.rhK) || 0) : 0;
+  if (!preis) return "Trage oben die Pauschale pro Nacht ein, dann siehst du hier die Beträge.";
+  if (V + K < 1) return "Gib die Zahl der Personen ein (z. B. 5 mit allen Nächten, 2 mit einer Nacht weniger).";
+  if (!N) return "Preis pro Person und Nacht: <b>" + chf2(sondSatz(f, V + K)) + "</b> (" + chf(preis) + " ÷ " + (V + K) + ").<br>Wähle noch Anreise und Abreise, dann siehst du die Beträge pro Person.";
   const nP = V + K, rate = sondSatz(f, nP), tot = rate * (V * N + K * (N - 1)), ref = preis * N, dif = Math.round((ref - tot) * 100) / 100;
   let t = "Preis pro Person und Nacht: <b>" + chf2(rate) + "</b>" + (sondSatzNum(f) ? "" : " (" + chf(preis) + " ÷ " + nP + ")") + "<br>";
   if (V) t += V + (V === 1 ? " Person" : " Personen") + " mit " + N + " Nächten: je <b>" + chf2(auf05(rate * N)) + "</b><br>";
@@ -8428,7 +8429,7 @@ function sondRech(f) {   // Rechenhilfe «Verhandeln» in der Vorlage: Beträge 
   return t;
 }
 function sondHinweis() {   // Hinweis und Platzhalter folgen der Pauschale (seit 3.28.3.0, Reinigung als Betrag seit 3.29.0.0)
-  const c = document.getElementById("sondRein"), h = document.getElementById("sondHint"); if (c) c.placeholder = sondReinPh(SOND_F); if (h) h.textContent = sondHint(SOND_F); const ro = document.getElementById("sondRhOut"); if (ro) ro.innerHTML = sondRech(SOND_F); const rk = document.getElementById("sondRhKw"); if (rk) rk.hidden = !SOND_F.notfall;
+  const c = document.getElementById("sondRein"), h = document.getElementById("sondHint"); if (c) c.placeholder = sondReinPh(SOND_F); if (h) h.textContent = sondHint(SOND_F); const ro = document.getElementById("sondRhOut"); if (ro) ro.innerHTML = sondRech(SOND_F); const sa = document.getElementById("sondSatz"); if (sa) { const nPh = Math.round(Number(SOND_F.rhV) || 0) + (SOND_F.notfall ? Math.round(Number(SOND_F.rhK) || 0) : 0), pr = Math.round(Number(SOND_F.preis) || 0); sa.placeholder = pr > 0 && nPh > 0 ? "automatisch " + (Math.round(pr / nPh * 100) / 100).toFixed(2) + " (" + pr + " ÷ " + nPh + ")" : "automatisch: Pauschale ÷ Personen"; } const rk = document.getElementById("sondRhKw"); if (rk) rk.hidden = !SOND_F.notfall;
 }
 function sondInfo(f) {   // Kontrolle unter den Datumsfeldern der Vorlage; eingetippte Daten ignorieren die Airbnb-Sperre (seit 3.29.0.1, Wänu)
   if (!f || !DKEY.test(f.arr) || !DKEY.test(f.dep)) return "Tippe Anreise und Abreise ein oder wähle sie im Kalender.";
@@ -8448,7 +8449,7 @@ function sondHtml() {
     '<div class="field ' + (f.arr && f.dep ? "done" : "missing") + '"><label>Anreise und Abreise</label><div class="sond-d"><label>Anreise<input type="date" data-sf="arr" min="' + heuteKey() + '" value="' + esc(f.arr) + '"></label><label>Abreise<input type="date" data-sf="dep" min="' + heuteKey() + '" value="' + esc(f.dep) + '"></label></div><p class="sond-dat" id="sondInfo">' + sondInfo(f) + '</p><button type="button" class="btn" data-sond-kal="1">📅 Im Kalender wählen</button></div>' +
     '<div class="field"><label for="sondPreis">Pauschale pro Nacht für die ganze Wohnung (CHF)</label><input type="text" inputmode="numeric" id="sondPreis" data-sf="preis" maxlength="5" placeholder="leer = normaler Preis, z. B. 600" value="' + esc(f.preis) + '"></div>' +
     '<div class="field"><label class="sond-chk"><input type="checkbox" data-sf="notfall"' + (f.notfall ? " checked" : "") + '> <span>Notfall: Einzelne dürfen nur 2 Nächte bleiben (Standard: ' + P.sondMin + ')</span></label></div>' +
-    '<div class="field"><label for="sondSatz">Preis pro Person und Nacht (CHF, leer = Pauschale ÷ Personen)</label><input type="text" inputmode="decimal" id="sondSatz" data-sf="satz" maxlength="7" placeholder="z. B. 85.71" value="' + esc(f.satz) + '"></div>' +
+    '<div class="field"><label for="sondSatz">Preis pro Person und Nacht (CHF, leer = automatisch)</label><input type="text" inputmode="decimal" id="sondSatz" data-sf="satz" maxlength="7" placeholder="automatisch: Pauschale ÷ Personen" value="' + esc(f.satz) + '"><p class="hint">Leer lassen: die App rechnet beim Buchen mit der echten Personenzahl (Pauschale ÷ Personen). Trage nur etwas ein, wenn du einen festen Preis willst.</p></div>' +
     '<div class="field sond-rh"><label>🧮 Verhandeln: Rechenhilfe</label><div class="sond-d"><label>Personen mit allen Nächten<input type="text" inputmode="numeric" data-sf="rhV" maxlength="2" placeholder="z. B. 5" value="' + esc(f.rhV) + '"></label><label id="sondRhKw"' + (f.notfall ? "" : " hidden") + '>Personen mit 1 Nacht weniger<input type="text" inputmode="numeric" data-sf="rhK" maxlength="2" placeholder="z. B. 2" value="' + esc(f.rhK) + '"></label></div><div class="hint" id="sondRhOut">' + sondRech(f) + "</div></div>" +
     '<div class="field"><label for="sondRein">Reinigung pro Aufenthalt (CHF)</label><input type="text" inputmode="numeric" id="sondRein" data-sf="reinB" maxlength="5" placeholder="' + esc(sondReinPh(f)) + '" value="' + esc(f.reinB) + '"></div>' +
     '<p class="hint" id="sondHint">' + sondHint(f) + "</p>" +
