@@ -1735,7 +1735,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.40.0.1";
+let VERSION = "3.40.0.2";
 let NEU_VERSION = "";   // Version laut einstellungen.json (Netz); VERSION ist die Fassung, die wirklich läuft (seit 3.37.0.14)
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
@@ -5501,7 +5501,15 @@ function render() {
   }
   let TEILE = [], SUMZ = "";
   const exSum = (key) => zpl && zpl.extra[key] ? zpl.extra[key].reduce((a, e) => a + e.b, 0) : 0, famExAll = zpl ? Object.keys(zpl.extra).filter((k) => k === "ich" || /^g\d+$/.test(k)).reduce((a, k) => a + exSum(k), 0) : 0;   // Kinder der Freunde, für die eine Familienpartei zahlt (seit 3.22.1.0 pro Haushalt)
-  const famAufB = (() => { const ges = zpl ? zpl.zahlt.ich : r.FZ; return famAufteilen(ges - famExAll, zpl ? zpl.FA2 : x.FA); })();
+  const hP = (pp) => { const nk = x.NK || [], L = famLeute().filter((q) => !q.kk && q.kopf === pp.kopf); let s = 0, pn = 0; if (!x.SOND || !nk.length) return { s: 0, pn: 0 };   // Pauschale eines Geschwister-Haushalts: Personen mit Bett pro Nacht × Preis der Nacht (seit 3.40.0.1)
+      nk.forEach((q) => { const c = hDatAktiv() ? L.filter((z) => pDa(z.nm, q.k)).length : pp.n; s += c * q.p; pn += c; }); return { s: Math.round(s * 100) / 100, pn }; };
+  const famAufB = (() => { const ges = zpl ? zpl.zahlt.ich : r.FZ, tot = ges - famExAll, a = famAufteilen(tot, zpl ? zpl.FA2 : x.FA);
+    if (a && x.SOND && (x.NK || []).length) {   // Sonderbuchung: Haushalt = Pauschale nach Personennächten + Anteil an der Reinigung der Familie (seit 3.40.0.2)
+      const hs = a.map(hP), sum = hs.reduce((q, h) => q + h.s, 0), fp = zpl ? zpl.faP : x.FAp, fr = zpl ? zpl.faR : x.FAr, kf = sum > 0 ? fp / sum : 1;
+      a.forEach((pp, i) => { pp.hp = hs[i].s * kf; pp.b = pp.hp + fr * pp.gr; });
+      const diff = tot - a.reduce((q, pp) => q + pp.b, 0); if (Math.abs(diff) > 0.004) a.forEach((pp) => { pp.b += diff * pp.gr; });
+    }
+    return a; })();
   const famAuf = (() => {   // Familie mit mehreren Parteien: erste Zeile der Aufteilung ersetzen (seit 3.9.0.0)
     const fa = famAufB;
     if (!fa) return null;
@@ -5530,8 +5538,6 @@ function render() {
       return L("Für " + vn(e.i) + t, e.b, D("su") + "Übernachtung " + chf2((zpl.base[e.i] - x.GS) / z + gP(e.i) / z) + (gR(e.i) > 0.004 ? ", " + D("sr") + "Reinigung " + chf2(gR(e.i) / z) : "") + (zpl.kt[e.i] > 0 ? ", " + D("sk") + "Kurtaxe " + chf2(zpl.kt[e.i] / z) : "")); }).join("") : "";
     const nN = (n) => n + (n === 1 ? " Nacht" : " Nächte");
     const dgOn = !!(TOKEN && !ABSENDER && x.SOND && SOND.pa !== false && nz(SOND.preis) > 0), dgRef = dgOn ? nz(SOND.preis) / MAXP_BETTEN : 0;   // Marke «Ø pro Nacht gegenüber 100» nur für Papi (seit 3.40.0.0)
-    const hP = (pp) => { const nk = x.NK || [], L = famLeute().filter((q) => !q.kk && q.kopf === pp.kopf); let s = 0, pn = 0; if (!x.SOND || !nk.length) return { s: 0, pn: 0 };   // Pauschale eines Geschwister-Haushalts: Personen mit Bett pro Nacht × Preis der Nacht (seit 3.40.0.1)
-      nk.forEach((q) => { const c = hDatAktiv() ? L.filter((z) => pDa(z.nm, q.k)).length : pp.n; s += c * q.p; pn += c; }); return { s: Math.round(s * 100) / 100, pn }; };
     const dg = (ue, pn) => dgOn && pn > 0 && ue > 0.004 ? { ue, pn } : null;
     const pK = (nm, tot, ue, n, r, k, nl) => L(nm, tot, D("su") + "Übernachtung " + (nl && nl.length ? nN(nl.reduce((a, v) => a + v, 0)) + (nl.length > 1 ? " (" + nl.join(" + ") + ")" : "") + " für " : n > 0 && ue > 0.004 ? (x.SOND && nz(SOND.preis) > 0 ? nN(n) + " (Anteil an " + chf(nz(SOND.preis)) + " pro Nacht) " : nN(n) + " (à " + chf2(ue / n) + ") ") : "") + chf2(ue) + (r > 0.004 ? ", " + D("sr") + "Reinigung " + chf2(r) : "") + (k > 0.004 ? ", " + D("sk") + "Kurtaxe " + chf2(k) : ""), "");   // eine Person: Name, Betrag, darunter klein «Übernachtung 4 Nächte (à CHF 70.00) CHF 280.00», Reinigung, Kurtaxe; Familie «11 Nächte (7 + 4) für CHF 490.00», damit der Vorteil sichtbar ist (seit 3.37.0.9, Wänu)
     const famVor = (pn, ue, du) => { const ohne = pn * P.gast; return !x.SOND && pn > 0 && ohne - ue > 0.004 ? '<li class="gold"><span><small class="ktk">Ohne Familienpreis: ' + pn + " × " + chf2(P.gast) + " = " + chf2(ohne) + ", " + "Familienrabatt " + chf2(ohne - ue) + "</small></span><span></span></li>" : ""; };   // Familienvorteil sichtbar machen (seit 3.37.0.10, Wänu)
@@ -5542,7 +5548,7 @@ function render() {
     const exB = (key) => zpl ? zpl.extra[key].reduce((a, e) => a + e.b, 0) : 0;
     if (famAufB) { const sum = famAufB.reduce((a, pp) => a + pp.n, 0) || 1, pro = REINIG.indexOf(S.reinig) === 1;
       const hda = hDatAktiv(), kurzT = (k) => fmtTag(k).replace(/\.\d{4}$/, ".");
-      famAufB.forEach((pp, k) => { const gu = pp.gu, gr = pp.gr, nn = pp.au.n, hq = hP(pp), hp = x.SOND ? Math.min(hq.s, pp.b) : 0;   // Sonderbuchung: Pauschale und Reinigung getrennt (seit 3.40.0.1)
+      famAufB.forEach((pp, k) => { const gu = pp.gu, gr = pp.gr, nn = pp.au.n, hq = hP(pp), hp = x.SOND ? Math.min(pp.hp != null ? pp.hp : hq.s, pp.b) : 0;   // Sonderbuchung: Pauschale und Reinigung getrennt (seit 3.40.0.1)
         bd.push(famL(famNamenListe(pp), x.SOND ? hp : famUeb * gu, x.SOND ? pp.b - hp : famRei * gr, nn, pp.kopf) + (k === 0 ? spL() : "") + erlL(gu) + extraL(famZK(pp)));
         sg.push({ tot: pp.b + exB(famZK(pp)), r: (x.SOND ? pp.b - hp : famRei * gr) + exR(famZK(pp)), k: exK(famZK(pp)), e: erl * gu, n: hda ? nn : 0, dg: x.SOND ? dg(hp, hq.pn) : undefined }); }); }
     else { bd.push(famL(famNamenListe(null), famUeb + fP, fR, hDatAktiv() ? 0 : x.nights, ichKey()) + spL() + erlL(1) + extraL("ich"));
@@ -5583,7 +5589,7 @@ function render() {
         });
       }
       if (famAufB) { const sum = famAufB.reduce((a, pp) => a + pp.n, 0) || 1, pro = REINIG.indexOf(S.reinig) === 1;
-        famAufB.forEach((pp) => { if (pp.eigen) return; const re = x.SOND ? pp.b - Math.min(hP(pp).s, pp.b) : famRei * pp.gr, nn = pp.au.n, fk = famZK(pp), fx = exSum(fk);
+        famAufB.forEach((pp) => { if (pp.eigen) return; const re = x.SOND ? pp.b - Math.min(pp.hp != null ? pp.hp : hP(pp).s, pp.b) : famRei * pp.gr, nn = pp.au.n, fk = famZK(pp), fx = exSum(fk);
           ps.unshift({ fam: true, an: pp.erw.length ? pp.erw : [pp.kopf], mit: pp.namen, pers: [], z: Z([["Anteil am Familienpreis" + (hDatAktiv() ? " (" + fmtTag(pp.au.an).replace(/\.\d{4}$/, ".") + " bis " + fmtTag(pp.au.ab).replace(/\.\d{4}$/, ".") + ", " + nn + (nn === 1 ? " Nacht" : " Nächte") + ")" : ""), pp.b - re], ["Reinigung", re]]), fuer: fuer([fk], []), t: auf05(pp.b + fx), t0: pp.b + fx }); }); }
       INK = ps.length ? { arr: ARR, dep: DEP, nights: x.nights, tot: r.TOT, kt: kt.summe > 0 ? kt.summe : 0, p: ps } : null;
     }
