@@ -32,10 +32,6 @@
   ],
   "logbuch": [
     {
-      "t": "2026-11-03T14:28",
-      "text": "Entfernt: Jerome, Mi 25.11.2026 bis Sa 28.11.2026"
-    },
-    {
       "t": "2026-11-03T14:29",
       "text": "Bestätigt: Jerome, Di 17.11.2026 bis Do 19.11.2026, CHF 110, Wäsche: persönlich bringen bis So 22.11.2026"
     },
@@ -830,8 +826,25 @@
     {
       "t": "2026-11-27T17:51",
       "text": "Vorlage gelöscht: Manuel, 2027-01-07 bis 2027-01-10"
+    },
+    {
+      "t": "2026-11-28T16:48",
+      "text": "Vorlage für Manuel: 2027-01-07 bis 2027-01-10, geänderte Preise: CHF 600.– pro Nacht für die ganze Wohnung, mit Reinigung (CHF 120.– pro Aufenthalt), Kurtaxe für Freunde wie üblich. Ausnahme: Einzelne dürfen nur 2 Nächte bleiben, jede Nacht kostet die Pauschale, geteilt durch die Personen dieser Nacht"
     }
   ],
   "reinigung": [],
-  "vorlagen": []
+  "vorlagen": [
+    {
+      "id": "mx0l4egy",
+      "name": "Manuel",
+      "arr": "2027-01-07",
+      "dep": "2027-01-10",
+      "pa": true,
+      "preis": 600,
+      "reinB": 120,
+      "kt": true,
+      "notfall": true,
+      "t": "2026-11-28T16:48"
+    }
+  ]
 }
