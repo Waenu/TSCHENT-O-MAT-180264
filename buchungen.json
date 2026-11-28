@@ -28,13 +28,27 @@
       "bestaetigt": "2026-11-26T12:52",
       "bescheid": "2026-11-26T12:52",
       "pimlical": "2026-11-26T15:59"
+    },
+    {
+      "name": "Manuel",
+      "arr": "2027-01-07",
+      "dep": "2027-01-10",
+      "selbst": false,
+      "pers": 3,
+      "sond": {
+        "pa": true,
+        "preis": 600,
+        "rein": false,
+        "reinB": 120,
+        "kt": true,
+        "notfall": true
+      },
+      "betrag": 1920,
+      "rechnung": "Gesendet am Sa 28.11.2026, 17:28 Uhr. App-Version 3.40.0.3.\nAnreise\tDonnerstag 7.01.2027\nAbreise\tSonntag 10.01.2027 (3 Nächte)\nSonderbuchung (eure Vorlage)\tgeänderte Preise: CHF 600.– pro Nacht für die ganze Wohnung, mit Reinigung (CHF 120.– pro Aufenthalt), Kurtaxe für Freunde wie üblich. Ausnahme: Einzelne dürfen nur 2 Nächte bleiben, jede Nacht kostet die Pauschale, geteilt durch die Personen dieser Nacht\n🛏️ Luftmatratze (7. Bett) in den Nächten Fr 8.01.2027 / Sa 9.01.2027, Sa 9.01.2027 / So 10.01.2027: bitte freigeben\nFamilie\tMeine Familie und Geschwister (3 Personen)\nAufenthalt Person, Partei 2, Jerome: Fr 8.01.2027 bis So 10.01.2027 (2 Nächte) · mit Bett\nFreunde\t4\nFreund/in 4\tFr 8.01.2027 bis So 10.01.2027 (2 Nächte)\nReinigung nach Personen\tjede Person zählt gleich (ohne Kleinkinder)\nBedingungen akzeptiert\tJa\nTotal\tCHF 1’977.20, davon Kurtaxe Adelboden für die Freunde CHF 57.20\n#Preisberechnung\nSonderbuchung: Pauschale pro Nacht\tCHF 600.–\nPauschale (3 Nächte)\tCHF 1’800.00\nReinigung\tCHF 120.–\nPauschale mit Reinigung\tCHF 1’920.–\nPauschale pro Nacht geteilt\tja\nPersonen pro Nacht\t5, 7, 7\nPreis pro Person und Nacht\t120.00 / 85.71 / 85.71\nReinigung: Anteil Familie\tCHF 805.71\nReinigung: Anteil pro Freund\tCHF 308.57\nKurtaxe Adelboden (dazu) 4 Freunde ab 16 Jahren zu CHF 5.20 pro Nacht, zusammen 11 Nächte (eigene Nächte)\tCHF 57.20\nTotal mit Kurtaxe\tCHF 1’977.20\n#Aufteilung unter den Freunden\nFamilie, Partei 1 zahlt\tCHF 617.00\nFamilie, Partei 2 zahlt\tCHF 188.60\nFreund/in 1 zahlt davon Kurtaxe CHF 15.60 (ab 16 Jahren)\tCHF 324.20\nFreund/in 2 zahlt davon Kurtaxe CHF 15.60 (ab 16 Jahren)\tCHF 324.20\nFreund/in 3 zahlt davon Kurtaxe CHF 15.60 (ab 16 Jahren)\tCHF 324.20\nFreund/in 4 zahlt davon Kurtaxe CHF 10.40 (ab 16 Jahren)\tCHF 199.00\n#Teile\n~\t617\t34.29\t0\t0\t3\n~\t188.6\t17.14\t0\t0\t2\n~\t324.2\t17.14\t15.6\t0\t3\n~\t324.2\t17.14\t15.6\t0\t3\n~\t324.2\t17.14\t15.6\t0\t3\n~\t199\t17.14\t10.4\t0\t2\n~\tF\t-1\t0\n~\tN\tManuel, Sarah|\tJerome|\n~\tG\tA. Tester\tJ. Traub\tK. Gäld\tM. Müller\nReinigung aufgeteilt: Nach Personen: jede Person zählt gleich (ohne Kleinkinder).",
+      "bestaetigt": "2026-11-28T17:29"
     }
   ],
   "logbuch": [
-    {
-      "t": "2026-11-03T14:29",
-      "text": "Bestätigt: Jerome, Di 17.11.2026 bis Do 19.11.2026, CHF 110, Wäsche: persönlich bringen bis So 22.11.2026"
-    },
     {
       "t": "2026-11-03T15:37",
       "text": "Bestätigt: Deborah, Di 3.11.2026 bis Do 5.11.2026, CHF 110, Wäsche: persönlich bringen bis So 8.11.2026"
@@ -830,22 +844,12 @@
     {
       "t": "2026-11-28T16:48",
       "text": "Vorlage für Manuel: 2027-01-07 bis 2027-01-10, geänderte Preise: CHF 600.– pro Nacht für die ganze Wohnung, mit Reinigung (CHF 120.– pro Aufenthalt), Kurtaxe für Freunde wie üblich. Ausnahme: Einzelne dürfen nur 2 Nächte bleiben, jede Nacht kostet die Pauschale, geteilt durch die Personen dieser Nacht"
+    },
+    {
+      "t": "2026-11-28T17:29",
+      "text": "Bestätigt: ⭐ Sonderbuchung, Manuel, Do 7.01.2027 bis So 10.01.2027, CHF 1920"
     }
   ],
   "reinigung": [],
-  "vorlagen": [
-    {
-      "id": "mx0l4egy",
-      "name": "Manuel",
-      "arr": "2027-01-07",
-      "dep": "2027-01-10",
-      "pa": true,
-      "preis": 600,
-      "reinB": 120,
-      "kt": true,
-      "notfall": true,
-      "t": "2026-11-28T16:48",
-      "ws": "2026-11-28T16:50"
-    }
-  ]
+  "vorlagen": []
 }
