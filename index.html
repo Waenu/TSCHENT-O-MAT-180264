@@ -1735,7 +1735,7 @@ if (TEST_MODUS) {
   const start = () => { rahmen(document.body); new MutationObserver((ms) => ms.forEach((m) => m.addedNodes.forEach(rahmen))).observe(document.body, { childList: true, subtree: true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 })();
-let VERSION = "3.40.0.2";
+let VERSION = "3.40.0.3";
 let NEU_VERSION = "";   // Version laut einstellungen.json (Netz); VERSION ist die Fassung, die wirklich läuft (seit 3.37.0.14)
 let GUELTIG_AB = "01.01.2027";
 let IBAN = "CH25 0878 4046 4374 6612 8";
@@ -5602,7 +5602,7 @@ function render() {
         const neu = (rw, v) => rw.replace(/<td>[^<]*<\/td><\/tr>$/, "<td>" + chf2(v) + "</td></tr>");
         sg.forEach((q, k) => { const df = Math.round((up[k] - q.tot) * 100) / 100; if (Math.abs(df) < 0.004) return;
           rows[k] = neu(rows[k], up[k]); rowsN[k] = neu(rowsN[k], up[k]);
-          if (bd[k]) bd[k] += L(df > 0 ? "Aufgerundet auf 5 Rappen" : "Rundung auf 5 Rappen", df, "", "");
+          if (bd[k]) bd[k] = bd[k].replace(/<span>[^<]*<\/span><\/li>/, "<span>" + chf2(up[k]) + "</span></li>");   // aufgeklappt gleicher Betrag wie in der Zeile, keine Zeile «Aufgerundet» mehr (seit 3.40.0.3, Wänu)
           q.tot = up[k]; });
         who = rows.join(""); whoN = rowsN.join("");
       }

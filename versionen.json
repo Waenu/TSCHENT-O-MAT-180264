@@ -2,6 +2,17 @@
   "_hinweis": "Neueste Version zuoberst. Ziffern: 1. Hauptversion (3 = freigegebene App), 2. neue Funktionen, 3. funktionelle Änderungen, 4. Layout, Texte und Fehlerkorrekturen. Optional «arten»: Neu, Funktion, Fehler, Layout, Text (ohne Angabe wird sie aus der Versionsnummer abgeleitet). Keine geheimen Zugänge hier eintragen.",
   "versionen": [
     {
+      "v": "3.40.0.3",
+      "datum": "2026-11-28",
+      "titel": "Aufteilung: aufgeklappt gleicher Betrag, keine Rundungszeile",
+      "arten": [
+        "Layout"
+      ],
+      "punkte": [
+        "Aufgeklappt steht derselbe Betrag wie in der Zeile (z. B. CHF 324.20 statt 324.17), die Zeile «Aufgerundet auf 5 Rappen» entfällt."
+      ]
+    },
+    {
       "v": "3.40.0.2",
       "datum": "2026-11-28",
       "titel": "Sonderbuchung mit Geschwistern: Reinigung pro Partei",
